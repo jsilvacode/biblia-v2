@@ -1,0 +1,131 @@
+:root {
+  color-scheme: light;
+
+  /* Aurora Champagne: semantic foundations. The legacy names below remain
+     intentional compatibility aliases while individual features migrate. */
+  --bg-app: #eef3f9;
+  --bg-reader: #fbf8f4;
+  --bg-sidebar: #f8f4ef;
+  --surface-1: #fffdfa;
+  --surface-2: #f7eee8;
+  --surface-3: #edf2f7;
+  --surface-inverse: #142336;
+  --text-primary: #251f1d;
+  --text-secondary: #625754;
+  --text-inverse: #f9f2e9;
+  --accent-coral: #c97858;
+  --accent-coral-deep: #914c39;
+  --accent-champagne: #e8b18f;
+  --accent-blue: #7699b2;
+  --accent-blue-deep: #496f88;
+  --accent-mist: #edf4f6;
+  --border-subtle: rgb(76 81 86 / 12%);
+  --border-strong: rgb(76 81 86 / 22%);
+  --focus-ring: #c97858;
+  --ambient-top: #e5e9eb;
+  --ambient-glow: #f4cfbd;
+
+  --canvas: var(--bg-app);
+  --surface: var(--surface-1);
+  --surface-raised: #ffffff;
+  --surface-soft: var(--surface-2);
+  --surface-celeste: var(--accent-mist);
+  --ink: var(--text-primary);
+  --ink-muted: var(--text-secondary);
+  --border: var(--border-subtle);
+  --accent: var(--accent-coral);
+  --accent-deep: var(--accent-coral-deep);
+  --accent-soft: #f7dfd2;
+  --sage: #e8eee7;
+
+  --surface-highlight: rgb(255 255 255 / 72%);
+  --shadow-ink: #30292a;
+  --overlay-scrim: rgb(38 27 39 / 52%);
+  --shadow-dialog: 0 -1.1rem 3rem rgb(38 27 39 / 25%);
+  --shadow-sm: 0 16px 36px -24px rgb(42 53 65 / 28%), 0 2px 8px rgb(42 53 65 / 3%);
+  --shadow-md: 0 24px 54px -28px rgb(42 53 65 / 28%), 0 6px 18px rgb(42 53 65 / 5%);
+  --shadow-lg: 0 30px 72px rgb(37 30 31 / 17%);
+  --radius-xs: 0.65rem;
+  --radius-sm: 0.85rem;
+  --radius-md: 1.25rem;
+  --radius-lg: 1.75rem;
+  --radius-xl: 2.25rem;
+  --ease-premium: cubic-bezier(0.22, 0.82, 0.26, 1);
+  --duration-fast: 160ms;
+  --duration-base: 240ms;
+  --duration-slow: 420ms;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --font-ui: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-reading: "Lora", Iowan Old Style, Baskerville, "Times New Roman", serif;
+  --font-display: "Playfair Display", "Lora", Iowan Old Style, Baskerville, "Times New Roman", serif;
+  --reader-scale: 1;
+  --reader-width: 45rem;
+  --content-max-width: 66rem;
+  --topbar-height: 4.5rem;
+  --layout-gutter: var(--space-4);
+  --page-top-space: var(--space-6);
+  --page-section-gap: var(--space-5);
+  --content-footer-gap: var(--space-6);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg-app: #151216;
+  --bg-reader: #191519;
+  --bg-sidebar: #1c171b;
+  --surface-1: #211b20;
+  --surface-2: #2a2228;
+  --surface-3: #332a31;
+  --surface-inverse: #fbf2e9;
+  --text-primary: #f4ece6;
+  --text-secondary: #cbbfbd;
+  --text-inverse: #21191d;
+  --accent-coral: #e7a07d;
+  --accent-coral-deep: #ffd0b4;
+  --accent-champagne: #f0c2a2;
+  --accent-blue: #8fbfc7;
+  --accent-blue-deep: #b8dfe2;
+  --accent-mist: #293334;
+  --border-subtle: rgb(239 220 209 / 12%);
+  --border-strong: rgb(240 192 169 / 21%);
+  --focus-ring: #ffc9a8;
+  --ambient-top: #2a2029;
+  --ambient-glow: #895346;
+
+  --canvas: var(--bg-app);
+  --surface: var(--surface-1);
+  --surface-raised: #261f24;
+  --surface-soft: var(--surface-2);
+  --ink: var(--text-primary);
+  --ink-muted: var(--text-secondary);
+  --border: var(--border-subtle);
+  --accent: var(--accent-coral);
+  --accent-deep: var(--accent-coral-deep);
+  --accent-soft: #442d32;
+  --sage: #303932;
+
+  --surface-highlight: rgb(255 255 255 / 7%);
+  --shadow-ink: #000000;
+  --overlay-scrim: rgb(11 7 13 / 60%);
+  --shadow-dialog: 0 -1.1rem 3rem rgb(11 7 13 / 32%);
+  --shadow-sm: 0 18px 40px -24px rgb(0 0 0 / 72%), 0 3px 10px rgb(0 0 0 / 14%);
+  --shadow-md: 0 28px 62px -28px rgb(0 0 0 / 76%), 0 8px 22px rgb(0 0 0 / 18%);
+  --shadow-lg: 0 36px 88px rgb(0 0 0 / 38%);
+}
+
+@media (min-width: 600px) {
+  :root {
+    --layout-gutter: var(--space-6);
+    --page-top-space: var(--space-7);
+    --page-section-gap: var(--space-6);
+    --content-footer-gap: var(--space-7);
+  }
+}

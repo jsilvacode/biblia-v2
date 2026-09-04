@@ -1,0 +1,596 @@
+[
+  {
+    "id": 1,
+    "slug": "genesis",
+    "name": "Génesis",
+    "abbrev": "Gn",
+    "testament": "OT",
+    "chapters": 50,
+    "file": "01_genesis"
+  },
+  {
+    "id": 2,
+    "slug": "exodo",
+    "name": "Éxodo",
+    "abbrev": "Ex",
+    "testament": "OT",
+    "chapters": 40,
+    "file": "02_exodo"
+  },
+  {
+    "id": 3,
+    "slug": "levitico",
+    "name": "Levítico",
+    "abbrev": "Lv",
+    "testament": "OT",
+    "chapters": 27,
+    "file": "03_levitico"
+  },
+  {
+    "id": 4,
+    "slug": "numeros",
+    "name": "Números",
+    "abbrev": "Nm",
+    "testament": "OT",
+    "chapters": 36,
+    "file": "04_numeros"
+  },
+  {
+    "id": 5,
+    "slug": "deuteronomio",
+    "name": "Deuteronomio",
+    "abbrev": "Dt",
+    "testament": "OT",
+    "chapters": 34,
+    "file": "05_deuteronomio"
+  },
+  {
+    "id": 6,
+    "slug": "josue",
+    "name": "Josué",
+    "abbrev": "Js",
+    "testament": "OT",
+    "chapters": 24,
+    "file": "06_josue"
+  },
+  {
+    "id": 7,
+    "slug": "jueces",
+    "name": "Jueces",
+    "abbrev": "Jud",
+    "testament": "OT",
+    "chapters": 21,
+    "file": "07_jueces"
+  },
+  {
+    "id": 8,
+    "slug": "rut",
+    "name": "Rut",
+    "abbrev": "Rt",
+    "testament": "OT",
+    "chapters": 4,
+    "file": "08_rut"
+  },
+  {
+    "id": 9,
+    "slug": "1samuel",
+    "name": "1 Samuel",
+    "abbrev": "1sm",
+    "testament": "OT",
+    "chapters": 31,
+    "file": "09_1samuel"
+  },
+  {
+    "id": 10,
+    "slug": "2samuel",
+    "name": "2 Samuel",
+    "abbrev": "2sm",
+    "testament": "OT",
+    "chapters": 24,
+    "file": "10_2samuel"
+  },
+  {
+    "id": 11,
+    "slug": "1reyes",
+    "name": "1 Reyes",
+    "abbrev": "1kgs",
+    "testament": "OT",
+    "chapters": 22,
+    "file": "11_1reyes"
+  },
+  {
+    "id": 12,
+    "slug": "2reyes",
+    "name": "2 Reyes",
+    "abbrev": "2kgs",
+    "testament": "OT",
+    "chapters": 25,
+    "file": "12_2reyes"
+  },
+  {
+    "id": 13,
+    "slug": "1cronicas",
+    "name": "1 Crónicas",
+    "abbrev": "1ch",
+    "testament": "OT",
+    "chapters": 29,
+    "file": "13_1cronicas"
+  },
+  {
+    "id": 14,
+    "slug": "2cronicas",
+    "name": "2 Crónicas",
+    "abbrev": "2ch",
+    "testament": "OT",
+    "chapters": 36,
+    "file": "14_2cronicas"
+  },
+  {
+    "id": 15,
+    "slug": "esdras",
+    "name": "Esdras",
+    "abbrev": "Ezr",
+    "testament": "OT",
+    "chapters": 10,
+    "file": "15_esdras"
+  },
+  {
+    "id": 16,
+    "slug": "nehemias",
+    "name": "Nehemías",
+    "abbrev": "Ne",
+    "testament": "OT",
+    "chapters": 13,
+    "file": "16_nehemias"
+  },
+  {
+    "id": 17,
+    "slug": "ester",
+    "name": "Ester",
+    "abbrev": "Et",
+    "testament": "OT",
+    "chapters": 10,
+    "file": "17_ester"
+  },
+  {
+    "id": 18,
+    "slug": "job",
+    "name": "Job",
+    "abbrev": "Job",
+    "testament": "OT",
+    "chapters": 42,
+    "file": "18_job"
+  },
+  {
+    "id": 19,
+    "slug": "salmos",
+    "name": "Salmos",
+    "abbrev": "Ps",
+    "testament": "OT",
+    "chapters": 150,
+    "file": "19_salmos"
+  },
+  {
+    "id": 20,
+    "slug": "proverbios",
+    "name": "Proverbios",
+    "abbrev": "Prv",
+    "testament": "OT",
+    "chapters": 31,
+    "file": "20_proverbios"
+  },
+  {
+    "id": 21,
+    "slug": "eclesiastes",
+    "name": "Eclesiastés",
+    "abbrev": "Ec",
+    "testament": "OT",
+    "chapters": 12,
+    "file": "21_eclesiastes"
+  },
+  {
+    "id": 22,
+    "slug": "cantares",
+    "name": "Cantares",
+    "abbrev": "So",
+    "testament": "OT",
+    "chapters": 8,
+    "file": "22_cantares"
+  },
+  {
+    "id": 23,
+    "slug": "isaias",
+    "name": "Isaías",
+    "abbrev": "Is",
+    "testament": "OT",
+    "chapters": 66,
+    "file": "23_isaias"
+  },
+  {
+    "id": 24,
+    "slug": "jeremias",
+    "name": "Jeremías",
+    "abbrev": "Jr",
+    "testament": "OT",
+    "chapters": 52,
+    "file": "24_jeremias"
+  },
+  {
+    "id": 25,
+    "slug": "lamentaciones",
+    "name": "Lamentaciones",
+    "abbrev": "Lm",
+    "testament": "OT",
+    "chapters": 5,
+    "file": "25_lamentaciones"
+  },
+  {
+    "id": 26,
+    "slug": "ezequiel",
+    "name": "Ezequiel",
+    "abbrev": "Ez",
+    "testament": "OT",
+    "chapters": 48,
+    "file": "26_ezequiel"
+  },
+  {
+    "id": 27,
+    "slug": "daniel",
+    "name": "Daniel",
+    "abbrev": "Dn",
+    "testament": "OT",
+    "chapters": 12,
+    "file": "27_daniel"
+  },
+  {
+    "id": 28,
+    "slug": "oseas",
+    "name": "Oseas",
+    "abbrev": "Ho",
+    "testament": "OT",
+    "chapters": 14,
+    "file": "28_oseas"
+  },
+  {
+    "id": 29,
+    "slug": "joel",
+    "name": "Joel",
+    "abbrev": "Jl",
+    "testament": "OT",
+    "chapters": 3,
+    "file": "29_joel"
+  },
+  {
+    "id": 30,
+    "slug": "amos",
+    "name": "Amós",
+    "abbrev": "Am",
+    "testament": "OT",
+    "chapters": 9,
+    "file": "30_amos"
+  },
+  {
+    "id": 31,
+    "slug": "abdias",
+    "name": "Abdías",
+    "abbrev": "Ob",
+    "testament": "OT",
+    "chapters": 1,
+    "file": "31_abdias"
+  },
+  {
+    "id": 32,
+    "slug": "jonas",
+    "name": "Jonás",
+    "abbrev": "Jn",
+    "testament": "OT",
+    "chapters": 4,
+    "file": "32_jonas"
+  },
+  {
+    "id": 33,
+    "slug": "miqueas",
+    "name": "Miqueas",
+    "abbrev": "Mi",
+    "testament": "OT",
+    "chapters": 7,
+    "file": "33_miqueas"
+  },
+  {
+    "id": 34,
+    "slug": "nahum",
+    "name": "Nahúm",
+    "abbrev": "Na",
+    "testament": "OT",
+    "chapters": 3,
+    "file": "34_nahum"
+  },
+  {
+    "id": 35,
+    "slug": "habacuc",
+    "name": "Habacuc",
+    "abbrev": "Hk",
+    "testament": "OT",
+    "chapters": 3,
+    "file": "35_habacuc"
+  },
+  {
+    "id": 36,
+    "slug": "sofonias",
+    "name": "Sofonías",
+    "abbrev": "Zp",
+    "testament": "OT",
+    "chapters": 3,
+    "file": "36_sofonias"
+  },
+  {
+    "id": 37,
+    "slug": "hageo",
+    "name": "Hageo",
+    "abbrev": "Hg",
+    "testament": "OT",
+    "chapters": 2,
+    "file": "37_hageo"
+  },
+  {
+    "id": 38,
+    "slug": "zacarias",
+    "name": "Zacarías",
+    "abbrev": "Zc",
+    "testament": "OT",
+    "chapters": 14,
+    "file": "38_zacarias"
+  },
+  {
+    "id": 39,
+    "slug": "malaquias",
+    "name": "Malaquías",
+    "abbrev": "Ml",
+    "testament": "OT",
+    "chapters": 4,
+    "file": "39_malaquias"
+  },
+  {
+    "id": 40,
+    "slug": "mateo",
+    "name": "Mateo",
+    "abbrev": "Mt",
+    "testament": "NT",
+    "chapters": 28,
+    "file": "40_mateo"
+  },
+  {
+    "id": 41,
+    "slug": "marcos",
+    "name": "Marcos",
+    "abbrev": "Mk",
+    "testament": "NT",
+    "chapters": 16,
+    "file": "41_marcos"
+  },
+  {
+    "id": 42,
+    "slug": "lucas",
+    "name": "Lucas",
+    "abbrev": "Lk",
+    "testament": "NT",
+    "chapters": 24,
+    "file": "42_lucas"
+  },
+  {
+    "id": 43,
+    "slug": "juan",
+    "name": "Juan",
+    "abbrev": "Jo",
+    "testament": "NT",
+    "chapters": 21,
+    "file": "43_juan"
+  },
+  {
+    "id": 44,
+    "slug": "hechos",
+    "name": "Hechos",
+    "abbrev": "Act",
+    "testament": "NT",
+    "chapters": 28,
+    "file": "44_hechos"
+  },
+  {
+    "id": 45,
+    "slug": "romanos",
+    "name": "Romanos",
+    "abbrev": "Rm",
+    "testament": "NT",
+    "chapters": 16,
+    "file": "45_romanos"
+  },
+  {
+    "id": 46,
+    "slug": "1corintios",
+    "name": "1 Corintios",
+    "abbrev": "1co",
+    "testament": "NT",
+    "chapters": 16,
+    "file": "46_1corintios"
+  },
+  {
+    "id": 47,
+    "slug": "2corintios",
+    "name": "2 Corintios",
+    "abbrev": "2co",
+    "testament": "NT",
+    "chapters": 13,
+    "file": "47_2corintios"
+  },
+  {
+    "id": 48,
+    "slug": "galatas",
+    "name": "Gálatas",
+    "abbrev": "Gl",
+    "testament": "NT",
+    "chapters": 6,
+    "file": "48_galatas"
+  },
+  {
+    "id": 49,
+    "slug": "efesios",
+    "name": "Efesios",
+    "abbrev": "Eph",
+    "testament": "NT",
+    "chapters": 6,
+    "file": "49_efesios"
+  },
+  {
+    "id": 50,
+    "slug": "filipenses",
+    "name": "Filipenses",
+    "abbrev": "Ph",
+    "testament": "NT",
+    "chapters": 4,
+    "file": "50_filipenses"
+  },
+  {
+    "id": 51,
+    "slug": "colosenses",
+    "name": "Colosenses",
+    "abbrev": "Cl",
+    "testament": "NT",
+    "chapters": 4,
+    "file": "51_colosenses"
+  },
+  {
+    "id": 52,
+    "slug": "1tesalonicenses",
+    "name": "1 Tesalonicenses",
+    "abbrev": "1ts",
+    "testament": "NT",
+    "chapters": 5,
+    "file": "52_1tesalonicenses"
+  },
+  {
+    "id": 53,
+    "slug": "2tesalonicenses",
+    "name": "2 Tesalonicenses",
+    "abbrev": "2ts",
+    "testament": "NT",
+    "chapters": 3,
+    "file": "53_2tesalonicenses"
+  },
+  {
+    "id": 54,
+    "slug": "1timoteo",
+    "name": "1 Timoteo",
+    "abbrev": "1tm",
+    "testament": "NT",
+    "chapters": 6,
+    "file": "54_1timoteo"
+  },
+  {
+    "id": 55,
+    "slug": "2timoteo",
+    "name": "2 Timoteo",
+    "abbrev": "2tm",
+    "testament": "NT",
+    "chapters": 4,
+    "file": "55_2timoteo"
+  },
+  {
+    "id": 56,
+    "slug": "tito",
+    "name": "Tito",
+    "abbrev": "Tt",
+    "testament": "NT",
+    "chapters": 3,
+    "file": "56_tito"
+  },
+  {
+    "id": 57,
+    "slug": "filemon",
+    "name": "Filemón",
+    "abbrev": "Phm",
+    "testament": "NT",
+    "chapters": 1,
+    "file": "57_filemon"
+  },
+  {
+    "id": 58,
+    "slug": "hebreos",
+    "name": "Hebreos",
+    "abbrev": "Hb",
+    "testament": "NT",
+    "chapters": 13,
+    "file": "58_hebreos"
+  },
+  {
+    "id": 59,
+    "slug": "santiago",
+    "name": "Santiago",
+    "abbrev": "Jm",
+    "testament": "NT",
+    "chapters": 5,
+    "file": "59_santiago"
+  },
+  {
+    "id": 60,
+    "slug": "1pedro",
+    "name": "1 Pedro",
+    "abbrev": "1pe",
+    "testament": "NT",
+    "chapters": 5,
+    "file": "60_1pedro"
+  },
+  {
+    "id": 61,
+    "slug": "2pedro",
+    "name": "2 Pedro",
+    "abbrev": "2pe",
+    "testament": "NT",
+    "chapters": 3,
+    "file": "61_2pedro"
+  },
+  {
+    "id": 62,
+    "slug": "1juan",
+    "name": "1 Juan",
+    "abbrev": "1jo",
+    "testament": "NT",
+    "chapters": 5,
+    "file": "62_1juan"
+  },
+  {
+    "id": 63,
+    "slug": "2juan",
+    "name": "2 Juan",
+    "abbrev": "2jo",
+    "testament": "NT",
+    "chapters": 1,
+    "file": "63_2juan"
+  },
+  {
+    "id": 64,
+    "slug": "3juan",
+    "name": "3 Juan",
+    "abbrev": "3jo",
+    "testament": "NT",
+    "chapters": 1,
+    "file": "64_3juan"
+  },
+  {
+    "id": 65,
+    "slug": "judas",
+    "name": "Judas",
+    "abbrev": "Jd",
+    "testament": "NT",
+    "chapters": 1,
+    "file": "65_judas"
+  },
+  {
+    "id": 66,
+    "slug": "apocalipsis",
+    "name": "Apocalipsis",
+    "abbrev": "Re",
+    "testament": "NT",
+    "chapters": 22,
+    "file": "66_apocalipsis"
+  }
+]

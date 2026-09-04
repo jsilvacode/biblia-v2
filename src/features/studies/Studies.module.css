@@ -1,0 +1,570 @@
+.studyIndexPage {
+  display: grid;
+  gap: var(--page-section-gap);
+}
+
+.studyIndexPage > :global(.page-intro) { margin-bottom: 0; }
+
+.languageNotice {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 0.4rem;
+  margin: -0.8rem 0 0;
+  padding: 0.38rem 0.62rem;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.courseProgress {
+  position: relative;
+  display: grid;
+  width: min(100%, 52rem);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.85rem 1rem;
+  overflow: hidden;
+  padding: clamp(1.1rem, 3vw, 1.45rem);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
+  border-radius: 1.15rem;
+  background:
+    radial-gradient(circle at 95% 0%, color-mix(in srgb, var(--surface-celeste) 60%, transparent), transparent 38%),
+    color-mix(in srgb, var(--surface-raised) 97%, var(--accent-soft));
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--surface-highlight);
+}
+
+.progressCopy {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.72rem;
+}
+
+.progressCopy > span:nth-child(2) {
+  display: grid;
+  gap: 0.08rem;
+}
+
+.progressCopy strong {
+  font-family: var(--font-reading);
+  font-size: clamp(1rem, 2vw, 1.12rem);
+  font-weight: 620;
+}
+
+.progressCopy > small {
+  color: var(--ink-muted);
+  font-size: 0.7rem;
+  font-weight: 650;
+}
+
+.progressIcon {
+  display: grid;
+  width: 2.7rem;
+  height: 2.7rem;
+  place-items: center;
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--accent-soft) 58%, var(--surface-raised));
+  color: var(--accent-deep);
+}
+
+.progressEyebrow {
+  margin: 0;
+  color: var(--accent-deep);
+  font-size: 0.65rem;
+  font-weight: 760;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.progressTrack {
+  grid-column: 1 / -1;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border) 72%, transparent);
+}
+
+.progressTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-deep), var(--accent));
+  transition: width var(--duration-slow) var(--ease-premium);
+}
+
+.primaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.8rem;
+  gap: 0.4rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  background: var(--accent-deep);
+  box-shadow: 0 0.7rem 1.4rem -0.9rem color-mix(in srgb, var(--accent-deep) 60%, transparent);
+  color: var(--surface-raised);
+  font-size: 0.78rem;
+  font-weight: 720;
+}
+
+.lessonIndex {
+  width: min(100%, 52rem);
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.7rem;
+}
+
+.sectionHeading h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 1.95rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.sectionHeading > span {
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.lessonList {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+  list-style: none;
+}
+
+.lessonCard {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  min-height: 6.3rem;
+  gap: 0.8rem;
+  padding: 0.9rem 0.25rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+  color: var(--ink);
+  transition: background var(--duration-fast) var(--ease-premium), padding var(--duration-fast) var(--ease-premium);
+}
+
+.lessonCard:hover {
+  padding-inline: 0.7rem;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--surface-celeste) 24%, transparent), transparent 76%);
+}
+
+.lessonNumber,
+.questionNumber {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border-radius: 0.72rem;
+  background: color-mix(in srgb, var(--accent-soft) 52%, var(--surface-raised));
+  color: var(--accent-deep);
+  font-size: 0.7rem;
+  font-weight: 780;
+  letter-spacing: 0.06em;
+}
+
+.lessonCopy {
+  display: grid;
+  min-width: 0;
+  gap: 0.14rem;
+}
+
+.lessonCopy strong {
+  font-family: var(--font-reading);
+  font-size: 1rem;
+  font-weight: 620;
+  line-height: 1.3;
+}
+
+.lessonCopy small {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  line-height: 1.42;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.statusLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  padding: 0.28rem 0.48rem;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--ink-muted);
+  font-size: 0.64rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.statusLabel.completed {
+  background: color-mix(in srgb, var(--accent-soft) 62%, var(--surface-raised));
+  color: var(--accent-deep);
+}
+
+.statusLabel.inProgress {
+  background: color-mix(in srgb, var(--surface-celeste) 62%, var(--surface-raised));
+  color: var(--accent-blue-deep);
+}
+
+.lessonArrow {
+  color: var(--ink-muted);
+}
+
+.credits {
+  display: flex;
+  width: min(100%, 52rem);
+  align-items: flex-start;
+  gap: 0.8rem;
+  margin-top: 0;
+  padding: 1rem 0;
+  border-top: 1px solid color-mix(in srgb, var(--border) 54%, transparent);
+  color: var(--ink-muted);
+}
+
+.credits > span {
+  margin-top: 0.15rem;
+  color: var(--accent-blue);
+}
+
+.credits h2 {
+  margin: 0.2rem 0 0.35rem;
+  color: var(--ink);
+  font-family: var(--font-reading);
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.credits p:not(.progressEyebrow) {
+  max-width: 44rem;
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+.credits a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.55rem;
+  color: var(--accent-deep);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.studyLessonPage {
+  width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), 52rem);
+  padding-top: var(--page-top-space);
+}
+
+.backLink {
+  position: fixed;
+  z-index: 18;
+  bottom: calc(5rem + env(safe-area-inset-bottom));
+  left: 1rem;
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  min-height: 2.65rem;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0 0.7rem 0 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--border) 54%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-raised) 98%, var(--surface-soft));
+  box-shadow: 0 0.65rem 1.35rem -1.2rem color-mix(in srgb, var(--shadow-ink) 32%, transparent);
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.backLink:hover {
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+
+.lessonHeader {
+  padding-bottom: clamp(1.6rem, 4vw, 2.5rem);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+}
+
+.lessonMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.7rem;
+}
+
+.lessonMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--accent-deep);
+  font-size: 0.67rem;
+  font-weight: 760;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.lessonMeta span + span {
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--border);
+  color: var(--ink-muted);
+}
+
+.lessonHeader h1 {
+  max-width: 19ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.15rem, 7vw, 3.5rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+
+.lessonHeader > p {
+  max-width: 42rem;
+  margin: 0.85rem 0 0;
+  color: var(--ink-muted);
+  font-family: var(--font-reading);
+  font-size: clamp(0.98rem, 2vw, 1.08rem);
+  line-height: 1.65;
+}
+
+.lessonSections {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.3rem);
+  padding: clamp(2rem, 5vw, 3.2rem) 0;
+}
+
+.lessonSection h2 {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 4vw, 1.85rem);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.questionList {
+  border-top: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+}
+
+.question {
+  scroll-margin-top: calc(var(--topbar-height) + 1rem);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+}
+
+.question summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 5.4rem;
+  gap: 0.75rem;
+  padding: 0.85rem 0.2rem;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+}
+
+.question summary::-webkit-details-marker {
+  display: none;
+}
+
+.question summary > span:nth-child(2) {
+  display: grid;
+  gap: 0.16rem;
+}
+
+.question summary small {
+  color: var(--accent-deep);
+  font-size: 0.61rem;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.question summary strong {
+  font-family: var(--font-reading);
+  font-size: clamp(0.98rem, 2vw, 1.08rem);
+  font-weight: 600;
+  line-height: 1.42;
+}
+
+.questionChevron {
+  color: var(--ink-muted);
+  transition: transform var(--duration-fast) var(--ease-premium);
+}
+
+.question[open] .questionChevron {
+  transform: rotate(180deg);
+}
+
+.question[open] summary {
+  color: var(--accent-deep);
+}
+
+.questionReadings {
+  display: grid;
+  padding: 0 0 0.8rem clamp(0rem, 2vw, 3.1rem);
+}
+
+.completionPanel {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface-raised) 97%, var(--surface-celeste));
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--surface-highlight);
+}
+
+.completionPanel > span {
+  display: grid;
+  width: 2.65rem;
+  height: 2.65rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface-soft);
+  color: var(--accent-deep);
+}
+
+.completionPanel > div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.completionPanel strong {
+  font-family: var(--font-reading);
+  font-weight: 650;
+}
+
+.completionPanel button {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent-deep);
+  font-size: 0.74rem;
+  font-weight: 720;
+}
+
+.completionPanel.isCompleted {
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 24%, var(--surface-raised));
+}
+
+.lessonNavigation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: clamp(1.3rem, 4vw, 2.2rem);
+}
+
+.lessonNavigation > a {
+  display: flex;
+  align-items: center;
+  min-height: 4.5rem;
+  gap: 0.55rem;
+  padding: 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--border) 56%, transparent);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--surface-raised) 97%, var(--surface-celeste));
+}
+
+.lessonNavigation > a:last-child {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.lessonNavigation a span {
+  display: grid;
+  min-width: 0;
+  gap: 0.05rem;
+}
+
+.lessonNavigation small {
+  color: var(--ink-muted);
+  font-size: 0.62rem;
+}
+
+.lessonNavigation strong {
+  overflow: hidden;
+  font-family: var(--font-reading);
+  font-size: 0.78rem;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .courseProgress {
+    grid-template-columns: 1fr;
+  }
+
+  .progressCopy {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .progressCopy > small {
+    grid-column: 2;
+  }
+
+  .primaryAction {
+    width: 100%;
+  }
+
+  .lessonCard {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .statusLabel {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .lessonArrow {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+  }
+
+  .lessonNavigation {
+    grid-template-columns: 1fr;
+  }
+
+  .lessonNavigation > span {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .backLink {
+    bottom: 1.5rem;
+    left: max(1.25rem, calc((100vw - 52rem) / 2 - 10rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lessonCard,
+  .progressTrack span,
+  .questionChevron {
+    transition: none;
+  }
+}

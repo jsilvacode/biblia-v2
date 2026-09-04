@@ -1,0 +1,127 @@
+.accordion {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.entry {
+  border-bottom: 1px solid var(--border);
+}
+
+.entry:last-child {
+  border-bottom: 0;
+}
+
+.bookButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 3.5rem;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+}
+
+.bookButton:hover,
+.bookButton:focus-visible,
+.bookButton.is-selected {
+  background: color-mix(in srgb, var(--accent-soft) 54%, var(--surface-raised));
+  color: var(--accent-deep);
+}
+
+.bookButton.is-selected {
+  font-weight: 720;
+}
+
+.bookMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--ink-muted);
+}
+
+.bookButton.is-selected .bookMeta {
+  color: inherit;
+}
+
+.chevron {
+  display: grid;
+  place-items: center;
+  transition: transform 180ms ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.chapterPanel {
+  display: block !important;
+  min-height: 0;
+  padding: 0.9rem 1rem 1rem;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface-soft);
+  scroll-margin-block: 5.5rem;
+}
+
+.chapterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(2.75rem, 1fr));
+  gap: 0.45rem;
+}
+
+.chapterGrid a,
+.chapterGrid button {
+  display: grid;
+  min-height: 2.75rem;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  background: var(--surface-raised);
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 680;
+  text-decoration: none;
+}
+
+.chapterGrid a:hover,
+.chapterGrid a:focus-visible,
+.chapterGrid button:hover,
+.chapterGrid button:focus-visible,
+.chapterGrid button[aria-current='page'] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+}
+
+.group {
+  display: grid;
+}
+
+.group + .group {
+  border-top: 1px solid var(--border);
+}
+
+.groupTitle {
+  margin: 0;
+  padding: 0.85rem 1rem 0.55rem;
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.group .entry:last-child {
+  border-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron { transition: none; }
+}

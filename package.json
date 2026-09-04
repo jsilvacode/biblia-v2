@@ -1,0 +1,52 @@
+{
+  "name": "santa-biblia-v2",
+  "private": true,
+  "license": "UNLICENSED",
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:data-index": "node scripts/build-search-index.mjs",
+    "build:legacy-endpoints": "node scripts/build-legacy-endpoints.mjs",
+    "audit:public-contract": "node scripts/audit-public-contract.mjs",
+    "audit:text-corpus": "node scripts/audit-text-corpus.mjs",
+    "prebuild": "npm run build:data-index",
+    "postbuild": "npm run build:legacy-endpoints && npm run audit:public-contract && npm run audit:text-corpus",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/lora": "^5.3.0",
+    "@fontsource/playfair-display": "^5.3.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/og": "0.6.8",
+    "idb-keyval": "6.2.1",
+    "lucide-react": "^1.33.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.30.4",
+    "vite-plugin-pwa": "1.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.55.0",
+    "@testing-library/react": "14.3.0",
+    "@vitejs/plugin-react-swc": "^4.3.1",
+    "eslint": "^10.8.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "fake-indexeddb": "^6.2.5",
+    "globals": "^17.4.0",
+    "jsdom": "^29.0.1",
+    "vite": "^7.3.6",
+    "vitest": "^4.1.2"
+  }
+}

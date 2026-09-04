@@ -1,0 +1,1204 @@
+{
+  "version": "1.0",
+  "language": "es",
+  "title": "Mini biblioteca temática bíblica",
+  "subtitle": "Qué leer cuando…",
+  "totalSituations": 92,
+  "categories": [
+    {
+      "id": "temor-ansiedad-y-paz",
+      "number": 1,
+      "title": "Temor, ansiedad y paz",
+      "situations": [
+        {
+          "id": "tengo-miedo",
+          "title": "Tengo miedo",
+          "central": "Salmo 27",
+          "companions": [
+            "Salmo 23:1-4",
+            "Salmo 56:3-4",
+            "Isaías 41:10",
+            "Juan 14:27",
+            "2 Timoteo 1:7"
+          ]
+        },
+        {
+          "id": "estoy-ansioso-o-preocupado",
+          "title": "Estoy ansioso o preocupado",
+          "central": "Mateo 6:25-34",
+          "companions": [
+            "Salmo 94:19",
+            "Filipenses 4:6-7",
+            "1 Pedro 5:7",
+            "Proverbios 12:25",
+            "Isaías 26:3"
+          ]
+        },
+        {
+          "id": "tengo-miedo-del-futuro",
+          "title": "Tengo miedo del futuro",
+          "central": "Mateo 6:31-34",
+          "companions": [
+            "Jeremías 29:11",
+            "Salmo 37:3-5",
+            "Isaías 46:9-10",
+            "Romanos 8:28",
+            "Hebreos 13:5-6"
+          ]
+        },
+        {
+          "id": "no-puedo-dormir-por-preocupacion",
+          "title": "No puedo dormir por preocupación",
+          "central": "Salmo 4",
+          "companions": [
+            "Salmo 3:5",
+            "Salmo 23",
+            "Salmo 121:3-4",
+            "Proverbios 3:24",
+            "Filipenses 4:6-8"
+          ]
+        },
+        {
+          "id": "estoy-bajo-mucho-estres",
+          "title": "Estoy bajo mucho estrés",
+          "central": "Salmo 46",
+          "companions": [
+            "Éxodo 14:14",
+            "Salmo 55:22",
+            "Mateo 11:28-30",
+            "Marcos 6:31",
+            "Juan 16:33"
+          ]
+        },
+        {
+          "id": "necesito-paz-interior",
+          "title": "Necesito paz interior",
+          "central": "Juan 14:25-27",
+          "companions": [
+            "Salmo 29:11",
+            "Isaías 26:3",
+            "Romanos 5:1",
+            "Colosenses 3:15",
+            "Filipenses 4:7"
+          ]
+        },
+        {
+          "id": "me-siento-inseguro",
+          "title": "Me siento inseguro",
+          "central": "Salmo 121",
+          "companions": [
+            "Deuteronomio 31:8",
+            "Salmo 91",
+            "Isaías 43:1-2",
+            "Juan 10:27-29",
+            "Romanos 8:38-39"
+          ]
+        },
+        {
+          "id": "estoy-abrumado",
+          "title": "Estoy abrumado",
+          "central": "Salmo 61",
+          "companions": [
+            "Salmo 34:17-18",
+            "Salmo 142",
+            "Isaías 40:29-31",
+            "Mateo 11:28",
+            "2 Corintios 4:8-9"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tristeza-dolor-y-duelo",
+      "number": 2,
+      "title": "Tristeza, dolor y duelo",
+      "situations": [
+        {
+          "id": "estoy-triste",
+          "title": "Estoy triste",
+          "central": "Salmo 42",
+          "companions": [
+            "Salmo 30:5",
+            "Salmo 34:18",
+            "Salmo 147:3",
+            "Mateo 5:4",
+            "Juan 16:20-22"
+          ]
+        },
+        {
+          "id": "murio-un-ser-querido",
+          "title": "Murió un ser querido",
+          "central": "1 Tesalonicenses 4:13-18",
+          "companions": [
+            "Salmo 23",
+            "Juan 11:21-26",
+            "1 Corintios 15:51-55",
+            "Apocalipsis 21:1-5",
+            "Isaías 25:8"
+          ]
+        },
+        {
+          "id": "estoy-pasando-por-un-duelo",
+          "title": "Estoy pasando por un duelo",
+          "central": "Juan 11:1-44",
+          "companions": [
+            "Salmo 31:9-10",
+            "Salmo 116:15",
+            "Eclesiastés 3:1-4",
+            "Romanos 12:15",
+            "Apocalipsis 14:13"
+          ]
+        },
+        {
+          "id": "siento-el-corazon-quebrantado",
+          "title": "Siento el corazón quebrantado",
+          "central": "Salmo 34",
+          "companions": [
+            "Salmo 51:17",
+            "Salmo 73:26",
+            "Salmo 147:3",
+            "Isaías 61:1-3",
+            "2 Corintios 1:3-4"
+          ]
+        },
+        {
+          "id": "estoy-llorando-mucho",
+          "title": "Estoy llorando mucho",
+          "central": "Salmo 56",
+          "companions": [
+            "Salmo 6:6-9",
+            "Salmo 30:5",
+            "Salmo 126:5-6",
+            "Juan 11:35",
+            "Apocalipsis 21:4"
+          ]
+        },
+        {
+          "id": "no-entiendo-por-que-sufro",
+          "title": "No entiendo por qué sufro",
+          "central": "Job 1-2",
+          "companions": [
+            "Job 19:25-27",
+            "Salmo 13",
+            "Isaías 55:8-9",
+            "Romanos 8:18",
+            "2 Corintios 4:16-18"
+          ]
+        },
+        {
+          "id": "me-siento-abandonado",
+          "title": "Me siento abandonado",
+          "central": "Salmo 22",
+          "companions": [
+            "Salmo 27:10",
+            "Salmo 139:7-12",
+            "Isaías 49:14-16",
+            "Mateo 28:20",
+            "Hebreos 13:5"
+          ]
+        },
+        {
+          "id": "necesito-consuelo",
+          "title": "Necesito consuelo",
+          "central": "2 Corintios 1:3-7",
+          "companions": [
+            "Salmo 119:49-50",
+            "Isaías 40:1",
+            "Isaías 51:12",
+            "Mateo 5:4",
+            "Juan 14:1-3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "soledad-identidad-y-autoestima",
+      "number": 3,
+      "title": "Soledad, identidad y autoestima",
+      "situations": [
+        {
+          "id": "me-siento-solo",
+          "title": "Me siento solo",
+          "central": "Salmo 139",
+          "companions": [
+            "Salmo 23:4",
+            "Salmo 68:5-6",
+            "Isaías 43:2",
+            "Juan 14:18",
+            "Mateo 28:20"
+          ]
+        },
+        {
+          "id": "siento-que-nadie-me-comprende",
+          "title": "Siento que nadie me comprende",
+          "central": "Salmo 142",
+          "companions": [
+            "Salmo 139:1-4",
+            "Hebreos 4:15-16",
+            "1 Pedro 5:7",
+            "Juan 2:24-25",
+            "Romanos 8:26-27"
+          ]
+        },
+        {
+          "id": "me-siento-sin-valor",
+          "title": "Me siento sin valor",
+          "central": "Isaías 43:1-4",
+          "companions": [
+            "Salmo 8:4-6",
+            "Salmo 139:13-18",
+            "Mateo 10:29-31",
+            "1 Corintios 6:19-20",
+            "Efesios 2:10"
+          ]
+        },
+        {
+          "id": "no-se-quien-soy",
+          "title": "No sé quién soy",
+          "central": "Efesios 1:3-14",
+          "companions": [
+            "Juan 1:12",
+            "Romanos 8:14-17",
+            "2 Corintios 5:17",
+            "1 Pedro 2:9",
+            "Colosenses 3:1-4"
+          ]
+        },
+        {
+          "id": "me-comparo-con-otros",
+          "title": "Me comparo con otros",
+          "central": "Gálatas 6:3-5",
+          "companions": [
+            "Salmo 139:14",
+            "Juan 21:20-22",
+            "Romanos 12:3-6",
+            "1 Corintios 12:14-20",
+            "2 Corintios 10:12"
+          ]
+        },
+        {
+          "id": "me-siento-rechazado",
+          "title": "Me siento rechazado",
+          "central": "Isaías 53:3-5",
+          "companions": [
+            "Salmo 27:10",
+            "Juan 6:37",
+            "Romanos 8:31-39",
+            "Efesios 1:5-6",
+            "1 Pedro 2:4-5"
+          ]
+        },
+        {
+          "id": "necesito-recordar-que-dios-me-ama",
+          "title": "Necesito recordar que Dios me ama",
+          "central": "Romanos 8:31-39",
+          "companions": [
+            "Juan 3:16",
+            "Jeremías 31:3",
+            "Sofonías 3:17",
+            "1 Juan 3:1",
+            "1 Juan 4:9-10"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "desanimo-fracaso-y-perseverancia",
+      "number": 4,
+      "title": "Desánimo, fracaso y perseverancia",
+      "situations": [
+        {
+          "id": "estoy-desanimado",
+          "title": "Estoy desanimado",
+          "central": "Isaías 40:27-31",
+          "companions": [
+            "Salmo 42:5",
+            "Josué 1:9",
+            "Gálatas 6:9",
+            "Hebreos 12:1-3",
+            "2 Corintios 4:16"
+          ]
+        },
+        {
+          "id": "fracase",
+          "title": "Fracasé",
+          "central": "Juan 21:1-19",
+          "companions": [
+            "Proverbios 24:16",
+            "Salmo 37:23-24",
+            "Miqueas 7:8",
+            "Filipenses 3:13-14",
+            "Romanos 8:28"
+          ]
+        },
+        {
+          "id": "quiero-rendirme",
+          "title": "Quiero rendirme",
+          "central": "1 Reyes 19:1-18",
+          "companions": [
+            "Salmo 31:24",
+            "Isaías 41:10",
+            "Gálatas 6:9",
+            "Hebreos 10:35-36",
+            "Santiago 1:12"
+          ]
+        },
+        {
+          "id": "estoy-cansado",
+          "title": "Estoy cansado",
+          "central": "Mateo 11:28-30",
+          "companions": [
+            "Salmo 23:1-3",
+            "Isaías 40:29-31",
+            "Marcos 6:31",
+            "Hebreos 4:9-11",
+            "2 Corintios 12:9"
+          ]
+        },
+        {
+          "id": "perdi-la-motivacion",
+          "title": "Perdí la motivación",
+          "central": "Filipenses 3:7-14",
+          "companions": [
+            "Eclesiastés 9:10",
+            "Colosenses 3:23-24",
+            "Hebreos 6:10-12",
+            "Hebreos 12:1-2",
+            "1 Corintios 15:58"
+          ]
+        },
+        {
+          "id": "necesito-perseverar",
+          "title": "Necesito perseverar",
+          "central": "Hebreos 12:1-13",
+          "companions": [
+            "Romanos 5:3-5",
+            "Santiago 1:2-4",
+            "Gálatas 6:9",
+            "Apocalipsis 2:10",
+            "2 Timoteo 4:7-8"
+          ]
+        },
+        {
+          "id": "las-cosas-no-salen-como-esperaba",
+          "title": "Las cosas no salen como esperaba",
+          "central": "Génesis 50:15-21",
+          "companions": [
+            "Proverbios 16:9",
+            "Isaías 55:8-9",
+            "Jeremías 29:11",
+            "Romanos 8:28",
+            "Santiago 4:13-15"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "culpa-pecado-perdon-y-tentacion",
+      "number": 5,
+      "title": "Culpa, pecado, perdón y tentación",
+      "situations": [
+        {
+          "id": "me-siento-culpable",
+          "title": "Me siento culpable",
+          "central": "Salmo 51",
+          "companions": [
+            "Salmo 32:1-5",
+            "Isaías 1:18",
+            "Romanos 8:1",
+            "1 Juan 1:9",
+            "Hebreos 8:12"
+          ]
+        },
+        {
+          "id": "necesito-pedir-perdon-a-dios",
+          "title": "Necesito pedir perdón a Dios",
+          "central": "Salmo 51",
+          "companions": [
+            "2 Crónicas 7:14",
+            "Proverbios 28:13",
+            "Lucas 18:9-14",
+            "Hechos 3:19",
+            "1 Juan 1:9"
+          ]
+        },
+        {
+          "id": "necesito-perdonar-a-alguien",
+          "title": "Necesito perdonar a alguien",
+          "central": "Mateo 18:21-35",
+          "companions": [
+            "Marcos 11:25",
+            "Lucas 6:27-28",
+            "Efesios 4:31-32",
+            "Colosenses 3:12-13",
+            "Romanos 12:17-21"
+          ]
+        },
+        {
+          "id": "no-puedo-perdonarme",
+          "title": "No puedo perdonarme",
+          "central": "Romanos 8",
+          "companions": [
+            "Salmo 103:8-12",
+            "Isaías 43:25",
+            "Miqueas 7:18-19",
+            "2 Corintios 5:17",
+            "1 Juan 3:19-20"
+          ]
+        },
+        {
+          "id": "estoy-siendo-tentado",
+          "title": "Estoy siendo tentado",
+          "central": "Mateo 4:1-11",
+          "companions": [
+            "Salmo 119:9-11",
+            "1 Corintios 10:13",
+            "Hebreos 2:18",
+            "Hebreos 4:15-16",
+            "Santiago 1:12-15"
+          ]
+        },
+        {
+          "id": "cai-nuevamente-en-el-mismo-pecado",
+          "title": "Caí nuevamente en el mismo pecado",
+          "central": "Proverbios 24:16",
+          "companions": [
+            "Salmo 32",
+            "Miqueas 7:8-9",
+            "Romanos 6:11-14",
+            "Filipenses 1:6",
+            "1 Juan 2:1-2"
+          ]
+        },
+        {
+          "id": "quiero-cambiar-mi-vida",
+          "title": "Quiero cambiar mi vida",
+          "central": "Ezequiel 36:25-27",
+          "companions": [
+            "Salmo 51:10",
+            "Juan 3:3-8",
+            "Romanos 12:1-2",
+            "2 Corintios 5:17",
+            "Filipenses 2:13"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "decisiones-direccion-y-proposito",
+      "number": 6,
+      "title": "Decisiones, dirección y propósito",
+      "situations": [
+        {
+          "id": "tengo-que-tomar-una-decision",
+          "title": "Tengo que tomar una decisión",
+          "central": "Proverbios 3:1-8",
+          "companions": [
+            "Salmo 32:8",
+            "Isaías 30:21",
+            "Santiago 1:5",
+            "Proverbios 16:3",
+            "Filipenses 4:6-7"
+          ]
+        },
+        {
+          "id": "no-se-que-camino-seguir",
+          "title": "No sé qué camino seguir",
+          "central": "Salmo 25",
+          "companions": [
+            "Salmo 119:105",
+            "Proverbios 4:25-27",
+            "Isaías 30:21",
+            "Juan 16:13",
+            "Romanos 12:2"
+          ]
+        },
+        {
+          "id": "necesito-sabiduria",
+          "title": "Necesito sabiduría",
+          "central": "Proverbios 2",
+          "companions": [
+            "1 Reyes 3:5-12",
+            "Proverbios 9:10",
+            "Santiago 1:5",
+            "Santiago 3:13-17",
+            "Colosenses 1:9"
+          ]
+        },
+        {
+          "id": "busco-proposito-para-mi-vida",
+          "title": "Busco propósito para mi vida",
+          "central": "Eclesiastés 12:1-14",
+          "companions": [
+            "Jeremías 1:5",
+            "Miqueas 6:8",
+            "Mateo 22:37-39",
+            "Efesios 2:10",
+            "Filipenses 1:20-21"
+          ]
+        },
+        {
+          "id": "quiero-saber-la-voluntad-de-dios",
+          "title": "Quiero saber la voluntad de Dios",
+          "central": "Romanos 12:1-2",
+          "companions": [
+            "Salmo 143:10",
+            "Proverbios 3:5-6",
+            "Efesios 5:15-17",
+            "Colosenses 1:9-10",
+            "1 Tesalonicenses 5:16-18"
+          ]
+        },
+        {
+          "id": "estoy-comenzando-algo-nuevo",
+          "title": "Estoy comenzando algo nuevo",
+          "central": "Josué 1",
+          "companions": [
+            "Proverbios 16:3",
+            "Isaías 43:18-19",
+            "Zacarías 4:10",
+            "Filipenses 1:6",
+            "Salmo 90:17"
+          ]
+        },
+        {
+          "id": "necesito-paciencia-para-esperar",
+          "title": "Necesito paciencia para esperar",
+          "central": "Salmo 37",
+          "companions": [
+            "Salmo 27:14",
+            "Isaías 40:31",
+            "Lamentaciones 3:25-26",
+            "Romanos 8:25",
+            "Santiago 5:7-8"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "familia-pareja-y-relaciones",
+      "number": 7,
+      "title": "Familia, pareja y relaciones",
+      "situations": [
+        {
+          "id": "hay-conflictos-en-mi-familia",
+          "title": "Hay conflictos en mi familia",
+          "central": "Colosenses 3:12-21",
+          "companions": [
+            "Proverbios 15:1",
+            "Romanos 12:18",
+            "Efesios 4:2-3",
+            "Efesios 4:31-32",
+            "1 Pedro 4:8"
+          ]
+        },
+        {
+          "id": "tengo-problemas-en-mi-matrimonio",
+          "title": "Tengo problemas en mi matrimonio",
+          "central": "1 Corintios 13:1-13",
+          "companions": [
+            "Génesis 2:18-24",
+            "Mateo 19:4-6",
+            "Efesios 5:21-33",
+            "Colosenses 3:13-14",
+            "1 Pedro 3:7"
+          ]
+        },
+        {
+          "id": "necesito-aprender-a-amar-mejor",
+          "title": "Necesito aprender a amar mejor",
+          "central": "1 Corintios 13",
+          "companions": [
+            "Juan 13:34-35",
+            "Romanos 12:9-10",
+            "Efesios 5:1-2",
+            "1 Juan 4:7-12",
+            "Colosenses 3:14"
+          ]
+        },
+        {
+          "id": "estoy-preocupado-por-mis-hijos",
+          "title": "Estoy preocupado por mis hijos",
+          "central": "Salmo 127",
+          "companions": [
+            "Deuteronomio 6:4-9",
+            "Proverbios 22:6",
+            "Isaías 54:13",
+            "Marcos 10:13-16",
+            "3 Juan 4"
+          ]
+        },
+        {
+          "id": "un-hijo-se-alejo-de-dios",
+          "title": "Un hijo se alejó de Dios",
+          "central": "Lucas 15:11-32",
+          "companions": [
+            "Isaías 49:15-16",
+            "Jeremías 31:16-17",
+            "Lucas 15:1-10",
+            "Santiago 5:19-20",
+            "1 Juan 5:14-15"
+          ]
+        },
+        {
+          "id": "me-traicionaron",
+          "title": "Me traicionaron",
+          "central": "Salmo 55",
+          "companions": [
+            "Salmo 41:9",
+            "Mateo 26:47-50",
+            "Lucas 23:34",
+            "Romanos 12:19-21",
+            "1 Pedro 2:21-23"
+          ]
+        },
+        {
+          "id": "estoy-enojado-con-alguien",
+          "title": "Estoy enojado con alguien",
+          "central": "Efesios 4:25-32",
+          "companions": [
+            "Proverbios 14:29",
+            "Proverbios 15:1",
+            "Santiago 1:19-20",
+            "Romanos 12:17-21",
+            "Colosenses 3:8-13"
+          ]
+        },
+        {
+          "id": "necesito-reconciliarme",
+          "title": "Necesito reconciliarme",
+          "central": "Mateo 5:23-24",
+          "companions": [
+            "Mateo 18:15-17",
+            "Romanos 12:18",
+            "2 Corintios 5:18-20",
+            "Efesios 4:3",
+            "Colosenses 3:13"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trabajo-dinero-y-provision",
+      "number": 8,
+      "title": "Trabajo, dinero y provisión",
+      "situations": [
+        {
+          "id": "tengo-problemas-economicos",
+          "title": "Tengo problemas económicos",
+          "central": "Mateo 6:19-34",
+          "companions": [
+            "Salmo 37:25",
+            "Proverbios 3:9-10",
+            "Filipenses 4:19",
+            "Hebreos 13:5",
+            "1 Timoteo 6:6-10"
+          ]
+        },
+        {
+          "id": "perdi-mi-trabajo",
+          "title": "Perdí mi trabajo",
+          "central": "Salmo 37",
+          "companions": [
+            "Salmo 34:10",
+            "Mateo 6:31-33",
+            "Romanos 8:28",
+            "Filipenses 4:11-13",
+            "Filipenses 4:19"
+          ]
+        },
+        {
+          "id": "busco-trabajo",
+          "title": "Busco trabajo",
+          "central": "Salmo 90:17",
+          "companions": [
+            "Proverbios 16:3",
+            "Eclesiastés 9:10",
+            "Mateo 7:7-11",
+            "Colosenses 3:23-24",
+            "Santiago 1:5"
+          ]
+        },
+        {
+          "id": "estoy-agotado-por-el-trabajo",
+          "title": "Estoy agotado por el trabajo",
+          "central": "Éxodo 18:13-24",
+          "companions": [
+            "Salmo 127:1-2",
+            "Eclesiastés 4:6",
+            "Marcos 6:31",
+            "Mateo 11:28-30",
+            "Lucas 10:38-42"
+          ]
+        },
+        {
+          "id": "quiero-administrar-mejor-mi-dinero",
+          "title": "Quiero administrar mejor mi dinero",
+          "central": "Proverbios 21:5",
+          "companions": [
+            "Proverbios 6:6-11",
+            "Proverbios 22:7",
+            "Lucas 14:28-30",
+            "1 Timoteo 6:6-8",
+            "Hebreos 13:5"
+          ]
+        },
+        {
+          "id": "quiero-ser-integro-en-mis-negocios",
+          "title": "Quiero ser íntegro en mis negocios",
+          "central": "Proverbios 11:1-3",
+          "companions": [
+            "Levítico 19:35-36",
+            "Proverbios 16:8",
+            "Proverbios 20:23",
+            "Miqueas 6:8",
+            "Colosenses 3:23"
+          ]
+        },
+        {
+          "id": "tengo-exito-y-quiero-mantener-los-pies-en-la-tierra",
+          "title": "Tengo éxito y quiero mantener los pies en la tierra",
+          "central": "Deuteronomio 8",
+          "companions": [
+            "Proverbios 16:18",
+            "Proverbios 27:2",
+            "1 Corintios 4:7",
+            "Santiago 4:6",
+            "1 Timoteo 6:17-19"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "enfermedad-debilidad-y-fortaleza",
+      "number": 9,
+      "title": "Enfermedad, debilidad y fortaleza",
+      "situations": [
+        {
+          "id": "estoy-enfermo",
+          "title": "Estoy enfermo",
+          "central": "Salmo 103",
+          "companions": [
+            "Salmo 41:1-3",
+            "Isaías 38:1-20",
+            "Jeremías 17:14",
+            "Santiago 5:13-16",
+            "3 Juan 2"
+          ]
+        },
+        {
+          "id": "estoy-cuidando-a-un-enfermo",
+          "title": "Estoy cuidando a un enfermo",
+          "central": "Mateo 25:34-40",
+          "companions": [
+            "Salmo 41:1",
+            "Gálatas 6:2",
+            "Romanos 12:10",
+            "1 Tesalonicenses 5:14",
+            "Hebreos 6:10"
+          ]
+        },
+        {
+          "id": "me-siento-debil",
+          "title": "Me siento débil",
+          "central": "2 Corintios 12:7-10",
+          "companions": [
+            "Salmo 73:26",
+            "Isaías 40:29",
+            "Isaías 41:10",
+            "Filipenses 4:13",
+            "Hebreos 4:16"
+          ]
+        },
+        {
+          "id": "necesito-fuerzas",
+          "title": "Necesito fuerzas",
+          "central": "Isaías 40:28-31",
+          "companions": [
+            "Éxodo 15:2",
+            "Salmo 18:1-2",
+            "Salmo 46:1",
+            "Efesios 6:10",
+            "2 Timoteo 4:17"
+          ]
+        },
+        {
+          "id": "enfrento-una-enfermedad-grave",
+          "title": "Enfrento una enfermedad grave",
+          "central": "2 Corintios 4:7-18",
+          "companions": [
+            "Job 19:25-27",
+            "Salmo 23",
+            "Juan 11:25-26",
+            "Romanos 8:18-25",
+            "Apocalipsis 21:4"
+          ]
+        },
+        {
+          "id": "tengo-miedo-de-morir",
+          "title": "Tengo miedo de morir",
+          "central": "Juan 14:1-3",
+          "companions": [
+            "Salmo 23:4",
+            "Juan 11:25-26",
+            "1 Corintios 15:20-26",
+            "1 Tesalonicenses 4:13-18",
+            "Apocalipsis 21:1-4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fe-dudas-y-vida-espiritual",
+      "number": 10,
+      "title": "Fe, dudas y vida espiritual",
+      "situations": [
+        {
+          "id": "mi-fe-esta-debil",
+          "title": "Mi fe está débil",
+          "central": "Marcos 9:14-29",
+          "companions": [
+            "Lucas 17:5-6",
+            "Romanos 10:17",
+            "Hebreos 11:1-6",
+            "Judas 20-21",
+            "1 Pedro 1:6-9"
+          ]
+        },
+        {
+          "id": "tengo-dudas-sobre-dios",
+          "title": "Tengo dudas sobre Dios",
+          "central": "Juan 20:24-31",
+          "companions": [
+            "Salmo 73",
+            "Marcos 9:24",
+            "Hebreos 11:6",
+            "Santiago 1:5-6",
+            "Judas 22"
+          ]
+        },
+        {
+          "id": "siento-que-dios-esta-lejos",
+          "title": "Siento que Dios está lejos",
+          "central": "Salmo 13",
+          "companions": [
+            "Salmo 22:1-5",
+            "Salmo 42",
+            "Isaías 49:14-16",
+            "Santiago 4:8",
+            "Romanos 8:35-39"
+          ]
+        },
+        {
+          "id": "quiero-volver-a-dios",
+          "title": "Quiero volver a Dios",
+          "central": "Lucas 15",
+          "companions": [
+            "Isaías 55:6-7",
+            "Jeremías 3:12-14",
+            "Oseas 14:1-4",
+            "Santiago 4:8",
+            "1 Juan 1:9"
+          ]
+        },
+        {
+          "id": "no-se-como-orar",
+          "title": "No sé cómo orar",
+          "central": "Mateo 6:5-13",
+          "companions": [
+            "Salmo 5:1-3",
+            "Lucas 11:1-13",
+            "Romanos 8:26-27",
+            "Filipenses 4:6",
+            "Hebreos 4:16"
+          ]
+        },
+        {
+          "id": "quiero-conocer-mejor-a-jesus",
+          "title": "Quiero conocer mejor a Jesús",
+          "central": "Juan 1",
+          "companions": [
+            "Mateo 5-7",
+            "Lucas 15",
+            "Juan 10",
+            "Juan 14",
+            "Filipenses 2:5-11"
+          ]
+        },
+        {
+          "id": "necesito-crecer-espiritualmente",
+          "title": "Necesito crecer espiritualmente",
+          "central": "Juan 15:1-17",
+          "companions": [
+            "Salmo 1",
+            "Romanos 12:1-2",
+            "Gálatas 5:22-25",
+            "Colosenses 2:6-7",
+            "2 Pedro 3:18"
+          ]
+        },
+        {
+          "id": "me-cuesta-leer-la-biblia",
+          "title": "Me cuesta leer la Biblia",
+          "central": "Salmo 119:97-112",
+          "companions": [
+            "Josué 1:8",
+            "Salmo 1:1-3",
+            "Jeremías 15:16",
+            "2 Timoteo 3:14-17",
+            "Hebreos 4:12"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gratitud-alegria-y-victoria",
+      "number": 11,
+      "title": "Gratitud, alegría y victoria",
+      "situations": [
+        {
+          "id": "estoy-feliz",
+          "title": "Estoy feliz",
+          "central": "Salmo 98",
+          "companions": [
+            "Salmo 16:11",
+            "Salmo 100",
+            "Filipenses 4:4",
+            "1 Tesalonicenses 5:16",
+            "Santiago 1:17"
+          ]
+        },
+        {
+          "id": "quiero-agradecer-a-dios",
+          "title": "Quiero agradecer a Dios",
+          "central": "Salmo 103",
+          "companions": [
+            "Salmo 92:1-2",
+            "Salmo 100",
+            "Colosenses 3:15-17",
+            "1 Tesalonicenses 5:18",
+            "Hebreos 13:15"
+          ]
+        },
+        {
+          "id": "recibi-una-bendicion",
+          "title": "Recibí una bendición",
+          "central": "Salmo 116",
+          "companions": [
+            "Deuteronomio 8:10-18",
+            "Salmo 40:1-3",
+            "Lucas 17:11-19",
+            "Santiago 1:17",
+            "Efesios 1:3"
+          ]
+        },
+        {
+          "id": "logre-una-victoria",
+          "title": "Logré una victoria",
+          "central": "Salmo 118",
+          "companions": [
+            "Éxodo 15:1-2",
+            "1 Samuel 17:45-47",
+            "1 Corintios 15:57",
+            "2 Corintios 2:14",
+            "1 Juan 5:4"
+          ]
+        },
+        {
+          "id": "dios-respondio-mi-oracion",
+          "title": "Dios respondió mi oración",
+          "central": "1 Samuel 1:9-20",
+          "companions": [
+            "Salmo 34:4-7",
+            "Salmo 66:16-20",
+            "Salmo 116:1-2",
+            "Juan 16:23-24",
+            "1 Juan 5:14-15"
+          ]
+        },
+        {
+          "id": "quiero-celebrar-sin-olvidar-a-dios",
+          "title": "Quiero celebrar sin olvidar a Dios",
+          "central": "Deuteronomio 8",
+          "companions": [
+            "Salmo 126",
+            "Eclesiastés 3:12-13",
+            "Lucas 17:15-18",
+            "1 Corintios 10:31",
+            "Santiago 1:17"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "esperanza-crisis-y-futuro",
+      "number": 12,
+      "title": "Esperanza, crisis y futuro",
+      "situations": [
+        {
+          "id": "todo-parece-perdido",
+          "title": "Todo parece perdido",
+          "central": "Ezequiel 37:1-14",
+          "companions": [
+            "Salmo 46",
+            "Lamentaciones 3:21-26",
+            "Romanos 4:18-21",
+            "Romanos 8:31-39",
+            "2 Corintios 4:8-9"
+          ]
+        },
+        {
+          "id": "estoy-atravesando-una-crisis",
+          "title": "Estoy atravesando una crisis",
+          "central": "Salmo 46",
+          "companions": [
+            "Éxodo 14:10-14",
+            "2 Crónicas 20:1-22",
+            "Isaías 43:1-3",
+            "Juan 16:33",
+            "Romanos 8:35-37"
+          ]
+        },
+        {
+          "id": "necesito-esperanza",
+          "title": "Necesito esperanza",
+          "central": "Romanos 8:18-39",
+          "companions": [
+            "Salmo 42:11",
+            "Jeremías 29:11",
+            "Lamentaciones 3:21-24",
+            "Romanos 15:13",
+            "1 Pedro 1:3-5"
+          ]
+        },
+        {
+          "id": "tengo-miedo-de-lo-que-pasa-en-el-mundo",
+          "title": "Tengo miedo de lo que pasa en el mundo",
+          "central": "Mateo 24",
+          "companions": [
+            "Salmo 46",
+            "Lucas 21:25-28",
+            "Juan 14:1-3",
+            "2 Timoteo 1:7",
+            "Apocalipsis 21:1-5"
+          ]
+        },
+        {
+          "id": "quiero-recordar-que-jesus-volvera",
+          "title": "Quiero recordar que Jesús volverá",
+          "central": "Juan 14:1-3",
+          "companions": [
+            "Hechos 1:9-11",
+            "1 Tesalonicenses 4:13-18",
+            "Tito 2:11-13",
+            "Hebreos 9:28",
+            "Apocalipsis 22:12"
+          ]
+        },
+        {
+          "id": "necesito-confianza-en-medio-de-la-incertidumbre",
+          "title": "Necesito confianza en medio de la incertidumbre",
+          "central": "Habacuc 3:17-19",
+          "companions": [
+            "Salmo 37:3-5",
+            "Proverbios 3:5-6",
+            "Isaías 26:3-4",
+            "Romanos 8:28",
+            "Hebreos 10:35-36"
+          ]
+        },
+        {
+          "id": "estoy-enfrentando-una-injusticia",
+          "title": "Estoy enfrentando una injusticia",
+          "central": "Salmo 73",
+          "companions": [
+            "Salmo 37:1-9",
+            "Isaías 30:18",
+            "Romanos 12:19",
+            "Santiago 5:7-11",
+            "Apocalipsis 21:4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "servicio-mision-y-comunidad",
+      "number": 13,
+      "title": "Servicio, misión y comunidad",
+      "situations": [
+        {
+          "id": "quiero-ayudar-a-otros",
+          "title": "Quiero ayudar a otros",
+          "central": "Mateo 25:31-46",
+          "companions": [
+            "Isaías 58:6-10",
+            "Miqueas 6:8",
+            "Gálatas 6:9-10",
+            "Hebreos 13:16",
+            "Santiago 2:14-17"
+          ]
+        },
+        {
+          "id": "quiero-compartir-mi-fe",
+          "title": "Quiero compartir mi fe",
+          "central": "Mateo 28:18-20",
+          "companions": [
+            "Hechos 1:8",
+            "Romanos 1:16",
+            "1 Pedro 3:15",
+            "2 Timoteo 1:7-8",
+            "Colosenses 4:5-6"
+          ]
+        },
+        {
+          "id": "tengo-miedo-de-hablar-de-dios",
+          "title": "Tengo miedo de hablar de Dios",
+          "central": "Éxodo 4:10-12",
+          "companions": [
+            "Jeremías 1:6-9",
+            "Mateo 10:19-20",
+            "Hechos 4:29-31",
+            "2 Timoteo 1:7",
+            "1 Corintios 2:1-5"
+          ]
+        },
+        {
+          "id": "necesito-trabajar-en-equipo",
+          "title": "Necesito trabajar en equipo",
+          "central": "1 Corintios 12:12-27",
+          "companions": [
+            "Eclesiastés 4:9-12",
+            "Romanos 12:4-8",
+            "Efesios 4:1-6",
+            "Filipenses 2:1-4",
+            "1 Pedro 4:10"
+          ]
+        },
+        {
+          "id": "quiero-ser-un-buen-lider",
+          "title": "Quiero ser un buen líder",
+          "central": "Marcos 10:42-45",
+          "companions": [
+            "Éxodo 18:17-23",
+            "1 Reyes 3:5-12",
+            "Proverbios 11:14",
+            "Juan 13:12-17",
+            "1 Pedro 5:2-3"
+          ]
+        },
+        {
+          "id": "estoy-cansado-de-servir",
+          "title": "Estoy cansado de servir",
+          "central": "Gálatas 6:7-10",
+          "companions": [
+            "Isaías 40:31",
+            "1 Corintios 15:58",
+            "Hebreos 6:10",
+            "Hebreos 12:3",
+            "2 Tesalonicenses 3:13"
+          ]
+        }
+      ]
+    }
+  ]
+}

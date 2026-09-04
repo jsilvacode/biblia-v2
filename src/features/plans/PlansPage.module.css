@@ -1,0 +1,197 @@
+.plansPage {
+  display: grid;
+  gap: var(--page-section-gap);
+}
+
+.plansPage > :global(.page-intro) { margin-bottom: 0; }
+
+.featuredPlan {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  gap: 1.1rem;
+  overflow: hidden;
+  padding: clamp(1.2rem, 4vw, 2rem);
+  border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+  border-radius: 1.2rem;
+  background:
+    radial-gradient(circle at 6% 18%, color-mix(in srgb, var(--surface-celeste) 52%, transparent), transparent 25%),
+    color-mix(in srgb, var(--surface-raised) 97%, var(--surface-celeste));
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--surface-highlight);
+}
+
+.featuredPlan::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 0 auto;
+  width: min(54%, 34rem);
+  background: url('/assets/home-plan.webp') 70% 60% / cover;
+  content: '';
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 70%) 44%, #000 82%);
+  mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 70%) 44%, #000 82%);
+  opacity: 0.38;
+}
+
+.planArt {
+  display: grid;
+  width: 3.7rem;
+  height: 3.7rem;
+  place-items: center;
+  border-radius: 1.05rem;
+  background: color-mix(in srgb, var(--accent-soft) 72%, var(--surface-raised));
+  color: var(--accent-deep);
+}
+
+.planCopy {
+  position: relative;
+  z-index: 1;
+  max-width: 35rem;
+}
+
+.planCopy h2,
+.sectionHeading h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.planCopy h2 {
+  font-size: clamp(2rem, 7vw, 3.2rem);
+  line-height: 1;
+}
+
+.planCopy > p:not(.eyebrow) {
+  max-width: 30rem;
+  margin: 0.6rem 0 0;
+  color: var(--ink-muted);
+}
+
+.progressMeta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  color: var(--ink-muted);
+  font-size: 0.76rem;
+}
+
+.progressTrack {
+  height: 0.34rem;
+  margin-top: 0.42rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border) 68%, transparent);
+}
+
+.progressTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-champagne));
+}
+
+.featuredPlan .button {
+  position: relative;
+  z-index: 1;
+  justify-self: start;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.sectionHeading h2 {
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+.sectionHeading > span {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+}
+
+.readingList {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface-raised) 98%, var(--surface-celeste));
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--surface-highlight);
+}
+
+.readingRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 4.5rem;
+  gap: 0.8rem;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 54%, transparent);
+}
+
+.readingRow:last-child {
+  border-bottom: 0;
+}
+
+.readingRow:hover,
+.currentReading {
+  background: color-mix(in srgb, var(--accent-soft) 34%, transparent);
+}
+
+.readingRow > span:nth-child(2) {
+  display: grid;
+  gap: 0.08rem;
+}
+
+.readingRow strong {
+  font-family: var(--font-reading);
+  font-weight: 600;
+}
+
+.readingRow small {
+  color: var(--ink-muted);
+  font-size: 0.76rem;
+}
+
+.dayNumber {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: var(--surface-soft);
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  font-weight: 760;
+}
+
+.todayBadge {
+  padding: 0.3rem 0.58rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--surface-raised);
+  font-size: 0.68rem;
+  font-weight: 760;
+}
+
+.sourceNote {
+  max-width: 48rem;
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+@media (min-width: 700px) {
+  .featuredPlan {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+:global(:root[data-theme='dark']) .featuredPlan::after {
+  filter: brightness(0.68) saturate(0.85);
+  opacity: 0.46;
+}

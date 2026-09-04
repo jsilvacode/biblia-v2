@@ -1,0 +1,395 @@
+.topicsPage {
+  display: grid;
+  gap: var(--page-section-gap);
+}
+
+.topicsPage > :global(.page-intro) { margin-bottom: 0; }
+
+.searchField {
+  display: flex;
+  align-items: center;
+  width: min(100%, 44rem);
+  min-height: 3.6rem;
+  gap: 0.7rem;
+  padding: 0 1rem;
+  border: 1px solid color-mix(in srgb, var(--border) 64%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface-raised) 97%, var(--surface-celeste));
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--surface-highlight);
+  color: var(--ink-muted);
+}
+
+.searchField:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 46%, var(--border));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 24%, transparent), var(--shadow-sm);
+}
+
+.searchField input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+.searchField input::placeholder {
+  color: var(--ink-muted);
+  opacity: 0.9;
+}
+
+.sectionHeading,
+.resultsHeading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.results {
+  scroll-margin-top: 5.5rem;
+  outline: none;
+}
+
+.sectionHeading h2,
+.categoryTitle h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.sectionHeading h2 {
+  font-size: clamp(1.65rem, 4vw, 2.15rem);
+}
+
+.sectionHeading > span,
+.resultsHeading > span {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+}
+
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 0.75rem;
+}
+
+.categoryCard {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 5.6rem;
+  gap: 0.85rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface-raised) 97%, var(--surface-celeste));
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--surface-highlight);
+  color: var(--ink);
+  text-align: left;
+  transition: transform var(--duration-fast) var(--ease-premium), border-color var(--duration-fast) var(--ease-premium);
+}
+
+.categoryCard:hover {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+  transform: translateY(-2px);
+}
+
+.categoryCard > span:nth-child(2) {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.categoryCard strong {
+  font-family: var(--font-reading);
+  font-size: 1.04rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.categoryCard small {
+  color: var(--ink-muted);
+  font-size: 0.76rem;
+}
+
+.categoryNumber,
+.categoryTitle > span {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--accent-soft) 68%, var(--surface-raised));
+  color: var(--accent-deep);
+  font-size: 0.72rem;
+  font-weight: 780;
+  letter-spacing: 0.08em;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  gap: 0.4rem;
+  padding: 0 0.8rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.categorySection + .categorySection {
+  margin-top: 2rem;
+}
+
+.categoryTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.categoryTitle h2 {
+  font-size: clamp(1.55rem, 4vw, 2rem);
+}
+
+.situationGrid {
+  display: grid;
+  gap: 0;
+}
+
+.situationCard {
+  display: block;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  scroll-margin-top: 5.5rem;
+}
+
+.situationSummary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 4.8rem;
+  gap: 1rem;
+  padding: 0.85rem clamp(0.15rem, 1vw, 0.55rem);
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+  transition: color var(--duration-fast) var(--ease-premium), background var(--duration-fast) var(--ease-premium);
+}
+
+.situationSummary::-webkit-details-marker {
+  display: none;
+}
+
+.situationSummary:hover,
+.situationSummary:focus-visible {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--surface-celeste) 42%, transparent), transparent 72%);
+  color: var(--accent-deep);
+  outline: none;
+}
+
+.situationTitle {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+}
+
+.situationHeading {
+  margin: 0;
+  font-family: var(--font-reading);
+  font-size: clamp(1.18rem, 3vw, 1.38rem);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.situationTitle small {
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  font-weight: 620;
+}
+
+.situationChevron {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+  border-radius: 50%;
+  color: var(--ink-muted);
+  transition: transform var(--duration-fast) var(--ease-premium), border-color var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium);
+}
+
+.situationCard[open] .situationSummary {
+  color: var(--accent-deep);
+}
+
+.situationCard[open] .situationChevron {
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--border));
+  color: var(--accent-deep);
+  transform: rotate(180deg);
+}
+
+.passageStream {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid color-mix(in srgb, var(--border) 56%, transparent);
+  animation: revealPassages 220ms var(--ease-premium) both;
+}
+
+@keyframes revealPassages {
+  from {
+    opacity: 0;
+    transform: translateY(-0.3rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.passage {
+  position: relative;
+  display: grid;
+  gap: 0.7rem;
+  padding: 1.15rem clamp(0.2rem, 1vw, 0.65rem);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 48%, transparent);
+}
+
+.centralPassage {
+  padding-left: clamp(0.8rem, 2vw, 1.15rem);
+  border-left: 2px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-soft) 20%, transparent), transparent 58%);
+}
+
+.passageHeading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.passageHeading h4 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-reading);
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+
+.openPassage {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 2.2rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  color: var(--accent-deep);
+  font-size: 0.72rem;
+  font-weight: 720;
+}
+
+.openPassage:hover {
+  background: var(--surface-soft);
+}
+
+.passageText {
+  display: grid;
+  gap: 0.55rem;
+  color: var(--ink);
+  font-family: var(--font-reading);
+  font-size: clamp(1rem, 1.7vw, 1.12rem);
+  line-height: 1.7;
+}
+
+.passageText p {
+  margin: 0;
+}
+
+.passageText sup {
+  display: inline-block;
+  min-width: 1.45rem;
+  margin-right: 0.35rem;
+  color: var(--accent-deep);
+  font-family: var(--font-ui);
+  font-size: 0.66em;
+  font-weight: 760;
+  vertical-align: top;
+}
+
+.passageStatus,
+.passageError {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+}
+
+.passageError {
+  color: var(--accent-deep);
+}
+
+.passageVersion {
+  justify-self: end;
+  color: var(--ink-muted);
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+}
+
+.emptyState {
+  display: grid;
+  min-height: 12rem;
+  place-content: center;
+  justify-items: center;
+  gap: 0.65rem;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+.emptyState p,
+.contextNote p {
+  margin: 0;
+}
+
+.contextNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface-celeste) 42%, var(--surface-raised));
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.contextNote svg {
+  margin-top: 0.1rem;
+  color: var(--accent-blue);
+}
+
+@media (min-width: 760px) {
+  .situationGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .categoryCard,
+  .situationSummary,
+  .situationChevron {
+    transition: none;
+  }
+
+  .passageStream {
+    animation: none;
+  }
+}

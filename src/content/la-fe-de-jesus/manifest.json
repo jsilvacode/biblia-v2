@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "slug": "quien-es-dios",
+    "title": "¿Quién es Dios?",
+    "summary": "Presenta a Dios como Creador, Padre y fuente de amor, y propone una relación personal basada en confianza, obediencia y prioridad espiritual.",
+    "file": "lecciones/01-quien-es-dios.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/1-quien-es-dios/"
+  },
+  {
+    "id": 2,
+    "slug": "la-santa-biblia",
+    "title": "La Santa Biblia",
+    "summary": "Explica la inspiración, utilidad, permanencia y valor práctico de las Escrituras como guía de fe y vida.",
+    "file": "lecciones/02-la-santa-biblia.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/2-la-santa-biblia/"
+  },
+  {
+    "id": 3,
+    "slug": "la-oracion-y-la-fe",
+    "title": "La Oración y la Fe",
+    "summary": "Introduce la oración como comunicación con Dios y la fe como confianza sustentada en su Palabra.",
+    "file": "lecciones/03-la-oracion-y-la-fe.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/3-la-oracion-y-la-fe/"
+  },
+  {
+    "id": 4,
+    "slug": "el-regreso-de-cristo",
+    "title": "El Regreso de Cristo",
+    "summary": "Presenta la segunda venida de Jesús como una promesa visible, gloriosa y central para la esperanza cristiana.",
+    "file": "lecciones/04-el-regreso-de-cristo.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/4-el-regreso-de-cristo/"
+  },
+  {
+    "id": 5,
+    "slug": "senales-del-regreso-de-cristo",
+    "title": "Señales del Regreso de Cristo",
+    "summary": "Revisa las señales bíblicas vinculadas al fin y llama a la vigilancia sin fijar fechas.",
+    "file": "lecciones/05-senales-del-regreso-de-cristo.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/5-senales-del-regreso-de-cristo/"
+  },
+  {
+    "id": 6,
+    "slug": "el-origen-del-pecado",
+    "title": "El Origen del Pecado",
+    "summary": "Explica el origen del pecado, la rebelión de Satanás, la caída humana y sus consecuencias.",
+    "file": "lecciones/06-el-origen-del-pecado.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/6-el-origen-del-pecado/"
+  },
+  {
+    "id": 7,
+    "slug": "la-salvacion",
+    "title": "La Salvación",
+    "summary": "Presenta a Jesucristo como la respuesta de Dios al pecado y la única fuente de salvación.",
+    "file": "lecciones/07-la-salvacion.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/7-la-salvacion/"
+  },
+  {
+    "id": 8,
+    "slug": "el-perdon-de-los-pecados",
+    "title": "El Perdón de los Pecados",
+    "summary": "Explica gracia, arrepentimiento, confesión y seguridad del perdón ofrecido por Dios.",
+    "file": "lecciones/08-el-perdon-de-los-pecados.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/8-el-perdon-de-los-pecados/"
+  },
+  {
+    "id": 9,
+    "slug": "el-juicio",
+    "title": "El Juicio",
+    "summary": "Describe el juicio divino, la responsabilidad humana y a Cristo como juez y abogado.",
+    "file": "lecciones/09-el-juicio.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/9-el-juicio/"
+  },
+  {
+    "id": 10,
+    "slug": "la-ley-de-dios",
+    "title": "La Ley de Dios",
+    "summary": "Presenta los Diez Mandamientos como expresión moral de la voluntad de Dios y señala su relación con Cristo.",
+    "file": "lecciones/10-la-ley-de-dios.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/10-la-ley-de-dios/"
+  },
+  {
+    "id": 11,
+    "slug": "el-dia-de-descanso",
+    "title": "El Día de Descanso",
+    "summary": "Estudia el sábado bíblico desde la creación, el Decálogo, la práctica de Jesús y la esperanza de la Tierra Nueva.",
+    "file": "lecciones/11-el-dia-de-descanso.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/11-el-dia-de-descanso/"
+  },
+  {
+    "id": 12,
+    "slug": "como-se-debe-guardar-el-sabado",
+    "title": "Cómo se Debe Guardar el Sábado",
+    "summary": "Desarrolla principios prácticos para preparar, comenzar y vivir el sábado como tiempo de descanso, adoración y bien.",
+    "file": "lecciones/12-como-se-debe-guardar-el-sabado.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/12-como-se-debe-guardar-el-sabado/"
+  },
+  {
+    "id": 13,
+    "slug": "que-es-la-muerte",
+    "title": "¿Qué es la Muerte?",
+    "summary": "Expone la visión bíblica de la vida, la muerte como sueño y la esperanza de la resurrección.",
+    "file": "lecciones/13-que-es-la-muerte.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/13-que-es-la-muerte/"
+  },
+  {
+    "id": 14,
+    "slug": "la-iglesia-de-cristo",
+    "title": "La Iglesia de Cristo",
+    "summary": "Presenta el fundamento, organización, misión y características bíblicas de la iglesia cristiana.",
+    "file": "lecciones/14-la-iglesia-de-cristo.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/14-la-iglesia-de-cristo/"
+  },
+  {
+    "id": 15,
+    "slug": "el-don-de-profecia",
+    "title": "El Don de Profecía",
+    "summary": "Estudia el don profético en la Biblia, sus formas de comunicación y su función dentro de la iglesia.",
+    "file": "lecciones/15-el-don-de-profecia.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/15-el-don-de-profecia/"
+  },
+  {
+    "id": 16,
+    "slug": "las-normas-cristianas",
+    "title": "Las Normas Cristianas",
+    "summary": "Aplica principios cristianos a salud, alimentación, hábitos, apariencia personal y contenidos que consumimos.",
+    "file": "lecciones/16-las-normas-cristianas.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/16-las-normas-cristianas/"
+  },
+  {
+    "id": 17,
+    "slug": "el-bautismo",
+    "title": "El Bautismo",
+    "summary": "Explica el origen, forma, significado y consecuencias espirituales del bautismo cristiano.",
+    "file": "lecciones/17-el-bautismo.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/17-el-bautismo/"
+  },
+  {
+    "id": 18,
+    "slug": "socios-de-dios",
+    "title": "Socios de Dios",
+    "summary": "Desarrolla mayordomía, diezmos, ofrendas, generosidad y participación en la misión.",
+    "file": "lecciones/18-socios-de-dios.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/18-socios-de-dios/"
+  },
+  {
+    "id": 19,
+    "slug": "la-vida-cristiana",
+    "title": "La Vida Cristiana",
+    "summary": "Integra conversión, santificación, devoción, adoración, testimonio y vida comunitaria.",
+    "file": "lecciones/19-la-vida-cristiana.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/19-la-vida-cristiana/"
+  },
+  {
+    "id": 20,
+    "slug": "dios-nos-llama",
+    "title": "Dios Nos Llama",
+    "summary": "Cierra el curso con un llamado personal a responder a Cristo, decidir y avanzar en el discipulado.",
+    "file": "lecciones/20-dios-nos-llama.md",
+    "source_url": "https://lafedejesus.pages.dev/lecciones/20-dios-nos-llama/"
+  }
+]

@@ -1,0 +1,740 @@
+.homePage {
+  --home-card-gap: clamp(0.75rem, 1.5vw, 1rem);
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 0 var(--content-footer-gap);
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  width: 100vw;
+  min-height: clamp(29rem, 70vh, 35rem);
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+  background: var(--bg-reader);
+}
+
+.hero::before {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background: url('/assets/aurora-champagne-landscape.webp') 61% 50% / cover;
+  content: '';
+  filter: contrast(1.12) saturate(1.15);
+}
+
+.hero::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent) 0%, transparent 23%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 48%, var(--bg-reader) 100%),
+    linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 68%, transparent) 0%, color-mix(in srgb, var(--bg-reader) 40%, transparent) 47%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 78%, transparent 100%),
+    radial-gradient(circle at 92% 24%, color-mix(in srgb, var(--accent-blue) 7%, transparent), transparent 18%);
+  content: '';
+}
+
+.heroInner {
+  position: relative;
+  display: grid;
+  align-items: start;
+  width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), var(--content-max-width));
+  min-height: inherit;
+  margin: 0 auto;
+}
+
+.heroCopy {
+  display: flex;
+  width: min(100%, 40rem);
+  max-width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: clamp(6.7rem, 16vh, 8rem) 0 clamp(4.6rem, 10vw, 6rem);
+}
+
+.cardHeading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--accent-deep);
+  font-size: 0.7rem;
+  font-weight: 780;
+  letter-spacing: 0.14em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.heroKicker {
+  margin: 0 0 1rem;
+  color: var(--accent-deep);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 21ch;
+  margin: 0;
+  color: color-mix(in srgb, var(--ink) 95%, var(--accent-deep));
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 2.9rem);
+  font-weight: 400;
+  letter-spacing: -0.026em;
+  line-height: 1.13;
+  text-wrap: balance;
+}
+
+.heroQuoteMedium {
+  max-width: 24ch !important;
+  font-size: clamp(1.85rem, 6.35vw, 2.65rem) !important;
+  line-height: 1.14 !important;
+}
+
+.heroQuoteLong {
+  max-width: 27ch !important;
+  font-size: clamp(1.64rem, 5.65vw, 2.35rem) !important;
+  letter-spacing: -0.024em !important;
+  line-height: 1.17 !important;
+}
+
+.heroQuoteVeryLong {
+  max-width: 31ch !important;
+  font-size: clamp(1.34rem, 4.75vw, 1.9rem) !important;
+  letter-spacing: -0.018em !important;
+  line-height: 1.24 !important;
+}
+
+.heroQuoteExtended {
+  max-width: 35ch !important;
+  font-size: clamp(1.18rem, 4.15vw, 1.58rem) !important;
+  letter-spacing: -0.012em !important;
+  line-height: 1.31 !important;
+}
+
+.promiseReference {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 1.05rem 0 0;
+  color: color-mix(in srgb, var(--ink) 86%, var(--ink-muted));
+  font-family: var(--font-reading);
+  font-size: 0.94rem;
+  font-weight: 500;
+  letter-spacing: 0.012em;
+  line-height: 1.4;
+}
+
+.promiseReference::before {
+  width: 1.35rem;
+  height: 1px;
+  flex: 0 0 auto;
+  background: color-mix(in srgb, var(--accent) 68%, transparent);
+  content: '';
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 1.55rem;
+}
+
+.heroPrimaryAction,
+.heroSecondaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  gap: 0.42rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: 0.005em;
+  transition: border-color var(--duration-fast) var(--ease-premium), background var(--duration-fast) var(--ease-premium), box-shadow var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium), transform var(--duration-fast) var(--ease-premium);
+}
+
+.heroPrimaryAction {
+  border: 1px solid color-mix(in srgb, var(--accent-deep) 82%, transparent);
+  background: color-mix(in srgb, var(--accent-deep) 91%, var(--accent));
+  box-shadow: 0 0.65rem 1.35rem -0.75rem color-mix(in srgb, var(--accent-deep) 52%, transparent);
+  color: var(--surface-raised);
+}
+
+.heroSecondaryAction {
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, var(--border));
+  background: color-mix(in srgb, var(--surface-raised) 78%, transparent);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.heroPrimaryAction:active,
+.heroSecondaryAction:active {
+  transform: translateY(0);
+}
+
+.heroPrimaryAction:focus-visible,
+.heroSecondaryAction:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.homeFeed {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), var(--content-max-width));
+  gap: var(--home-card-gap);
+  margin: clamp(-1.6rem, -3vw, -1rem) auto 0;
+}
+
+.readingCard,
+.dailyCard,
+.promisesCard,
+.studyCard {
+  --card-image: none;
+  --card-image-position: center;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-width: 0;
+  min-height: 9.65rem;
+  gap: 0.8rem;
+  overflow: hidden;
+  padding: 1.15rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 58%, transparent);
+  border-radius: 1.15rem;
+  background: var(--surface-raised);
+  box-shadow: 0 1.25rem 2.7rem -2.2rem color-mix(in srgb, var(--shadow-ink) 34%, transparent), inset 0 1px 0 color-mix(in srgb, var(--surface-highlight) 82%, transparent);
+  color: var(--ink);
+  text-align: left;
+  text-decoration: none;
+  transition: border-color var(--duration-fast) var(--ease-premium), box-shadow var(--duration-fast) var(--ease-premium), transform var(--duration-fast) var(--ease-premium);
+}
+
+.readingCard::before,
+.dailyCard::before,
+.promisesCard::before,
+.studyCard::before {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-image: var(--card-image);
+  background-position: var(--card-image-position);
+  background-size: cover;
+  content: '';
+  filter: saturate(1.02) contrast(1.04);
+  opacity: 0.94;
+}
+
+.readingCard::after,
+.dailyCard::after,
+.promisesCard::after,
+.studyCard::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--surface-raised) 0%, color-mix(in srgb, var(--surface-raised) 94%, transparent) 30%, color-mix(in srgb, var(--surface-raised) 78%, transparent) 54%, color-mix(in srgb, var(--surface-raised) 18%, transparent) 82%, transparent 100%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-raised) 22%, transparent), color-mix(in srgb, var(--surface-raised) 8%, transparent) 62%, color-mix(in srgb, var(--surface-raised) 24%, transparent));
+  content: '';
+}
+
+.readingCard {
+  --card-image: url('/assets/home-continue-editorial-v2.webp');
+  --card-image-position: 74% 58%;
+  min-height: 10.35rem;
+  border-color: color-mix(in srgb, var(--accent) 17%, var(--border));
+  cursor: pointer;
+  font: inherit;
+}
+
+.dailyCard {
+  --card-image: url('/assets/home-daily-editorial-v2.webp');
+  --card-image-position: 75% 52%;
+}
+
+.promisesCard {
+  --card-image: url('/assets/home-guide-editorial-v2.webp');
+  --card-image-position: 75% 54%;
+}
+
+.studyCard {
+  --card-image: url('/assets/home-study-editorial-v2.webp');
+  --card-image-position: 74% 54%;
+}
+
+.readingCard:active,
+.dailyCard:active,
+.promisesCard:active,
+.studyCard:active {
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--surface-highlight);
+  transform: translateY(0);
+}
+
+.readingCard:focus-visible,
+.dailyCard:focus-visible,
+.promisesCard:focus-visible,
+.studyCard:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.cardIcon {
+  display: grid;
+  width: 2.45rem;
+  height: 2.45rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--surface-raised) 92%, var(--accent-soft));
+  color: var(--accent-deep);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-highlight) 78%, transparent);
+}
+
+.readingCard .cardIcon {
+  border-color: color-mix(in srgb, var(--accent) 24%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 42%, var(--surface-raised));
+}
+
+.dailyCard .cardIcon {
+  border-color: color-mix(in srgb, var(--accent) 20%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 32%, var(--surface-raised));
+}
+
+.promisesCard .cardIcon {
+  border-color: color-mix(in srgb, var(--accent-blue) 24%, var(--border));
+  background: color-mix(in srgb, var(--surface-raised) 92%, var(--surface-celeste));
+  color: color-mix(in srgb, var(--accent-blue-deep) 76%, var(--accent-deep));
+}
+
+.studyCard .cardIcon {
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 38%, var(--surface-raised));
+}
+
+.cardHeading {
+  align-self: start;
+}
+
+.cardCopy {
+  display: grid;
+  min-width: 0;
+  gap: 0.25rem;
+}
+
+.cardCopy strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.22rem, 4.7vw, 1.52rem);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.16;
+  text-wrap: balance;
+}
+
+.cardMeta {
+  max-width: 28rem;
+  color: color-mix(in srgb, var(--ink) 66%, var(--ink-muted));
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 520;
+  line-height: 1.42;
+}
+
+.cardArrow {
+  display: grid;
+  width: 2.1rem;
+  height: 2.1rem;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 62%, transparent);
+  background: color-mix(in srgb, var(--surface-raised) 88%, var(--surface-soft));
+  color: var(--accent-deep);
+  box-shadow: 0 0.5rem 1.25rem -0.9rem color-mix(in srgb, var(--shadow-ink) 34%, transparent);
+  transition: background var(--duration-fast) var(--ease-premium), transform var(--duration-fast) var(--ease-premium);
+}
+
+.secondaryCards {
+  display: grid;
+  gap: var(--home-card-gap);
+}
+
+.secondaryCards .dailyCard,
+.secondaryCards .promisesCard,
+.secondaryCards .studyCard {
+  grid-template-rows: auto 1fr;
+  align-items: start;
+}
+
+.secondaryCards .cardArrow {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+.secondaryCards .cardCopy {
+  grid-column: 1 / span 2;
+}
+
+.promisesCard .cardCopy strong {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.studyCard {
+  grid-column: 1 / -1;
+}
+
+.studyCard .cardCopy strong {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.studyProgress {
+  display: block;
+  width: min(100%, 22rem);
+  height: 3px;
+  margin-top: 0.35rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border) 72%, transparent);
+}
+
+.studyProgress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-deep), var(--accent));
+}
+
+.interestSection {
+  display: grid;
+  width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), var(--content-max-width));
+  gap: 1rem;
+  margin: clamp(1.75rem, 3.5vw, 2.5rem) auto 0;
+  padding-top: clamp(1rem, 1.5vw, 1.25rem);
+  border-top: 1px solid color-mix(in srgb, var(--border) 54%, transparent);
+}
+
+.interestHeading {
+  display: grid;
+  max-width: 34rem;
+  gap: 0.25rem;
+}
+
+.interestHeading .eyebrow {
+  margin: 0 0 0.2rem;
+}
+
+.interestHeading h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 5vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.interestHeading p:last-child {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.83rem;
+  line-height: 1.55;
+}
+
+.interestGrid {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.interestCard {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 4.65rem;
+  gap: 0.75rem;
+  padding: 0.72rem 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 58%, transparent);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--surface-raised) 96%, var(--surface-celeste));
+  box-shadow: 0 0.75rem 1.7rem -1.5rem color-mix(in srgb, var(--shadow-ink) 28%, transparent), inset 0 1px 0 var(--surface-highlight);
+  color: var(--ink);
+  transition: border-color var(--duration-fast) var(--ease-premium), box-shadow var(--duration-fast) var(--ease-premium), transform var(--duration-fast) var(--ease-premium);
+}
+
+.interestCard > span:nth-child(2) {
+  display: grid;
+  gap: 0.08rem;
+}
+
+.interestCard strong {
+  font-family: var(--font-reading);
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.interestCard small {
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.interestCard > svg {
+  color: color-mix(in srgb, var(--ink-muted) 72%, transparent);
+}
+
+.interestIcon {
+  display: grid;
+  width: 2.3rem;
+  height: 2.3rem;
+  place-items: center;
+  border-radius: 0.7rem;
+  background: color-mix(in srgb, var(--accent-soft) 44%, var(--surface-raised));
+  color: var(--accent-deep);
+}
+
+.dailyCard .cardCopy strong {
+  font-size: clamp(1.32rem, 4.9vw, 1.65rem);
+}
+
+.promiseFeedback {
+  position: fixed;
+  z-index: 35;
+  right: 1rem;
+  bottom: calc(5.8rem + env(safe-area-inset-bottom));
+  max-width: min(21rem, calc(100% - 2rem));
+  margin: 0;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+:global(:root[data-theme='dark']) .hero::before {
+  filter: brightness(0.78) contrast(1.08) saturate(1.02);
+}
+
+:global(:root[data-theme='dark']) .hero::after {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 33%, transparent) 0%, transparent 22%, color-mix(in srgb, var(--bg-reader) 12%, transparent) 48%, var(--bg-reader) 100%),
+    linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 84%, transparent) 0%, color-mix(in srgb, var(--bg-reader) 56%, transparent) 48%, color-mix(in srgb, var(--bg-reader) 14%, transparent) 78%, transparent 100%),
+    radial-gradient(circle at 92% 24%, color-mix(in srgb, var(--accent-champagne) 8%, transparent), transparent 18%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .heroSecondaryAction:not(:disabled):hover,
+  .heroPrimaryAction:hover {
+    transform: translateY(-1px);
+  }
+
+  .heroSecondaryAction:not(:disabled):hover {
+    border-color: color-mix(in srgb, var(--accent) 52%, var(--border));
+    background: color-mix(in srgb, var(--accent-soft) 44%, var(--surface-raised));
+    color: var(--accent-deep);
+  }
+
+  .readingCard:hover,
+  .dailyCard:hover,
+  .promisesCard:hover,
+  .studyCard:hover {
+    border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+    box-shadow: var(--shadow-md), inset 0 1px 0 var(--surface-highlight);
+    transform: translateY(-1px);
+  }
+
+  .readingCard:hover .cardArrow,
+  .dailyCard:hover .cardArrow,
+  .promisesCard:hover .cardArrow,
+  .studyCard:hover .cardArrow {
+    background: var(--surface-raised);
+    transform: translateX(2px);
+  }
+
+  .interestCard:hover {
+    border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
+    box-shadow: var(--shadow-sm), inset 0 1px 0 var(--surface-highlight);
+    transform: translateY(-1px);
+  }
+}
+
+:global(:root[data-theme='dark']) .readingCard,
+:global(:root[data-theme='dark']) .dailyCard,
+:global(:root[data-theme='dark']) .promisesCard,
+:global(:root[data-theme='dark']) .studyCard {
+  background: var(--surface-raised);
+}
+
+:global(:root[data-theme='dark']) .readingCard::before,
+:global(:root[data-theme='dark']) .dailyCard::before,
+:global(:root[data-theme='dark']) .promisesCard::before,
+:global(:root[data-theme='dark']) .studyCard::before {
+  filter: brightness(0.68) saturate(0.76);
+  opacity: 0.78;
+}
+
+@media (min-width: 600px) {
+  .heroCopy {
+    padding-bottom: clamp(5rem, 9vw, 6.8rem);
+  }
+
+  .secondaryCards .dailyCard,
+  .secondaryCards .promisesCard,
+  .secondaryCards .studyCard {
+    min-height: 10.5rem;
+    padding: 1.2rem;
+  }
+
+  .interestGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 760px) {
+  .secondaryCards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .studyCard {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero {
+    min-height: clamp(32rem, 48vw, 40rem);
+  }
+
+  .heroCopy {
+    width: min(100%, 54rem);
+    padding-top: 8.25rem;
+  }
+
+  .hero h1 {
+    max-width: 26ch;
+    font-size: clamp(2.4rem, 2.9vw, 3rem);
+    letter-spacing: -0.024em;
+    line-height: 1.13;
+  }
+
+  .heroQuoteMedium {
+    max-width: 31ch !important;
+    font-size: clamp(2.1rem, 2.45vw, 2.45rem) !important;
+    line-height: 1.16 !important;
+  }
+
+  .heroQuoteLong {
+    max-width: 36ch !important;
+    font-size: clamp(1.86rem, 2.15vw, 2.18rem) !important;
+    line-height: 1.2 !important;
+  }
+
+  .heroQuoteVeryLong {
+    max-width: 41ch !important;
+    font-size: clamp(1.58rem, 1.78vw, 1.82rem) !important;
+    line-height: 1.26 !important;
+  }
+
+  .heroQuoteExtended {
+    max-width: 47ch !important;
+    font-size: clamp(1.38rem, 1.55vw, 1.58rem) !important;
+    line-height: 1.32 !important;
+  }
+
+  .promiseReference {
+    margin-top: 1.2rem;
+    font-size: 1rem;
+  }
+
+  .heroActions {
+    margin-top: 1.8rem;
+  }
+
+  .heroPrimaryAction,
+  .heroSecondaryAction {
+    min-height: 2.85rem;
+    font-size: 0.8rem;
+  }
+
+  .homeFeed {
+    margin-top: -1.6rem;
+  }
+
+  .readingCard {
+    min-height: 11rem;
+    padding: 1.3rem 1.4rem;
+  }
+}
+
+@media (max-width: 359px) {
+  .heroCopy {
+    padding-top: 6.35rem;
+  }
+
+  .heroActions {
+    gap: 0.4rem;
+  }
+
+  .heroPrimaryAction,
+  .heroSecondaryAction {
+    min-height: 2.7rem;
+    padding-inline: 0.7rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .hero::after {
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 27%, transparent) 0%, color-mix(in srgb, var(--bg-reader) 6%, transparent) 34%, color-mix(in srgb, var(--bg-reader) 14%, transparent) 62%, var(--bg-reader) 100%),
+      radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--bg-reader) 8%, transparent), color-mix(in srgb, var(--bg-reader) 48%, transparent) 76%);
+  }
+
+  :global(:root[data-theme='dark']) .hero::after {
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent) 0%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 34%, color-mix(in srgb, var(--bg-reader) 15%, transparent) 62%, var(--bg-reader) 100%),
+      radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--bg-reader) 10%, transparent), color-mix(in srgb, var(--bg-reader) 56%, transparent) 76%);
+  }
+
+  .heroCopy {
+    align-items: center;
+    justify-self: center;
+    text-align: center;
+  }
+
+  .promiseReference::before {
+    display: none;
+  }
+
+  .heroActions {
+    justify-content: center;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroPrimaryAction,
+  .heroSecondaryAction,
+  .readingCard,
+  .dailyCard,
+  .promisesCard {
+    transition: none;
+  }
+}
