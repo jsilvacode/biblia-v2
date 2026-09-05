@@ -192,6 +192,11 @@ export default async function handler(request) {
 
   return new ImageResponse(createCard(metadata, backgroundImage), {
     height: 630,
+    headers: {
+      'Cache-Control': 'public, max-age=31536000, immutable',
+      'CDN-Cache-Control': 'public, max-age=31536000, immutable',
+      'Vercel-CDN-Cache-Control': 'public, max-age=31536000, immutable',
+    },
     width: 1200,
   })
 }

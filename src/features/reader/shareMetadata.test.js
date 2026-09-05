@@ -53,19 +53,19 @@ describe('share metadata', () => {
     expect(metadata.text).toBe('No temas bajar a Egipto, Yo descenderé contigo.')
     expect(metadata.canonicalUrl).toBe('https://biblia-v2.vercel.app/read/1/46/3?v=nbla&end=4')
     expect(metadata.imageUrl).toContain('https://biblia-v2.vercel.app/api/og-card?')
-    expect(metadata.imageUrl).toContain('card=7')
+    expect(metadata.imageUrl).toContain('card=8')
     expect(fetchImpl).toHaveBeenCalledWith(new URL('https://biblia-v2.vercel.app/data/nbla/01_genesis/46.json'))
   })
 
   it('uses the current branded card revision for the application preview', () => {
     expect(createAppShareMetadata('https://www.santabiblia.cloud').imageUrl)
-      .toBe('https://www.santabiblia.cloud/og-share.jpg?v=7')
+      .toBe('https://www.santabiblia.cloud/og-share.jpg?v=8')
   })
 
   it('keeps the static SPA preview on the live V2 card endpoint', async () => {
     const html = await readFile('index.html', 'utf8')
 
-    expect(html).toContain('https://www.santabiblia.cloud/og-share.jpg?v=7')
+    expect(html).toContain('https://www.santabiblia.cloud/og-share.jpg?v=8')
     expect(html).not.toContain('biblia-v2.vercel.app/api/og-card')
   })
 

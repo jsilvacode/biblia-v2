@@ -1,6 +1,6 @@
 const APP_SHARE_TEXT = 'Lee, medita y comparte la Biblia cada día.'
 const OFFICIAL_APP_ORIGIN = 'https://www.santabiblia.cloud'
-const SOCIAL_SHARE_REVISION = '7'
+const SOCIAL_SHARE_REVISION = '8'
 
 function getShareOrigin(origin) {
   try {
@@ -58,6 +58,32 @@ function createNativeSharePayload(data) {
   return payload
 }
 
+function prewarmVerseCard(sharedUrl) {
+  if (typeof fetch !== 'function' || !sharedUrl) return
+
+  try {
+    const url = new URL(sharedUrl)
+    const match = url.pathname.match(/^\/read\/(\d+)\/(\d+)\/(\d+)$/u)
+    if (url.origin !== OFFICIAL_APP_ORIGIN || !match) return
+
+    const [, book, chapter, verse] = match
+    const imageUrl = new URL('/api/og-card', OFFICIAL_APP_ORIGIN)
+    imageUrl.searchParams.set('type', 'verse')
+    imageUrl.searchParams.set('book', book)
+    imageUrl.searchParams.set('chapter', chapter)
+    imageUrl.searchParams.set('verse', verse)
+    for (const name of ['v', 'end', 'lang']) {
+      const value = url.searchParams.get(name)
+      if (value) imageUrl.searchParams.set(name, value)
+    }
+    imageUrl.searchParams.set('card', SOCIAL_SHARE_REVISION)
+
+    fetch(imageUrl, { cache: 'force-cache', credentials: 'omit' }).catch(() => undefined)
+  } catch {
+    // La tarjeta se generará normalmente cuando la red social visite el enlace.
+  }
+}
+
 /**
  * Prefer the system share sheet. Clipboard is a deliberately local fallback:
  * it avoids pop-ups and still gives people a usable verse when Web Share is
@@ -66,6 +92,7 @@ function createNativeSharePayload(data) {
 export async function shareVerse(data) {
   if (typeof navigator.share === 'function') {
     try {
+      prewarmVerseCard(data.url)
       await navigator.share(createNativeSharePayload(data))
       return 'shared'
     } catch (error) {
