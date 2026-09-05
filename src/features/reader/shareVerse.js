@@ -1,6 +1,6 @@
 const APP_SHARE_TEXT = 'Lee, medita y comparte la Biblia cada día.'
 const OFFICIAL_APP_ORIGIN = 'https://www.santabiblia.cloud'
-const SOCIAL_SHARE_REVISION = '8'
+const SOCIAL_SHARE_REVISION = '9'
 
 function getShareOrigin(origin) {
   try {
@@ -51,9 +51,10 @@ export function createVerseShareData({ reference, text, url, version }) {
 function createNativeSharePayload(data) {
   const payload = data.title ? { title: data.title } : {}
 
-  // Una única URL nativa evita duplicados y permite que las aplicaciones de
-  // mensajería la reconozcan como enlace para construir su vista previa.
-  if (data.url) return { ...payload, url: data.url }
+  // WhatsApp para Android genera la tarjeta completa cuando recibe el enlace
+  // como texto único. El campo nativo `url` deja el enlace visible aparte y,
+  // en algunos dispositivos, construye la vista previa sin su imagen.
+  if (data.url) return { ...payload, text: data.url }
   if (data.text) return { ...payload, text: data.text }
   return payload
 }

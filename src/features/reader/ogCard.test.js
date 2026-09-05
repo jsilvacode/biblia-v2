@@ -43,7 +43,7 @@ describe('social card image', () => {
   it('renders the app card with the local editorial photograph', async () => {
     const fetchMock = stubCardFetch()
     const response = await ogCardHandler(new Request(
-      'https://www.santabiblia.cloud/api/og-card?type=app&card=8',
+      'https://www.santabiblia.cloud/api/og-card?type=app&card=9',
     ))
     const body = await response.arrayBuffer()
 
@@ -64,7 +64,7 @@ describe('social card image', () => {
     }])
 
     const response = await ogCardHandler(new Request(
-      'https://www.santabiblia.cloud/api/og-card?type=verse&book=43&chapter=3&verse=16&v=nbla&card=8',
+      'https://www.santabiblia.cloud/api/og-card?type=verse&book=43&chapter=3&verse=16&v=nbla&card=9',
     ))
     const body = await response.arrayBuffer()
 
@@ -80,7 +80,7 @@ describe('social card image', () => {
     }])
 
     const response = await ogCardHandler(new Request(
-      'https://www.santabiblia.cloud/api/og-card?type=verse&book=48&chapter=2&verse=16&v=nbla&card=8',
+      'https://www.santabiblia.cloud/api/og-card?type=verse&book=48&chapter=2&verse=16&v=nbla&card=9',
     ))
     const body = await response.arrayBuffer()
 

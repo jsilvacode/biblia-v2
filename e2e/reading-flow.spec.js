@@ -49,8 +49,8 @@ test('sharing a verse action sends one detectable URL for its social card', asyn
     return value ? JSON.parse(value) : null
   })).not.toBeNull()
   const captured = await page.evaluate(() => JSON.parse(window.sessionStorage.getItem('captured-verse-share')))
-  expect(captured.url).toMatch(/\/read\/43\/3\/16\?v=[a-z0-9-]+&share=8$/)
-  expect(captured).not.toHaveProperty('text')
+  expect(captured.text).toMatch(/\/read\/43\/3\/16\?v=[a-z0-9-]+&share=9$/)
+  expect(captured).not.toHaveProperty('url')
 })
 
 test('the verse action sheet closes safely and exposes commentary', async ({ page }) => {
