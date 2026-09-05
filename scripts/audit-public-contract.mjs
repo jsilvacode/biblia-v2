@@ -53,7 +53,7 @@ if (!allowsCrossOrigin) throw new Error('Missing public CORS policy for /data en
 if (!trailingReaderRedirect) throw new Error('Missing canonical redirect for reader URLs with a trailing slash')
 
 const indexHtml = await readFile(join(root, 'index.html'), 'utf8')
-if (!indexHtml.includes('https://www.santabiblia.cloud/og-share.jpg?v=5')) {
+if (!indexHtml.includes('https://www.santabiblia.cloud/og-share.jpg?v=6')) {
   throw new Error('Static social metadata does not use the official direct image URL')
 }
 if (indexHtml.includes('biblia-v2.vercel.app')) {

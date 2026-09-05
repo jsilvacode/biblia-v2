@@ -1,6 +1,6 @@
 const APP_SHARE_TEXT = 'Lee, medita y comparte la Biblia cada día.'
 const OFFICIAL_APP_ORIGIN = 'https://www.santabiblia.cloud'
-const SOCIAL_SHARE_REVISION = '5'
+const SOCIAL_SHARE_REVISION = '6'
 
 function getShareOrigin(origin) {
   try {
@@ -51,11 +51,9 @@ export function createVerseShareData({ reference, text, url, version }) {
 function createNativeSharePayload(data) {
   const payload = data.title ? { title: data.title } : {}
 
-  // Several messaging apps duplicate a link when Web Share receives both
-  // `text` and `url`, while others do not build a preview when they receive
-  // only the `url` member. Sending the canonical URL once as text keeps the
-  // message clean and lets the receiving app detect it for its social card.
-  if (data.url) return { ...payload, text: data.url }
+  // Una única URL nativa evita duplicados y permite que las aplicaciones de
+  // mensajería la reconozcan como enlace para construir su vista previa.
+  if (data.url) return { ...payload, url: data.url }
   if (data.text) return { ...payload, text: data.text }
   return payload
 }

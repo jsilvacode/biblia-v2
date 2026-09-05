@@ -47,6 +47,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        importScripts: ['sw-update.js'],
         globPatterns: ['**/*.{js,css,html,png,svg,webp,avif,jpg,jpeg,woff,woff2}'],
         cleanupOutdatedCaches: true,
         runtimeCaching: [

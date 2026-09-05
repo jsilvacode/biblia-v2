@@ -28,7 +28,7 @@ describe('shareVerse', () => {
       verse: 3,
       verseEnd: 4,
       versionId: 'nbla',
-    })).toBe('https://www.santabiblia.cloud/read/1/46/3?v=nbla&end=4&lang=pt-BR&share=5')
+    })).toBe('https://www.santabiblia.cloud/read/1/46/3?v=nbla&end=4&lang=pt-BR&share=6')
   })
 
   it('builds an application share pointing to the official public host', () => {
@@ -46,7 +46,7 @@ describe('shareVerse', () => {
       origin: 'http://127.0.0.1:5173',
       verse: 16,
       versionId: 'nbla',
-    })).toBe('http://127.0.0.1:5173/read/43/3/16?v=nbla&share=5')
+    })).toBe('http://127.0.0.1:5173/read/43/3/16?v=nbla&share=6')
   })
 
   it('shares one detectable canonical URL so messaging apps can render its card', async () => {
@@ -56,8 +56,8 @@ describe('shareVerse', () => {
 
     await expect(shareVerse(data)).resolves.toBe('shared')
     expect(share).toHaveBeenCalledWith({
-      text: 'https://example.test/read/43/3/16',
       title: 'Juan 3:16 · NBLA',
+      url: 'https://example.test/read/43/3/16',
     })
   })
 

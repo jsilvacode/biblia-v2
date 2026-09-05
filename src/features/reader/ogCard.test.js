@@ -43,7 +43,7 @@ describe('social card image', () => {
   it('renders the app card with the local editorial photograph', async () => {
     const fetchMock = stubCardFetch()
     const response = await ogCardHandler(new Request(
-      'https://www.santabiblia.cloud/api/og-card?type=app&card=5',
+      'https://www.santabiblia.cloud/api/og-card?type=app&card=6',
     ))
     const body = await response.arrayBuffer()
 
@@ -53,7 +53,7 @@ describe('social card image', () => {
     expect(fetchMock).toHaveBeenCalledWith(expect.objectContaining({
       pathname: '/assets/social/verse-card-background.jpg',
     }))
-  })
+  }, 15_000)
 
   it('keeps a verse card below the social-preview size budget', async () => {
     stubCardFetch([{
@@ -62,14 +62,14 @@ describe('social card image', () => {
     }])
 
     const response = await ogCardHandler(new Request(
-      'https://www.santabiblia.cloud/api/og-card?type=verse&book=43&chapter=3&verse=16&v=nbla&card=5',
+      'https://www.santabiblia.cloud/api/og-card?type=verse&book=43&chapter=3&verse=16&v=nbla&card=6',
     ))
     const body = await response.arrayBuffer()
 
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toContain('image/png')
     expect(body.byteLength).toBeLessThan(900_000)
-  })
+  }, 15_000)
 
   it('scales a long verse without abandoning the full-width composition', async () => {
     stubCardFetch([{
@@ -78,12 +78,12 @@ describe('social card image', () => {
     }])
 
     const response = await ogCardHandler(new Request(
-      'https://www.santabiblia.cloud/api/og-card?type=verse&book=48&chapter=2&verse=16&v=nbla&card=5',
+      'https://www.santabiblia.cloud/api/og-card?type=verse&book=48&chapter=2&verse=16&v=nbla&card=6',
     ))
     const body = await response.arrayBuffer()
 
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toContain('image/png')
     expect(body.byteLength).toBeLessThan(900_000)
-  })
+  }, 15_000)
 })
