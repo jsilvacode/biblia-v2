@@ -89,6 +89,6 @@ test('sharing the promise sends one detectable URL for its social card', async (
     return value ? JSON.parse(value) : null
   })).not.toBeNull()
   const payload = await page.evaluate(() => JSON.parse(window.sessionStorage.getItem('captured-promise-share')))
-  expect(payload.url).toMatch(/\/read\/\d+\/\d+\/\d+\?v=[a-z0-9-]+(?:&end=\d+)?&share=6$/)
+  expect(payload.url).toMatch(/\/read\/\d+\/\d+\/\d+\?v=[a-z0-9-]+(?:&end=\d+)?&share=7$/)
   expect(payload).not.toHaveProperty('text')
 })

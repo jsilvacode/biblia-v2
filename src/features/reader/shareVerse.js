@@ -1,6 +1,6 @@
 const APP_SHARE_TEXT = 'Lee, medita y comparte la Biblia cada día.'
 const OFFICIAL_APP_ORIGIN = 'https://www.santabiblia.cloud'
-const SOCIAL_SHARE_REVISION = '6'
+const SOCIAL_SHARE_REVISION = '7'
 
 function getShareOrigin(origin) {
   try {

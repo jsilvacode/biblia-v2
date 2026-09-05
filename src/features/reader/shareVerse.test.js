@@ -28,7 +28,7 @@ describe('shareVerse', () => {
       verse: 3,
       verseEnd: 4,
       versionId: 'nbla',
-    })).toBe('https://www.santabiblia.cloud/read/1/46/3?v=nbla&end=4&lang=pt-BR&share=6')
+    })).toBe('https://www.santabiblia.cloud/read/1/46/3?v=nbla&end=4&lang=pt-BR&share=7')
   })
 
   it('builds an application share pointing to the official public host', () => {
@@ -46,7 +46,7 @@ describe('shareVerse', () => {
       origin: 'http://127.0.0.1:5173',
       verse: 16,
       versionId: 'nbla',
-    })).toBe('http://127.0.0.1:5173/read/43/3/16?v=nbla&share=6')
+    })).toBe('http://127.0.0.1:5173/read/43/3/16?v=nbla&share=7')
   })
 
   it('shares one detectable canonical URL so messaging apps can render its card', async () => {

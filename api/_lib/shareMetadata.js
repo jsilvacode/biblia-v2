@@ -6,7 +6,7 @@ const APP_QUOTE = 'Lámpara es a mis pies Tu palabra, y luz para mi camino.'
 const APP_REFERENCE = 'Salmos 119:105'
 const DEFAULT_VERSION = 'nbla'
 const MAX_SHARED_VERSES = 12
-const SOCIAL_CARD_REVISION = '6'
+const SOCIAL_CARD_REVISION = '7'
 const SHARE_META_PATTERN = /<!-- share-meta:start -->[\s\S]*?<!-- share-meta:end -->/u
 
 const localeTags = {
