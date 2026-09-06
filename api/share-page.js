@@ -1,3 +1,6 @@
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
+import { loadLocalChapter } from './_lib/shareCorpus.js'
 import {
   createAppShareMetadata,
   getRequestOrigin,
@@ -5,17 +8,7 @@ import {
   loadVerseShareMetadata,
 } from './_lib/shareMetadata.js'
 
-export const config = { runtime: 'edge' }
-
-async function loadIndexHtml(origin) {
-  const response = await fetch(new URL('/index.html', origin), {
-    headers: { accept: 'text/html', 'x-santa-biblia-share-render': '1' },
-  })
-  if (!response.ok) throw new Error(`No fue posible cargar index.html (${response.status}).`)
-  return response.text()
-}
-
-export default async function handler(request) {
+async function handler(request) {
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     return new Response(null, {
       headers: { Allow: 'GET, HEAD' },
@@ -25,18 +18,17 @@ export default async function handler(request) {
 
   const origin = getRequestOrigin(request)
   const query = Object.fromEntries(new URL(request.url).searchParams.entries())
-  const html = await loadIndexHtml(origin)
+  const html = await readFile(join(process.cwd(), 'dist', 'index.html'), 'utf8')
   let metadata = createAppShareMetadata(origin)
   let cacheable = true
 
   if (query.type === 'verse') {
     try {
-      metadata = await loadVerseShareMetadata({ origin, query })
+      metadata = await loadVerseShareMetadata({ origin, query, loadChapter: loadLocalChapter })
     } catch {
       cacheable = false
-      // An invalid or unavailable reference must not break a deep link. The SPA
-      // still opens and applies its normal redirect while crawlers get a safe,
-      // generic Santa Biblia preview.
+      // El lector sigue disponible si una referencia falla, sin almacenar
+      // una vista previa genérica que oculte después el versículo correcto.
     }
   }
 
@@ -50,3 +42,5 @@ export default async function handler(request) {
     status: 200,
   })
 }
+
+export default { fetch: handler }

@@ -1,7 +1,10 @@
 {
   "functions": {
     "api/og-card.js": {
-      "includeFiles": "public/{assets/social/verse-card-background.jpg,data/{nbla,rva2015,kjv}/**/*.json}"
+      "excludeFiles": "public/{data/{cba,search}/**,icons/**}"
+    },
+    "api/share-page.js": {
+      "excludeFiles": "public/{data/{cba,search}/**,icons/**}"
     }
   },
   "redirects": [

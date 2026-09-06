@@ -3,6 +3,7 @@ import { ImageResponse } from '@vercel/og'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import sharp from 'sharp'
+import { loadLocalChapter } from './_lib/shareCorpus.js'
 import {
   createAppShareMetadata,
   getRequestOrigin,
@@ -19,13 +20,6 @@ function getQuoteTypography(length) {
   if (length <= 185) return { fontSize: 50, lineHeight: 1.12, maxWidth: 1070 }
   if (length <= 245) return { fontSize: 44, lineHeight: 1.13, maxWidth: 1080 }
   return { fontSize: 40, lineHeight: 1.14, maxWidth: 1090 }
-}
-
-async function loadLocalChapter({ book, chapter, version }) {
-  return JSON.parse(await readFile(
-    join(publicDirectory, 'data', version.id, book.file, `${chapter}.json`),
-    'utf8',
-  ))
 }
 
 function createCard(metadata, backgroundImage) {
