@@ -1,5 +1,8 @@
 import React from 'react'
 import { ImageResponse } from '@vercel/og'
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
+import sharp from 'sharp'
 import {
   createAppShareMetadata,
   getRequestOrigin,
@@ -7,10 +10,8 @@ import {
   truncateShareText,
 } from './_lib/shareMetadata.js'
 
-export const config = { runtime: 'edge' }
-
 const element = React.createElement
-const BACKGROUND_IMAGE_PATH = '/assets/social/verse-card-background.jpg?v=1'
+const publicDirectory = join(process.cwd(), 'public')
 
 function getQuoteTypography(length) {
   if (length <= 70) return { fontSize: 67, lineHeight: 1.08, maxWidth: 1050 }
@@ -20,14 +21,11 @@ function getQuoteTypography(length) {
   return { fontSize: 40, lineHeight: 1.14, maxWidth: 1090 }
 }
 
-async function loadBackgroundImage(origin) {
-  try {
-    const response = await fetch(new URL(BACKGROUND_IMAGE_PATH, origin))
-    if (!response.ok) return null
-    return response.arrayBuffer()
-  } catch {
-    return null
-  }
+async function loadLocalChapter({ book, chapter, version }) {
+  return JSON.parse(await readFile(
+    join(publicDirectory, 'data', version.id, book.file, `${chapter}.json`),
+    'utf8',
+  ))
 }
 
 function createCard(metadata, backgroundImage) {
@@ -168,7 +166,7 @@ function createCard(metadata, backgroundImage) {
   )
 }
 
-export default async function handler(request) {
+async function handler(request) {
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     return new Response(null, {
       headers: { Allow: 'GET, HEAD' },
@@ -178,25 +176,36 @@ export default async function handler(request) {
 
   const origin = getRequestOrigin(request)
   const query = Object.fromEntries(new URL(request.url).searchParams.entries())
-  let metadata = createAppShareMetadata(origin)
+  try {
+    const [metadata, background] = await Promise.all([
+      query.type === 'verse'
+        ? loadVerseShareMetadata({ origin, query, loadChapter: loadLocalChapter })
+        : createAppShareMetadata(origin),
+      readFile(join(publicDirectory, 'assets/social/verse-card-background.jpg')),
+    ])
+    const backgroundImage = background.buffer.slice(background.byteOffset, background.byteOffset + background.byteLength)
+    const rendered = new ImageResponse(createCard(metadata, backgroundImage), { height: 630, width: 1200 })
+    const jpeg = await sharp(Buffer.from(await rendered.arrayBuffer()))
+      .flatten({ background: '#191310' })
+      .jpeg({ quality: 82, progressive: false, chromaSubsampling: '4:4:4' })
+      .toBuffer()
 
-  if (query.type === 'verse') {
-    try {
-      metadata = await loadVerseShareMetadata({ origin, query })
-    } catch {
-      metadata = createAppShareMetadata(origin)
-    }
+    // Respuesta completa y liviana: el consumidor conoce su tamaño antes de descargarla.
+    return new Response(request.method === 'HEAD' ? null : jpeg, {
+      headers: {
+        'Content-Type': 'image/jpeg',
+        'Content-Length': String(jpeg.length),
+        'Cache-Control': 'public, max-age=86400, s-maxage=31536000, immutable',
+        'Vercel-CDN-Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    })
+  } catch (error) {
+    // Un fallo temporal nunca debe dejar una tarjeta equivocada en caché por un año.
+    return new Response(null, {
+      status: error.status >= 400 && error.status < 500 ? error.status : 503,
+      headers: { 'Cache-Control': 'no-store' },
+    })
   }
-
-  const backgroundImage = await loadBackgroundImage(origin)
-
-  return new ImageResponse(createCard(metadata, backgroundImage), {
-    height: 630,
-    headers: {
-      'Cache-Control': 'public, max-age=31536000, immutable',
-      'CDN-Cache-Control': 'public, max-age=31536000, immutable',
-      'Vercel-CDN-Cache-Control': 'public, max-age=31536000, immutable',
-    },
-    width: 1200,
-  })
 }
+
+export default { fetch: handler }

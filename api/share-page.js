@@ -27,11 +27,13 @@ export default async function handler(request) {
   const query = Object.fromEntries(new URL(request.url).searchParams.entries())
   const html = await loadIndexHtml(origin)
   let metadata = createAppShareMetadata(origin)
+  let cacheable = true
 
   if (query.type === 'verse') {
     try {
       metadata = await loadVerseShareMetadata({ origin, query })
     } catch {
+      cacheable = false
       // An invalid or unavailable reference must not break a deep link. The SPA
       // still opens and applies its normal redirect while crawlers get a safe,
       // generic Santa Biblia preview.
@@ -41,7 +43,7 @@ export default async function handler(request) {
   const document = injectShareMetadata(html, metadata)
   return new Response(request.method === 'HEAD' ? null : document, {
     headers: {
-      'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
+      'Cache-Control': cacheable ? 'public, s-maxage=86400, stale-while-revalidate=604800' : 'no-store',
       'Content-Type': 'text/html; charset=utf-8',
       Vary: 'Host',
     },

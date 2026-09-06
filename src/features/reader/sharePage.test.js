@@ -4,6 +4,19 @@ import handler from '../../../api/share-page'
 afterEach(() => vi.unstubAllGlobals())
 
 describe('share page endpoint', () => {
+  it('no conserva una vista previa genérica cuando falla temporalmente el capítulo', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (url) => {
+      if (String(url).endsWith('/index.html')) {
+        return new Response('<head><!-- share-meta:start --><!-- share-meta:end --></head><body><div id="root"></div></body>')
+      }
+      return new Response(null, { status: 503 })
+    }))
+    const response = await handler(new Request('https://www.santabiblia.cloud/api/share-page?type=verse&book=43&chapter=8&verse=12&v=rva2015'))
+    expect(response.status).toBe(200)
+    expect(response.headers.get('cache-control')).toBe('no-store')
+    expect(await response.text()).toContain('<div id="root"></div>')
+  })
+
   it('returns the production SPA with request-host metadata for a verse', async () => {
     vi.stubGlobal('fetch', vi.fn(async (url) => {
       if (String(url).endsWith('/index.html')) {

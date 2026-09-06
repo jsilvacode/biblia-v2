@@ -1,12 +1,12 @@
-import books from '../../src/features/bible/data/books.json'
-import versions from '../../src/features/bible/data/versions.json'
+import books from '../../src/features/bible/data/books.json' with { type: 'json' }
+import versions from '../../src/features/bible/data/versions.json' with { type: 'json' }
 import { getLocalizedBookName } from '../../src/features/bible/bookNames.js'
+import { SOCIAL_CARD_REVISION } from '../../src/features/reader/socialCardConfig.js'
 
 const APP_QUOTE = 'Lámpara es a mis pies Tu palabra, y luz para mi camino.'
 const APP_REFERENCE = 'Salmos 119:105'
 const DEFAULT_VERSION = 'nbla'
 const MAX_SHARED_VERSES = 12
-const SOCIAL_CARD_REVISION = '9'
 const SHARE_META_PATTERN = /<!-- share-meta:start -->[\s\S]*?<!-- share-meta:end -->/u
 
 const localeTags = {
@@ -140,16 +140,20 @@ function buildImageUrl(origin, parsed) {
   return url.toString()
 }
 
-export async function loadVerseShareMetadata({ fetchImpl = fetch, origin, query }) {
+export async function loadVerseShareMetadata({ fetchImpl = fetch, loadChapter, origin, query }) {
   const parsed = parseVerseShareQuery(query)
   const chapterUrl = new URL(
     `/data/${parsed.version.id}/${parsed.book.file}/${parsed.chapter}.json`,
     origin,
   )
-  const response = await fetchImpl(chapterUrl)
-  if (!response.ok) throw new ShareMetadataError('No fue posible cargar el texto compartido.', 502)
-
-  const chapter = await response.json()
+  let chapter
+  if (loadChapter) {
+    chapter = await loadChapter(parsed)
+  } else {
+    const response = await fetchImpl(chapterUrl)
+    if (!response.ok) throw new ShareMetadataError('No fue posible cargar el texto compartido.', 502)
+    chapter = await response.json()
+  }
   if (!Array.isArray(chapter)) throw new ShareMetadataError('El capítulo compartido no es válido.', 502)
   const verses = chapter.filter(({ verse }) => verse >= parsed.verseStart && verse <= parsed.verseEnd)
   if (verses.length !== parsed.verseEnd - parsed.verseStart + 1) {
@@ -169,7 +173,7 @@ export async function loadVerseShareMetadata({ fetchImpl = fetch, origin, query 
     citation,
     description: truncateShareText(text),
     imageAlt: `Tarjeta de ${reference} en Santa Biblia`,
-    imageType: 'image/png',
+    imageType: 'image/jpeg',
     imageUrl: buildImageUrl(origin, parsed),
     locale: localeTags[parsed.locale],
     reference,
@@ -205,8 +209,10 @@ function escapeHtmlAttribute(value) {
 }
 
 export function renderShareMetadata(metadata) {
+  const socialUrl = new URL(metadata.canonicalUrl)
+  socialUrl.searchParams.set('share', SOCIAL_CARD_REVISION)
   const value = Object.fromEntries(
-    Object.entries(metadata).map(([key, entry]) => [key, escapeHtmlAttribute(entry)]),
+    Object.entries({ ...metadata, socialUrl: socialUrl.toString() }).map(([key, entry]) => [key, escapeHtmlAttribute(entry)]),
   )
   return `<!-- share-meta:start -->
     <meta name="application-name" content="Santa Biblia" />
@@ -215,7 +221,7 @@ export function renderShareMetadata(metadata) {
     <meta property="og:type" content="${value.type}" />
     <meta property="og:locale" content="${value.locale}" />
     <meta property="og:site_name" content="Santa Biblia" />
-    <meta property="og:url" content="${value.canonicalUrl}" />
+    <meta property="og:url" content="${value.socialUrl}" />
     <meta property="og:title" content="${value.title}" />
     <meta property="og:description" content="${value.description}" />
     <meta property="og:image" content="${value.imageUrl}" />

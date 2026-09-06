@@ -1,6 +1,7 @@
+import { SOCIAL_CARD_REVISION } from './socialCardConfig.js'
+
 const APP_SHARE_TEXT = 'Lee, medita y comparte la Biblia cada día.'
 const OFFICIAL_APP_ORIGIN = 'https://www.santabiblia.cloud'
-const SOCIAL_SHARE_REVISION = '9'
 
 function getShareOrigin(origin) {
   try {
@@ -27,7 +28,7 @@ export function createVerseShareUrl({
   url.searchParams.set('v', versionId)
   if (Number(verseEnd) > Number(verse)) url.searchParams.set('end', String(Number(verseEnd)))
   if (locale !== 'es') url.searchParams.set('lang', locale)
-  url.searchParams.set('share', SOCIAL_SHARE_REVISION)
+  url.searchParams.set('share', SOCIAL_CARD_REVISION)
   return url.toString()
 }
 
@@ -51,9 +52,8 @@ export function createVerseShareData({ reference, text, url, version }) {
 function createNativeSharePayload(data) {
   const payload = data.title ? { title: data.title } : {}
 
-  // WhatsApp para Android genera la tarjeta completa cuando recibe el enlace
-  // como texto único. El campo nativo `url` deja el enlace visible aparte y,
-  // en algunos dispositivos, construye la vista previa sin su imagen.
+  // Un solo enlace evita duplicados. La aplicación receptora decide cómo
+  // construir la vista previa a partir de los metadatos públicos.
   if (data.url) return { ...payload, text: data.url }
   if (data.text) return { ...payload, text: data.text }
   return payload
@@ -77,7 +77,7 @@ function prewarmVerseCard(sharedUrl) {
       const value = url.searchParams.get(name)
       if (value) imageUrl.searchParams.set(name, value)
     }
-    imageUrl.searchParams.set('card', SOCIAL_SHARE_REVISION)
+    imageUrl.searchParams.set('card', SOCIAL_CARD_REVISION)
 
     fetch(imageUrl, { cache: 'force-cache', credentials: 'omit' }).catch(() => undefined)
   } catch {
