@@ -37,6 +37,12 @@ describe('La Fe de Jesús study content', () => {
     expect(lessons[0].sections[0].questions[2].id).toBe('q-01-03')
     expect(questions).toHaveLength(174)
     expect(references).toHaveLength(188)
+    expect(lessons.flatMap((lesson) => lesson.checkpoints)).toHaveLength(60)
+    expect(lessons.every((lesson) => lesson.assessmentRevision === 1 && lesson.checkpoints.length === 3)).toBe(true)
+    expect(lessons.every((lesson) => lesson.checkpoints.every((checkpoint) => (
+      checkpoint.options.length === 3
+      && checkpoint.options.some((option) => option.id === checkpoint.correctOptionId)
+    )))).toBe(true)
   })
 
   it('keeps a consistent previous and next chain', () => {

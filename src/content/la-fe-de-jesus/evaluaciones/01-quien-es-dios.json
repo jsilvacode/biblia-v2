@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "quien-es-dios",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-01-01",
+      "prompt": "Según Efesios 4:6, ¿cómo se presenta a Dios?",
+      "references": ["Efesios 4:6"],
+      "options": [
+        { "id": "a", "text": "Como varios dioses, cada uno a cargo de un pueblo.", "feedback": "Efesios 4:6 no habla de varios dioses. Observa la expresión con la que comienza el versículo." },
+        { "id": "b", "text": "Como un solo Dios y Padre de todos.", "feedback": "Bien. Efesios 4:6 presenta a un solo Dios y Padre de todos." },
+        { "id": "c", "text": "Como un Padre limitado a quienes vivían en Éfeso.", "feedback": "Efesios 4:6 amplía el alcance de la paternidad de Dios a todos, no solo a los habitantes de Éfeso." }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q-01-02",
+      "prompt": "Según Juan 4:24, ¿cuál es la naturaleza de Dios?",
+      "references": ["Juan 4:24"],
+      "options": [
+        { "id": "a", "text": "Dios es espíritu.", "feedback": "Bien. Juan 4:24 declara que Dios es espíritu." },
+        { "id": "b", "text": "Dios es únicamente una imagen visible.", "feedback": "Juan 4:24 no define a Dios como una imagen visible; vuelve a leer cómo expresa su naturaleza." },
+        { "id": "c", "text": "Dios es una fuerza sin relación con la adoración.", "feedback": "Juan 4:24 relaciona expresamente la naturaleza de Dios con adorarlo en espíritu y en verdad." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-01-04",
+      "prompt": "¿Qué afirmación hace 1 Juan 4:8 acerca del carácter de Dios?",
+      "references": ["1 Juan 4:8"],
+      "options": [
+        { "id": "a", "text": "Que Dios solo muestra amor a quienes nunca se equivocan.", "feedback": "1 Juan 4:8 no limita el amor de Dios a un grupo; fíjate en la afirmación directa sobre quién es Dios." },
+        { "id": "b", "text": "Que el amor es ajeno al conocimiento de Dios.", "feedback": "El versículo enseña lo contrario: no amar revela que no se ha conocido a Dios." },
+        { "id": "c", "text": "Que Dios es amor.", "feedback": "Bien. 1 Juan 4:8 afirma de manera directa que Dios es amor." }
+      ],
+      "correctOptionId": "c"
+    }
+  ]
+}

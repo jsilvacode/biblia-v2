@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "dios-nos-llama",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-20-02",
+      "prompt": "¿Qué le dijo Jesús a Leví en Lucas 5:27?",
+      "references": ["Lucas 5:27"],
+      "options": [
+        { "id": "a", "text": "¡Sígueme!", "feedback": "Bien. Lucas 5:27 registra la invitación directa de Jesús a Leví: «¡Sígueme!»." },
+        { "id": "b", "text": "Permanece para siempre en el lugar de los tributos.", "feedback": "Jesús no le pidió permanecer allí; Lucas 5:27 registra una invitación a seguirlo." },
+        { "id": "c", "text": "Vuelve cuando hayas resuelto todos tus asuntos.", "feedback": "El versículo contiene una invitación breve y directa, sin esa condición previa." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-20-03",
+      "prompt": "¿Cómo respondió Leví al llamado de Jesús, según Lucas 5:28?",
+      "references": ["Lucas 5:28"],
+      "options": [
+        { "id": "a", "text": "Pidió aplazar indefinidamente su respuesta.", "feedback": "Lucas 5:28 muestra una respuesta inmediata, no un aplazamiento indefinido." },
+        { "id": "b", "text": "Siguió sentado y rechazó levantarse.", "feedback": "El versículo dice expresamente que Leví se levantó y siguió a Jesús." },
+        { "id": "c", "text": "Dejándolo todo, se levantó y siguió a Jesús.", "feedback": "Bien. Lucas 5:28 describe una respuesta decidida: dejó todo, se levantó y lo siguió." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-20-04",
+      "prompt": "¿Qué promete Cristo a quien oye su voz y abre la puerta, según Apocalipsis 3:20?",
+      "references": ["Apocalipsis 3:20"],
+      "options": [
+        { "id": "a", "text": "Que seguirá afuera aunque la persona abra.", "feedback": "Apocalipsis 3:20 promete que Cristo entrará cuando la persona oye su voz y abre la puerta." },
+        { "id": "b", "text": "Que entrará y cenará con esa persona, y ella con él.", "feedback": "Bien. Apocalipsis 3:20 usa la imagen de entrar y compartir la mesa para expresar la comunión ofrecida por Cristo." },
+        { "id": "c", "text": "Que derribará la puerta sin esperar respuesta.", "feedback": "La imagen del versículo presenta a Cristo llamando y esperando que la persona oiga y abra." }
+      ],
+      "correctOptionId": "b"
+    }
+  ]
+}

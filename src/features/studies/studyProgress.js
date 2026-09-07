@@ -1,8 +1,14 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import manifest from '../../content/la-fe-de-jesus/manifest.json'
 
 const STORAGE_KEY = 'santa-biblia-v2:study:la-fe-de-jesus:v1'
-const STUDY_PROGRESS_VERSION = 1
+const STUDY_PROGRESS_VERSION = 2
+const validLessonSlugs = new Set(manifest.map((lesson) => lesson.slug))
+const studyCatalog = manifest.map((lesson) => ({ order: lesson.id, slug: lesson.slug }))
 const progressListeners = new Set()
+const memoryByStorage = new WeakMap()
+const nonPersistentStorages = new WeakSet()
+let fallbackMemory = null
 
 export function createEmptyStudyProgress() {
   return {
@@ -10,6 +16,8 @@ export function createEmptyStudyProgress() {
     lastLessonSlug: null,
     lastQuestionId: null,
     completedLessonSlugs: [],
+    courseCompletedAt: null,
+    lessonProgress: {},
     updatedAt: null,
   }
 }
@@ -17,18 +25,41 @@ export function createEmptyStudyProgress() {
 function normalizeSlug(value) {
   if (typeof value !== 'string') return null
   const slug = value.trim()
-  return slug || null
+  return validLessonSlugs.has(slug) ? slug : null
 }
 
 function normalizeQuestionId(value) {
-  if (typeof value === 'string') {
-    const questionId = value.trim()
-    return questionId || null
-  }
-  return Number.isFinite(value) ? value : null
+  if (typeof value !== 'string') return null
+  const questionId = value.trim()
+  return questionId || null
 }
 
-export function normalizeStudyProgress(progress) {
+function normalizeTimestamp(value) {
+  return Number.isFinite(value) && value >= 0 ? value : null
+}
+
+function normalizeLessonProgress(progress) {
+  if (!progress || typeof progress !== 'object' || Array.isArray(progress)) return {}
+  return Object.fromEntries(Object.entries(progress).flatMap(([slug, value]) => {
+    if (!validLessonSlugs.has(slug) || !value || typeof value !== 'object' || Array.isArray(value)) return []
+    const assessmentRevision = Number.isInteger(value.assessmentRevision) && value.assessmentRevision > 0
+      ? value.assessmentRevision
+      : 1
+    const correctAnswers = value.correctAnswers && typeof value.correctAnswers === 'object'
+      && !Array.isArray(value.correctAnswers)
+      ? Object.fromEntries(Object.entries(value.correctAnswers).filter(([questionId, optionId]) => (
+        typeof questionId === 'string' && questionId && typeof optionId === 'string' && optionId
+      )))
+      : {}
+    return [[slug, {
+      assessmentRevision,
+      correctAnswers,
+      readingConfirmed: Boolean(value.readingConfirmed),
+    }]]
+  }))
+}
+
+export function normalizeStudyProgress(progress, now = Date.now()) {
   if (!progress || typeof progress !== 'object' || Array.isArray(progress)) {
     return createEmptyStudyProgress()
   }
@@ -37,15 +68,17 @@ export function normalizeStudyProgress(progress) {
   const completedLessonSlugs = Array.isArray(progress.completedLessonSlugs)
     ? [...new Set(progress.completedLessonSlugs.map(normalizeSlug).filter(Boolean))]
     : []
+  const allCompleted = studyCatalog.every((lesson) => completedLessonSlugs.includes(lesson.slug))
 
   return {
     version: STUDY_PROGRESS_VERSION,
     lastLessonSlug,
     lastQuestionId: lastLessonSlug ? normalizeQuestionId(progress.lastQuestionId) : null,
     completedLessonSlugs,
-    updatedAt: Number.isFinite(progress.updatedAt) && progress.updatedAt >= 0
-      ? progress.updatedAt
-      : null,
+    courseCompletedAt: normalizeTimestamp(progress.courseCompletedAt)
+      ?? (allCompleted ? normalizeTimestamp(progress.updatedAt) ?? now : null),
+    lessonProgress: normalizeLessonProgress(progress.lessonProgress),
+    updatedAt: normalizeTimestamp(progress.updatedAt),
   }
 }
 
@@ -58,10 +91,19 @@ function resolveStorage(storage) {
   }
 }
 
-function emitProgress(progress, storage) {
+function getMemoryProgress(storage) {
+  return storage && typeof storage === 'object' ? memoryByStorage.get(storage) : fallbackMemory
+}
+
+function setMemoryProgress(storage, progress) {
+  if (storage && typeof storage === 'object') memoryByStorage.set(storage, progress)
+  else fallbackMemory = progress
+}
+
+function emitProgress(progress, storage, persistent = true) {
   progressListeners.forEach((listener) => {
     try {
-      listener(progress, storage)
+      listener(progress, storage, persistent)
     } catch {
       // A failed subscriber must not prevent the remaining instances from syncing.
     }
@@ -75,139 +117,141 @@ function subscribeToProgress(listener) {
 
 export function readStudyProgress(storage) {
   const targetStorage = resolveStorage(storage)
-  if (!targetStorage) return createEmptyStudyProgress()
-
   try {
-    const storedProgress = targetStorage.getItem(STORAGE_KEY)
-    return storedProgress
+    const storedProgress = targetStorage?.getItem(STORAGE_KEY)
+    const storedOrEmpty = storedProgress
       ? normalizeStudyProgress(JSON.parse(storedProgress))
       : createEmptyStudyProgress()
+    const memoryProgress = getMemoryProgress(targetStorage)
+    const progress = targetStorage && nonPersistentStorages.has(targetStorage) && memoryProgress
+      ? mergeStudyProgress(storedOrEmpty, memoryProgress)
+      : storedProgress ? storedOrEmpty : memoryProgress ?? storedOrEmpty
+    setMemoryProgress(targetStorage, progress)
+    return progress
   } catch {
-    return createEmptyStudyProgress()
+    if (targetStorage && typeof targetStorage === 'object') nonPersistentStorages.add(targetStorage)
+    return getMemoryProgress(targetStorage) ?? createEmptyStudyProgress()
   }
+}
+
+export function mergeStudyProgress(left, right) {
+  const first = normalizeStudyProgress(left)
+  const second = normalizeStudyProgress(right)
+  const latest = (second.updatedAt ?? -1) >= (first.updatedAt ?? -1) ? second : first
+  const completedLessonSlugs = [...new Set([
+    ...first.completedLessonSlugs,
+    ...second.completedLessonSlugs,
+  ])]
+  const lessonProgress = { ...first.lessonProgress }
+  const secondIsLatest = latest === second
+
+  for (const [slug, incoming] of Object.entries(second.lessonProgress)) {
+    const current = lessonProgress[slug]
+    if (!current || current.assessmentRevision !== incoming.assessmentRevision) {
+      if (!current) lessonProgress[slug] = incoming
+      else {
+        const newerRevision = incoming.assessmentRevision > current.assessmentRevision
+          ? incoming
+          : current
+        lessonProgress[slug] = {
+          ...newerRevision,
+          readingConfirmed: current.readingConfirmed || incoming.readingConfirmed,
+        }
+      }
+      continue
+    }
+    lessonProgress[slug] = {
+      assessmentRevision: current.assessmentRevision,
+      correctAnswers: { ...current.correctAnswers, ...incoming.correctAnswers },
+      readingConfirmed: secondIsLatest ? incoming.readingConfirmed : current.readingConfirmed,
+    }
+  }
+
+  return normalizeStudyProgress({
+    ...latest,
+    completedLessonSlugs,
+    courseCompletedAt: first.courseCompletedAt ?? second.courseCompletedAt,
+    lessonProgress,
+    updatedAt: Math.max(first.updatedAt ?? 0, second.updatedAt ?? 0) || null,
+  })
 }
 
 export function writeStudyProgress(progress, storage) {
-  const normalizedProgress = normalizeStudyProgress(progress)
   const targetStorage = resolveStorage(storage)
+  let normalizedProgress = normalizeStudyProgress(progress)
+  let persistent = Boolean(targetStorage)
 
   try {
+    const storedProgress = targetStorage?.getItem(STORAGE_KEY)
+    if (storedProgress) normalizedProgress = mergeStudyProgress(JSON.parse(storedProgress), normalizedProgress)
     targetStorage?.setItem(STORAGE_KEY, JSON.stringify(normalizedProgress))
+    if (targetStorage && typeof targetStorage === 'object') nonPersistentStorages.delete(targetStorage)
   } catch {
-    // Progress remains usable in memory when storage is unavailable or full.
+    persistent = false
+    if (targetStorage && typeof targetStorage === 'object') nonPersistentStorages.add(targetStorage)
   }
 
-  emitProgress(normalizedProgress, targetStorage)
+  setMemoryProgress(targetStorage, normalizedProgress)
+  emitProgress(normalizedProgress, targetStorage, persistent)
   return normalizedProgress
 }
 
-export function getStudyProgressSummary(progress, totalLessons = 20) {
+export function getStudyProgressSummary(progress, totalLessons = studyCatalog.length) {
   const normalizedProgress = normalizeStudyProgress(progress)
   const normalizedTotal = Number.isFinite(totalLessons)
     ? Math.max(0, Math.trunc(totalLessons))
-    : 20
-  const completedLessons = Math.min(
-    normalizedProgress.completedLessonSlugs.length,
-    normalizedTotal,
-  )
+    : studyCatalog.length
+  const completedLessons = Math.min(normalizedProgress.completedLessonSlugs.length, normalizedTotal)
 
   return {
     completedLessons,
     totalLessons: normalizedTotal,
-    percent: normalizedTotal
-      ? Math.round((completedLessons / normalizedTotal) * 100)
-      : 0,
+    percent: normalizedTotal ? Math.round((completedLessons / normalizedTotal) * 100) : 0,
     resumeSlug: normalizedProgress.lastLessonSlug,
     hasStarted: Boolean(normalizedProgress.lastLessonSlug || completedLessons),
-    isComplete: normalizedTotal > 0 && completedLessons === normalizedTotal,
+    isComplete: normalizedTotal > 0 && Boolean(normalizedProgress.courseCompletedAt),
   }
 }
 
 function areProgressValuesEqual(left, right) {
-  return left.version === right.version
-    && left.lastLessonSlug === right.lastLessonSlug
-    && left.lastQuestionId === right.lastQuestionId
-    && left.updatedAt === right.updatedAt
-    && left.completedLessonSlugs.length === right.completedLessonSlugs.length
-    && left.completedLessonSlugs.every((slug, index) => slug === right.completedLessonSlugs[index])
+  return JSON.stringify(left) === JSON.stringify(right)
 }
 
 export function useStudyProgress(storage) {
   const targetStorage = useMemo(() => resolveStorage(storage), [storage])
   const [progress, setProgress] = useState(() => readStudyProgress(targetStorage))
+  const [isPersistent, setIsPersistent] = useState(Boolean(
+    targetStorage && !nonPersistentStorages.has(targetStorage),
+  ))
   const progressRef = useRef(progress)
 
-  useEffect(() => subscribeToProgress((nextProgress, eventStorage) => {
+  useEffect(() => subscribeToProgress((nextProgress, eventStorage, persistent) => {
     if (eventStorage !== targetStorage) return
     const normalizedProgress = normalizeStudyProgress(nextProgress)
+    setIsPersistent(persistent)
     if (areProgressValuesEqual(progressRef.current, normalizedProgress)) return
     progressRef.current = normalizedProgress
     setProgress(normalizedProgress)
   }), [targetStorage])
 
-  const commit = useCallback((createNextProgress) => {
-    const currentProgress = progressRef.current
-    const nextProgress = createNextProgress(currentProgress)
-    if (nextProgress === currentProgress || areProgressValuesEqual(currentProgress, nextProgress)) {
-      return currentProgress
+  useEffect(() => {
+    if (typeof window === 'undefined' || targetStorage !== window.localStorage) return undefined
+    function handleStorage(event) {
+      if (event.key !== STORAGE_KEY || !event.newValue) return
+      try {
+        const nextProgress = mergeStudyProgress(progressRef.current, JSON.parse(event.newValue))
+        if (areProgressValuesEqual(progressRef.current, nextProgress)) return
+        progressRef.current = nextProgress
+        setProgress(nextProgress)
+      } catch {
+        // Ignore corrupt writes from another tab.
+      }
     }
-
-    progressRef.current = nextProgress
-    setProgress(nextProgress)
-    writeStudyProgress(nextProgress, targetStorage)
-    return nextProgress
+    window.addEventListener('storage', handleStorage)
+    return () => window.removeEventListener('storage', handleStorage)
   }, [targetStorage])
-
-  const recordPosition = useCallback((slug, questionId) => {
-    const lessonSlug = normalizeSlug(slug)
-    const normalizedQuestionId = normalizeQuestionId(questionId)
-    if (!lessonSlug) return progressRef.current
-
-    return commit((currentProgress) => {
-      if (
-        currentProgress.lastLessonSlug === lessonSlug
-        && currentProgress.lastQuestionId === normalizedQuestionId
-      ) {
-        return currentProgress
-      }
-
-      return {
-        ...currentProgress,
-        lastLessonSlug: lessonSlug,
-        lastQuestionId: normalizedQuestionId,
-        updatedAt: Date.now(),
-      }
-    })
-  }, [commit])
-
-  const toggleLessonComplete = useCallback((slug) => {
-    const lessonSlug = normalizeSlug(slug)
-    if (!lessonSlug) return progressRef.current
-
-    return commit((currentProgress) => {
-      const wasCompleted = currentProgress.completedLessonSlugs.includes(lessonSlug)
-      return {
-        ...currentProgress,
-        completedLessonSlugs: wasCompleted
-          ? currentProgress.completedLessonSlugs.filter((candidate) => candidate !== lessonSlug)
-          : [...currentProgress.completedLessonSlugs, lessonSlug],
-        updatedAt: Date.now(),
-      }
-    })
-  }, [commit])
-
-  const isLessonComplete = useCallback((slug) => {
-    const lessonSlug = normalizeSlug(slug)
-    return Boolean(lessonSlug && progressRef.current.completedLessonSlugs.includes(lessonSlug))
-  }, [])
 
   const summary = useMemo(() => getStudyProgressSummary(progress), [progress])
 
-  return useMemo(() => ({
-    progress,
-    summary,
-    recordPosition,
-    toggleLessonComplete,
-    isLessonComplete,
-  }), [isLessonComplete, progress, recordPosition, summary, toggleLessonComplete])
+  return useMemo(() => ({ isPersistent, progress, summary }), [isPersistent, progress, summary])
 }

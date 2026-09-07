@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "la-vida-cristiana",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-19-01",
+      "prompt": "¿Qué ocurre cuando una persona está en Cristo, según 2 Corintios 5:17?",
+      "references": ["2 Corintios 5:17"],
+      "options": [
+        { "id": "a", "text": "Nada cambia y todo permanece como antes.", "feedback": "2 Corintios 5:17 contrasta las cosas viejas que pasaron con una realidad nueva." },
+        { "id": "b", "text": "Solo cambia su apariencia exterior.", "feedback": "El versículo habla de ser una nueva criatura, no únicamente de un cambio de apariencia." },
+        { "id": "c", "text": "Es una nueva criatura; las cosas viejas pasaron y son hechas nuevas.", "feedback": "Bien. 2 Corintios 5:17 describe la vida en Cristo como una nueva creación." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-19-02",
+      "prompt": "¿Qué partes del ser pide Pablo que sean guardadas sin mancha en 1 Tesalonicenses 5:23?",
+      "references": ["1 Tesalonicenses 5:23"],
+      "options": [
+        { "id": "a", "text": "Espíritu, alma y cuerpo.", "feedback": "Bien. 1 Tesalonicenses 5:23 pide una santificación completa que abarque espíritu, alma y cuerpo." },
+        { "id": "b", "text": "Solo los pensamientos, sin incluir el cuerpo.", "feedback": "El versículo incluye expresamente el cuerpo junto con el espíritu y el alma." },
+        { "id": "c", "text": "Únicamente las acciones visibles ante otras personas.", "feedback": "Pablo pide que todo el ser sea guardado sin mancha, no solo lo visible para otros." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-19-09",
+      "prompt": "¿Cómo debemos responder a quien pide razón de nuestra esperanza, según 1 Pedro 3:15?",
+      "references": ["1 Pedro 3:15"],
+      "options": [
+        { "id": "a", "text": "Con hostilidad para imponer la respuesta.", "feedback": "1 Pedro 3:15 indica una actitud opuesta a la hostilidad; revisa las dos cualidades finales." },
+        { "id": "b", "text": "Estando preparados, con mansedumbre y reverencia.", "feedback": "Bien. 1 Pedro 3:15 une la preparación para responder con mansedumbre y reverencia." },
+        { "id": "c", "text": "Negándose siempre a explicar la esperanza.", "feedback": "El versículo llama a estar siempre listos para responder a quien pida razón de la esperanza." }
+      ],
+      "correctOptionId": "b"
+    }
+  ]
+}

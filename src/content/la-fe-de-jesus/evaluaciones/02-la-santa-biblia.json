@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "la-santa-biblia",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-02-01",
+      "prompt": "Según 2 Timoteo 3:16, ¿cuál es el origen de toda la Escritura?",
+      "references": ["2 Timoteo 3:16"],
+      "options": [
+        { "id": "a", "text": "La tradición de una sola comunidad.", "feedback": "2 Timoteo 3:16 no atribuye la Escritura a la tradición de una comunidad; revisa quién la inspira." },
+        { "id": "b", "text": "La reflexión humana sin intervención divina.", "feedback": "El versículo no presenta la Escritura como una reflexión exclusivamente humana." },
+        { "id": "c", "text": "La inspiración de Dios.", "feedback": "Bien. 2 Timoteo 3:16 afirma que toda la Escritura es inspirada por Dios." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-02-03",
+      "prompt": "¿Con qué compara Salmos 119:105 la Palabra de Dios?",
+      "references": ["Salmos 119:105"],
+      "options": [
+        { "id": "a", "text": "Con una carga que dificulta el camino.", "feedback": "Salmos 119:105 describe una ayuda para avanzar, no una carga; vuelve a observar sus dos imágenes de luz." },
+        { "id": "b", "text": "Con una lámpara para los pies y una lumbrera para el camino.", "feedback": "Bien. Salmos 119:105 presenta la Palabra como lámpara y lumbrera que orientan el camino." },
+        { "id": "c", "text": "Con un mapa que revela cada detalle del futuro.", "feedback": "El salmo habla de iluminar los pasos y el camino, no de revelar cada detalle futuro." }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q-02-06",
+      "prompt": "Según Isaías 40:8, ¿cuánto permanece la Palabra de Dios?",
+      "references": ["Isaías 40:8"],
+      "options": [
+        { "id": "a", "text": "Permanece para siempre.", "feedback": "Bien. Isaías 40:8 contrasta lo que se seca y marchita con la Palabra que permanece para siempre." },
+        { "id": "b", "text": "Permanece solo mientras dura una generación.", "feedback": "Isaías 40:8 no limita la Palabra a una generación; relee la expresión final del versículo." },
+        { "id": "c", "text": "Permanece hasta que cambian las circunstancias.", "feedback": "El versículo contrasta los cambios de la creación con la permanencia de la Palabra de Dios." }
+      ],
+      "correctOptionId": "a"
+    }
+  ]
+}

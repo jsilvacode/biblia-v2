@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "senales-del-regreso-de-cristo",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-05-02",
+      "prompt": "Según Mateo 24:36, ¿quién conoce el día y la hora?",
+      "references": ["Mateo 24:36"],
+      "options": [
+        { "id": "a", "text": "Todos los ángeles del cielo.", "feedback": "Mateo 24:36 menciona expresamente que los ángeles no conocen ese día y esa hora." },
+        { "id": "b", "text": "Cualquier persona que interprete correctamente las señales.", "feedback": "El versículo no concede ese conocimiento a ninguna persona; relee a quién lo atribuye de manera exclusiva." },
+        { "id": "c", "text": "Solo el Padre.", "feedback": "Bien. Mateo 24:36 atribuye únicamente al Padre el conocimiento del día y la hora." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-05-03",
+      "prompt": "¿Por qué el día del Señor no debería sorprender como ladrón a los creyentes, según 1 Tesalonicenses 5:1-4?",
+      "references": ["1 Tesalonicenses 5:1-4"],
+      "options": [
+        { "id": "a", "text": "Porque no están en tinieblas.", "feedback": "Bien. 1 Tesalonicenses 5:4 dice que los hermanos no están en tinieblas para que aquel día los sorprenda como ladrón." },
+        { "id": "b", "text": "Porque conocen con precisión la fecha del acontecimiento.", "feedback": "El pasaje no entrega una fecha; compara la llegada con un ladrón y destaca no estar en tinieblas." },
+        { "id": "c", "text": "Porque el día del Señor no llegará de forma inesperada para nadie.", "feedback": "1 Tesalonicenses 5:2-3 sí presenta una llegada repentina para quienes confían en «paz y seguridad»." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-05-04",
+      "prompt": "¿Qué acontecimientos menciona Jesús en Mateo 24:6-7?",
+      "references": ["Mateo 24:6-7"],
+      "options": [
+        { "id": "a", "text": "Solo un período continuo de paz entre las naciones.", "feedback": "Mateo 24:6-7 habla de guerras y de naciones que se levantan unas contra otras, no de paz continua." },
+        { "id": "b", "text": "Guerras y rumores de guerras, hambre y terremotos.", "feedback": "Bien. Mateo 24:6-7 enumera guerras, hambre y terremotos, y aclara que todavía no es el fin." },
+        { "id": "c", "text": "Una fecha exacta anunciada por medio de un terremoto.", "feedback": "El pasaje enumera acontecimientos, pero no entrega una fecha exacta ni asigna esa función a un terremoto." }
+      ],
+      "correctOptionId": "b"
+    }
+  ]
+}

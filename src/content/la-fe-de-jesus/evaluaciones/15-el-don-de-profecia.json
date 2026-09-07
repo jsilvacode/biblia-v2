@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "el-don-de-profecia",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-15-01",
+      "prompt": "¿A quiénes revela el Señor su secreto, según Amós 3:7?",
+      "references": ["Amós 3:7"],
+      "options": [
+        { "id": "a", "text": "A quienes intentan adivinarlo sin relación con Dios.", "feedback": "Amós 3:7 identifica a personas concretas como siervos de Dios, no a adivinos independientes." },
+        { "id": "b", "text": "A sus siervos los profetas.", "feedback": "Bien. Amós 3:7 afirma que el Señor revela su secreto a sus siervos los profetas." },
+        { "id": "c", "text": "A nadie, porque sus planes nunca se comunican.", "feedback": "El versículo declara expresamente que Dios revela su secreto a sus siervos los profetas." }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q-15-02",
+      "prompt": "¿Qué medios de comunicación con un profeta menciona Números 12:6?",
+      "references": ["Números 12:6"],
+      "options": [
+        { "id": "a", "text": "Solamente cartas escritas por otras personas.", "feedback": "Números 12:6 no menciona cartas; señala dos formas concretas de comunicación divina." },
+        { "id": "b", "text": "Únicamente señales meteorológicas.", "feedback": "El pasaje no habla de señales meteorológicas como medio para comunicarse con un profeta." },
+        { "id": "c", "text": "Visiones y sueños.", "feedback": "Bien. Números 12:6 menciona la visión y los sueños como medios de comunicación con un profeta." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-15-03",
+      "prompt": "¿Qué muestran Joel 2:28 y Hechos 21:9 acerca de las mujeres y la profecía?",
+      "references": ["Joel 2:28", "Hechos 21:9"],
+      "options": [
+        { "id": "a", "text": "Que las hijas también pueden profetizar.", "feedback": "Bien. Joel anuncia que hijos e hijas profetizarán, y Hechos menciona a cuatro hijas que profetizaban." },
+        { "id": "b", "text": "Que la profecía estaba reservada exclusivamente a los ancianos varones.", "feedback": "Joel 2:28 incluye hijos e hijas, y Hechos 21:9 ofrece un ejemplo explícito de mujeres que profetizaban." },
+        { "id": "c", "text": "Que ninguna persona joven podía recibir ese don.", "feedback": "Joel 2:28 menciona a jóvenes con visiones y a hijos e hijas que profetizan." }
+      ],
+      "correctOptionId": "a"
+    }
+  ]
+}

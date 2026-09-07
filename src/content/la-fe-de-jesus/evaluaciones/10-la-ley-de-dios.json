@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "la-ley-de-dios",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-10-01",
+      "prompt": "¿Cómo describe Éxodo 31:18 las tablas del testimonio entregadas a Moisés?",
+      "references": ["Éxodo 31:18"],
+      "options": [
+        { "id": "a", "text": "Como rollos de papel escritos por Moisés sin intervención divina.", "feedback": "Éxodo 31:18 habla de tablas de piedra y atribuye su escritura al dedo de Dios." },
+        { "id": "b", "text": "Como palabras transmitidas solo de manera oral.", "feedback": "El versículo presenta un testimonio escrito sobre dos tablas, no solamente una comunicación oral." },
+        { "id": "c", "text": "Como dos tablas de piedra escritas con el dedo de Dios.", "feedback": "Bien. Así describe Éxodo 31:18 las tablas que Dios dio a Moisés en el Sinaí." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-10-03",
+      "prompt": "¿Hacia quién cumple la ley la función de tutor, según Gálatas 3:24?",
+      "references": ["Gálatas 3:24"],
+      "options": [
+        { "id": "a", "text": "Hacia Cristo, para que seamos justificados por la fe.", "feedback": "Bien. Gálatas 3:24 describe la ley como tutor que lleva a Cristo y a la justificación por la fe." },
+        { "id": "b", "text": "Hacia la confianza en la ley como medio de autojustificación.", "feedback": "El versículo no presenta la ley como medio de autojustificación; conduce a Cristo para ser justificados por la fe." },
+        { "id": "c", "text": "Hacia una vida sin necesidad de fe.", "feedback": "Gálatas 3:24 concluye precisamente con la justificación por la fe." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-10-06",
+      "prompt": "¿Qué dijo Jesús que vino a hacer con la Ley y los Profetas, según Mateo 5:17-18?",
+      "references": ["Mateo 5:17-18"],
+      "options": [
+        { "id": "a", "text": "A abrogarlos de inmediato.", "feedback": "Mateo 5:17 niega expresamente que Jesús haya venido para abrogar la Ley o los Profetas." },
+        { "id": "b", "text": "A cumplirlos, no a abrogarlos.", "feedback": "Bien. Mateo 5:17 declara que Jesús vino a cumplir la Ley y los Profetas, no a abrogarlos." },
+        { "id": "c", "text": "A sustituirlos por enseñanzas sin relación con ellos.", "feedback": "El pasaje destaca continuidad y cumplimiento, no una sustitución desconectada." }
+      ],
+      "correctOptionId": "b"
+    }
+  ]
+}

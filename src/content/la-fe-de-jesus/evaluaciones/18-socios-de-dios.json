@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "socios-de-dios",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-18-01",
+      "prompt": "¿A quién pertenece la tierra y todo lo que hay en ella, según Salmos 24:1?",
+      "references": ["Salmos 24:1"],
+      "options": [
+        { "id": "a", "text": "Exclusivamente a quienes poseen documentos de propiedad.", "feedback": "Salmos 24:1 presenta una pertenencia más amplia y fundamental que la propiedad humana." },
+        { "id": "b", "text": "Al Señor.", "feedback": "Bien. Salmos 24:1 afirma que del Señor son la tierra, todo lo que contiene, el mundo y sus habitantes." },
+        { "id": "c", "text": "A nadie, porque la creación no tiene dueño.", "feedback": "El salmo atribuye expresamente la tierra y su plenitud al Señor." }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q-18-03",
+      "prompt": "¿Quién da la capacidad para producir riquezas, según Deuteronomio 8:18?",
+      "references": ["Deuteronomio 8:18"],
+      "options": [
+        { "id": "a", "text": "El Señor Dios.", "feedback": "Bien. Deuteronomio 8:18 llama a recordar que el Señor es quien da poder para hacer riquezas." },
+        { "id": "b", "text": "Únicamente la casualidad, sin ninguna capacidad recibida.", "feedback": "El versículo atribuye esa capacidad al Señor y la relaciona con la confirmación de su pacto." },
+        { "id": "c", "text": "Solo los antepasados, sin intervención de Dios.", "feedback": "Deuteronomio 8:18 menciona a los padres en relación con el pacto, pero atribuye a Dios el poder para producir riquezas." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-18-10",
+      "prompt": "¿Con qué actitud enseña 2 Corintios 9:6-7 que debe dar cada persona?",
+      "references": ["2 Corintios 9:6-7"],
+      "options": [
+        { "id": "a", "text": "Con tristeza y por obligación.", "feedback": "2 Corintios 9:7 rechaza expresamente dar con tristeza o por obligación." },
+        { "id": "b", "text": "Sin haberlo considerado en el corazón.", "feedback": "El versículo indica que cada persona dé como propuso en su corazón." },
+        { "id": "c", "text": "Como lo propuso en su corazón, con alegría y no por obligación.", "feedback": "Bien. 2 Corintios 9:6-7 destaca la generosidad voluntaria porque Dios ama al dador alegre." }
+      ],
+      "correctOptionId": "c"
+    }
+  ]
+}

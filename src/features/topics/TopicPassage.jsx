@@ -42,6 +42,7 @@ export function TopicPassage({ label, title, kind, returnSource, returnTo }) {
   const { settings } = useSettings()
   const requestKey = `${label}:${settings.bibleVersion}`
   const [state, setState] = useState({ key: null, status: 'loading', passage: null, error: null })
+  const [retryAttempt, setRetryAttempt] = useState(0)
   const resolved = resolveThematicReference(label)
   const version = getVersion(settings.bibleVersion)
   const localizedReference = formatThematicReference(resolved, locale)
@@ -55,7 +56,7 @@ export function TopicPassage({ label, title, kind, returnSource, returnTo }) {
         if (error.name !== 'AbortError') setState({ key: requestKey, status: 'error', passage: null, error })
       })
     return () => controller.abort()
-  }, [label, requestKey, settings.bibleVersion])
+  }, [label, requestKey, retryAttempt, settings.bibleVersion])
 
   const isLoading = state.key !== requestKey || state.status === 'loading'
 
@@ -78,6 +79,10 @@ export function TopicPassage({ label, title, kind, returnSource, returnTo }) {
         <div aria-live="polite" className={styles.passageError} role="alert">
           <Icon name="info" size={17} />
           <span>{t('topics.passageError')}</span>
+          <button onClick={() => {
+            setState({ key: null, status: 'loading', passage: null, error: null })
+            setRetryAttempt((attempt) => attempt + 1)
+          }} type="button">{t('topics.passageRetry')}</button>
         </div>
       )}
       {!isLoading && state.status === 'ready' && state.passage.verses.length > 0 && (

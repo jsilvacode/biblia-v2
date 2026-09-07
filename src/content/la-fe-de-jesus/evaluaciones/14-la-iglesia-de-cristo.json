@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "la-iglesia-de-cristo",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-14-01",
+      "prompt": "¿Quién dijo «edificaré mi iglesia» en Mateo 16:16-18?",
+      "references": ["Mateo 16:16-18"],
+      "options": [
+        { "id": "a", "text": "Jesús.", "feedback": "Bien. En Mateo 16:18, Jesús declara que edificará su iglesia." },
+        { "id": "b", "text": "Simón Pedro hablando de una obra propia.", "feedback": "Pedro confiesa que Jesús es el Cristo, pero es Jesús quien dice «edificaré mi iglesia»." },
+        { "id": "c", "text": "Una voz anónima sin relación con Cristo.", "feedback": "El diálogo identifica a Jesús como quien responde a Pedro y anuncia la edificación de su iglesia." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-14-02",
+      "prompt": "¿Cómo describe Efesios 2:20 el fundamento de los creyentes?",
+      "references": ["Efesios 2:20"],
+      "options": [
+        { "id": "a", "text": "Edificado sobre tradiciones sin relación con Cristo.", "feedback": "Efesios 2:20 vincula el fundamento con apóstoles y profetas y nombra a Cristo como piedra angular." },
+        { "id": "b", "text": "Sostenido únicamente por la capacidad de sus miembros.", "feedback": "El versículo no ubica el fundamento en la capacidad humana de los miembros." },
+        { "id": "c", "text": "Edificado sobre apóstoles y profetas, con Jesucristo como piedra angular.", "feedback": "Bien. Efesios 2:20 presenta ese fundamento y coloca a Jesucristo mismo como piedra angular." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-14-03",
+      "prompt": "¿Qué ministerios enumera Efesios 4:11-12?",
+      "references": ["Efesios 4:11-12"],
+      "options": [
+        { "id": "a", "text": "Reyes, jueces, comerciantes, soldados y escribas.", "feedback": "Esa lista no aparece en Efesios 4:11; vuelve a revisar los cinco ministerios mencionados." },
+        { "id": "b", "text": "Apóstoles, profetas, evangelistas, pastores y maestros.", "feedback": "Bien. Efesios 4:11-12 enumera esos ministerios para capacitar a los santos y edificar el cuerpo de Cristo." },
+        { "id": "c", "text": "Solo apóstoles, sin ninguna otra función en la iglesia.", "feedback": "Efesios 4:11 menciona varias funciones además de los apóstoles." }
+      ],
+      "correctOptionId": "b"
+    }
+  ]
+}

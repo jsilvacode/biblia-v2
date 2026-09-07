@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "el-juicio",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-09-01",
+      "prompt": "Según Eclesiastés 12:14, ¿qué llevará Dios a juicio?",
+      "references": ["Eclesiastés 12:14"],
+      "options": [
+        { "id": "a", "text": "Solo las acciones públicas que otros recuerdan.", "feedback": "Eclesiastés 12:14 incluye también lo escondido, no solamente lo público." },
+        { "id": "b", "text": "Toda acción, junto con todo lo escondido, sea bueno o malo.", "feedback": "Bien. Eclesiastés 12:14 presenta el juicio de toda acción, incluso lo escondido." },
+        { "id": "c", "text": "Únicamente las acciones malas, nunca las buenas.", "feedback": "El versículo menciona expresamente tanto lo bueno como lo malo." }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q-09-03",
+      "prompt": "¿A quién dio el Padre todo el juicio, según Juan 5:22?",
+      "references": ["Juan 5:22"],
+      "options": [
+        { "id": "a", "text": "Al Hijo.", "feedback": "Bien. Juan 5:22 afirma que el Padre dio todo el juicio al Hijo." },
+        { "id": "b", "text": "A los ángeles.", "feedback": "Juan 5:22 no entrega el juicio a los ángeles; identifica al Hijo como quien lo recibió." },
+        { "id": "c", "text": "A cada persona para que se juzgue únicamente a sí misma.", "feedback": "El versículo atribuye todo el juicio al Hijo, no a cada persona por separado." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-09-06",
+      "prompt": "¿Quién es nuestro abogado delante del Padre, según 1 Juan 2:1?",
+      "references": ["1 Juan 2:1"],
+      "options": [
+        { "id": "a", "text": "Cualquier creyente que nunca haya pecado.", "feedback": "1 Juan 2:1 no designa a otro creyente; da el nombre y la cualidad del abogado." },
+        { "id": "b", "text": "Un ángel sin nombre.", "feedback": "El versículo no menciona a un ángel como abogado delante del Padre." },
+        { "id": "c", "text": "Jesucristo el justo.", "feedback": "Bien. 1 Juan 2:1 identifica a Jesucristo el justo como nuestro abogado delante del Padre." }
+      ],
+      "correctOptionId": "c"
+    }
+  ]
+}

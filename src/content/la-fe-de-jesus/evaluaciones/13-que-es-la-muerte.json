@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "que-es-la-muerte",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-13-01",
+      "prompt": "¿Cómo llegó el hombre a ser un ser viviente, según Génesis 2:7?",
+      "references": ["Génesis 2:7"],
+      "options": [
+        { "id": "a", "text": "Por la unión de dos personas ya existentes.", "feedback": "Génesis 2:7 describe la formación del primer hombre a partir del polvo y el aliento de vida de Dios." },
+        { "id": "b", "text": "Al recibir solamente una forma de polvo, sin aliento de vida.", "feedback": "El pasaje incluye tanto el cuerpo formado del polvo como el aliento de vida soplado por Dios." },
+        { "id": "c", "text": "Dios lo formó del polvo y sopló en él aliento de vida.", "feedback": "Bien. Génesis 2:7 presenta juntos el polvo de la tierra y el aliento de vida dado por Dios." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-13-03",
+      "prompt": "¿Con qué comparó Jesús la muerte de Lázaro en Juan 11:11 y 13?",
+      "references": ["Juan 11:11", "Juan 11:13"],
+      "options": [
+        { "id": "a", "text": "Con el sueño.", "feedback": "Bien. Jesús dijo que Lázaro dormía, y Juan 11:13 aclara que hablaba de su muerte." },
+        { "id": "b", "text": "Con un viaje a una ciudad lejana.", "feedback": "Juan 11:11 usa la imagen de dormir, no la de un viaje a otra ciudad." },
+        { "id": "c", "text": "Con una enfermedad de la que Lázaro nunca despertaría.", "feedback": "Jesús dijo que iba a despertarlo, y el relato aclara que hablaba de la muerte de Lázaro." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-13-04",
+      "prompt": "¿Qué saben los muertos, según Eclesiastés 9:5-6?",
+      "references": ["Eclesiastés 9:5-6"],
+      "options": [
+        { "id": "a", "text": "Conocen todo lo que sucede debajo del sol.", "feedback": "Eclesiastés 9:5-6 dice que ya no tienen parte en lo que se hace debajo del sol." },
+        { "id": "b", "text": "No saben nada y ya no participan de lo que se hace en este mundo.", "feedback": "Bien. Eclesiastés 9:5-6 niega conciencia y participación de los muertos en lo que sucede debajo del sol." },
+        { "id": "c", "text": "Saben más que los vivos y conservan las mismas emociones activas.", "feedback": "El pasaje afirma que los muertos no saben nada y que su amor, odio y envidia han desaparecido." }
+      ],
+      "correctOptionId": "b"
+    }
+  ]
+}

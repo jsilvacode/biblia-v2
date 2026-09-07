@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { useI18n } from '../../i18n'
-import { getStudyLesson, studyLessons } from './studyContent'
+import { studyLessons } from './studyContent'
+import { getLessonAccess, getNextPendingLesson } from './studyAccess'
 import { useStudyProgress } from './studyProgress'
 import styles from './Studies.module.css'
 
@@ -11,14 +12,16 @@ const OFFICIAL_SOURCE = 'https://downloads.adventistas.org/es/ministerio-persona
 
 function getLessonStatus(lesson, progress) {
   if (progress.completedLessonSlugs.includes(lesson.slug)) return 'completed'
+  if (!getLessonAccess(lesson.slug, progress, studyLessons).accessible) return 'locked'
   if (progress.lastLessonSlug === lesson.slug) return 'inProgress'
   return 'notStarted'
 }
 
 export default function StudyIndexPage() {
   const { locale, t } = useI18n()
-  const { progress, summary } = useStudyProgress()
-  const resumeLesson = getStudyLesson(summary.resumeSlug) ?? studyLessons[0]
+  const { isPersistent, progress, summary } = useStudyProgress()
+  const nextPendingLesson = getNextPendingLesson(progress, studyLessons)
+  const resumeLesson = nextPendingLesson ?? studyLessons[0]
   const resumeQuestion = progress.lastLessonSlug === resumeLesson.slug ? progress.lastQuestionId : null
   const resumePath = `${COURSE_PATH}/${resumeLesson.slug}${resumeQuestion ? `#${resumeQuestion}` : ''}`
 
@@ -35,7 +38,7 @@ export default function StudyIndexPage() {
           <span aria-hidden="true" className={styles.progressIcon}><Icon name="graduation" size={22} /></span>
           <span>
             <span className={styles.progressEyebrow} id="study-progress-title">{t('studies.progress')}</span>
-            <strong>{t('studies.progressCount', { completed: summary.completedLessons, total: summary.totalLessons })}</strong>
+            <strong>{summary.isComplete ? t('studies.courseCompleted') : t('studies.progressCount', { completed: summary.completedLessons, total: summary.totalLessons })}</strong>
           </span>
           <small>{t('studies.progressPercent', { percent: summary.percent })}</small>
         </div>
@@ -50,7 +53,7 @@ export default function StudyIndexPage() {
           <span style={{ width: `${summary.percent}%` }} />
         </div>
         <Link className={styles.primaryAction} to={resumePath}>
-          <span>{summary.hasStarted ? t('studies.continueStudy') : t('studies.startStudy')}</span>
+          <span>{summary.isComplete ? t('studies.reviewStudy') : summary.hasStarted ? t('studies.continueStudy') : t('studies.startStudy')}</span>
           <Icon name="arrowRight" size={17} />
         </Link>
       </section>
@@ -67,7 +70,19 @@ export default function StudyIndexPage() {
             const path = `${COURSE_PATH}/${lesson.slug}${returnQuestion ? `#${returnQuestion}` : ''}`
             return (
               <li key={lesson.slug}>
-                <Link className={styles.lessonCard} to={path}>
+                {status === 'locked' ? (
+                  <div className={`${styles.lessonCard} ${styles.lockedCard}`}>
+                    <span aria-hidden="true" className={styles.lessonNumber}>{String(lesson.order).padStart(2, '0')}</span>
+                    <span className={styles.lessonCopy}>
+                      <strong>{lesson.title}</strong>
+                      <small>{lesson.summary}</small>
+                      <small className={styles.lockReason}>{t('studies.completeFirst', { number: getLessonAccess(lesson.slug, progress, studyLessons).blockingLesson?.order })}</small>
+                    </span>
+                    <span className={`${styles.statusLabel} ${styles.locked}`}><Icon name="lock" size={14} />{t('studies.locked')}</span>
+                    <Icon className={styles.lessonArrow} name="lock" size={17} />
+                  </div>
+                ) : (
+                  <Link className={styles.lessonCard} to={path}>
                   <span aria-hidden="true" className={styles.lessonNumber}>{String(lesson.order).padStart(2, '0')}</span>
                   <span className={styles.lessonCopy}>
                     <strong>{lesson.title}</strong>
@@ -78,12 +93,16 @@ export default function StudyIndexPage() {
                     {t(`studies.${status}`)}
                   </span>
                   <Icon className={styles.lessonArrow} name="chevronRight" size={18} />
-                </Link>
+                  </Link>
+                )}
               </li>
             )
           })}
         </ol>
       </section>
+
+      <p className={styles.localProgressNote}><Icon name="info" size={15} /> {t('studies.localProgressNote')}</p>
+      {!isPersistent && <p className={styles.storageWarning} role="status"><Icon name="circleAlert" size={16} /> {t('studies.storageWarning')}</p>}
 
       <aside className={styles.credits}>
         <span aria-hidden="true"><Icon name="info" size={18} /></span>

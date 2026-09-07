@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "el-origen-del-pecado",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-06-01",
+      "prompt": "¿Dónde estalló la guerra entre Miguel y el dragón, según Apocalipsis 12:7-10?",
+      "references": ["Apocalipsis 12:7-10"],
+      "options": [
+        { "id": "a", "text": "En el jardín de Edén, únicamente entre seres humanos.", "feedback": "Apocalipsis 12:7 sitúa esta guerra en otro lugar y menciona a Miguel, al dragón y a sus ángeles." },
+        { "id": "b", "text": "En el cielo.", "feedback": "Bien. Apocalipsis 12:7 afirma que estalló una guerra en el cielo." },
+        { "id": "c", "text": "En una ciudad no identificada de la tierra.", "feedback": "El pasaje identifica expresamente el cielo como el escenario donde comenzó esta guerra." }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q-06-03",
+      "prompt": "¿Qué árbol prohibió Dios comer al ser humano en Génesis 2:15-17?",
+      "references": ["Génesis 2:15-17"],
+      "options": [
+        { "id": "a", "text": "Todo árbol que produjera fruto.", "feedback": "Génesis 2:16 permite comer de todos los árboles salvo uno; no prohíbe todos los frutos." },
+        { "id": "b", "text": "El árbol de la vida.", "feedback": "En este pasaje, la prohibición no recae sobre el árbol de la vida; vuelve a leer el nombre de Génesis 2:17." },
+        { "id": "c", "text": "El árbol del conocimiento del bien y del mal.", "feedback": "Bien. Génesis 2:17 prohíbe comer del árbol del conocimiento del bien y del mal." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-06-05",
+      "prompt": "¿Cómo define 1 Juan 3:4 el pecado?",
+      "references": ["1 Juan 3:4"],
+      "options": [
+        { "id": "a", "text": "Como infracción de la ley.", "feedback": "Bien. 1 Juan 3:4 declara que el pecado es infracción de la ley." },
+        { "id": "b", "text": "Como simple desconocimiento de una costumbre humana.", "feedback": "El versículo relaciona el pecado con infringir la ley, no con desconocer una costumbre humana." },
+        { "id": "c", "text": "Como una dificultad que no implica ninguna transgresión.", "feedback": "1 Juan 3:4 sí presenta el pecado como una transgresión: la infracción de la ley." }
+      ],
+      "correctOptionId": "a"
+    }
+  ]
+}

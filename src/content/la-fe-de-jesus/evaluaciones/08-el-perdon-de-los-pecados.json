@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "el-perdon-de-los-pecados",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-08-01",
+      "prompt": "Según 1 Pedro 2:24, ¿qué hizo Cristo con nuestros pecados?",
+      "references": ["1 Pedro 2:24"],
+      "options": [
+        { "id": "a", "text": "Los ignoró sin ocuparse de ellos.", "feedback": "1 Pedro 2:24 describe una acción concreta de Cristo frente a nuestros pecados; no dice que los ignoró." },
+        { "id": "b", "text": "Los dejó sobre cada persona sin ofrecer un cambio.", "feedback": "El pasaje afirma que Cristo mismo llevó nuestros pecados y señala una vida nueva para la justicia." },
+        { "id": "c", "text": "Los llevó en su cuerpo sobre el madero.", "feedback": "Bien. 1 Pedro 2:24 afirma que Cristo llevó nuestros pecados en su cuerpo sobre el madero." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-08-02",
+      "prompt": "¿Cómo somos justificados según Romanos 3:24?",
+      "references": ["Romanos 3:24"],
+      "options": [
+        { "id": "a", "text": "Mediante méritos acumulados por buenas obras.", "feedback": "Romanos 3:24 no presenta la justificación como un mérito acumulado; observa las palabras «gratuitamente» y «gracia»." },
+        { "id": "b", "text": "Gratuitamente por la gracia de Dios, mediante la redención en Cristo Jesús.", "feedback": "Bien. Romanos 3:24 atribuye la justificación a la gracia y a la redención que es en Cristo Jesús." },
+        { "id": "c", "text": "Por pertenecer a una comunidad determinada, sin relación con Cristo.", "feedback": "El versículo vincula la justificación con la redención en Cristo Jesús, no con pertenecer a una comunidad." }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q-08-09",
+      "prompt": "Según 1 Juan 1:9, ¿qué hace Dios cuando confesamos nuestros pecados?",
+      "references": ["1 Juan 1:9"],
+      "options": [
+        { "id": "a", "text": "Perdona nuestros pecados y nos limpia de toda maldad.", "feedback": "Bien. 1 Juan 1:9 presenta a Dios como fiel y justo para perdonar y limpiar." },
+        { "id": "b", "text": "Se niega a perdonar aunque haya confesión.", "feedback": "1 Juan 1:9 afirma lo contrario: Dios es fiel y justo para perdonar cuando confesamos." },
+        { "id": "c", "text": "Solo escucha la confesión, pero no ofrece limpieza.", "feedback": "El versículo promete tanto perdón como limpieza de toda maldad." }
+      ],
+      "correctOptionId": "a"
+    }
+  ]
+}

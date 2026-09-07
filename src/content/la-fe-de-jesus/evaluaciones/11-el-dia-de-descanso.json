@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "el-dia-de-descanso",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-11-01",
+      "prompt": "¿Qué día identifica Éxodo 20:8-11 como sábado para el Señor?",
+      "references": ["Éxodo 20:8-11"],
+      "options": [
+        { "id": "a", "text": "El séptimo día.", "feedback": "Bien. Éxodo 20:10 identifica el séptimo día como sábado para el Señor." },
+        { "id": "b", "text": "Cualquier día escogido sin relación con la semana.", "feedback": "Éxodo 20:9-10 distingue seis días de trabajo y señala específicamente el séptimo día." },
+        { "id": "c", "text": "El primer día después de seis días de reposo.", "feedback": "El mandamiento presenta seis días de trabajo seguidos por el reposo del séptimo día." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-11-02",
+      "prompt": "Según Marcos 2:27, ¿para quién fue hecho el sábado?",
+      "references": ["Marcos 2:27"],
+      "options": [
+        { "id": "a", "text": "Solo para los ángeles.", "feedback": "Marcos 2:27 no menciona a los ángeles como destinatarios del sábado." },
+        { "id": "b", "text": "Para que el ser humano existiera al servicio del sábado.", "feedback": "Jesús formula expresamente la relación en sentido contrario: el sábado fue hecho para el ser humano." },
+        { "id": "c", "text": "Para el ser humano.", "feedback": "Bien. Marcos 2:27 afirma que el sábado fue hecho para el hombre, y no el hombre para el sábado." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-11-04",
+      "prompt": "¿Qué acostumbraba hacer Jesús en sábado, según Lucas 4:16?",
+      "references": ["Lucas 4:16"],
+      "options": [
+        { "id": "a", "text": "Evitar toda reunión y permanecer apartado.", "feedback": "Lucas 4:16 muestra a Jesús entrando en una reunión de adoración, no evitándola." },
+        { "id": "b", "text": "Entrar en la sinagoga y levantarse para leer.", "feedback": "Bien. Lucas 4:16 presenta esta práctica como costumbre de Jesús en sábado." },
+        { "id": "c", "text": "Dedicar el día a los tributos públicos.", "feedback": "El pasaje no menciona tributos; describe a Jesús en la sinagoga, dispuesto a leer." }
+      ],
+      "correctOptionId": "b"
+    }
+  ]
+}

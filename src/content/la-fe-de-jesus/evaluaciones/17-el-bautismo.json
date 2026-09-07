@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "el-bautismo",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-17-01",
+      "prompt": "¿Quién dio la comisión de hacer discípulos y bautizarlos en Mateo 28:18-20?",
+      "references": ["Mateo 28:18-20"],
+      "options": [
+        { "id": "a", "text": "Jesús.", "feedback": "Bien. Mateo 28:18-20 presenta a Jesús dando la comisión de hacer discípulos, bautizar y enseñar." },
+        { "id": "b", "text": "Un gobernante romano.", "feedback": "La comisión aparece en palabras de Jesús, quien declara haber recibido toda autoridad." },
+        { "id": "c", "text": "Una persona anónima sin autoridad declarada.", "feedback": "Mateo 28:18 identifica a Jesús como quien habla y declara que toda autoridad le ha sido dada." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-17-04",
+      "prompt": "¿Qué dones asocia Hechos 2:38 con el arrepentimiento y el bautismo?",
+      "references": ["Hechos 2:38"],
+      "options": [
+        { "id": "a", "text": "Riqueza material y ausencia de dificultades.", "feedback": "Hechos 2:38 no promete riqueza ni una vida sin dificultades; menciona dos dones espirituales." },
+        { "id": "b", "text": "Reconocimiento público y autoridad política.", "feedback": "El versículo no habla de reconocimiento ni poder político; revisa qué recibe la persona arrepentida y bautizada." },
+        { "id": "c", "text": "Perdón de los pecados y el don del Espíritu Santo.", "feedback": "Bien. Hechos 2:38 relaciona el arrepentimiento y el bautismo con el perdón y el don del Espíritu Santo." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-17-06",
+      "prompt": "¿Qué nueva manera de vivir simboliza el bautismo, según Romanos 6:4?",
+      "references": ["Romanos 6:4"],
+      "options": [
+        { "id": "a", "text": "Volver sin cambios a la vida anterior.", "feedback": "Romanos 6:4 contrasta la sepultura con Cristo con el andar en una vida nueva." },
+        { "id": "b", "text": "Andar en novedad de vida.", "feedback": "Bien. Romanos 6:4 relaciona el bautismo, la muerte y resurrección de Cristo con andar en novedad de vida." },
+        { "id": "c", "text": "Apartarse de la resurrección de Cristo.", "feedback": "El pasaje usa la resurrección de Cristo como base para la novedad de vida, no para apartarse de ella." }
+      ],
+      "correctOptionId": "b"
+    }
+  ]
+}

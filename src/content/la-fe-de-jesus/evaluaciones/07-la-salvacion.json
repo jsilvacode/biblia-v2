@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "la-salvacion",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-07-03",
+      "prompt": "Según Juan 3:16, ¿qué hizo Dios por amor al mundo?",
+      "references": ["Juan 3:16"],
+      "options": [
+        { "id": "a", "text": "Dio a su Hijo unigénito para ofrecer vida eterna a quien cree en él.", "feedback": "Bien. Juan 3:16 une el amor de Dios, la entrega de su Hijo y la vida eterna para quien cree." },
+        { "id": "b", "text": "Abandonó al mundo sin ofrecerle salvación.", "feedback": "Juan 3:16 enseña lo contrario: Dios actuó por amor y dio a su Hijo." },
+        { "id": "c", "text": "Prometió vida eterna sin relación con su Hijo.", "feedback": "El versículo vincula expresamente la vida eterna con creer en el Hijo que Dios dio." }
+      ],
+      "correctOptionId": "a"
+    },
+    {
+      "id": "q-07-04",
+      "prompt": "¿Para qué vino el Hijo del Hombre, según Lucas 19:10?",
+      "references": ["Lucas 19:10"],
+      "options": [
+        { "id": "a", "text": "Para evitar a quienes se habían perdido.", "feedback": "Lucas 19:10 presenta a Jesús acercándose a lo perdido, no evitándolo." },
+        { "id": "b", "text": "Para buscar y salvar lo que se había perdido.", "feedback": "Bien. Lucas 19:10 resume así la misión del Hijo del Hombre." },
+        { "id": "c", "text": "Para buscar únicamente a quienes no necesitaban ayuda.", "feedback": "El versículo identifica como objeto de su misión precisamente a lo que se había perdido." }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q-07-05",
+      "prompt": "¿Qué afirma Hebreos 4:15 acerca de Jesús frente a la tentación?",
+      "references": ["Hebreos 4:15"],
+      "options": [
+        { "id": "a", "text": "Que nunca enfrentó tentaciones ni debilidades humanas.", "feedback": "Hebreos 4:15 afirma que fue tentado en todo como nosotros, por lo que conoce nuestras debilidades." },
+        { "id": "b", "text": "Que fue tentado y cedió en algunas ocasiones.", "feedback": "El pasaje dice que fue tentado como nosotros, pero añade una diferencia decisiva: fue sin pecado." },
+        { "id": "c", "text": "Que fue tentado como nosotros, pero sin pecado.", "feedback": "Bien. Hebreos 4:15 presenta a Jesús como compasivo con nuestras debilidades y, a la vez, sin pecado." }
+      ],
+      "correctOptionId": "c"
+    }
+  ]
+}

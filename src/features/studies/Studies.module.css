@@ -223,6 +223,25 @@
   color: var(--accent-blue-deep);
 }
 
+.statusLabel.locked {
+  background: color-mix(in srgb, var(--surface-soft) 88%, var(--border));
+}
+
+.lockedCard {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.lockedCard:hover {
+  padding-inline: 0.25rem;
+  background: transparent;
+}
+
+.lockReason {
+  color: var(--ink) !important;
+  font-weight: 650;
+}
+
 .lessonArrow {
   color: var(--ink-muted);
 }
@@ -425,6 +444,132 @@
   padding: 0 0 0.8rem clamp(0rem, 2vw, 3.1rem);
 }
 
+.questionCheck {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.7rem 0 1rem;
+  padding: clamp(0.9rem, 3vw, 1.15rem);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface-raised) 97%, var(--accent-soft));
+}
+
+.questionCheck fieldset {
+  display: grid;
+  min-width: 0;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.questionCheck legend {
+  width: 100%;
+  color: var(--ink);
+  font-family: var(--font-reading);
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.questionCheck legend:focus-visible,
+.answerOption:has(input:focus-visible) {
+  outline: 3px solid color-mix(in srgb, var(--accent-blue) 54%, transparent);
+  outline-offset: 3px;
+}
+
+.checkHint {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+}
+
+.answerOptions {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.answerOption {
+  display: grid;
+  min-height: 44px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--border) 74%, transparent);
+  border-radius: 0.75rem;
+  background: var(--surface-raised);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.answerOption:has(input:checked) {
+  border-color: color-mix(in srgb, var(--accent-blue) 55%, var(--border));
+  background: color-mix(in srgb, var(--surface-celeste) 32%, var(--surface-raised));
+}
+
+.answerOption.correct {
+  border-color: color-mix(in srgb, var(--accent) 62%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 42%, var(--surface-raised));
+}
+
+.answerOption.incorrect {
+  border-color: color-mix(in srgb, #b4534b 62%, var(--border));
+  background: color-mix(in srgb, #b4534b 10%, var(--surface-raised));
+}
+
+.answerOption input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--accent-deep);
+}
+
+.answerState {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  color: var(--ink-muted);
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+.checkAnswer,
+.completeButton,
+.retryButton {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0.55rem 0.9rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent-deep);
+  color: var(--surface-raised);
+  font-size: 0.78rem;
+  font-weight: 720;
+}
+
+.checkAnswer:disabled,
+.completeButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.answerFeedback {
+  min-height: 1.7rem;
+}
+
+.answerFeedback p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.answerFeedback strong {
+  color: var(--ink);
+}
+
 .completionPanel {
   display: flex;
   align-items: center;
@@ -448,6 +593,7 @@
 
 .completionPanel > div {
   display: grid;
+  width: 100%;
   gap: 0.15rem;
 }
 
@@ -464,6 +610,49 @@
   color: var(--accent-deep);
   font-size: 0.74rem;
   font-weight: 720;
+}
+
+.completionPanel p {
+  margin: 0.12rem 0;
+  color: var(--ink-muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.completionPanel .completeButton {
+  min-height: 44px;
+  margin-top: 0.55rem;
+  padding: 0.55rem 0.9rem;
+  background: var(--accent-deep);
+  color: var(--surface-raised);
+}
+
+.pendingQuestionButton {
+  min-height: 36px;
+  margin: 0.15rem 0 0.45rem;
+  text-align: left;
+}
+
+.readingConfirmation {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.45rem;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.readingConfirmation input {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--accent-deep);
+}
+
+.requirementsMessage {
+  font-weight: 650;
 }
 
 .completionPanel.isCompleted {
@@ -487,6 +676,70 @@
   border: 1px solid color-mix(in srgb, var(--border) 56%, transparent);
   border-radius: 0.9rem;
   background: color-mix(in srgb, var(--surface-raised) 97%, var(--surface-celeste));
+}
+
+.lockedNavigation {
+  display: flex;
+  min-height: 4.5rem;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  padding: 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--border) 56%, transparent);
+  border-radius: 0.9rem;
+  background: var(--surface-soft);
+  color: var(--ink-muted);
+  text-align: right;
+}
+
+.lockedNavigation span {
+  display: grid;
+}
+
+.lockedLesson {
+  display: grid;
+  max-width: 36rem;
+  justify-items: start;
+  gap: 0.8rem;
+  margin-top: clamp(2rem, 8vw, 5rem);
+  padding: clamp(1.2rem, 5vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: 1.15rem;
+  background: var(--surface-raised);
+}
+
+.lockedLesson > svg {
+  color: var(--accent-deep);
+}
+
+.lockedLesson h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 3rem);
+  font-weight: 500;
+}
+
+.lockedLesson > p:not(.progressEyebrow) {
+  margin: 0;
+  color: var(--ink-muted);
+  line-height: 1.55;
+}
+
+.localProgressNote,
+.storageWarning {
+  display: flex;
+  width: min(100%, 52rem);
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin: -0.4rem 0 0;
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.storageWarning {
+  margin-top: 0.8rem;
+  color: #9a463e;
 }
 
 .lessonNavigation > a:last-child {
@@ -551,6 +804,14 @@
 
   .lessonNavigation > span {
     display: none;
+  }
+
+  .answerOption {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .answerState {
+    grid-column: 2;
   }
 }
 

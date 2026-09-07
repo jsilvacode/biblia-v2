@@ -9,7 +9,7 @@ import { useReadingState } from '../reading/ReadingProvider'
 import { QuickNavigationSheet } from '../reader/QuickNavigationSheet'
 import { createVerseShareData, createVerseShareUrl, shareVerse } from '../reader/shareVerse'
 import { useSettings } from '../settings/SettingsProvider'
-import { useStudyProgress } from '../studies/studyProgress'
+import { useStudyProgressSummary } from '../studies/useStudyProgressSummary'
 import { formatPromiseReference } from './dailyPromise'
 import { HomeHeader } from './HomeHeader'
 import { useDailyPromise } from './useDailyPromise'
@@ -52,7 +52,7 @@ export default function HomePage() {
   const { locale, t } = useI18n()
   const { lastRead } = useReadingState()
   const { settings } = useSettings()
-  const { summary: studySummary } = useStudyProgress()
+  const studySummary = useStudyProgressSummary()
   const navigate = useNavigate()
   const { promise, status: promiseStatus, text: promiseText } = useDailyPromise(settings.bibleVersion)
   const [isQuickNavigationOpen, setIsQuickNavigationOpen] = useState(false)

@@ -1,0 +1,39 @@
+{
+  "lessonSlug": "la-oracion-y-la-fe",
+  "revision": 1,
+  "checkpoints": [
+    {
+      "id": "q-03-04",
+      "prompt": "Según Juan 14:13, ¿en nombre de quién deben hacerse las peticiones?",
+      "references": ["Juan 14:13"],
+      "options": [
+        { "id": "a", "text": "En el nombre de cualquier discípulo destacado.", "feedback": "Juan 14:13 no dirige las peticiones al nombre de un discípulo; identifica quién dice «en mi nombre»." },
+        { "id": "b", "text": "En el nombre de Jesús.", "feedback": "Bien. Jesús enseña en Juan 14:13 a pedir en su nombre para que el Padre sea glorificado en el Hijo." },
+        { "id": "c", "text": "Sin referencia a ninguna persona.", "feedback": "Juan 14:13 sí señala expresamente un nombre para las peticiones: el de quien está hablando." }
+      ],
+      "correctOptionId": "b"
+    },
+    {
+      "id": "q-03-06",
+      "prompt": "Según Hebreos 11:6, ¿qué debe creer quien se acerca a Dios?",
+      "references": ["Hebreos 11:6"],
+      "options": [
+        { "id": "a", "text": "Que la fe hace innecesario buscar a Dios.", "feedback": "Hebreos 11:6 habla precisamente de quienes buscan a Dios y de cómo él responde a esa búsqueda." },
+        { "id": "b", "text": "Que basta con acercarse sin creer que Dios existe.", "feedback": "El pasaje señala explícitamente que quien se acerca a Dios debe creer que él existe." },
+        { "id": "c", "text": "Que Dios existe y recompensa a quienes lo buscan.", "feedback": "Bien. Hebreos 11:6 une la fe en la existencia de Dios con la confianza en que recompensa a quienes lo buscan." }
+      ],
+      "correctOptionId": "c"
+    },
+    {
+      "id": "q-03-07",
+      "prompt": "Según Romanos 10:17, ¿de dónde viene la fe?",
+      "references": ["Romanos 10:17"],
+      "options": [
+        { "id": "a", "text": "Del oír la palabra de Cristo.", "feedback": "Bien. Romanos 10:17 vincula la fe con el oír, y el oír con la palabra de Cristo." },
+        { "id": "b", "text": "De evitar toda enseñanza acerca de Cristo.", "feedback": "Romanos 10:17 enseña lo contrario: la fe se relaciona con oír la palabra de Cristo." },
+        { "id": "c", "text": "De confiar únicamente en las propias impresiones.", "feedback": "El versículo sitúa el origen de la fe en oír la palabra de Cristo, no solo en impresiones personales." }
+      ],
+      "correctOptionId": "a"
+    }
+  ]
+}
