@@ -8,24 +8,27 @@ import {
 
 const chapterCache = new Map()
 const chapterRequests = new Map()
+const commentaryCache = new Map()
+const commentaryRequests = new Map()
 const MAX_CHAPTER_CACHE_ENTRIES = 32
+const MAX_COMMENTARY_CACHE_ENTRIES = 8
 
 function chapterKey(versionId, bookId, chapter) {
   return `${versionId}:${bookId}:${chapter}`
 }
 
-function readCachedChapter(key) {
-  if (!chapterCache.has(key)) return null
-  const chapter = chapterCache.get(key)
-  chapterCache.delete(key)
-  chapterCache.set(key, chapter)
-  return chapter
+function readCached(cache, key) {
+  if (!cache.has(key)) return null
+  const value = cache.get(key)
+  cache.delete(key)
+  cache.set(key, value)
+  return value
 }
 
-function rememberChapter(key, chapter) {
-  chapterCache.set(key, chapter)
-  while (chapterCache.size > MAX_CHAPTER_CACHE_ENTRIES) {
-    chapterCache.delete(chapterCache.keys().next().value)
+function remember(cache, key, value, maximumEntries) {
+  cache.set(key, value)
+  while (cache.size > maximumEntries) {
+    cache.delete(cache.keys().next().value)
   }
 }
 
@@ -92,7 +95,7 @@ export async function loadChapter({ versionId, bookId, chapter, signal }) {
   if (!book) throw new Error(`Unknown book: ${bookId}`)
 
   const key = chapterKey(versionId, bookId, chapter)
-  const cachedChapter = readCachedChapter(key)
+  const cachedChapter = readCached(chapterCache, key)
   if (cachedChapter) return cachedChapter
 
   const url = `/data/${versionId}/${book.file}/${chapter}.json`
@@ -101,7 +104,7 @@ export async function loadChapter({ versionId, bookId, chapter, signal }) {
     request = fetchJsonWithOfflineFallback(url)
       .then(normalizeChapter)
       .then((data) => {
-        rememberChapter(key, data)
+        remember(chapterCache, key, data, MAX_CHAPTER_CACHE_ENTRIES)
         return data
       })
       .finally(() => {
@@ -114,18 +117,24 @@ export async function loadChapter({ versionId, bookId, chapter, signal }) {
 }
 
 export async function loadCommentary({ bookId, chapter, signal }) {
+  const key = `${bookId}:${chapter}`
+  const cachedCommentary = readCached(commentaryCache, key)
+  if (cachedCommentary) return cachedCommentary
+
   const url = `/data/cba/${bookId}/${chapter}.json`
-  let response
-  try {
-    response = await fetch(url, { signal })
-  } catch (error) {
-    response = await fromOfflineCache(url)
-    if (!response) throw error
+  let request = commentaryRequests.get(key)
+  if (!request) {
+    request = fetchJsonWithOfflineFallback(url)
+      .then(normalizeCommentaryData)
+      .then((data) => {
+        remember(commentaryCache, key, data, MAX_COMMENTARY_CACHE_ENTRIES)
+        return data
+      })
+      .finally(() => {
+        commentaryRequests.delete(key)
+      })
+    commentaryRequests.set(key, request)
   }
-  if (!response.ok) {
-    const cachedResponse = await fromOfflineCache(url)
-    if (cachedResponse) response = cachedResponse
-  }
-  if (!response.ok) throw new Error(`Unable to load commentary (${response.status})`)
-  return normalizeCommentaryData(await response.json())
+
+  return waitForRequest(request, signal)
 }

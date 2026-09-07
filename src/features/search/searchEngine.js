@@ -8,14 +8,23 @@ export function normalizeSearchText(value) {
     .trim()
 }
 
-function makeSnippet(text, normalizedQuery) {
-  const normalizedText = normalizeSearchText(text)
+function makeSnippet(text, normalizedText, normalizedQuery) {
   const index = normalizedText.indexOf(normalizedQuery)
   if (index < 0 || text.length <= 170) return text
 
   const start = Math.max(0, index - 62)
   const end = Math.min(text.length, index + normalizedQuery.length + 92)
   return `${start ? '…' : ''}${text.slice(start, end)}${end < text.length ? '…' : ''}`
+}
+
+export function prepareSearchEntries(entries) {
+  return entries.map(([book, chapter, verse, text]) => [
+    book,
+    chapter,
+    verse,
+    text,
+    normalizeSearchText(text),
+  ])
 }
 
 export function searchEntries(entries, query, limit = 100) {
@@ -25,10 +34,10 @@ export function searchEntries(entries, query, limit = 100) {
   const terms = normalizedQuery.split(' ')
   const results = []
 
-  for (const [book, chapter, verse, text] of entries) {
-    const normalizedText = normalizeSearchText(text)
+  for (const [book, chapter, verse, text, preparedText] of entries) {
+    const normalizedText = preparedText ?? normalizeSearchText(text)
     if (!terms.every((term) => normalizedText.includes(term))) continue
-    results.push({ book, chapter, verse, text: makeSnippet(text, normalizedQuery) })
+    results.push({ book, chapter, verse, text: makeSnippet(text, normalizedText, normalizedQuery) })
     if (results.length === limit) break
   }
 

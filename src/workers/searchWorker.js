@@ -1,4 +1,4 @@
-import { searchEntries } from '../features/search/searchEngine'
+import { prepareSearchEntries, searchEntries } from '../features/search/searchEngine'
 
 let cachedIndex = null
 let cachedTranslationId = null
@@ -15,8 +15,8 @@ async function loadIndex(translationId) {
     })
     .then((index) => {
       cachedTranslationId = translationId
-      cachedIndex = index.entries
-      return index.entries
+      cachedIndex = prepareSearchEntries(index.entries)
+      return cachedIndex
     })
 
   activeLoad = { promise, translationId }

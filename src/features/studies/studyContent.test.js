@@ -1,13 +1,18 @@
+import manifest from '../../content/la-fe-de-jesus/manifest.json'
 import { resolveThematicReference } from '../topics/topicReference'
 import {
   getStudyLesson,
-  parseStudyLesson,
+  loadStudyLesson,
   studyLessons,
-  validateStudyContent,
 } from './studyContent'
+import { parseStudyLesson, validateStudyLessons } from './studyParser'
 
-function getQuestions() {
-  return studyLessons.flatMap((lesson) => (
+async function getLessonsWithContent() {
+  return Promise.all(studyLessons.map(({ slug }) => loadStudyLesson(slug)))
+}
+
+function getQuestions(lessons) {
+  return lessons.flatMap((lesson) => (
     lesson.sections.flatMap((section) => section.questions)
   ))
 }
@@ -21,14 +26,15 @@ describe('La Fe de Jesús study content', () => {
 
     expect(getStudyLesson('quien-es-dios')).toBe(studyLessons[0])
     expect(getStudyLesson('contenido-inexistente')).toBeNull()
-    expect(studyLessons[0].sections[0].id).toBe('s-01-dios')
-    expect(studyLessons[0].sections[0].questions[2].id).toBe('q-01-03')
   })
 
-  it('parses the complete set of questions and references', () => {
-    const questions = getQuestions()
+  it('loads lesson details lazily and parses the complete set of references', async () => {
+    const lessons = await getLessonsWithContent()
+    const questions = getQuestions(lessons)
     const references = questions.flatMap((question) => question.references)
 
+    expect(lessons[0].sections[0].id).toBe('s-01-dios')
+    expect(lessons[0].sections[0].questions[2].id).toBe('q-01-03')
     expect(questions).toHaveLength(174)
     expect(references).toHaveLength(188)
   })
@@ -40,8 +46,9 @@ describe('La Fe de Jesús study content', () => {
     }
   })
 
-  it('resolves every Bible reference with the existing thematic resolver', () => {
-    const unresolved = studyLessons.flatMap((lesson) => (
+  it('resolves every Bible reference with the existing thematic resolver', async () => {
+    const lessons = await getLessonsWithContent()
+    const unresolved = lessons.flatMap((lesson) => (
       lesson.sections.flatMap((section) => section.questions.flatMap((question) => (
         question.references
           .filter((reference) => !resolveThematicReference(reference))
@@ -52,8 +59,8 @@ describe('La Fe de Jesús study content', () => {
     expect(unresolved).toEqual([])
   })
 
-  it('omits editorial scaffold from the parsed model', () => {
-    const serialized = JSON.stringify(studyLessons)
+  it('omits editorial scaffold from the parsed model', async () => {
+    const serialized = JSON.stringify(await getLessonsWithContent())
 
     for (const scaffoldLabel of [
       'Objetivo',
@@ -122,8 +129,8 @@ Texto que tampoco debe exponerse.
     })
   })
 
-  it('validates the canonical content repository', () => {
-    expect(validateStudyContent()).toEqual({
+  it('validates the canonical content repository', async () => {
+    expect(validateStudyLessons(await getLessonsWithContent(), manifest)).toEqual({
       valid: true,
       errors: [],
       totals: {

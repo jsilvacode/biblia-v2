@@ -53,7 +53,7 @@ describe('share page endpoint', () => {
     expect(body).toContain('https://biblia-v2.vercel.app/read/43/3/16?v=nbla')
     expect(body).toContain('Porque de tal manera amó Dios al mundo.')
     expect(body).toContain('image/jpeg')
-    expect(body).toContain('card=10')
+    expect(body).toContain('card=11')
     expect(fetch).not.toHaveBeenCalled()
   })
 })

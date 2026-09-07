@@ -53,23 +53,34 @@ describe('share metadata', () => {
     expect(metadata.text).toBe('No temas bajar a Egipto, Yo descenderé contigo.')
     expect(metadata.canonicalUrl).toBe('https://biblia-v2.vercel.app/read/1/46/3?v=nbla&end=4')
     expect(metadata.imageUrl).toContain('https://biblia-v2.vercel.app/api/og-card?')
-    expect(metadata.imageUrl).toContain('card=10')
+    expect(metadata.imageUrl).toContain('card=11')
     expect(metadata.imageType).toBe('image/jpeg')
     const html = injectShareMetadata('<!-- share-meta:start --><!-- share-meta:end -->', metadata)
     expect(html).toContain('<link rel="canonical" href="https://biblia-v2.vercel.app/read/1/46/3?v=nbla&amp;end=4"')
-    expect(html).toContain('<meta property="og:url" content="https://biblia-v2.vercel.app/read/1/46/3?v=nbla&amp;end=4&amp;share=10"')
+    expect(html).toContain('<meta property="og:url" content="https://biblia-v2.vercel.app/read/1/46/3?v=nbla&amp;end=4&amp;share=11"')
     expect(fetchImpl).toHaveBeenCalledWith(new URL('https://biblia-v2.vercel.app/data/nbla/01_genesis/46.json'))
+  })
+
+  it('applies the same corpus repairs used by the reader to social metadata', async () => {
+    const metadata = await loadVerseShareMetadata({
+      loadChapter: async () => [{ text: 'Él habló delPadreque está en los cielos.', verse: 14 }],
+      origin: 'https://www.santabiblia.cloud',
+      query: { book: '40', chapter: '18', v: 'nbla', verse: '14' },
+    })
+
+    expect(metadata.text).toBe('Él habló del Padre que está en los cielos.')
+    expect(metadata.description).toBe('Él habló del Padre que está en los cielos.')
   })
 
   it('uses the current branded card revision for the application preview', () => {
     expect(createAppShareMetadata('https://www.santabiblia.cloud').imageUrl)
-      .toBe('https://www.santabiblia.cloud/og-share.jpg?v=10')
+      .toBe('https://www.santabiblia.cloud/og-share.jpg?v=11')
   })
 
   it('keeps the static SPA preview on the live V2 card endpoint', async () => {
     const html = await readFile('index.html', 'utf8')
 
-    expect(html).toContain('https://www.santabiblia.cloud/og-share.jpg?v=10')
+    expect(html).toContain('https://www.santabiblia.cloud/og-share.jpg?v=11')
     expect(html).not.toContain('biblia-v2.vercel.app/api/og-card')
   })
 

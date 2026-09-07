@@ -10,7 +10,7 @@ import {
   getVersion,
 } from '../bible/catalog'
 import { loadChapter } from '../bible/bibleRepository'
-import { useReading } from '../reading/ReadingProvider'
+import { useReadingActions } from '../reading/ReadingProvider'
 import { useSaved } from '../saved/SavedProvider'
 import { SettingsPopover } from '../settings/SettingsPopover'
 import { useSettings } from '../settings/SettingsProvider'
@@ -46,7 +46,7 @@ export default function ReaderPage() {
   const navigate = useNavigate()
   const { locale, t } = useI18n()
   const { settings, updateSetting } = useSettings()
-  const { setLastRead } = useReading()
+  const { setLastRead } = useReadingActions()
   const { isBookmarked, isHighlighted, toggleBookmark, toggleHighlight } = useSaved()
   const [chapterResult, setChapterResult] = useState({ key: null, status: 'loading', data: [] })
   const [activeDialog, setActiveDialog] = useState(null)

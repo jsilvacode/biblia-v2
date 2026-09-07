@@ -5,7 +5,7 @@ import { useI18n } from '../../i18n'
 import { formatReference, getBook, getVersion } from '../bible/catalog'
 import { InstallInvitation } from '../install/InstallInvitation'
 import { getRpspPlanState } from '../plans/rpsp2026'
-import { useReading } from '../reading/ReadingProvider'
+import { useReadingState } from '../reading/ReadingProvider'
 import { QuickNavigationSheet } from '../reader/QuickNavigationSheet'
 import { createVerseShareData, createVerseShareUrl, shareVerse } from '../reader/shareVerse'
 import { useSettings } from '../settings/SettingsProvider'
@@ -50,7 +50,7 @@ function getReaderPath(reference) {
 
 export default function HomePage() {
   const { locale, t } = useI18n()
-  const { lastRead } = useReading()
+  const { lastRead } = useReadingState()
   const { settings } = useSettings()
   const { summary: studySummary } = useStudyProgress()
   const navigate = useNavigate()

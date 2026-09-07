@@ -203,6 +203,8 @@ export default {
     lessonCompleted: 'Lección completada',
     previousLesson: 'Lección anterior',
     nextLesson: 'Siguiente lección',
+    loading: 'Preparando la lección…',
+    loadError: 'No fue posible cargar esta lección. Inténtalo de nuevo.',
   },
   about: {
     title: 'Acerca de Santa Biblia',

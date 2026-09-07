@@ -3,7 +3,8 @@ import { getBook } from '../bible/catalog'
 
 const STORAGE_KEY = 'santa_biblia_v2_reading'
 const defaultReading = { book: 43, chapter: 3, verse: null, progress: 0, updatedAt: null }
-const ReadingContext = createContext(null)
+const ReadingStateContext = createContext(null)
+const ReadingActionsContext = createContext(null)
 
 function readLastRead() {
   try {
@@ -53,16 +54,28 @@ export function ReadingProvider({ children }) {
     })
   }, [])
 
-  const value = useMemo(() => ({
-    lastRead,
-    setLastRead,
-  }), [lastRead, setLastRead])
+  const stateValue = useMemo(() => ({ lastRead }), [lastRead])
+  const actionsValue = useMemo(() => ({ setLastRead }), [setLastRead])
 
-  return <ReadingContext.Provider value={value}>{children}</ReadingContext.Provider>
+  return (
+    <ReadingActionsContext.Provider value={actionsValue}>
+      <ReadingStateContext.Provider value={stateValue}>{children}</ReadingStateContext.Provider>
+    </ReadingActionsContext.Provider>
+  )
+}
+
+export function useReadingState() {
+  const context = useContext(ReadingStateContext)
+  if (!context) throw new Error('useReadingState must be used inside ReadingProvider')
+  return context
+}
+
+export function useReadingActions() {
+  const context = useContext(ReadingActionsContext)
+  if (!context) throw new Error('useReadingActions must be used inside ReadingProvider')
+  return context
 }
 
 export function useReading() {
-  const context = useContext(ReadingContext)
-  if (!context) throw new Error('useReading must be used inside ReadingProvider')
-  return context
+  return { ...useReadingState(), ...useReadingActions() }
 }

@@ -3,7 +3,7 @@ import { Link, Navigate, useLocation, useParams } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import { TopicPassage } from '../topics/TopicPassage.jsx'
-import { getStudyLesson } from './studyContent'
+import { getStudyLesson, loadStudyLesson } from './studyContent'
 import { useStudyProgress } from './studyProgress'
 import styles from './Studies.module.css'
 
@@ -59,7 +59,10 @@ export default function StudyLessonPage() {
   const location = useLocation()
   const { locale, t } = useI18n()
   const { progress, recordPosition, toggleLessonComplete } = useStudyProgress()
-  const lesson = getStudyLesson(lessonSlug)
+  const lessonSummary = getStudyLesson(lessonSlug)
+  const [lessonResult, setLessonResult] = useState({ slug: null, lesson: null, status: 'loading' })
+  const lesson = lessonResult.slug === lessonSlug ? lessonResult.lesson : null
+  const lessonStatus = lessonResult.slug === lessonSlug ? lessonResult.status : 'loading'
   const requestedQuestionId = location.hash ? decodeURIComponent(location.hash.slice(1)) : null
   const knownQuestionIds = useMemo(() => new Set(
     lesson?.sections.flatMap((section) => section.questions.map((question) => question.id)) ?? [],
@@ -69,6 +72,19 @@ export default function StudyLessonPage() {
     : progress.lastLessonSlug === lessonSlug && knownQuestionIds.has(progress.lastQuestionId)
       ? progress.lastQuestionId
       : null
+
+  useEffect(() => {
+    if (!lessonSummary) return undefined
+    let active = true
+    loadStudyLesson(lessonSlug)
+      .then((loadedLesson) => {
+        if (active) setLessonResult({ slug: lessonSlug, lesson: loadedLesson, status: 'ready' })
+      })
+      .catch(() => {
+        if (active) setLessonResult({ slug: lessonSlug, lesson: null, status: 'error' })
+      })
+    return () => { active = false }
+  }, [lessonSlug, lessonSummary])
 
   useEffect(() => {
     if (!lesson) return
@@ -89,7 +105,25 @@ export default function StudyLessonPage() {
     }
   }, [initialQuestionId])
 
-  if (!lesson) return <Navigate replace to={COURSE_PATH} />
+  if (!lessonSummary) return <Navigate replace to={COURSE_PATH} />
+
+  if (!lesson) {
+    return (
+      <div className={`page ${styles.studyLessonPage}`}>
+        <Link className={styles.backLink} to={COURSE_PATH}>
+          <Icon name="arrowLeft" size={17} />
+          <span>{t('studies.backToCourse')}</span>
+        </Link>
+        <article aria-busy={lessonStatus === 'loading'}>
+          <header className={styles.lessonHeader}>
+            <div className={styles.lessonMeta}><span>{t('studies.lessonNumber', { number: lessonSummary.order })}</span></div>
+            <h1>{lessonSummary.title}</h1>
+            <p aria-live="polite">{t(lessonStatus === 'error' ? 'studies.loadError' : 'studies.loading')}</p>
+          </header>
+        </article>
+      </div>
+    )
+  }
 
   const isCompleted = progress.completedLessonSlugs.includes(lesson.slug)
   const previousLesson = getStudyLesson(lesson.previous)

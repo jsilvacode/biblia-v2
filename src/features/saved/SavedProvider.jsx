@@ -36,12 +36,14 @@ export function SavedProvider({ children }) {
     return () => { active = false }
   }, [])
 
+  const bookmarkIds = useMemo(() => new Set(bookmarks.map(({ id }) => id)), [bookmarks])
+  const highlightIds = useMemo(() => new Set(highlights.map(({ id }) => id)), [highlights])
   const value = useMemo(() => ({
     bookmarks,
     highlights,
     isReady,
     isBookmarked(reference) {
-      return bookmarks.some((bookmark) => bookmark.id === bookmarkId(reference))
+      return bookmarkIds.has(bookmarkId(reference))
     },
     async toggleBookmark(reference) {
       await loadRef.current
@@ -56,7 +58,7 @@ export function SavedProvider({ children }) {
       await enqueueWrite(bookmarkWritesRef, () => savedStorage.writeBookmarks(next))
     },
     isHighlighted(reference) {
-      return highlights.some((highlight) => highlight.id === bookmarkId(reference))
+      return highlightIds.has(bookmarkId(reference))
     },
     async toggleHighlight(reference) {
       await loadRef.current
@@ -70,7 +72,7 @@ export function SavedProvider({ children }) {
       setHighlights(next)
       await enqueueWrite(highlightWritesRef, () => savedStorage.writeHighlights(next))
     },
-  }), [bookmarks, highlights, isReady])
+  }), [bookmarkIds, bookmarks, highlightIds, highlights, isReady])
 
   return <SavedContext.Provider value={value}>{children}</SavedContext.Provider>
 }

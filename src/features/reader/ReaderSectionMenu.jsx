@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useId, useRef } from 'react'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import {
@@ -8,86 +8,35 @@ import {
   readerFontScalePercentage,
 } from '../settings/readerFontScale'
 import { useSettings } from '../settings/SettingsProvider'
-
-const focusableSelector = 'a[href], button:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-function focusWithoutScrolling(element) {
-  if (!element || !element.isConnected || typeof element.focus !== 'function') return
-  element.focus({ preventScroll: true })
-}
+import { useAnchoredPopover } from './useAnchoredPopover'
 
 export function ReaderSectionMenu({ anchorRef, isOpen, onClose, onOpenSettings, returnFocusRef }) {
   const { t } = useI18n()
   const { settings, updateSetting } = useSettings()
   const menuRef = useRef(null)
-  const closeRef = useRef(onClose)
   const titleId = useId()
-  const [position, setPosition] = useState({ top: 8, left: 8 })
-
-  useEffect(() => { closeRef.current = onClose }, [onClose])
-
-  useEffect(() => {
-    if (!isOpen) return undefined
-    const returnFocusTarget = returnFocusRef ? returnFocusRef.current : document.activeElement
-    const updatePosition = () => {
-      const anchor = anchorRef?.current
-      if (!anchor) return
+  const position = useAnchoredPopover({
+    anchorRef,
+    isOpen,
+    onClose,
+    panelRef: menuRef,
+    resolvePosition: ({ anchor, panel }) => {
       const rect = anchor.getBoundingClientRect()
       const width = Math.min(304, window.innerWidth - 16)
-      const height = Math.min(420, menuRef.current?.offsetHeight ?? 280)
+      const height = Math.min(420, panel.offsetHeight || 280)
       const spaceBelow = window.innerHeight - rect.bottom - 8
       const spaceAbove = rect.top - 8
       const opensAbove = spaceBelow < height && spaceAbove > spaceBelow
       const top = opensAbove
         ? Math.max(8, rect.top - height - 8)
         : Math.min(rect.bottom + 8, Math.max(8, window.innerHeight - height - 8))
-      setPosition({
+      return {
         top: Math.round(top),
         left: Math.round(Math.max(8, Math.min(rect.right - width, window.innerWidth - width - 8))),
-      })
-    }
-    updatePosition()
-    const focusId = window.requestAnimationFrame(() => {
-      focusWithoutScrolling(menuRef.current?.querySelector('[data-dialog-initial-focus]') ?? menuRef.current?.querySelector(focusableSelector))
-    })
-    function handleKeyDown(event) {
-      if (event.key === 'Escape') {
-        event.preventDefault()
-        closeRef.current?.()
-        return
       }
-      if (event.key !== 'Tab' || !menuRef.current) return
-      const focusable = [...menuRef.current.querySelectorAll(focusableSelector)]
-      if (!focusable.length) return
-      const first = focusable[0]
-      const last = focusable[focusable.length - 1]
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault()
-        focusWithoutScrolling(last)
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault()
-        focusWithoutScrolling(first)
-      }
-    }
-    function handlePointerDown(event) {
-      if (menuRef.current?.contains(event.target) || anchorRef?.current?.contains(event.target)) return
-      closeRef.current?.()
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    document.addEventListener('pointerdown', handlePointerDown)
-    window.addEventListener('resize', updatePosition)
-    window.addEventListener('scroll', updatePosition, true)
-    const resizeObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(updatePosition) : null
-    if (menuRef.current) resizeObserver?.observe(menuRef.current)
-    return () => {
-      window.cancelAnimationFrame(focusId)
-      document.removeEventListener('keydown', handleKeyDown)
-      document.removeEventListener('pointerdown', handlePointerDown)
-      window.removeEventListener('resize', updatePosition)
-      window.removeEventListener('scroll', updatePosition, true)
-      resizeObserver?.disconnect()
-      window.requestAnimationFrame(() => focusWithoutScrolling(returnFocusTarget))
-    }
-  }, [anchorRef, isOpen, returnFocusRef])
+    },
+    returnFocusRef,
+  })
 
   if (!isOpen) return null
   const resolvedTheme = settings.theme === 'system'
@@ -103,7 +52,7 @@ export function ReaderSectionMenu({ anchorRef, isOpen, onClose, onOpenSettings, 
   }
 
   return (
-    <section aria-labelledby={titleId} className="reader-section-menu-popover" ref={menuRef} role="dialog" style={{ left: position.left, top: position.top }}>
+    <section aria-labelledby={titleId} className="reader-section-menu-popover" ref={menuRef} role="dialog" style={{ left: position?.left ?? 8, top: position?.top ?? 8 }}>
       <header className="reader-section-menu-popover__header">
         <button aria-label={t('common.back')} className="reader-dialog__back" onClick={onClose} type="button"><Icon name="arrowLeft" size="sm" /></button>
         <h2 id={titleId}>{t('reader.quickOptions')}</h2>

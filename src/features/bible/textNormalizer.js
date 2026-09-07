@@ -199,10 +199,12 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')
 }
 
-function replaceWholeWord(text, source, replacement) {
-  const pattern = new RegExp(`(^|[^\\p{L}\\p{N}])${escapeRegExp(source)}(?![\\p{L}\\p{N}])`, 'gu')
-  return text.replace(pattern, (_, prefix) => `${prefix}${replacement}`)
-}
+// Las reparaciones se aplican a cada versículo. Compilarlas una sola vez evita
+// volver a construir todas estas expresiones durante la lectura y el indexado.
+const compiledScriptureWordRepairs = [...scriptureWordRepairs].map(([source, replacement]) => ({
+  pattern: new RegExp(`(^|[^\\p{L}\\p{N}])${escapeRegExp(source)}(?![\\p{L}\\p{N}])`, 'gu'),
+  replacement,
+}))
 
 function normalizeQuoteArtifacts(text) {
   return text
@@ -236,8 +238,8 @@ export function normalizeScriptureText(value) {
   let text = normalizeDisplayText(value)
   if (typeof text !== 'string') return text
 
-  for (const [source, replacement] of scriptureWordRepairs) {
-    text = replaceWholeWord(text, source, replacement)
+  for (const { pattern, replacement } of compiledScriptureWordRepairs) {
+    text = text.replace(pattern, (_, prefix) => `${prefix}${replacement}`)
   }
 
   return text

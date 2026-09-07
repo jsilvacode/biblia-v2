@@ -60,4 +60,40 @@ describe('bible repository', () => {
     await expect(loadCommentary({ bookId: 1, chapter: 1 }))
       .resolves.toEqual({ 1: { b: [['p', 'kētos como.']] } })
   })
+
+  it('caches normalized commentary and shares concurrent requests', async () => {
+    const commentary = { 1: { b: [['p', 'Texto del comentario.']] } }
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify(commentary), { status: 200 }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const { loadCommentary } = await import('./bibleRepository')
+    const [first, second] = await Promise.all([
+      loadCommentary({ bookId: 43, chapter: 3 }),
+      loadCommentary({ bookId: 43, chapter: 3 }),
+    ])
+    const third = await loadCommentary({ bookId: 43, chapter: 3 })
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(second).toBe(first)
+    expect(third).toBe(first)
+  })
+
+  it('does not cancel shared commentary when one consumer aborts', async () => {
+    let finishRequest
+    const fetchMock = vi.fn(() => new Promise((resolve) => {
+      finishRequest = () => resolve(new Response(JSON.stringify({ 1: 'Texto.' }), { status: 200 }))
+    }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const { loadCommentary } = await import('./bibleRepository')
+    const controller = new AbortController()
+    const abortedLoad = loadCommentary({ bookId: 19, chapter: 119, signal: controller.signal })
+    const activeLoad = loadCommentary({ bookId: 19, chapter: 119 })
+    controller.abort()
+    finishRequest()
+
+    await expect(abortedLoad).rejects.toMatchObject({ name: 'AbortError' })
+    await expect(activeLoad).resolves.toEqual({ 1: 'Texto.' })
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
 })

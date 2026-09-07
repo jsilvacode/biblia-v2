@@ -1,6 +1,7 @@
 import books from '../../src/features/bible/data/books.json' with { type: 'json' }
 import versions from '../../src/features/bible/data/versions.json' with { type: 'json' }
 import { getLocalizedBookName } from '../../src/features/bible/bookNames.js'
+import { normalizeScriptureText } from '../../src/features/bible/textNormalizer.js'
 import { SOCIAL_CARD_REVISION } from '../../src/features/reader/socialCardConfig.js'
 
 const APP_QUOTE = 'Lámpara es a mis pies Tu palabra, y luz para mi camino.'
@@ -57,10 +58,7 @@ function normalizeVersion(value) {
 }
 
 function normalizeVerseText(value) {
-  return String(value ?? '')
-    .replace(/^\s*¶\s*/u, '')
-    .replace(/\s+/gu, ' ')
-    .trim()
+  return normalizeScriptureText(String(value ?? ''))
     .replace(/^[«»“”"]+\s*/u, '')
     .replace(/\s*[«»“”"]+(?=[.?!…]*$)/u, '')
 }
