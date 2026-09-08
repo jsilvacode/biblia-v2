@@ -88,6 +88,14 @@ export default function HomePage() {
     return () => window.clearTimeout(timeout)
   }, [promiseFeedback])
 
+  useEffect(() => {
+    if (promiseStatus === 'loading') return undefined
+
+    document.documentElement.dataset.santaBibliaReady = 'true'
+    window.dispatchEvent(new Event('santa-biblia:critical-ready'))
+    return undefined
+  }, [promiseStatus])
+
   function preloadReading(reference) {
     const key = `${settings.bibleVersion}:${reference.book}:${reference.chapter}`
     if (warmedReferences.has(key)) return
