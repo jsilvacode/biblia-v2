@@ -5,9 +5,9 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 import { AppProviders } from './AppProviders'
 import { AppRoutes } from './routes'
 
-const BOOT_SPLASH_MIN_MS = 900
+const BOOT_SPLASH_MIN_MS = 1300
 const BOOT_SPLASH_MAX_MS = 4500
-const BOOT_SPLASH_FADE_MS = 650
+const BOOT_SPLASH_FADE_MS = 700
 
 function redactAnalyticsQuery(event) {
   return {
