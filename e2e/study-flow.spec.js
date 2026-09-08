@@ -46,7 +46,11 @@ test('a reader advances sequentially, retries answers and keeps progress when re
   await expect(firstQuestion).toHaveAttribute('open', '')
   await expect(firstQuestion.getByRole('heading', { name: /Efesios 4:6/ })).toBeVisible()
 
-  const firstCheck = firstQuestion.locator('form')
+  const quickTest = page.getByRole('region', { name: /Test rápido|Quick test|Teste rápido/ })
+  await expect(quickTest).toBeVisible()
+  await expect(firstQuestion.locator('form')).toHaveCount(0)
+
+  const firstCheck = page.locator('#test-q-01-01 form')
   await firstCheck.getByRole('radio').first().check()
   await firstCheck.getByRole('button', { name: /Comprobar respuesta|Check answer|Conferir resposta/ }).click()
   await expect(firstCheck.getByText(/Aún no|Not yet|Ainda não/).first()).toBeVisible()
@@ -64,15 +68,13 @@ test('a reader advances sequentially, retries answers and keeps progress when re
   await expect(page).toHaveURL(/\/studies\/la-fe-de-jesus\/quien-es-dios#q-01-01$/)
   await expect(page.locator('#q-01-01')).toHaveAttribute('open', '')
   await expect(page.locator('#q-01-01')).toBeInViewport()
-  await expect(page.locator('#q-01-01 form').getByText(/Correcto|Correct|Correto/).first()).toBeVisible()
+  await expect(page.locator('#test-q-01-01 form').getByText(/Correcto|Correct|Correto/).first()).toBeVisible()
 
   const completeButton = page.getByRole('button', { name: /Marcar lección como completada|Mark lesson as completed|Marcar lição como concluída/ })
   await expect(completeButton).toBeDisabled()
 
   for (const questionId of ['q-01-02', 'q-01-04']) {
-    const question = page.locator(`#${questionId}`)
-    await question.locator('summary').click()
-    const check = question.locator('form')
+    const check = page.locator(`#test-${questionId} form`)
     for (let optionIndex = 0; optionIndex < 3; optionIndex += 1) {
       await check.getByRole('radio').nth(optionIndex).check()
       await check.getByRole('button', { name: /Comprobar respuesta|Check answer|Conferir resposta/ }).click()

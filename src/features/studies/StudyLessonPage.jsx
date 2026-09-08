@@ -11,7 +11,7 @@ import styles from './Studies.module.css'
 
 const COURSE_PATH = '/studies/la-fe-de-jesus'
 
-function StudyQuestion({ checkpoint, initialCorrectOptionId, initialOpen, lesson, onCorrect, question, recordPosition, sectionTitle }) {
+function StudyQuestion({ initialOpen, lesson, question, recordPosition, sectionTitle }) {
   const { t } = useI18n()
   const location = useLocation()
   const [isOpen, setIsOpen] = useState(initialOpen)
@@ -50,13 +50,6 @@ function StudyQuestion({ checkpoint, initialCorrectOptionId, initialOpen, lesson
               title={`${lesson.title} · ${sectionTitle}`}
             />
           ))}
-          {checkpoint && (
-            <StudyQuestionCheck
-              checkpoint={checkpoint}
-              initialCorrectOptionId={initialCorrectOptionId}
-              onCorrect={onCorrect}
-            />
-          )}
         </div>
       )}
     </details>
@@ -94,12 +87,16 @@ export default function StudyLessonPage() {
   const lesson = lessonResult.slug === lessonSlug ? lessonResult.lesson : null
   const lessonStatus = lessonResult.slug === lessonSlug ? lessonResult.status : 'loading'
   const requestedQuestionId = location.hash ? decodeURIComponent(location.hash.slice(1)) : null
-  const knownQuestionIds = useMemo(() => new Set(
-    lesson?.sections.flatMap((section) => section.questions.map((question) => question.id)) ?? [],
-  ), [lesson])
-  const initialQuestionId = requestedQuestionId && knownQuestionIds.has(requestedQuestionId)
+  const knownPositionIds = useMemo(() => {
+    if (!lesson) return new Set()
+    return new Set([
+      ...lesson.sections.flatMap((section) => section.questions.map((question) => question.id)),
+      ...lesson.checkpoints.map((checkpoint) => `test-${checkpoint.id}`),
+    ])
+  }, [lesson])
+  const initialQuestionId = requestedQuestionId && knownPositionIds.has(requestedQuestionId)
     ? requestedQuestionId
-    : progress.lastLessonSlug === lessonSlug && knownQuestionIds.has(progress.lastQuestionId)
+    : progress.lastLessonSlug === lessonSlug && knownPositionIds.has(progress.lastQuestionId)
       ? progress.lastQuestionId
       : null
 
@@ -183,7 +180,6 @@ export default function StudyLessonPage() {
     ? getLessonAccess(previousLesson.slug, progress, studyLessons)
     : null
   const nextAccess = nextLesson ? getLessonAccess(nextLesson.slug, progress, studyLessons) : null
-  const checkpointsById = new Map(lesson.checkpoints.map((checkpoint) => [checkpoint.id, checkpoint]))
   const currentLessonProgress = progress.lessonProgress[lesson.slug]
   const correctAnswers = currentLessonProgress?.assessmentRevision === lesson.assessmentRevision
     ? currentLessonProgress.correctAnswers
@@ -194,10 +190,9 @@ export default function StudyLessonPage() {
   function focusNextPendingQuestion() {
     const pending = lesson.checkpoints.find((checkpoint) => correctAnswers[checkpoint.id] !== checkpoint.correctOptionId)
     if (!pending) return
-    const details = document.getElementById(pending.id)
-    if (details && !details.open) details.open = true
-    recordPosition(lesson.slug, pending.id)
-    window.history.replaceState(window.history.state, '', `${location.pathname}#${pending.id}`)
+    const testQuestionId = `test-${pending.id}`
+    recordPosition(lesson.slug, testQuestionId)
+    window.history.replaceState(window.history.state, '', `${location.pathname}#${testQuestionId}`)
     window.requestAnimationFrame(() => {
       document.querySelector(`#check-${pending.id} legend`)?.focus()
     })
@@ -222,12 +217,9 @@ export default function StudyLessonPage() {
               <div className={styles.questionList}>
                 {section.questions.map((question) => (
                   <StudyQuestion
-                    checkpoint={checkpointsById.get(question.id)}
-                    initialCorrectOptionId={correctAnswers[question.id]}
                     initialOpen={question.id === initialQuestionId}
                     key={question.id}
                     lesson={lesson}
-                    onCorrect={(questionId, optionId) => recordCorrectAnswer(lesson, questionId, optionId)}
                     question={question}
                     recordPosition={recordPosition}
                     sectionTitle={section.title}
@@ -237,6 +229,39 @@ export default function StudyLessonPage() {
             </section>
           ))}
         </div>
+
+        <section aria-labelledby="lesson-test-title" className={styles.quickTest} id="lesson-test">
+          <header className={styles.quickTestHeader}>
+            <span aria-hidden="true" className={styles.quickTestIcon}>
+              <Icon name="circleHelp" size={23} />
+            </span>
+            <div>
+              <p className={styles.quickTestEyebrow}>{t('studies.quickTestEyebrow')}</p>
+              <h2 id="lesson-test-title">{t('studies.quickTestTitle')}</h2>
+              <p>{t('studies.quickTestDescription')}</p>
+            </div>
+          </header>
+          <div className={styles.quickTestList}>
+            {lesson.checkpoints.map((checkpoint, index) => (
+              <div className={styles.quickTestItem} id={`test-${checkpoint.id}`} key={checkpoint.id}>
+                <p className={styles.quickTestProgress}>
+                  {t('studies.testQuestionProgress', {
+                    current: index + 1,
+                    total: lesson.checkpoints.length,
+                  })}
+                </p>
+                <StudyQuestionCheck
+                  checkpoint={checkpoint}
+                  initialCorrectOptionId={correctAnswers[checkpoint.id]}
+                  onCorrect={(questionId, optionId) => {
+                    recordPosition(lesson.slug, `test-${questionId}`)
+                    recordCorrectAnswer(lesson, questionId, optionId)
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
 
         <section className={`${styles.completionPanel}${isCompleted ? ` ${styles.isCompleted}` : ''}`}>
           <span aria-hidden="true"><Icon name={isCompleted ? 'checkCircle' : 'graduation'} size={22} /></span>
