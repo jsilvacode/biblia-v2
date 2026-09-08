@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { VitePWA } from 'vite-plugin-pwa'
+import { APP_ICON_REVISION } from './src/features/reader/socialCardConfig.js'
 
 export default defineConfig({
   server: {
@@ -27,19 +28,19 @@ export default defineConfig({
         lang: 'es',
         icons: [
           {
-            src: 'icons/santa-biblia-192.png',
+            src: `icons/santa-biblia-192.png?v=${APP_ICON_REVISION}`,
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: 'icons/santa-biblia-512.png',
+            src: `icons/santa-biblia-512.png?v=${APP_ICON_REVISION}`,
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: 'icons/santa-biblia-512.png',
+            src: `icons/santa-biblia-512.png?v=${APP_ICON_REVISION}`,
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',

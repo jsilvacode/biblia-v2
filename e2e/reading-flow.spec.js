@@ -49,7 +49,7 @@ test('sharing a verse action sends one detectable URL for its social card', asyn
     return value ? JSON.parse(value) : null
   })).not.toBeNull()
   const captured = await page.evaluate(() => JSON.parse(window.sessionStorage.getItem('captured-verse-share')))
-  expect(captured.text).toMatch(/\/read\/43\/3\/16\?v=[a-z0-9-]+&share=11$/)
+  expect(captured.text).toMatch(/\/read\/43\/3\/16\?v=[a-z0-9-]+&share=12$/)
   expect(captured).not.toHaveProperty('url')
 })
 
@@ -92,6 +92,33 @@ test('the verse action sheet closes safely and exposes commentary', async ({ pag
   await expect(commentary.getByRole('button', { name: /Volver|Back|Voltar/ })).toBeVisible()
   await page.keyboard.press('Escape')
   await expect(commentary).toBeHidden()
+})
+
+test('the commentary modal keeps its title clear at maximum text size on narrow screens', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile', 'Narrow-screen commentary coverage')
+  await page.setViewportSize({ width: 320, height: 568 })
+  await page.goto('/read/43/3/16')
+
+  await page.getByRole('button', { name: /Abrir menú de lectura|Open reading menu|Abrir menu de leitura/ }).click()
+  const quickOptions = page.getByRole('dialog', { name: /Opciones rápidas|Quick options|Opções rápidas/ })
+  const increaseText = quickOptions.getByRole('button', { name: /Aumentar texto|Increase text|Aumentar texto/ })
+  for (let index = 0; index < 6; index += 1) await increaseText.click()
+  await expect(quickOptions.getByText('130%', { exact: true })).toBeVisible()
+  await page.keyboard.press('Escape')
+
+  await page.locator('#verse-16').click()
+  const actions = page.getByRole('dialog', { name: /Acciones del versículo|Verse actions|Ações do versículo/ })
+  await actions.getByRole('button', { name: /Ver comentario bíblico|View Bible commentary|Ver comentário bíblico/ }).click()
+
+  const commentary = page.getByRole('dialog', { name: /Comentario bíblico|Bible commentary|Comentário bíblico/ })
+  const layout = await commentary.evaluate((element) => ({
+    title: element.querySelector('.reader-dialog__header h2').getBoundingClientRect().toJSON(),
+    reference: element.querySelector('.reader-dialog__reference').getBoundingClientRect().toJSON(),
+  }))
+  const commentaryFontSize = await commentary.locator('.reader-dialog__scroll-area').evaluate((element) => getComputedStyle(element).fontSize)
+
+  expect(layout.title.bottom).toBeLessThanOrEqual(layout.reference.top)
+  expect(commentaryFontSize).toBe('21.12px')
 })
 
 test('a reader can highlight a verse and use the quick chapter picker', async ({ page }) => {

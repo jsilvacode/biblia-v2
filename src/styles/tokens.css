@@ -67,6 +67,9 @@
   --font-reading: "Lora", Iowan Old Style, Baskerville, "Times New Roman", serif;
   --font-display: "Playfair Display", "Lora", Iowan Old Style, Baskerville, "Times New Roman", serif;
   --reader-scale: 1;
+  /* Commentary lives inside a constrained modal, so it stops one step below
+     the main reader's maximum while still following the user's scale choice. */
+  --reader-commentary-scale-max: 1.2;
   --reader-width: 45rem;
   --content-max-width: 66rem;
   --topbar-height: 4.5rem;

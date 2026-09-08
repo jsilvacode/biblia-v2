@@ -1,6 +1,7 @@
 import { access, readFile, stat } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { APP_ICON_REVISION, SOCIAL_CARD_REVISION } from '../src/features/reader/socialCardConfig.js'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const publicDataDir = join(root, 'public', 'data')
@@ -53,11 +54,19 @@ if (!allowsCrossOrigin) throw new Error('Missing public CORS policy for /data en
 if (!trailingReaderRedirect) throw new Error('Missing canonical redirect for reader URLs with a trailing slash')
 
 const indexHtml = await readFile(join(root, 'index.html'), 'utf8')
-if (!indexHtml.includes('https://www.santabiblia.cloud/og-share.jpg?v=11')) {
+if (!indexHtml.includes(`https://www.santabiblia.cloud/og-share.jpg?v=${SOCIAL_CARD_REVISION}`)) {
   throw new Error('Static social metadata does not use the official direct image URL')
+}
+if (!indexHtml.includes(`/icons/favicon-32.png?v=${APP_ICON_REVISION}`) || !indexHtml.includes(`/icons/apple-touch-icon.png?v=${APP_ICON_REVISION}`)) {
+  throw new Error('Static app icon metadata is out of sync with APP_ICON_REVISION')
 }
 if (indexHtml.includes('biblia-v2.vercel.app')) {
   throw new Error('Static social metadata still references the deprecated Vercel alias')
+}
+
+const manifest = JSON.parse(await readFile(join(root, 'dist', 'manifest.webmanifest'), 'utf8'))
+if (!Array.isArray(manifest.icons) || manifest.icons.length !== 3 || manifest.icons.some(({ src }) => !src.endsWith(`?v=${APP_ICON_REVISION}`))) {
+  throw new Error('Generated PWA manifest contains an out-of-date icon revision')
 }
 
 const socialImagePath = join(root, 'public', 'og-share.jpg')

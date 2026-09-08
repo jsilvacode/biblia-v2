@@ -274,7 +274,7 @@ export default {
     reading: 'Lectura',
     fontFamily: 'Tipografía',
     fontSize: 'Tamaño del texto',
-    fontSizeDescription: 'Ajusta en conjunto el texto de la Biblia y del comentario bíblico.',
+    fontSizeDescription: 'Ajusta el texto de la Biblia y del comentario; el comentario limita su máximo para cuidar el espacio del modal.',
     fontSizeCurrent: 'Tamaño actual: {{value}} %',
     fontSizePreview: 'Tu palabra es una lámpara a mis pies.',
     lineHeight: 'Interlineado',

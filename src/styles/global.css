@@ -306,8 +306,8 @@ svg { display: block; flex: none; }
 .reader-dialog-backdrop { position: fixed; z-index: 100; inset: 0; display: flex; align-items: flex-end; justify-content: center; padding: 0.5rem 0 0; background: rgb(24 20 15 / 48%); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); overscroll-behavior: contain; touch-action: none; }
 .reader-dialog { display: flex; flex-direction: column; width: min(100%, 44rem); max-height: calc(100dvh - 0.5rem); padding: 0.55rem 1rem calc(1rem + env(safe-area-inset-bottom)); border: 1px solid var(--border); border-bottom: 0; border-radius: 1.35rem 1.35rem 0 0; background: var(--surface-raised); box-shadow: 0 -16px 38px rgb(33 25 16 / 20%); color: var(--ink); touch-action: pan-y; }
 .reader-dialog__handle { width: 2.6rem; height: 0.3rem; margin: 0 auto 0.45rem; border-radius: 999px; background: var(--border); }
-.reader-dialog__header { display: grid; grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem; align-items: center; gap: 0.35rem; min-height: 2.75rem; }
-.reader-dialog__header h2 { margin: 0; font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; letter-spacing: -0.025em; }
+.reader-dialog__header { display: grid; flex: none; grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem; align-items: center; gap: 0.35rem; min-height: 2.75rem; }
+.reader-dialog__header h2 { min-width: 0; margin: 0; font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; overflow-wrap: anywhere; }
 .reader-dialog__back { display: grid; width: 2.5rem; height: 2.5rem; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--ink); }
 .reader-dialog__back:hover, .reader-dialog__back:focus-visible { background: var(--accent-soft); color: var(--accent-deep); }
 .reader-dialog__header-spacer { display: block; width: 2.5rem; height: 2.5rem; }
@@ -320,7 +320,7 @@ svg { display: block; flex: none; }
 .reader-sheet-action:hover, .reader-sheet-action[aria-pressed='true'] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-deep); }
 .reader-sheet-action__icon { display: grid; flex: none; width: 2.25rem; height: 2.25rem; place-items: center; border-radius: 50%; background: var(--surface-soft); color: var(--accent); }
 .reader-dialog--commentary { min-height: min(60dvh, 30rem); }
-.reader-dialog--commentary .reader-dialog__scroll-area { font-family: var(--font-reading); font-size: calc(1.1rem * var(--reader-scale)); line-height: 1.72; }
+.reader-dialog--commentary .reader-dialog__scroll-area { font-family: var(--font-reading); font-size: calc(1.1rem * min(var(--reader-scale), var(--reader-commentary-scale-max))); line-height: 1.72; }
 .reader-dialog--commentary h3 { margin: 1.3rem 0 0.45rem; font-family: var(--font-ui); font-size: 0.95rem; }
 .reader-dialog--commentary p { margin: 0.65rem 0; color: var(--ink-muted); }
 .reader-dialog__status { color: var(--ink-muted); }

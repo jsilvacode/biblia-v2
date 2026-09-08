@@ -53,11 +53,11 @@ describe('share metadata', () => {
     expect(metadata.text).toBe('No temas bajar a Egipto, Yo descenderé contigo.')
     expect(metadata.canonicalUrl).toBe('https://biblia-v2.vercel.app/read/1/46/3?v=nbla&end=4')
     expect(metadata.imageUrl).toContain('https://biblia-v2.vercel.app/api/og-card?')
-    expect(metadata.imageUrl).toContain('card=11')
+    expect(metadata.imageUrl).toContain('card=12')
     expect(metadata.imageType).toBe('image/jpeg')
     const html = injectShareMetadata('<!-- share-meta:start --><!-- share-meta:end -->', metadata)
     expect(html).toContain('<link rel="canonical" href="https://biblia-v2.vercel.app/read/1/46/3?v=nbla&amp;end=4"')
-    expect(html).toContain('<meta property="og:url" content="https://biblia-v2.vercel.app/read/1/46/3?v=nbla&amp;end=4&amp;share=11"')
+    expect(html).toContain('<meta property="og:url" content="https://biblia-v2.vercel.app/read/1/46/3?v=nbla&amp;end=4&amp;share=12"')
     expect(fetchImpl).toHaveBeenCalledWith(new URL('https://biblia-v2.vercel.app/data/nbla/01_genesis/46.json'))
   })
 
@@ -74,13 +74,13 @@ describe('share metadata', () => {
 
   it('uses the current branded card revision for the application preview', () => {
     expect(createAppShareMetadata('https://www.santabiblia.cloud').imageUrl)
-      .toBe('https://www.santabiblia.cloud/og-share.jpg?v=11')
+      .toBe('https://www.santabiblia.cloud/og-share.jpg?v=12')
   })
 
   it('keeps the static SPA preview on the live V2 card endpoint', async () => {
     const html = await readFile('index.html', 'utf8')
 
-    expect(html).toContain('https://www.santabiblia.cloud/og-share.jpg?v=11')
+    expect(html).toContain('https://www.santabiblia.cloud/og-share.jpg?v=12')
     expect(html).not.toContain('biblia-v2.vercel.app/api/og-card')
   })
 

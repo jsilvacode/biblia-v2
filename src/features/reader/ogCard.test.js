@@ -27,7 +27,7 @@ describe('entrega de tarjetas sociales', () => {
     ['Gálatas 2:16 NBLA', 'type=verse&book=48&chapter=2&verse=16&v=nbla'],
     ['rango KJV', 'type=verse&book=43&chapter=3&verse=16&end=18&v=kjv&lang=en'],
   ])('entrega %s como JPEG completo de menos de 200 KB, sin HTTP', async (_, query) => {
-    const response = await ogCard.fetch(new Request(`${origin}/api/og-card?${query}&card=11`))
+    const response = await ogCard.fetch(new Request(`${origin}/api/og-card?${query}&card=12`))
     const body = Buffer.from(await response.arrayBuffer())
     const image = await sharp(body).metadata()
 
@@ -41,7 +41,7 @@ describe('entrega de tarjetas sociales', () => {
   }, 15_000)
 
   it('HEAD declara el mismo tamaño que GET y no envía cuerpo', async () => {
-    const url = `${origin}/api/og-card?type=verse&book=43&chapter=6&verse=37&v=rva2015&card=11`
+    const url = `${origin}/api/og-card?type=verse&book=43&chapter=6&verse=37&v=rva2015&card=12`
     const get = await ogCard.fetch(new Request(url))
     const head = await ogCard.fetch(new Request(url, { method: 'HEAD' }))
     expect(head.status).toBe(200)
