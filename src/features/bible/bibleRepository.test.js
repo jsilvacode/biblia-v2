@@ -41,6 +41,22 @@ describe('bible repository', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 
+  it('fails a stalled chapter request instead of leaving the reader pending forever', async () => {
+    vi.useFakeTimers()
+    vi.stubGlobal('fetch', vi.fn(() => new Promise(() => {})))
+
+    try {
+      const { loadChapter } = await import('./bibleRepository')
+      const pending = loadChapter({ versionId: 'test-timeout', bookId: 1, chapter: 1 })
+      const result = expect(pending).rejects.toMatchObject({ name: 'TimeoutError' })
+
+      await vi.advanceTimersByTimeAsync(12_000)
+      await result
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
   it('normalizes scripture text and headings at the repository boundary', async () => {
     const verses = [{ verse: 1, text: '¶El Padre queme envió    .', heading: '  El testimonio  ' }]
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(verses), { status: 200 })))

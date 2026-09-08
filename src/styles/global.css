@@ -273,7 +273,9 @@ svg { display: block; flex: none; }
 .reader-skeleton i:nth-child(2n) { width: 88%; }.reader-skeleton i:nth-child(3n) { width: 72%; }
 @keyframes shimmer { to { background-position: -200% 0; } }
 .reader-error { padding: var(--space-5); border-radius: var(--radius-md); background: var(--surface-soft); color: var(--ink-muted); }
+.reader-error__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; margin-top: 1rem; }
 .reader-error a { color: var(--accent); font-weight: 700; }
+.reader-dialog--commentary .reader-dialog__scroll-area > .button { margin-top: 0.35rem; }
 .reader-settings__controls { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; gap: 0.25rem; margin: 1rem 0 0.75rem; text-align: center; }
 .reader-settings__controls button { min-height: 2.4rem; border: 1px solid var(--border); border-radius: 0.55rem; background: var(--surface); }
 .chapter-pager { display: flex; justify-content: space-between; width: min(100% - 2.5rem, var(--reader-width)); margin: var(--space-5) auto 0; }

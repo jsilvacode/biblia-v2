@@ -103,6 +103,7 @@ export default {
     comfortable: 'Normal',
     spacious: 'Amplio',
     loadError: 'No fue posible cargar este capítulo. Revisa tu conexión o vuelve a intentarlo.',
+    retry: 'Intentar de nuevo',
     book: 'Libro',
     verseActions: 'Acciones del versículo',
     bookmark: 'Guardar versículo',

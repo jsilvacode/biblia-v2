@@ -109,7 +109,6 @@ export default function HomePage() {
     return {
       onFocus: () => preloadReading(reference),
       onPointerDown: () => preloadReading(reference),
-      onPointerEnter: () => preloadReading(reference),
     }
   }
 

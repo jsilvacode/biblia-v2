@@ -12,6 +12,7 @@ async function clearAppStorage(page) {
 
 test('Home always gives a daily promise, the annual reading and the promises guide', async ({ page }) => {
   await clearAppStorage(page)
+  await expect(page.locator('#boot-splash')).toHaveCount(0)
 
   const hero = page.getByRole('region', { name: promiseTitle })
   await expect(hero.getByRole('heading')).toBeVisible()

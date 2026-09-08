@@ -4,8 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#eef3f9" />
+    <link rel="preload" as="image" href="/assets/social/verse-card-background.jpg" fetchpriority="high" />
+    <link rel="preload" as="image" href="/icons/santa-biblia-192.png?v=2" fetchpriority="high" />
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=2" />
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=2" />
+    <style>
+      #boot-splash { position: fixed; z-index: 9999; inset: 0; display: grid; place-items: center; overflow: hidden; background: #241b17 url('/assets/social/verse-card-background.jpg') center / cover no-repeat; color: #fffaf6; opacity: 1; transition: opacity 360ms ease, visibility 360ms ease; }
+      #boot-splash::before { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(30 23 20 / 12%), rgb(30 23 20 / 52%)); content: ''; }
+      #boot-splash.boot-splash--hidden { visibility: hidden; opacity: 0; pointer-events: none; }
+      .boot-splash__content { position: relative; z-index: 1; display: grid; place-items: center; gap: 1rem; padding: 1.5rem; }
+      .boot-splash__mark { width: min(38vw, 11rem); height: min(38vw, 11rem); overflow: hidden; border: 1px solid rgb(255 255 255 / 82%); border-radius: 2.2rem; box-shadow: 0 1.5rem 3.5rem rgb(73 52 39 / 24%), 0 0 0 0.5rem rgb(255 255 255 / 38%); }
+      .boot-splash__mark img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .boot-splash__brand { color: #fffaf6; font: 600 0.78rem/1.2 Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.18em; text-shadow: 0 0.1rem 0.8rem rgb(30 23 20 / 45%); text-transform: uppercase; }
+      @media (prefers-color-scheme: dark) { #boot-splash { background-color: #191519; color: #f4ece6; } #boot-splash::before { background: linear-gradient(180deg, rgb(12 9 8 / 24%), rgb(12 9 8 / 62%)); } .boot-splash__mark { border-color: rgb(255 255 255 / 18%); box-shadow: 0 1.5rem 3.5rem rgb(0 0 0 / 38%), 0 0 0 0.5rem rgb(255 255 255 / 6%); } }
+      @media (prefers-reduced-motion: reduce) { #boot-splash { transition-duration: 1ms; } }
+    </style>
     <!-- share-meta:start -->
     <meta name="application-name" content="Santa Biblia" />
     <meta name="description" content="Lámpara es a mis pies Tu palabra, y luz para mi camino. — Salmos 119:105" />
@@ -31,6 +44,12 @@
     <!-- share-meta:end -->
   </head>
   <body>
+    <div id="boot-splash" role="status" aria-label="Santa Biblia">
+      <div class="boot-splash__content">
+        <div class="boot-splash__mark"><img src="/icons/santa-biblia-192.png?v=2" alt="" width="192" height="192" /></div>
+        <span class="boot-splash__brand">Santa Biblia</span>
+      </div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

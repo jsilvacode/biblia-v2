@@ -49,6 +49,7 @@ export default function ReaderPage() {
   const { setLastRead } = useReadingActions()
   const { isBookmarked, isHighlighted, toggleBookmark, toggleHighlight } = useSaved()
   const [chapterResult, setChapterResult] = useState({ key: null, status: 'loading', data: [] })
+  const [chapterRetry, setChapterRetry] = useState(0)
   const [activeDialog, setActiveDialog] = useState(null)
   const [actionFeedback, setActionFeedback] = useState('')
   const [attentionVerseKey, setAttentionVerseKey] = useState(null)
@@ -145,7 +146,7 @@ export default function ReaderPage() {
         if (error.name !== 'AbortError') setChapterResult({ key: requestKey, status: 'error', data: [] })
       })
     return () => controller.abort()
-  }, [book, reference, requestKey, version.id])
+  }, [book, chapterRetry, reference, requestKey, version.id])
 
   useEffect(() => {
     if (status !== 'ready' || !rawVerse) return undefined
@@ -321,7 +322,15 @@ export default function ReaderPage() {
         <h1>{getLocalizedBookName(book, locale)} {reference.chapter}</h1>
         {chapterSubtitle && <p className="reader-chapter-subtitle">{chapterSubtitle}</p>}
         {status === 'loading' && <div className="reader-skeleton"><i /><i /><i /><i /><i /></div>}
-        {status === 'error' && <div className="reader-error"><p>{t('reader.loadError')}</p><Link to="/bible">{t('common.back')}</Link></div>}
+        {status === 'error' && (
+          <div className="reader-error">
+            <p>{t('reader.loadError')}</p>
+            <div className="reader-error__actions">
+              <button className="button button--compact" onClick={() => { setChapterResult({ key: requestKey, status: 'loading', data: [] }); setChapterRetry((value) => value + 1) }} type="button">{t('reader.retry')}</button>
+              <Link to="/bible">{t('common.back')}</Link>
+            </div>
+          </div>
+        )}
         {status === 'ready' && chapterData.map((item) => {
           const isActionSelection = activeDialog === 'actions' && selectedVerse === item.verse
           const isAttentionPulsing = attentionVerseKey === attentionKey && item.verse === Number(rawVerse)

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
@@ -12,6 +13,18 @@ function redactAnalyticsQuery(event) {
 }
 
 export default function App() {
+  useEffect(() => {
+    const splash = document.getElementById('boot-splash')
+    if (!splash) return undefined
+
+    const frame = window.requestAnimationFrame(() => splash.classList.add('boot-splash--hidden'))
+    const removal = window.setTimeout(() => splash.remove(), 480)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.clearTimeout(removal)
+    }
+  }, [])
+
   return (
     <>
       <AppProviders>

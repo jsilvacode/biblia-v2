@@ -12,6 +12,7 @@ const commentaryCache = new Map()
 const commentaryRequests = new Map()
 const MAX_CHAPTER_CACHE_ENTRIES = 32
 const MAX_COMMENTARY_CACHE_ENTRIES = 8
+const RESOURCE_REQUEST_TIMEOUT_MS = 12_000
 
 function chapterKey(versionId, bookId, chapter) {
   return `${versionId}:${bookId}:${chapter}`
@@ -74,10 +75,32 @@ function waitForRequest(request, signal) {
   })
 }
 
+function timeoutError(url) {
+  const error = new Error(`Timed out loading resource: ${url}`)
+  error.name = 'TimeoutError'
+  return error
+}
+
+function fetchWithTimeout(url) {
+  const controller = new AbortController()
+  let timeoutId
+  const timeout = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => {
+      controller.abort()
+      reject(timeoutError(url))
+    }, RESOURCE_REQUEST_TIMEOUT_MS)
+  })
+
+  return Promise.race([
+    fetch(url, { signal: controller.signal }),
+    timeout,
+  ]).finally(() => clearTimeout(timeoutId))
+}
+
 async function fetchJsonWithOfflineFallback(url) {
   let response
   try {
-    response = await fetch(url)
+    response = await fetchWithTimeout(url)
   } catch (error) {
     response = await fromOfflineCache(url)
     if (!response) throw error

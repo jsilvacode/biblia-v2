@@ -6,6 +6,7 @@ import { ReaderDialog } from './ReaderDialog'
 export function CommentarySheet({ bookId, chapter, isOpen, onClose, reference, returnFocusRef, verse }) {
   const { t } = useI18n()
   const [state, setState] = useState({ blocks: [], status: 'loading' })
+  const [retry, setRetry] = useState(0)
 
   useEffect(() => {
     if (!isOpen) return undefined
@@ -21,7 +22,7 @@ export function CommentarySheet({ bookId, chapter, isOpen, onClose, reference, r
       })
 
     return () => controller.abort()
-  }, [bookId, chapter, isOpen, verse])
+  }, [bookId, chapter, isOpen, retry, verse])
 
   return (
     <ReaderDialog
@@ -35,7 +36,12 @@ export function CommentarySheet({ bookId, chapter, isOpen, onClose, reference, r
       <p className="reader-dialog__reference">{reference}</p>
       <div aria-live="polite" className="reader-dialog__scroll-area">
         {state.status === 'loading' && <p className="reader-dialog__status">{t('reader.commentaryLoading')}</p>}
-        {state.status === 'error' && <p className="reader-dialog__status">{t('reader.commentaryError')}</p>}
+        {state.status === 'error' && (
+          <>
+            <p className="reader-dialog__status">{t('reader.commentaryError')}</p>
+            <button className="button button--compact" onClick={() => { setState({ blocks: [], status: 'loading' }); setRetry((value) => value + 1) }} type="button">{t('reader.retry')}</button>
+          </>
+        )}
         {state.status === 'ready' && (state.blocks.length ? state.blocks.map(([kind, text], index) => (
           kind === 'h'
             ? <h3 key={`${kind}-${index}`}>{text}</h3>
