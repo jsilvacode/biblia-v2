@@ -33,11 +33,12 @@ test('a new reader starts from a clean book and chapter picker', async ({ page }
   await expect(page.getByText(continueLabel)).toHaveCount(0)
 
   await page.getByRole('button', { name: chooseReadingLabel }).click()
-  const picker = page.getByRole('dialog', { name: /Ir a|Go to|Ir para/ })
+  const picker = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
   await expect(picker).toBeVisible()
-  await expect(picker.locator('.book-list__item.is-selected')).toHaveCount(0)
+  await expect(picker.getByRole('button', { pressed: true })).toHaveCount(1)
   await expect(picker.getByRole('button', { name: '1', exact: true })).toHaveCount(0)
 
+  await picker.getByRole('searchbox').fill('Génesis')
   await picker.getByRole('button', { name: /Génesis|Genesis|Gênesis/ }).click()
   await picker.getByRole('button', { name: '1', exact: true }).click()
   await expect(page).toHaveURL(/\/read\/1\/1$/)
@@ -58,6 +59,26 @@ test('a returning reader can resume the last reading directly from Home', async 
   const continueReading = page.getByRole('link', { name: continueLabel })
   await expect(continueReading).toBeVisible()
   await expect(continueReading).toHaveAttribute('href', /^\/read\/43\/3(?:\/\d+)?$/)
+  const chooseReading = page.getByRole('button', { name: /Elegir una lectura|Choose a reading|Escolher uma leitura/ })
+  await expect(chooseReading).toBeVisible()
+
+  const [continueBox, chooseBox] = await Promise.all([continueReading.boundingBox(), chooseReading.boundingBox()])
+  expect(continueBox).not.toBeNull()
+  expect(chooseBox).not.toBeNull()
+  expect(Math.abs(continueBox.width - chooseBox.width)).toBeLessThanOrEqual(1)
+  expect(Math.abs(continueBox.height - chooseBox.height)).toBeLessThanOrEqual(1)
+})
+
+test('the integrated picker opens a typed reference across testaments', async ({ page }) => {
+  await clearAppStorage(page)
+  await page.getByRole('button', { name: chooseReadingLabel }).click()
+
+  const picker = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
+  await picker.getByRole('searchbox').fill('Juan3:16')
+  await picker.getByRole('button', { name: /Abrir Juan 3:16|Open John 3:16|Abrir João 3:16/ }).click()
+
+  await expect(page).toHaveURL(/\/read\/43\/3\/16$/)
+  await expect(page.locator('#verse-16')).toBeVisible()
 })
 
 test('the daily promise opens its exact verse with a temporary attention pulse', async ({ page }) => {

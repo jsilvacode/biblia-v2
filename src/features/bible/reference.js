@@ -27,7 +27,7 @@ function resolveBook(name) {
 }
 
 export function parseReference(input) {
-  const match = String(input ?? '').trim().match(/^(.+?)\s+(\d+)(?::(\d+))?$/u)
+  const match = String(input ?? '').trim().match(/^(.+?)\s*(\d+)(?::(\d+))?$/u)
   if (!match) return null
 
   const [, rawBook, rawChapter, rawVerse] = match

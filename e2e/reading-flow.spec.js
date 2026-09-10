@@ -132,8 +132,9 @@ test('a reader can highlight a verse and use the quick chapter picker', async ({
   await expect(verse).not.toHaveClass(/is-selected/)
 
   await page.getByRole('button', { name: /Juan 3|John 3|João 3/ }).click()
-  const navigation = page.getByRole('dialog', { name: /Ir a|Go to|Ir para/ })
+  const navigation = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
   await expect(navigation).toBeVisible()
+  await navigation.getByRole('button', { name: /Antiguo Testamento|Old Testament|Antigo Testamento/ }).click()
   await navigation.getByRole('button', { name: /Génesis|Genesis|Gênesis/ }).click()
   await navigation.getByRole('button', { name: '1', exact: true }).click()
   await expect(page).toHaveURL(/\/read\/1\/1$/)
@@ -148,15 +149,14 @@ test('the quick chapter picker uses the responsive reader surface', async ({ pag
   const trigger = page.getByRole('button', { name: /Juan 3|John 3|João 3/ })
   await trigger.click()
 
-  const navigation = page.getByRole('dialog', { name: /Ir a|Go to|Ir para/ })
+  const navigation = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
   await expect(navigation).toBeVisible()
-  await expect(page.locator('.reader-dialog-backdrop')).toHaveCount(0)
-  await expect(page.locator('body')).not.toHaveCSS('position', 'fixed')
-  const triggerBox = await trigger.boundingBox()
+  await expect(page.locator('.reader-dialog-backdrop')).toHaveCount(1)
+  await expect(page.locator('body')).toHaveCSS('position', 'fixed')
   const navigationBox = await navigation.boundingBox()
-  expect(triggerBox).not.toBeNull()
   expect(navigationBox).not.toBeNull()
-  expect(navigationBox.y).toBeGreaterThanOrEqual(triggerBox.y + triggerBox.height)
+  expect(navigationBox.y).toBeGreaterThanOrEqual(0)
+  expect(navigationBox.y + navigationBox.height).toBeLessThanOrEqual(page.viewportSize().height)
   await page.keyboard.press('Escape')
 
   await expect(navigation).toBeHidden()
@@ -319,9 +319,9 @@ test('desktop readers expose icon-only primary navigation in the constrained hea
   expect(Math.abs(headerBox.x - ((page.viewportSize().width - headerBox.width) / 2))).toBeLessThanOrEqual(1)
   const chapterSelector = page.getByRole('button', { name: /Juan 3|John 3|João 3/ })
   await chapterSelector.click()
-  const chapterDialog = page.getByRole('dialog', { name: /Ir a|Go to|Ir para/ })
+  const chapterDialog = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
   await expect(chapterDialog).toBeVisible()
-  await chapterDialog.getByRole('button', { name: /Volver|Back|Voltar/ }).click()
+  await chapterDialog.getByRole('button', { name: /Cerrar|Close|Fechar/ }).click()
 
   await page.getByRole('button', { name: /Abrir menú de lectura|Open reading menu|Abrir menu de leitura/ }).click()
   await expect(page.getByRole('dialog', { name: /Opciones rápidas|Quick options|Opções rápidas/ })).toBeVisible()
@@ -370,22 +370,70 @@ test('clearing a search does not leave stale results on the page', async ({ page
 
 test('the Bible browser starts clean and opens chapters only after a book is chosen', async ({ page }) => {
   await page.goto('/bible')
-  await expect(page.locator('.book-list__item.is-selected')).toHaveCount(0)
-  await expect(page.locator('.chapter-picker--inline')).toHaveCount(0)
+  const chapters = page.getByRole('region', { name: /Capítulos|Chapters/ })
+  await expect(chapters.getByRole('link', { name: '1', exact: true })).toHaveCount(0)
 
   await page.getByRole('button', { name: /Antiguo Testamento|Old Testament|Antigo Testamento/ }).click()
-  await expect(page.locator('.book-list__item.is-selected')).toHaveCount(0)
+  await expect(chapters.getByRole('link', { name: '1', exact: true })).toHaveCount(0)
 
   await page.getByRole('button', { name: /Génesis|Genesis|Gênesis/ }).click()
-
-  const chapterPicker = page.getByRole('region', { name: /Génesis|Genesis|Gênesis/ })
-  await expect(chapterPicker).toBeVisible()
-  await expect(chapterPicker.getByRole('link', { name: '1', exact: true })).toBeVisible()
+  await expect(chapters).toBeVisible()
+  await expect(chapters.getByRole('link', { name: '1', exact: true })).toBeVisible()
 
   await page.getByRole('button', { name: /Nuevo Testamento|New Testament|Novo Testamento/ }).click()
   await page.getByRole('button', { name: /Antiguo Testamento|Old Testament|Antigo Testamento/ }).click()
-  await expect(page.locator('.book-list__item.is-selected')).toHaveCount(0)
-  await expect(page.locator('.chapter-picker--inline')).toHaveCount(0)
+  await expect(chapters.getByRole('link', { name: '1', exact: true })).toHaveCount(0)
+})
+
+test('the desktop Bible browser scrolls books without moving the chapter pane', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'Desktop-only independent scrolling coverage')
+  await page.goto('/bible')
+
+  await page.getByRole('button', { name: /^(Juan Capítulos|John Chapters|João Capítulos): 21$/ }).click()
+  const booksPane = page.locator('[data-bible-books-scroll]')
+  const chaptersPane = page.locator('[data-bible-chapters]')
+  await expect(chaptersPane.getByRole('heading', { name: /Elige un capítulo|Choose a chapter|Escolha um capítulo/ })).toBeVisible()
+
+  const pageScrollBefore = await page.evaluate(() => window.scrollY)
+  await booksPane.evaluate((element) => { element.scrollTop = element.scrollHeight })
+  await expect.poll(() => booksPane.evaluate((element) => element.scrollTop)).toBeGreaterThan(0)
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(pageScrollBefore)
+  await expect(chaptersPane.getByRole('link', { name: '1', exact: true })).toBeInViewport()
+})
+
+test('the mobile reading chooser presents books in two usable columns', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile', 'Mobile-only compact book grid coverage')
+  await page.goto('/read/43/3')
+
+  await page.getByRole('button', { name: /Juan 3|John 3|João 3/ }).click()
+  const navigation = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
+  await navigation.getByRole('button', { name: /Antiguo Testamento|Old Testament|Antigo Testamento/ }).click()
+
+  const genesis = navigation.getByRole('button', { name: /^(Génesis|Genesis|Gênesis) Capítulos: 50$/ })
+  const exodus = navigation.getByRole('button', { name: /^(Éxodo|Exodus|Êxodo) Capítulos: 40$/ })
+  const [genesisBox, exodusBox] = await Promise.all([genesis.boundingBox(), exodus.boundingBox()])
+
+  expect(genesisBox).not.toBeNull()
+  expect(exodusBox).not.toBeNull()
+  expect(Math.abs(genesisBox.y - exodusBox.y)).toBeLessThanOrEqual(1)
+  expect(exodusBox.x).toBeGreaterThan(genesisBox.x + genesisBox.width - 1)
+})
+
+test('the reading chooser finds verses containing every searched word', async ({ page }) => {
+  await page.goto('/read/43/3')
+  await page.getByRole('button', { name: /Juan 3|John 3|João 3/ }).click()
+
+  const navigation = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
+  const searchbox = navigation.getByRole('searchbox', { name: /palabra, frase, libro o referencia|word, phrase, book, or reference|palavra, frase, livro ou referência/i })
+  await searchbox.fill('tal manera mundo')
+
+  const result = navigation.getByRole('button', { name: /Juan 3:16.*Porque de tal manera amó Dios al mundo/i })
+  await expect(result).toBeVisible()
+  await result.click()
+
+  await expect(page).toHaveURL(/\/read\/43\/3\/16$/)
+  await expect(page.locator('#verse-16')).toBeVisible()
+  await expect(page.locator('#verse-16')).toHaveClass(/is-attention-pulsing/)
 })
 
 test('saved surfaces only expose completed saved-verse features', async ({ page }) => {

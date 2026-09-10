@@ -100,22 +100,18 @@ test.describe('mobile navigation shell', () => {
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(200)
   })
 
-  test('reveals a selected book chapter picker in place', async ({ page }, testInfo) => {
+  test('moves from books to chapters and back without losing the library context', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'mobile', 'Mobile-only browser coverage')
     await page.goto('/bible')
 
-    const selectedBook = page.locator('.book-list__item').filter({ hasText: /Apocalipsis|Revelation|Apocalipse/ })
+    const selectedBook = page.getByRole('button', { name: /Apocalipsis|Revelation|Apocalipse/ })
     await selectedBook.click()
 
-    const chapterPicker = page.locator('.chapter-picker--inline')
-    await expect(selectedBook).toHaveAttribute('aria-expanded', 'true')
+    const chapterPicker = page.getByRole('region', { name: /Capítulos|Chapters/ })
     await expect(chapterPicker).toBeVisible()
-    await expect(chapterPicker).toBeInViewport()
-    await expect(chapterPicker).toBeFocused()
     await expect(chapterPicker.getByRole('link', { name: '1', exact: true })).toBeInViewport()
-
-    await selectedBook.click()
-    await expect(page.locator('.chapter-picker--inline')).toHaveCount(0)
+    await chapterPicker.getByRole('button', { name: /Todos los libros|All books|Todos os livros/ }).click()
+    await expect(selectedBook).toBeVisible()
   })
 
   test('keeps the compact shell free of horizontal overflow', async ({ page }, testInfo) => {
@@ -180,7 +176,7 @@ test.describe('editorial page composition', () => {
     const heroRegion = page.getByRole('region', { name: /Promesa del día|Promise of the day|Promessa do dia/ })
     const heroKickerBox = await heroRegion.getByText(/Una promesa para hoy|A promise for today|Uma promessa para hoje/).boundingBox()
     const heroHeadingBox = await heroRegion.getByRole('heading').boundingBox()
-    const readingBox = await page.locator('[class*="readingCard"]').boundingBox()
+    const readingBox = await page.locator('article[class*="readingCard"]').boundingBox()
     const viewport = page.viewportSize()
 
     expect(heroBox).not.toBeNull()

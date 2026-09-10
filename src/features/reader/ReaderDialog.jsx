@@ -37,6 +37,7 @@ function resolveDialogPopoverPosition({ anchor, panel }) {
 export function ReaderDialog({
   children,
   className = '',
+  closeIcon = 'arrowLeft',
   closeLabel = 'Close',
   descriptionId,
   isOpen,
@@ -84,6 +85,12 @@ export function ReaderDialog({
     body.style.top = `-${scrollY}px`
     body.style.width = '100%'
     root.style.overscrollBehavior = 'none'
+    const appRoot = document.getElementById('root')
+    const previousRootAriaHidden = appRoot?.getAttribute('aria-hidden')
+    if (appRoot) {
+      appRoot.inert = true
+      appRoot.setAttribute('aria-hidden', 'true')
+    }
 
     const focusId = schedule(() => {
       const dialog = dialogRef.current
@@ -123,6 +130,11 @@ export function ReaderDialog({
       body.style.top = previousBodyStyles.top
       body.style.width = previousBodyStyles.width
       root.style.overscrollBehavior = previousOverscroll
+      if (appRoot) {
+        appRoot.inert = false
+        if (previousRootAriaHidden === null) appRoot.removeAttribute('aria-hidden')
+        else appRoot.setAttribute('aria-hidden', previousRootAriaHidden)
+      }
       const currentLocation = `${window.location.pathname}${window.location.search}${window.location.hash}`
       if (currentLocation === openedAtLocation) window.scrollTo(0, scrollY)
       schedule(() => focusWithoutScrolling(returnFocusTarget))
@@ -148,7 +160,7 @@ export function ReaderDialog({
       <div aria-hidden="true" className="reader-dialog__handle" />
       <header className="reader-dialog__header">
         <button aria-label={closeLabel} className="reader-dialog__back" onClick={onClose} type="button">
-          <Icon name="arrowLeft" size="sm" />
+          <Icon name={closeIcon} size="sm" />
         </button>
         <h2 id={titleId}>{title}</h2>
         <span aria-hidden="true" className="reader-dialog__header-spacer" />

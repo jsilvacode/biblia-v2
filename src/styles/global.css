@@ -168,6 +168,11 @@ svg { display: block; flex: none; }
 .reader-settings .segmented-control--small:last-child { grid-template-columns: repeat(3, 1fr); }
 .result-count { margin: 1rem 0 0.55rem; color: var(--ink-muted); font-size: 0.84rem; }
 .bible-library-list { margin-top: var(--space-4); }
+.bible-library-navigator {
+  height: clamp(28rem, calc(100dvh - 14rem), 46rem);
+  min-height: 0;
+  overflow: hidden;
+}
 .book-list { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
 .book-list__entry { border-bottom: 1px solid var(--border); }
 .book-list__entry:last-child { border-bottom: 0; }
@@ -278,16 +283,20 @@ svg { display: block; flex: none; }
 .reader-dialog--commentary .reader-dialog__scroll-area > .button { margin-top: 0.35rem; }
 .reader-settings__controls { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; gap: 0.25rem; margin: 1rem 0 0.75rem; text-align: center; }
 .reader-settings__controls button { min-height: 2.4rem; border: 1px solid var(--border); border-radius: 0.55rem; background: var(--surface); }
-.chapter-pager { display: flex; justify-content: space-between; width: min(100% - 2.5rem, var(--reader-width)); margin: var(--space-5) auto 0; }
-.chapter-pager button { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.65rem; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--surface); font-size: 0.82rem; font-weight: 680; }
+.chapter-pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(100% - 2.5rem, var(--reader-width)); gap: 0.65rem; margin: var(--space-5) auto 0; }
+.chapter-pager button { display: inline-flex; align-items: center; min-width: 0; min-height: 3.25rem; gap: 0.4rem; padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--surface); font-size: 0.78rem; font-weight: 680; line-height: 1.25; text-align: left; }
+.chapter-pager button:last-child { justify-content: flex-end; text-align: right; }
+.chapter-pager button span { min-width: 0; }
 
 .reader-header .icon-button { width: 2.75rem; height: 2.75rem; }
 .reader-header .icon-button { border: 1px solid transparent; color: var(--ink-muted); }
 .reader-header .icon-button:hover,
 .reader-header .icon-button:focus-visible,
 .reader-header .icon-button[aria-expanded='true'] { border-color: color-mix(in srgb, var(--accent) 18%, var(--border)); background: color-mix(in srgb, var(--accent-soft) 44%, transparent); color: var(--accent-deep); }
-.reader-header__reference { position: absolute; left: 50%; display: inline-flex; min-width: 0; max-width: calc(100% - 7rem); min-height: 2.75rem; padding: 0 0.55rem; border: 0; border-radius: 0.7rem; background: transparent; color: var(--ink); white-space: nowrap; transform: translateX(-50%); }
-.reader-header__reference span { overflow: hidden; text-overflow: ellipsis; }
+.reader-header__reference { position: absolute; left: 50%; display: inline-flex; min-width: 0; max-width: calc(100% - 7rem); min-height: 3.25rem; padding: 0.28rem 0.55rem; border: 1px solid color-mix(in srgb, var(--accent) 12%, var(--border)); border-radius: 0.72rem; background: color-mix(in srgb, var(--surface-soft) 46%, transparent); color: var(--ink); white-space: nowrap; transform: translateX(-50%); }
+.reader-header__reference-copy { display: grid; min-width: 0; gap: 0.02rem; text-align: center; }
+.reader-header__reference-copy strong { overflow: hidden; font-size: 0.86rem; font-weight: 720; line-height: 1.18; text-overflow: ellipsis; }
+.reader-header__reference-copy small { overflow: hidden; color: var(--ink-muted); font-size: 0.62rem; font-weight: 600; line-height: 1.18; text-overflow: ellipsis; }
 .reader-header__reference:hover, .reader-header__reference[aria-expanded='true'], .reader-header__sections:hover, .reader-header__sections[aria-expanded='true'], .reader-header__menu:hover, .reader-header__menu[aria-expanded='true'] { background: var(--surface-soft); }
 .reader-header__desktop-navigation { display: none; }
 .reader-header__menu { margin-left: auto; }
@@ -317,6 +326,8 @@ svg { display: block; flex: none; }
 .reader-dialog__close:hover { background: var(--accent-soft); color: var(--accent-deep); transform: translateY(-1px); }
 .reader-dialog__reference { margin: 0.2rem 0 0.85rem; color: var(--ink-muted); font-size: 0.86rem; }
 .reader-dialog__scroll-area { min-height: 0; overflow-y: auto; padding: 0.15rem 0 0.5rem; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.reader-dialog--navigation { width: min(100%, 58rem); height: min(90dvh, 46rem); }
+.reader-dialog--navigation > .reader-dialog__header { margin-bottom: 0.7rem; }
 .reader-dialog--actions .reader-action-list { display: grid; max-height: min(58dvh, 24rem); gap: 0.55rem; overflow-y: auto; padding-bottom: 0.15rem; overscroll-behavior: contain; }
 .reader-sheet-action { display: flex; align-items: center; min-height: 3.25rem; gap: 0.8rem; width: 100%; padding: 0.65rem 0.75rem; border: 1px solid var(--border); border-radius: 0.9rem; background: var(--surface); color: var(--ink); font-size: 0.92rem; font-weight: 700; text-align: left; }
 .reader-sheet-action:hover, .reader-sheet-action[aria-pressed='true'] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-deep); }
@@ -417,6 +428,12 @@ svg { display: block; flex: none; }
 @keyframes anchored-popover-in {
   from { opacity: 0; transform: translateY(-0.3rem); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 700px) {
+  .reader-dialog-backdrop:has(.reader-dialog--navigation) { align-items: center; padding: 1rem; }
+  .reader-dialog--navigation { max-height: min(46rem, calc(100dvh - 2rem)); padding: 0.9rem 1rem 1rem; border-bottom: 1px solid var(--border); border-radius: 1.2rem; box-shadow: var(--shadow-md), 0 18px 48px rgb(33 25 16 / 20%); }
+  .reader-dialog--navigation .reader-dialog__handle { display: none; }
 }
 
 .route-loading { width: min(100% - 2rem, 70rem); height: 10rem; margin: 2rem auto; border-radius: var(--radius-md); background: linear-gradient(90deg, var(--surface-soft), var(--border), var(--surface-soft)); background-size: 200% 100%; animation: shimmer 1.4s infinite; }

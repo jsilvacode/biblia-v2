@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { Icon } from '../../components/ui/Icon'
@@ -6,6 +6,7 @@ import { useI18n } from '../../i18n'
 import { formatReference } from '../bible/catalog'
 import { parseReference } from '../bible/reference'
 import { useSettings } from '../settings/SettingsProvider'
+import { useBibleTextSearch } from './useBibleTextSearch'
 
 export default function SearchPage() {
   const { locale, t } = useI18n()
@@ -14,34 +15,12 @@ export default function SearchPage() {
   const [query, setQuery] = useState(() => searchParams.get('q') ?? '')
   const submittedQuery = searchParams.get('q') ?? ''
   const reference = parseReference(submittedQuery)
-  const workerRef = useRef(null)
-  const requestIdRef = useRef(0)
-  const [searchState, setSearchState] = useState({ key: null, status: 'idle', results: [] })
-  const searchKey = `${settings.bibleVersion}:${submittedQuery}`
-  const isSearching = Boolean(submittedQuery && !reference && searchState.key !== searchKey)
-
-  useEffect(() => {
-    const worker = new Worker(new URL('../../workers/searchWorker.js', import.meta.url), { type: 'module' })
-    workerRef.current = worker
-    worker.onmessage = (event) => {
-      if (event.data.id !== requestIdRef.current) return
-      setSearchState({
-        key: event.data.key,
-        message: event.data.message,
-        results: event.data.results,
-        status: event.data.status,
-      })
-    }
-    return () => worker.terminate()
-  }, [])
-
-  useEffect(() => {
-    if (!submittedQuery || reference || !workerRef.current) return undefined
-
-    const id = requestIdRef.current + 1
-    requestIdRef.current = id
-    workerRef.current.postMessage({ id, key: searchKey, query: submittedQuery, translationId: settings.bibleVersion })
-  }, [reference, searchKey, settings.bibleVersion, submittedQuery])
+  const searchState = useBibleTextSearch({
+    enabled: Boolean(submittedQuery && !reference),
+    query: submittedQuery,
+    translationId: settings.bibleVersion,
+  })
+  const isSearching = searchState.status === 'loading'
 
   function submit(event) {
     event.preventDefault()

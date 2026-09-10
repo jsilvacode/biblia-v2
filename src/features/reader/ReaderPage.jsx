@@ -231,10 +231,13 @@ export default function ReaderPage() {
     }
   }
 
-  function goToChapter(bookId, chapter) {
+  function goToChapter(bookId, chapter, verse = null) {
     closeDialog()
-    navigate(`/read/${bookId}/${chapter}`, {
-      state: returnTo ? { returnLabel, returnSource, returnTo } : undefined,
+    navigate(`/read/${bookId}/${chapter}${verse ? `/${verse}` : ''}`, {
+      state: returnTo || verse ? {
+        ...(verse ? { attentionVerse: true } : {}),
+        ...(returnTo ? { returnLabel, returnSource, returnTo } : {}),
+      } : undefined,
     })
   }
 
@@ -281,13 +284,18 @@ export default function ReaderPage() {
         <div className="reader-header__inner">
           <button aria-label={t('common.back')} className="icon-button reader-header__back" onClick={handleBack} type="button"><Icon name="arrowLeft" size={20} strokeWidth={1.65} /></button>
           <button
+            aria-label={`${getLocalizedBookName(book, locale)} ${reference.chapter}. ${t('reader.changeBookOrChapter')}`}
             aria-expanded={activeDialog === 'navigation'}
             aria-haspopup="dialog"
             className="reader-header__reference"
             onClick={(event) => openDialog('navigation', event)}
             type="button"
           >
-            <span>{getLocalizedBookName(book, locale)} {reference.chapter}</span><Icon name="chevronDown" size={18} strokeWidth={1.65} />
+            <span className="reader-header__reference-copy">
+              <strong>{getLocalizedBookName(book, locale)} {reference.chapter}</strong>
+              <small>{t('reader.changeBookOrChapter')}</small>
+            </span>
+            <Icon name="chevronDown" size={18} strokeWidth={1.65} />
           </button>
           <nav aria-label={t('app.name')} className="reader-header__desktop-navigation">
             {readerDesktopLinks.map(([label, path, icon]) => (
@@ -357,8 +365,14 @@ export default function ReaderPage() {
       {actionFeedback && <p aria-live="polite" className="reader-action-feedback" role="status">{actionFeedback}</p>}
 
       <nav className="chapter-pager" aria-label={t('reader.quickNavigation')}>
-        <button disabled={!previous} onClick={() => move('previous')} type="button"><Icon name="arrowLeft" size={18} /> {t('common.previous')}</button>
-        <button disabled={!next} onClick={() => move('next')} type="button">{t('common.next')} <Icon name="arrowRight" size={18} /></button>
+        <button disabled={!previous} onClick={() => move('previous')} type="button">
+          <Icon name="arrowLeft" size={18} />
+          <span>{previous ? t('reader.previousDestination', { reference: formatReference(previous, locale) }) : t('common.previous')}</span>
+        </button>
+        <button disabled={!next} onClick={() => move('next')} type="button">
+          <span>{next ? t('reader.nextDestination', { reference: formatReference(next, locale) }) : t('common.next')}</span>
+          <Icon name="arrowRight" size={18} />
+        </button>
       </nav>
       <ReaderBottomNavigation
         bibleIsOpen={activeDialog === 'navigation'}

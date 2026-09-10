@@ -88,14 +88,6 @@ export default function HomePage() {
     return () => window.clearTimeout(timeout)
   }, [promiseFeedback])
 
-  useEffect(() => {
-    if (promiseStatus === 'loading') return undefined
-
-    document.documentElement.dataset.santaBibliaReady = 'true'
-    window.dispatchEvent(new Event('santa-biblia:critical-ready'))
-    return undefined
-  }, [promiseStatus])
-
   function preloadReading(reference) {
     const key = `${settings.bibleVersion}:${reference.book}:${reference.chapter}`
     if (warmedReferences.has(key)) return
@@ -120,11 +112,11 @@ export default function HomePage() {
     }
   }
 
-  function goToReading(book, chapter) {
-    const reference = { book, chapter, verse: null }
+  function goToReading(book, chapter, verse = null) {
+    const reference = { book, chapter, verse }
     setIsQuickNavigationOpen(false)
     preloadReading(reference)
-    navigate(getReaderPath(reference))
+    navigate(getReaderPath(reference), { state: verse ? { attentionVerse: true } : undefined })
   }
 
   async function handlePromiseShare() {
@@ -172,42 +164,54 @@ export default function HomePage() {
         </div>
       </section>
 
-      <InstallInvitation />
-
       <section aria-label={t('home.primaryActions')} className={styles.homeFeed}>
-        {previousReading ? (
-          <Link
-            aria-label={`${t('home.continueReading')}: ${lastReference}`}
-            className={styles.readingCard}
-            to={getReaderPath(previousReading)}
-            {...readingIntentProps(previousReading)}
-          >
-            <span aria-hidden="true" className={styles.cardIcon}><Icon name="bookOpen" size={21} /></span>
-            <span className={styles.cardCopy}>
-              <span className={styles.eyebrow}>{t('home.continueReading')}</span>
-              <strong>{lastReference}</strong>
-              <small className={styles.cardMeta}>{t('home.continueHint')}</small>
-            </span>
-            <span aria-hidden="true" className={styles.cardArrow}><Icon name="arrowRight" size={19} /></span>
-          </Link>
-        ) : (
-          <button
-            aria-expanded={isQuickNavigationOpen}
-            aria-haspopup="dialog"
-            className={styles.readingCard}
-            onClick={() => setIsQuickNavigationOpen(true)}
-            ref={quickNavigationTriggerRef}
-            type="button"
-          >
-            <span aria-hidden="true" className={styles.cardIcon}><Icon name="bookOpen" size={21} /></span>
-            <span className={styles.cardCopy}>
-              <span className={styles.eyebrow}>{t('home.startReading')}</span>
-              <strong>{t('home.chooseReading')}</strong>
-              <small className={styles.cardMeta}>{t('home.startReadingDescription')}</small>
-            </span>
-            <span aria-hidden="true" className={styles.cardArrow}><Icon name="arrowRight" size={19} /></span>
-          </button>
-        )}
+        <article className={styles.readingCard}>
+          <span aria-hidden="true" className={styles.cardIcon}><Icon name="bookOpen" size={21} /></span>
+          <span className={styles.cardCopy}>
+            <span className={styles.eyebrow}>{t(previousReading ? 'home.continueReading' : 'home.startReading')}</span>
+            <strong>{previousReading ? lastReference : t('home.startReading')}</strong>
+            <small className={styles.cardMeta}>{t(previousReading ? 'home.continueHint' : 'home.startReadingDescription')}</small>
+          </span>
+          <span className={`${styles.readingActions} ${previousReading ? styles.readingActionsSplit : ''}`}>
+            {previousReading ? (
+              <Link
+                aria-label={`${t('home.continueReading')}: ${lastReference}`}
+                className={styles.readingPrimaryAction}
+                to={getReaderPath(previousReading)}
+                {...readingIntentProps(previousReading)}
+              >
+                <span>{t('home.continueReading')}</span>
+                <Icon name="arrowRight" size={17} />
+              </Link>
+            ) : (
+              <button
+                aria-expanded={isQuickNavigationOpen}
+                aria-haspopup="dialog"
+                className={styles.readingPrimaryAction}
+                onClick={() => setIsQuickNavigationOpen(true)}
+                ref={quickNavigationTriggerRef}
+                type="button"
+              >
+                <span>{t('home.chooseReading')}</span>
+                <Icon name="arrowRight" size={17} />
+              </button>
+            )}
+            {previousReading && (
+              <button
+                aria-expanded={isQuickNavigationOpen}
+                aria-haspopup="dialog"
+                className={styles.readingSecondaryAction}
+                onClick={() => setIsQuickNavigationOpen(true)}
+                ref={quickNavigationTriggerRef}
+                type="button"
+              >
+                {t('home.chooseAnotherReading')}
+              </button>
+            )}
+          </span>
+        </article>
+
+        {hasReadingHistory && <InstallInvitation />}
 
         <div className={styles.secondaryCards}>
           <Link className={styles.dailyCard} to={getReaderPath(dailyPlan.reading)} {...readingIntentProps(dailyPlan.reading)}>
@@ -293,6 +297,7 @@ export default function HomePage() {
           onClose={() => setIsQuickNavigationOpen(false)}
           onGoToChapter={goToReading}
           returnFocusRef={quickNavigationTriggerRef}
+          startWithBooks
         />
       )}
       {promiseFeedback && <p aria-live="polite" className={styles.promiseFeedback} role="status">{promiseFeedback}</p>}
