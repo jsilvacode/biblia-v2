@@ -2,6 +2,8 @@
 
 Fecha: 10 de septiembre de 2026. Estado: diseño y planificación; las nuevas secciones no están implementadas.
 
+**Entrega visual añadida el 14/09/2026:** [guía de estilos y composición](../design/GUIA_VISUAL_LUNA_2026-09-10.md), [mockups navegables](../design/experiencias-lectura-v1/index.html), [instrucciones y alcance de la muestra](../design/experiencias-lectura-v1/README.md) y [capturas móvil/escritorio](../design/experiencias-lectura-v1/screenshots/). Luna debe usar esta referencia y los assets finales incluidos; no reinventar el diseño. La propuesta sigue sujeta a correcciones del usuario y no equivale a integración de producción.
+
 Este documento es el encargo vigente para la siguiente actualización. Sustituye decisiones visuales incompatibles del plan del 9 de septiembre: ahora se autoriza mejorar la primera tarjeta, suavizar sus botones, dar identidad a Reavivados y al curso, y un retoque limitado al hero. La promesa sigue siendo el centro de la bienvenida. No hay capítulo de inicio recomendado ni selección forzada de Juan 1.
 
 El trabajo previo de selector, búsqueda integrada, botones iguales y footer se entrega como base independiente. Este plan no ordena rehacerlo. Luna debe ejecutar una etapa a la vez, leer únicamente sus dependencias y registrar su resultado antes de seguir. No necesita volver a investigar las decisiones ya cerradas aquí. Si cambia una fuente externa, aplicar el fallback documentado y registrar la diferencia.
@@ -79,6 +81,8 @@ Colores iniciales: principal `--accent-blue-deep` con texto de contraste apropia
 Retoque autorizado al hero: sólo transición de luz hacia esta tarjeta y corrección de espaciado que resulte necesaria. Comparar promesa corta, mediana y larga a igual fecha/tema antes y después. Conservar el hero completo si no hay una mejora visual evidente.
 
 ### 3.3 Arte de tarjetas y cabeceras
+
+Actualización 14/09: ambos artes originales ya están entregados en `docs/design/experiencias-lectura-v1/assets/` como `rpsp-landscape-v1.webp` y `course-invitation-v1.webp`, con maestros y prompts. Usarlos en la etapa 2 y trasladar los WebP a las rutas de producción al integrar; no generar sustitutos salvo corrección del usuario. El resto de esta sección documenta el brief que se utilizó y el procedimiento para eventuales revisiones.
 
 RPSP: reproducir la idea de paisaje del adjunto mediante una ilustración original: pradera al amanecer, cielo azul abierto, nubes luminosas, Biblia abierta sobre el tercio derecho. Mantener una zona limpia a la izquierda. Tipografía real en HTML, no texto incrustado ni logotipo deformado. Atenuar verdes/amarillos para integrarlo en Home, sin perder identidad.
 

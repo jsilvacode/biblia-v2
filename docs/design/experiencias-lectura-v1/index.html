@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Santa Biblia · Propuesta visual</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="design-toolbar" aria-label="Controles de la propuesta, fuera de la aplicación">
+    <span><strong>Santa Biblia</strong> <small>Propuesta visual · v1</small></span>
+    <label>Pantalla <select id="design-page">
+      <option value="home">Home</option><option value="picker">Selector</option><option value="reader">Lector bíblico</option>
+      <option value="rpsp">Reavivados</option><option value="topics">Guía temática</option><option value="topic">Lectura temática</option>
+      <option value="course">La Fe de Jesús</option><option value="lesson">Lección del curso</option><option value="library">Biblioteca</option><option value="book">Lector de libro · muestra</option>
+    </select></label>
+    <label>Vista <select id="design-width"><option value="auto">Adaptable</option><option value="390">Móvil · 390</option><option value="320">Móvil · 320</option></select></label>
+    <label>Tema <select id="design-theme"><option value="light">Claro</option><option value="dark">Oscuro</option></select></label>
+    <label><input id="design-history" type="checkbox" checked> Con historial</label>
+    <label id="audio-state-label">Audio <select id="design-audio"><option value="ready">Listo</option><option value="playing">Reproduciendo · muestra</option><option value="loading">Cargando</option><option value="pending">Sin publicar</option><option value="error">Error</option></select></label>
+  </div>
+  <div id="sb-mock" data-theme="light" aria-label="Propuesta de Santa Biblia"></div>
+  <script src="icons.js"></script>
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,573 @@
+{
+  "checkedAt": "2026-09-14T19:46:11.884Z",
+  "engine": "Playwright Chromium (emulación)",
+  "layouts": [
+    {
+      "screen": "home",
+      "theme": "light",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 2473
+    },
+    {
+      "screen": "picker",
+      "theme": "light",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 1179
+    },
+    {
+      "screen": "reader",
+      "theme": "light",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 7970
+    },
+    {
+      "screen": "rpsp",
+      "theme": "light",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 3672
+    },
+    {
+      "screen": "topics",
+      "theme": "light",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 2654
+    },
+    {
+      "screen": "topic",
+      "theme": "light",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 3342
+    },
+    {
+      "screen": "course",
+      "theme": "light",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 3003
+    },
+    {
+      "screen": "lesson",
+      "theme": "light",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 3626
+    },
+    {
+      "screen": "library",
+      "theme": "light",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 1499
+    },
+    {
+      "screen": "book",
+      "theme": "light",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 1901
+    },
+    {
+      "screen": "home",
+      "theme": "dark",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 2473
+    },
+    {
+      "screen": "picker",
+      "theme": "dark",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 1179
+    },
+    {
+      "screen": "reader",
+      "theme": "dark",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 7970
+    },
+    {
+      "screen": "rpsp",
+      "theme": "dark",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 3672
+    },
+    {
+      "screen": "topics",
+      "theme": "dark",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 2654
+    },
+    {
+      "screen": "topic",
+      "theme": "dark",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 3342
+    },
+    {
+      "screen": "course",
+      "theme": "dark",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 3003
+    },
+    {
+      "screen": "lesson",
+      "theme": "dark",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 3626
+    },
+    {
+      "screen": "library",
+      "theme": "dark",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 1499
+    },
+    {
+      "screen": "book",
+      "theme": "dark",
+      "width": 320,
+      "scrollWidth": 320,
+      "height": 1901
+    },
+    {
+      "screen": "home",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 2321
+    },
+    {
+      "screen": "picker",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 1178
+    },
+    {
+      "screen": "reader",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 6566
+    },
+    {
+      "screen": "rpsp",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 3119
+    },
+    {
+      "screen": "topics",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 2553
+    },
+    {
+      "screen": "topic",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 2965
+    },
+    {
+      "screen": "course",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 2863
+    },
+    {
+      "screen": "lesson",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 3403
+    },
+    {
+      "screen": "library",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 1053
+    },
+    {
+      "screen": "book",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 1625
+    },
+    {
+      "screen": "home",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 2321
+    },
+    {
+      "screen": "picker",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 1178
+    },
+    {
+      "screen": "reader",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 6566
+    },
+    {
+      "screen": "rpsp",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 3119
+    },
+    {
+      "screen": "topics",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 2553
+    },
+    {
+      "screen": "topic",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 2965
+    },
+    {
+      "screen": "course",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 2863
+    },
+    {
+      "screen": "lesson",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 3403
+    },
+    {
+      "screen": "library",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 1053
+    },
+    {
+      "screen": "book",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "height": 1625
+    },
+    {
+      "screen": "home",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 2130
+    },
+    {
+      "screen": "picker",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 1268
+    },
+    {
+      "screen": "reader",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 4475
+    },
+    {
+      "screen": "rpsp",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 2464
+    },
+    {
+      "screen": "topics",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 1901
+    },
+    {
+      "screen": "topic",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 2185
+    },
+    {
+      "screen": "course",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 1878
+    },
+    {
+      "screen": "lesson",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 3123
+    },
+    {
+      "screen": "library",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 1158
+    },
+    {
+      "screen": "book",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 1312
+    },
+    {
+      "screen": "home",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 2130
+    },
+    {
+      "screen": "picker",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 1268
+    },
+    {
+      "screen": "reader",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 4475
+    },
+    {
+      "screen": "rpsp",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 2464
+    },
+    {
+      "screen": "topics",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 1901
+    },
+    {
+      "screen": "topic",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 2185
+    },
+    {
+      "screen": "course",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 1878
+    },
+    {
+      "screen": "lesson",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 3123
+    },
+    {
+      "screen": "library",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 1158
+    },
+    {
+      "screen": "book",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "height": 1312
+    },
+    {
+      "screen": "home",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1979
+    },
+    {
+      "screen": "picker",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1203
+    },
+    {
+      "screen": "reader",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 4410
+    },
+    {
+      "screen": "rpsp",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 2399
+    },
+    {
+      "screen": "topics",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1722
+    },
+    {
+      "screen": "topic",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 2120
+    },
+    {
+      "screen": "course",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1762
+    },
+    {
+      "screen": "lesson",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 3058
+    },
+    {
+      "screen": "library",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1000
+    },
+    {
+      "screen": "book",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1247
+    },
+    {
+      "screen": "home",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1979
+    },
+    {
+      "screen": "picker",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1203
+    },
+    {
+      "screen": "reader",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 4410
+    },
+    {
+      "screen": "rpsp",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 2399
+    },
+    {
+      "screen": "topics",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1722
+    },
+    {
+      "screen": "topic",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 2120
+    },
+    {
+      "screen": "course",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1762
+    },
+    {
+      "screen": "lesson",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 3058
+    },
+    {
+      "screen": "library",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1000
+    },
+    {
+      "screen": "book",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "height": 1247
+    }
+  ],
+  "errors": [],
+  "interactions": [
+    "Home sin historial → buscar Hechos → capítulo 16 → lector",
+    "Buscar miedo → situación → Salmo 27 completo",
+    "Scroll independiente de libros en escritorio",
+    "Texto visible en audio pendiente, error y reproducción simulada"
+  ]
+}

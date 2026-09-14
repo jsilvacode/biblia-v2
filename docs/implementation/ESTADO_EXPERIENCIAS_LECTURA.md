@@ -2,6 +2,8 @@
 
 Actualizado: 10 de septiembre de 2026. Encargo: [plan principal para Luna](PLAN_EXPERIENCIAS_LECTURA_LUNA_2026-09-10.md).
 
+Actualización visual 14/09/2026: guía, mockups navegables, artes originales y capturas en [docs/design](../design/GUIA_VISUAL_LUNA_2026-09-10.md). Diseño preparado para revisión; las etapas de integración de la app continúan pendientes. Consultar el [reporte visual](../design/experiencias-lectura-v1/qa-report.json) para resultados de esta muestra, separados de las pruebas de la aplicación.
+
 ## Base anterior a las nuevas etapas
 
 La base incorpora acceso desde Home, selector compartido, búsqueda integrada, navegación del lector, retirada de espera artificial de arranque y footer con color/espaciado. No equivale al rediseño nuevo solicitado.
@@ -24,7 +26,7 @@ Base guardada y subida a `origin/main` en el commit [`4617e65`](https://github.c
 | 0A · Base para Luna | Pendiente al iniciar implementación | Registrar commit inicial y capturas de su checkout. |
 | 0B · Cobertura de búsqueda | Pendiente | Palabras completas y acceso a todos los resultados. |
 | 1 · Primera tarjeta | Lista para ejecutar; no implementada | Centrado móvil, tonos suaves y estados con/sin historial. |
-| 2 · Arte | Planificado | Assets finales y procedencia. |
+| 2 · Arte | Assets y mockups preparados; integración pendiente | Aplicar WebP entregados siguiendo la guía y las capturas. |
 | 3A · Fuente de audio | Investigación completada; integración pendiente | Endpoint RSS y fallback validado por fecha/referencia. |
 | 3B · Reproductor | Pendiente | Player directo y pruebas reales de reproducción. |
 | 3C · Reavivados | Pendiente | Ruta inmersiva del día. |
