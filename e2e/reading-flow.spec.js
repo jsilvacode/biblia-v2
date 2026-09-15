@@ -339,33 +339,53 @@ test('the reference parser accepts English and Portuguese names', async ({ page 
   await expect(page.getByText('Ej: justificados por fe - Salmos 33 - 1 Corintios 3:18', { exact: true })).toBeVisible()
 
   await searchbox.fill('John 3:16')
-  await page.getByRole('button', { name: /Buscar|Search/ }).click()
   await expect(page.getByRole('link', { name: /Juan 3:16/ })).toBeVisible()
 
   await searchbox.fill('João 3:16')
-  await page.getByRole('button', { name: /Buscar|Search/ }).click()
   await expect(page.getByRole('link', { name: /Juan 3:16/ })).toBeVisible()
 })
 
-test('text search runs in the deferred worker', async ({ page }) => {
+test('text search updates while the query is being typed', async ({ page }) => {
   await page.goto('/search')
   await page.getByRole('searchbox').fill('Nicodemo')
-  await page.getByRole('button', { name: /Buscar|Search/ }).click()
 
+  await expect(page).toHaveURL(/\/search\?q=Nicodemo$/)
   await expect(page.getByRole('link', { name: /Juan 3:1/ })).toBeVisible()
 })
 
-test('clearing a search does not leave stale results on the page', async ({ page }) => {
+test('search results expose the full total and load more than one hundred verses', async ({ page }) => {
+  await page.goto('/search')
+  await page.getByRole('searchbox').fill('mundo')
+  await page.getByRole('button', { name: /Buscar|Search/ }).click()
+
+  const resultCount = page.locator('.search-results .result-count')
+  const loadMore = page.getByRole('button', { name: /Ver más resultados|Show more results|Ver mais resultados/ })
+  await expect(resultCount).toHaveText(/50 de [1-9]\d{2} resultados/)
+  await expect(page.getByRole('link', { name: /Levítico 5:2/ })).toHaveCount(0)
+  await expect(loadMore).toBeVisible()
+
+  await loadMore.click()
+  await expect(resultCount).toHaveText(/100 de [1-9]\d{2} resultados/)
+  await loadMore.click()
+  await expect(resultCount).toHaveText(/150 de [1-9]\d{2} resultados/)
+  await expect(page.locator('.search-results .search-result')).toHaveCount(150)
+})
+
+test('changing or clearing a search does not leave stale results on the page', async ({ page }) => {
   await page.goto('/search')
   const input = page.getByRole('searchbox', { name: /Buscar en la Biblia|Search the Bible|Buscar na Bíblia/ })
   await input.fill('Nicodemo')
   await page.getByRole('button', { name: /Buscar|Search/ }).click()
   await expect(page.getByRole('link', { name: /Juan 3:1/ })).toBeVisible()
 
+  await input.fill('mundo')
+  await expect(page).toHaveURL(/\/search\?q=mundo$/)
+  await expect(page.getByRole('link', { name: /Juan 3:1/ })).toHaveCount(0)
+
   await input.fill('')
-  await page.getByRole('button', { name: /Buscar|Search/ }).click()
   await expect(page).toHaveURL(/\/search$/)
   await expect(page.getByRole('link', { name: /Juan 3:1/ })).toHaveCount(0)
+  await expect(page.locator('.search-results')).toHaveCount(0)
 })
 
 test('the Bible browser starts clean and opens chapters only after a book is chosen', async ({ page }) => {
@@ -427,6 +447,8 @@ test('the reading chooser finds verses containing every searched word', async ({
   const searchbox = navigation.getByRole('searchbox', { name: /palabra, frase, libro o referencia|word, phrase, book, or reference|palavra, frase, livro ou referência/i })
   await searchbox.fill('tal manera mundo')
 
+  await expect(navigation.getByText('1 de 1 resultados', { exact: true })).toBeVisible()
+  await expect(navigation.getByRole('button', { name: /Marcos 1:27/ })).toHaveCount(0)
   const result = navigation.getByRole('button', { name: /Juan 3:16.*Porque de tal manera amó Dios al mundo/i })
   await expect(result).toBeVisible()
   await result.click()
@@ -434,6 +456,22 @@ test('the reading chooser finds verses containing every searched word', async ({
   await expect(page).toHaveURL(/\/read\/43\/3\/16$/)
   await expect(page.locator('#verse-16')).toBeVisible()
   await expect(page.locator('#verse-16')).toHaveClass(/is-attention-pulsing/)
+})
+
+test('the reading chooser shares the paginated text search contract', async ({ page }) => {
+  await page.goto('/read/43/3')
+  await page.getByRole('button', { name: /Juan 3|John 3|João 3/ }).click()
+
+  const navigation = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
+  const searchbox = navigation.getByRole('searchbox', { name: /palabra, frase, libro o referencia|word, phrase, book, or reference|palavra, frase, livro ou referência/i })
+  await searchbox.fill('mundo')
+
+  const resultCount = navigation.getByText(/50 de [1-9]\d{2} resultados/, { exact: true })
+  const loadMore = navigation.getByRole('button', { name: /Ver más resultados|Show more results|Ver mais resultados/ })
+  await expect(resultCount).toBeVisible()
+  await expect(loadMore).toBeVisible()
+  await loadMore.click()
+  await expect(navigation.getByText(/100 de [1-9]\d{2} resultados/, { exact: true })).toBeVisible()
 })
 
 test('saved surfaces only expose completed saved-verse features', async ({ page }) => {

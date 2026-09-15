@@ -156,6 +156,8 @@ export default {
     loading: 'Buscando en la Biblia…',
     error: 'No fue posible cargar la búsqueda.',
     results: '{{count}} resultados',
+    showingResults: '{{shown}} de {{total}} resultados',
+    showMore: 'Ver más resultados',
     openReference: 'Abrir referencia',
   },
   saved: {

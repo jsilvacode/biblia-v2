@@ -190,8 +190,21 @@ export function BibleNavigator({
                 <p className={styles.searchMessage}>{t('search.error')}</p>
               ) : textSearch.results.length ? (
                 <>
-                  <p className={styles.verseResultCount}>{t('search.results', { count: textSearch.results.length })}</p>
+                  <p className={styles.verseResultCount}>
+                    {t('search.showingResults', { shown: textSearch.results.length, total: textSearch.total })}
+                  </p>
                   <div className={styles.verseResults}>{textSearch.results.map(renderVerseResult)}</div>
+                  {textSearch.hasMore && (
+                    <button
+                      className={styles.loadMore}
+                      disabled={textSearch.isLoadingMore}
+                      onClick={textSearch.loadMore}
+                      type="button"
+                    >
+                      {textSearch.isLoadingMore ? t('search.loading') : t('search.showMore')}
+                    </button>
+                  )}
+                  {textSearch.loadMoreError && <p className={styles.loadMoreError} role="alert">{t('search.error')}</p>}
                 </>
               ) : (
                 <p className={styles.searchMessage}>{t('search.noResults')}</p>

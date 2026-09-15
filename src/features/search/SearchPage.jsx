@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { Icon } from '../../components/ui/Icon'
@@ -12,12 +11,13 @@ export default function SearchPage() {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
   const [searchParams, setSearchParams] = useSearchParams()
-  const [query, setQuery] = useState(() => searchParams.get('q') ?? '')
-  const submittedQuery = searchParams.get('q') ?? ''
-  const reference = parseReference(submittedQuery)
+  const query = searchParams.get('q') ?? ''
+  const activeQuery = query.trim()
+  const reference = parseReference(activeQuery)
   const searchState = useBibleTextSearch({
-    enabled: Boolean(submittedQuery && !reference),
-    query: submittedQuery,
+    debounceMs: 180,
+    enabled: Boolean(activeQuery && !reference),
+    query: activeQuery,
     translationId: settings.bibleVersion,
   })
   const isSearching = searchState.status === 'loading'
@@ -25,7 +25,12 @@ export default function SearchPage() {
   function submit(event) {
     event.preventDefault()
     const nextQuery = query.trim()
-    setSearchParams(nextQuery ? { q: nextQuery } : {})
+    setSearchParams(nextQuery ? { q: nextQuery } : {}, { replace: true })
+  }
+
+  function changeQuery(event) {
+    const nextQuery = event.target.value
+    setSearchParams(nextQuery.trim() ? { q: nextQuery } : {}, { replace: true })
   }
 
   return (
@@ -38,7 +43,7 @@ export default function SearchPage() {
         <input
           aria-label={t('search.title')}
           autoFocus
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={changeQuery}
           type="search"
           value={query}
         />
@@ -66,9 +71,11 @@ export default function SearchPage() {
         <div className="empty-state"><Icon name="search" size={24} /><p>{t('search.loading')}</p></div>
       ) : searchState.status === 'error' ? (
         <div className="empty-state"><Icon name="search" size={24} /><p>{t('search.error')}</p></div>
-      ) : submittedQuery && searchState.results.length ? (
+      ) : activeQuery && searchState.results.length ? (
         <div className="search-results">
-          <p className="result-count">{t('search.results', { count: searchState.results.length })}</p>
+          <p aria-live="polite" className="result-count">
+            {t('search.showingResults', { shown: searchState.results.length, total: searchState.total })}
+          </p>
           {searchState.results.map((result) => (
             <Link
               className="reference-result search-result"
@@ -84,8 +91,19 @@ export default function SearchPage() {
               <Icon name="arrowRight" size={20} />
             </Link>
           ))}
+          {searchState.hasMore && (
+            <button
+              className="button button--compact search-results__more"
+              disabled={searchState.isLoadingMore}
+              onClick={searchState.loadMore}
+              type="button"
+            >
+              {searchState.isLoadingMore ? t('search.loading') : t('search.showMore')}
+            </button>
+          )}
+          {searchState.loadMoreError && <p className="search-results__error" role="alert">{t('search.error')}</p>}
         </div>
-      ) : submittedQuery ? (
+      ) : activeQuery ? (
         <div className="empty-state">
           <Icon name="search" size={24} />
           <p>{t('search.noResults')}</p>

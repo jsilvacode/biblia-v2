@@ -29,11 +29,20 @@ async function loadIndex(translationId) {
 }
 
 self.onmessage = async (event) => {
-  const { id, key, query, translationId } = event.data
+  const {
+    append = false,
+    id,
+    key,
+    offset,
+    pageSize,
+    query,
+    translationId,
+  } = event.data
   try {
     const entries = await loadIndex(translationId)
-    self.postMessage({ id, key, results: searchEntries(entries, query), status: 'ready' })
+    const page = searchEntries(entries, query, { limit: pageSize, offset })
+    self.postMessage({ append, id, key, ...page, status: 'ready' })
   } catch (error) {
-    self.postMessage({ id, key, message: error.message, results: [], status: 'error' })
+    self.postMessage({ append, id, key, message: error.message, results: [], status: 'error' })
   }
 }
