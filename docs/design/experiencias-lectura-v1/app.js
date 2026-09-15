@@ -58,6 +58,6 @@
   for(const [id,key] of [['design-page','page'],['design-theme','theme'],['design-width','width'],['design-audio','audio'],['design-history','history']])document.getElementById(id)?.addEventListener('change',event=>{state[key]=key==='history'?event.target.checked:event.target.value;render();});
   if(query.has('capture'))document.body.classList.add('capture');
   render();
-  if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:render});tweak.addSelect(state,'page',{label:'Pantalla',options:allowedPages});tweak.addSelect(state,'theme',{label:'Tema',options:['light','dark']});tweak.addToggle(state,'history',{label:'Con historial'});tweak.addSelect(state,'audio',{label:'Estado del audio',options:['ready','playing','loading','pending','error']});}
+  if(globalThis.Tweak){const tweak=new globalThis.Tweak({container:root,onChange:render});tweak.addSelect(state,'page',{label:'Pantalla',options:allowedPages});tweak.addSelect(state,'theme',{label:'Tema',options:['light','dark']});tweak.addToggle(state,'history',{label:'Con historial'});tweak.addSelect(state,'audio',{label:'Estado del audio',options:['ready','playing','loading','pending','error']});}
   window.SBMock={state,render,go};
 })();

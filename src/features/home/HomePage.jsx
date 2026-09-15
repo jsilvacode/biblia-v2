@@ -165,14 +165,14 @@ export default function HomePage() {
       </section>
 
       <section aria-label={t('home.primaryActions')} className={styles.homeFeed}>
-        <article className={styles.readingCard}>
+        <article className={`${styles.readingCard} ${previousReading ? styles.readingCardWithHistory : styles.readingCardFirstVisit}`}>
           <span aria-hidden="true" className={styles.cardIcon}><Icon name="bookOpen" size={21} /></span>
           <span className={styles.cardCopy}>
-            <span className={styles.eyebrow}>{t(previousReading ? 'home.continueReading' : 'home.startReading')}</span>
+            {previousReading && <span className={styles.eyebrow}>{t('home.readingMoment')}</span>}
             <strong>{previousReading ? lastReference : t('home.startReading')}</strong>
             <small className={styles.cardMeta}>{t(previousReading ? 'home.continueHint' : 'home.startReadingDescription')}</small>
           </span>
-          <span className={`${styles.readingActions} ${previousReading ? styles.readingActionsSplit : ''}`}>
+          <span className={`${styles.readingActions} ${previousReading ? styles.readingActionsSplit : styles.readingActionsSingle}`} data-testid="home-reading-actions">
             {previousReading ? (
               <Link
                 aria-label={`${t('home.continueReading')}: ${lastReference}`}
@@ -181,7 +181,6 @@ export default function HomePage() {
                 {...readingIntentProps(previousReading)}
               >
                 <span>{t('home.continueReading')}</span>
-                <Icon name="arrowRight" size={17} />
               </Link>
             ) : (
               <button
@@ -193,7 +192,6 @@ export default function HomePage() {
                 type="button"
               >
                 <span>{t('home.chooseReading')}</span>
-                <Icon name="arrowRight" size={17} />
               </button>
             )}
             {previousReading && (
@@ -205,7 +203,7 @@ export default function HomePage() {
                 ref={quickNavigationTriggerRef}
                 type="button"
               >
-                {t('home.chooseAnotherReading')}
+                {t('home.chooseReading')}
               </button>
             )}
           </span>

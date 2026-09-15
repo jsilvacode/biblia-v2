@@ -1,6 +1,6 @@
 # Inicio de implementación — Santa Biblia
 
-Actualizado el 14/09/2026. Listo para comenzar por la primera tarjeta. El encargo sirve para Terra o Luna; el nombre de Luna en el plan no cambia su alcance.
+Actualizado el 14/09/2026. Las etapas 0A y 1 (primera tarjeta) están cerradas en la rama `mejoras/lectura-principal`; consultar el [registro de ejecución](ESTADO_EXPERIENCIAS_LECTURA.md) y su evidencia antes de cambiarla. El siguiente encargo es 0B. El nombre de Luna en el plan no cambia su alcance.
 
 ## Documentos de referencia
 
@@ -13,13 +13,13 @@ La base de diseño y sus capturas se subieron a GitHub en `073f658`. Comprobar s
 
 ## Encargo para copiar
 
-> Trabaja en el proyecto Santa Biblia. Lee `docs/implementation/INICIAR_AQUI.md`, el plan funcional enlazado y las secciones de Home de la guía visual. Ejecuta únicamente 0A y etapa 1 del plan: implementar la primera tarjeta del Home según los mockups entregados. Con historial, mostrar “Continuar leyendo” y “Elegir una lectura”, iguales y centrados respecto de toda la tarjeta en móvil, con los tonos azules suaves definidos. Sin historial, mostrar una sola acción “Elegir una lectura”. Mantener el selector compartido y el progreso real. Conservar el hero y su atmósfera; sólo aplicar el retoque limitado que permita el plan y que tenga una mejora visual comprobable. Usa el código actual y los assets existentes, adaptando la referencia visual a React, sin trasladar el código simulado del prototipo a producción. Comprueba 320, 390, 768 y 1440 px, claro/oscuro, con y sin historial y texto ampliado. Ejecuta las comprobaciones pertinentes, guarda capturas comparables y actualiza el registro de ejecución. Entrega la etapa terminada con su commit y el resultado de las verificaciones. Deja 0B, audio, temas, curso y biblioteca pendientes para encargos posteriores; no rehagas el plan ni vuelvas a generar las ilustraciones.
+> Trabaja en el proyecto Santa Biblia. Lee `docs/implementation/INICIAR_AQUI.md`, el plan funcional enlazado, el registro de ejecución y el código actual de búsqueda. Ejecuta únicamente la etapa 0B: cobertura de búsqueda bíblica. Elimina el corte silencioso de 100 resultados mediante una lista paginada o “Ver más” que muestre el total, y comparte el mismo contrato entre `SearchPage` y `BibleNavigator`. La coincidencia debe usar palabras completas normalizadas y exigir todas las palabras de una frase; no usar sinónimos automáticos. Una consulta nueva o limpiada debe descartar resultados antiguos. Conserva la apertura de referencias, el selector compartido, las rutas, el historial/progreso y los estilos que acaba de cerrar la etapa 1. Añade sólo pruebas de comportamiento real: “mundo” no debe encontrar “inmundo”, una frase puede coincidir con palabras separadas, más de 100 resultados debe ser accesible y un cambio/limpieza de consulta no debe mostrar resultados viejos. Ejecuta las comprobaciones pertinentes, actualiza el registro de ejecución y entrega la etapa con su commit y evidencias. Deja arte, audio, Reavivados, temas, curso y biblioteca pendientes; no rehagas el plan, la tarjeta ni las ilustraciones.
 
 ## Continuación
 
-Después de cerrar la tarjeta, encargar una etapa concreta cada vez usando el mismo plan. Para elegir la siguiente, consultar dependencias y registro; no repetir una etapa ya terminada.
+Después de cerrar 0B, encargar una sola etapa concreta usando el mismo plan. Para elegirla, consultar dependencias y registro; no repetir 0A ni 1.
 
-Pendientes externos documentados: reproducción real del audio durante la integración de Reavivados y edición reutilizable para cada libro antes de importar su texto. Ninguno impide comenzar la etapa 1.
+Pendientes externos documentados: reproducción real del audio durante la integración de Reavivados y edición reutilizable para cada libro antes de importar su texto. Ninguno impide comenzar 0B.
 
 ## Elección de modelo para este proyecto
 

@@ -1,8 +1,36 @@
 import { expect, test } from '@playwright/test'
 
 const continueLabel = /Continuar leyendo|Continue reading|Continuar lendo/
-const chooseReadingLabel = /Elegir libro y capítulo|Choose book and chapter|Escolher livro e capítulo/
+const chooseReadingLabel = /Elegir una lectura|Choose a reading|Escolher uma leitura/
 const promiseTitle = /Promesa del día|Promise of the day|Promessa do dia/
+
+async function prepareHomeState(page, { history, theme = 'light' }) {
+  await page.goto('/')
+  await page.evaluate(({ nextHistory, nextTheme }) => {
+    window.localStorage.setItem('santa_biblia_v2_settings', JSON.stringify({
+      bibleVersion: 'nbla',
+      fontFamily: 'serif',
+      locale: 'es',
+      readerFontScale: 1,
+      readerLineHeight: 'comfortable',
+      theme: nextTheme,
+    }))
+
+    if (nextHistory) {
+      window.localStorage.setItem('santa_biblia_v2_reading', JSON.stringify({
+        book: 43,
+        chapter: 3,
+        verse: 16,
+        progress: 42,
+        updatedAt: 1_789_876_543_210,
+      }))
+    } else {
+      window.localStorage.removeItem('santa_biblia_v2_reading')
+    }
+  }, { nextHistory: history, nextTheme: theme })
+  await page.reload()
+  await expect(page.locator('html')).toHaveAttribute('data-theme', theme)
+}
 
 async function clearAppStorage(page) {
   await page.goto('/')
@@ -29,6 +57,7 @@ test('Home always gives a daily promise, the annual reading and the promises gui
 })
 
 test('a new reader starts from a clean book and chapter picker', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 })
   await clearAppStorage(page)
   await expect(page.getByText(continueLabel)).toHaveCount(0)
 
@@ -67,6 +96,72 @@ test('a returning reader can resume the last reading directly from Home', async 
   expect(chooseBox).not.toBeNull()
   expect(Math.abs(continueBox.width - chooseBox.width)).toBeLessThanOrEqual(1)
   expect(Math.abs(continueBox.height - chooseBox.height)).toBeLessThanOrEqual(1)
+})
+
+test('the Home reading actions stay centered, legible and proportional across the supported widths', async ({ page }) => {
+  const viewports = [
+    { width: 320, height: 568 },
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+    { width: 1440, height: 900 },
+  ]
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport)
+
+    for (const theme of ['light', 'dark']) {
+      for (const history of [false, true]) {
+        await prepareHomeState(page, { history, theme })
+
+        const chooseReading = page.getByRole('button', { name: chooseReadingLabel })
+        const actions = page.getByTestId('home-reading-actions')
+        const card = actions.locator('xpath=ancestor::article')
+        await expect(chooseReading).toBeVisible()
+
+        const [actionsBox, cardBox] = await Promise.all([actions.boundingBox(), card.boundingBox()])
+        expect(actionsBox).not.toBeNull()
+        expect(cardBox).not.toBeNull()
+
+        if (viewport.width < 900) {
+          expect(Math.abs((actionsBox.x + (actionsBox.width / 2)) - (cardBox.x + (cardBox.width / 2)))).toBeLessThanOrEqual(1)
+        }
+
+        const buttons = history
+          ? [page.getByRole('link', { name: continueLabel }), chooseReading]
+          : [chooseReading]
+        const boxes = await Promise.all(buttons.map((button) => button.boundingBox()))
+        expect(boxes.every(Boolean)).toBe(true)
+        expect(await Promise.all(buttons.map((button) => button.evaluate((element) => element.scrollWidth <= element.clientWidth)))).toEqual(buttons.map(() => true))
+
+        if (history) {
+          expect(Math.abs(boxes[0].width - boxes[1].width)).toBeLessThanOrEqual(1)
+          expect(Math.abs(boxes[0].height - boxes[1].height)).toBeLessThanOrEqual(1)
+          if (viewport.width < 360) {
+            expect(boxes[1].y).toBeGreaterThan(boxes[0].y)
+          } else {
+            expect(Math.abs(boxes[0].y - boxes[1].y)).toBeLessThanOrEqual(1)
+          }
+        } else {
+          await expect(page.getByRole('link', { name: continueLabel })).toHaveCount(0)
+        }
+      }
+    }
+  }
+})
+
+test('enlarged browser text stacks the returning-reader actions without clipping them', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await prepareHomeState(page, { history: true })
+  await page.evaluate(() => { document.documentElement.style.fontSize = '20px' })
+
+  const continueReading = page.getByRole('link', { name: continueLabel })
+  const chooseReading = page.getByRole('button', { name: chooseReadingLabel })
+  await expect(continueReading).toBeVisible()
+  await expect(chooseReading).toBeVisible()
+
+  const [continueBox, chooseBox] = await Promise.all([continueReading.boundingBox(), chooseReading.boundingBox()])
+  expect(chooseBox.y).toBeGreaterThan(continueBox.y)
+  expect(await Promise.all([continueReading, chooseReading].map((button) => button.evaluate((element) => element.scrollWidth <= element.clientWidth)))).toEqual([true, true])
 })
 
 test('the integrated picker opens a typed reference across testaments', async ({ page }) => {

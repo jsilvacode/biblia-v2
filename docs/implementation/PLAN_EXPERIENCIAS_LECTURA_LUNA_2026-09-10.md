@@ -272,7 +272,7 @@ Archivos previstos: `src/features/library/LibraryPage.jsx`, `BookIndexPage.jsx`,
 
 ## 8. Etapas pequeñas y verificables
 
-Cada etapa tiene un commit propio cuando pase sus comprobaciones. No reescribir las etapas siguientes para resolver un detalle de la actual. Crear rama `codex/experiencias-lectura` desde la base compartida salvo instrucción posterior del usuario. El encargo futuro es implementar localmente; publicación se rige por la autorización vigente al ejecutar, sin inventar una aprobación adicional si ya existe.
+Cada etapa tiene un commit propio cuando pase sus comprobaciones. No reescribir las etapas siguientes para resolver un detalle de la actual. Crear una rama con un nombre descriptivo en español desde la base compartida salvo instrucción posterior del usuario. El encargo futuro es implementar localmente; publicación se rige por la autorización vigente al ejecutar, sin inventar una aprobación adicional si ya existe.
 
 | Etapa | Trabajo, orden y archivos | Criterio para cerrar |
 |---|---|---|
