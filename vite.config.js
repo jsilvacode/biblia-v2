@@ -1,7 +1,41 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { VitePWA } from 'vite-plugin-pwa'
+import rpspApi from './api/rpsp.js'
 import { APP_ICON_REVISION } from './src/features/reader/socialCardConfig.js'
+
+function rpspDevelopmentEndpoint() {
+  const middleware = async (request, response, next) => {
+    const origin = `http://${request.headers.host ?? '127.0.0.1'}`
+    const url = new URL(request.originalUrl ?? request.url, origin)
+    if (url.pathname !== '/api/rpsp') return next()
+
+    try {
+      const apiResponse = await rpspApi.fetch(new Request(url, {
+        headers: request.headers,
+        method: request.method,
+      }))
+      response.statusCode = apiResponse.status
+      for (const [name, value] of apiResponse.headers) response.setHeader(name, value)
+      if (request.method === 'HEAD' || !apiResponse.body) return response.end()
+      response.end(Buffer.from(await apiResponse.arrayBuffer()))
+    } catch {
+      response.statusCode = 503
+      response.setHeader('Content-Type', 'application/json; charset=utf-8')
+      response.end(JSON.stringify({ error: 'rpsp_unavailable' }))
+    }
+  }
+
+  return {
+    name: 'rpsp-development-endpoint',
+    configureServer(server) {
+      server.middlewares.use(middleware)
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(middleware)
+    },
+  }
+}
 
 export default defineConfig({
   server: {
@@ -12,6 +46,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    rpspDevelopmentEndpoint(),
     VitePWA({
       includeManifestIcons: false,
       registerType: 'autoUpdate',

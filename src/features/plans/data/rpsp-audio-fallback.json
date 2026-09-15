@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-09-10T04:00:00.000Z",
+  "source": "https://www.nuevotiempo.org/audio/reavivados-por-su-palabra-2/feed/",
+  "entries": [
+    {
+      "date": "2026-09-10",
+      "reference": { "book": 19, "chapter": 34 },
+      "episode": {
+        "id": "38751",
+        "title": "Gustad y ved que bueno es el Señor | Salmo 34 | Reavivados por su Palabra",
+        "publishedAt": "2026-09-10T04:00:00.000Z",
+        "presenter": null,
+        "language": "es",
+        "sourcePageUrl": "https://www.nuevotiempo.org/audio/reavivados-por-su-palabra-2/gustad-y-ved-que-bueno-es-el-senor-salmo-34-reavivados-por-su-palabra/",
+        "audioUrl": "https://vod.nuevotiempo.org/ReavivadosA/Reavivados10-09-2026.mp3",
+        "mimeType": "audio/mpeg",
+        "durationSeconds": null
+      }
+    }
+  ]
+}

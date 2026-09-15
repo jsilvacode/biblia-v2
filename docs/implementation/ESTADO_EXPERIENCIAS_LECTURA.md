@@ -59,6 +59,30 @@ Actualización visual 14/09/2026: guía, mockups navegables, artes originales y 
 
 **Prueba manual de cierre:** aprobada. Se confirmó el recorte de la Biblia y de la figura, el velo más corto y la interpretación azul petróleo/índigo propia del modo noche, junto con los destinos actuales de ambas tarjetas.
 
+## Etapa 3A · Fuente de audio de Reavivados
+
+**Estado:** implementada y verificada localmente en `mejoras/fuente-audio-reavivados`; queda pendiente la revisión local del usuario y su integración en `main`. Esta etapa no crea todavía reproductor, ruta inmersiva ni cambios de interfaz.
+
+**Implementado:** `GET /api/rpsp?date=YYYY-MM-DD` valida fechas civiles estrictas y resuelve la referencia desde el calendario instalado, sin convertirla por UTC ni aceptar URLs externas. Consume el RSS oficial con límite de 1 MB, timeout de seis segundos, presupuesto total de doce, ETag/Last-Modified, deduplicación en proceso y coincidencia exacta de fecha, libro y capítulo. No confunde, por ejemplo, Salmo 134 con Salmo 34.
+
+Cuando el RSS no contiene la entrada, consulta de forma acotada la API oficial de WordPress y su página canónica para extraer sólo un `<audio>` o `<source>` de `vod.nuevotiempo.org`. Los redireccionamientos, la página y el medio se validan contra hosts HTTPS conocidos. Ante fallos de fuente, usa únicamente un snapshot documentado de igual fecha y referencia; nunca entrega el audio previo. La respuesta distingue `ready`, `pending`, `unavailable` y `out_of_calendar`; sólo metadata tiene caché larga. El MP3 no se descarga, reenvía, almacena ni precachea.
+
+**Integración local:** Vite sirve el mismo handler Request→Response para desarrollo y preview; Vercel recibe función, exclusiones de corpus y rewrite explícito antes del fallback SPA. El repositorio de navegador valida el contrato, comparte una solicitud por fecha y permite cancelar un consumidor sin interrumpir la petición compartida.
+
+**Verificado en local:**
+
+- `npm run lint`: aprobado.
+- `npm run test`: 142 pruebas aprobadas.
+- `npm run build`: aprobado; índice, curso, contrato público y corpus auditados.
+- `npm run test:e2e -- e2e/home-reading-flow.spec.js`: 16 pruebas aprobadas.
+- `GET /api/rpsp?date=2026-09-10` en preview local: Salmos 34 y snapshot exacto si los proveedores agotan el tiempo.
+- `GET /api/rpsp?date=2026-09-11` en preview local: `unavailable`, sin reutilizar el MP3 del 10.
+- `git diff --check`: sin errores antes de la revisión.
+
+**Evidencia durable:** [metadata, pruebas y límites de alcance](evidence/etapa-3a-audio/README.md). La fuente y la procedencia del snapshot se documentan en [SOURCES_AUDIO_RPSP.md](SOURCES_AUDIO_RPSP.md). La reproducción real sigue pendiente para 3B/3C.
+
+**Siguiente paso tras integrar 3A:** 3B · Reproductor, limitado a un `HTMLAudioElement` directo y sus controles accesibles. La ruta inmersiva de Reavivados continúa en 3C.
+
 ## Base anterior a las nuevas etapas
 
 La base incorpora acceso desde Home, selector compartido, búsqueda integrada, navegación del lector, retirada de espera artificial de arranque y footer con color/espaciado. No equivale al rediseño nuevo solicitado.
@@ -82,7 +106,7 @@ Base guardada y subida a `origin/main` en el commit [`4617e65`](https://github.c
 | 0B · Cobertura de búsqueda | Completada e integrada | Palabras completas, total real, paginación, búsqueda en vivo y descarte de resultados anteriores. |
 | 1 · Primera tarjeta | Completada | Centrado móvil, tonos azules suaves y estados con/sin historial validados. |
 | 2 · Arte | Completada e integrada | WebP originales, variante nocturna y evidencia responsive; rutas y progreso conservados. |
-| 3A · Fuente de audio | Investigación completada; integración pendiente | Endpoint RSS y fallback validado por fecha/referencia. |
+| 3A · Fuente de audio | Implementada localmente; pendiente de revisión e integración | Endpoint RSS/WordPress, caché, snapshot exacto y repositorio validados. |
 | 3B · Reproductor | Pendiente | Player directo y pruebas reales de reproducción. |
 | 3C · Reavivados | Pendiente | Ruta inmersiva del día. |
 | 4A / 4B · Temas | Planificados | Explorador y ficha de situación. |

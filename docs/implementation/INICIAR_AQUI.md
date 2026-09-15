@@ -1,6 +1,6 @@
 # Inicio de implementación — Santa Biblia
 
-Actualizado el 15/09/2026. Las etapas 0A, 0B, 1 (primera tarjeta) y 2 (arte e identidad) están cerradas e integradas en `main`. La siguiente etapa concreta es 3A · Resolver audio; consultar el [registro de ejecución](ESTADO_EXPERIENCIAS_LECTURA.md) y sus dependencias antes de comenzar. El nombre de Luna en el plan no cambia su alcance.
+Actualizado el 15/09/2026. Las etapas 0A, 0B, 1 (primera tarjeta) y 2 (arte e identidad) están cerradas e integradas en `main`. La implementación de 3A · Resolver audio está lista para revisión local en `mejoras/fuente-audio-reavivados`; consultar el [registro de ejecución](ESTADO_EXPERIENCIAS_LECTURA.md) antes de cambiar de etapa. No iniciar 3B hasta integrar o descartar 3A. El nombre de Luna en el plan no cambia su alcance.
 
 ## Documentos de referencia
 
@@ -11,13 +11,9 @@ Actualizado el 15/09/2026. Las etapas 0A, 0B, 1 (primera tarjeta) y 2 (arte e id
 
 La base de diseño y sus capturas se subieron a GitHub en `073f658`. Comprobar siempre el estado real del checkout al empezar; preservar cambios posteriores.
 
-## Encargo para copiar
-
-> Trabaja en el proyecto Santa Biblia. Lee `docs/implementation/INICIAR_AQUI.md`, el plan funcional enlazado, el registro de ejecución y el código actual de búsqueda. Ejecuta únicamente la etapa 0B: cobertura de búsqueda bíblica. Elimina el corte silencioso de 100 resultados mediante una lista paginada o “Ver más” que muestre el total, y comparte el mismo contrato entre `SearchPage` y `BibleNavigator`. La coincidencia debe usar palabras completas normalizadas y exigir todas las palabras de una frase; no usar sinónimos automáticos. Una consulta nueva o limpiada debe descartar resultados antiguos. Conserva la apertura de referencias, el selector compartido, las rutas, el historial/progreso y los estilos que acaba de cerrar la etapa 1. Añade sólo pruebas de comportamiento real: “mundo” no debe encontrar “inmundo”, una frase puede coincidir con palabras separadas, más de 100 resultados debe ser accesible y un cambio/limpieza de consulta no debe mostrar resultados viejos. Ejecuta las comprobaciones pertinentes, actualiza el registro de ejecución y entrega la etapa con su commit y evidencias. Deja arte, audio, Reavivados, temas, curso y biblioteca pendientes; no rehagas el plan, la tarjeta ni las ilustraciones.
-
 ## Continuación
 
-Encargar una sola etapa concreta usando el mismo plan. Para elegirla, consultar dependencias y registro; no repetir 0A, 0B, 1 ni 2.
+Validar primero 3A en local mediante `GET /api/rpsp?date=2026-09-10` y `GET /api/rpsp?date=2026-09-11`: el primero debe entregar Salmos 34 y el segundo nunca debe recibir ese MP3 como sustituto. Tras integrar esa etapa, encargar una sola etapa concreta: 3B · Reproductor. No repetir 0A, 0B, 1, 2 ni 3A, y no adelantar la ruta inmersiva de 3C.
 
 Pendientes externos documentados: reproducción real del audio durante la integración de Reavivados y edición reutilizable para cada libro antes de importar su texto. Ninguno impide iniciar las etapas que no dependan de esas fuentes.
 

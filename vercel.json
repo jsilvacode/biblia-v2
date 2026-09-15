@@ -5,6 +5,9 @@
     },
     "api/share-page.js": {
       "excludeFiles": "public/{data/{cba,search}/**,icons/**}"
+    },
+    "api/rpsp.js": {
+      "excludeFiles": "public/{data/**,icons/**,assets/**}"
     }
   },
   "redirects": [
@@ -15,6 +18,10 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/api/rpsp",
+      "destination": "/api/rpsp"
+    },
     {
       "source": "/read/:book/:chapter/:verse",
       "destination": "/api/share-page?type=verse&book=:book&chapter=:chapter&verse=:verse"
