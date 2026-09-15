@@ -21,7 +21,7 @@ Actualización visual 14/09/2026: guía, mockups navegables, artes originales y 
 
 **Evidencia durable:** [capturas iniciales y finales](evidence/etapa-1-home/README.md). Incluye matriz de 16 combinaciones regulares y cuatro capturas con texto ampliado, generadas por `scripts/capture-home-stage1.mjs`. Es emulación Chromium, no validación en hardware físico.
 
-**Siguiente etapa concreta recomendada:** elegir una única etapa pendiente conforme a las dependencias del plan y este registro. No iniciar dos etapas a la vez.
+**Siguiente etapa concreta recomendada:** ejecutar 3A · Resolver audio. Mantenerla limitada a metadata, endpoint, caché/fallback y pruebas, sin construir todavía el reproductor ni la ruta inmersiva.
 
 ## Etapa 0B · cobertura de búsqueda bíblica
 
@@ -39,6 +39,25 @@ Actualización visual 14/09/2026: guía, mockups navegables, artes originales y 
 - La pasada completa de navegador encontró una comprobación previa y ajena a 0B de restauración de scroll al volver al Home en móvil (`188 px` frente al umbral de `>200 px`). La búsqueda nueva aprobó en esa pasada. Se deja como corrección separada de navegación, sin ocultarla relajando la prueba.
 
 **Prueba manual de cierre:** aprobada antes de integrar. Se confirmó que la búsqueda en `/search` muestra resultados mientras se escribe, conserva el selector compartido y permite cargar resultados adicionales.
+
+## Etapa 2 · Arte e identidad
+
+**Estado:** implementada, verificada y aprobada en la revisión local; integrada en `main` para producción.
+
+**Implementado:** las tarjetas existentes de Reavivados por su Palabra y La Fe de Jesús usan ahora los WebP originales preparados para esta experiencia. Reavivados combina cielo, amanecer, pradera y Biblia abierta con un velo azul local; el curso combina azul/lila, la figura acogedora y un velo que deja la copia HTML legible. Sus textos, iconos, foco, flecha y progreso reciben contraste propio en claro y oscuro, sin modificar tokens globales, Hero, guía temática, rutas, contenido ni estado de progreso. Reavivados mantiene de forma deliberada el lector bíblico actual; su ruta inmersiva es la etapa 3C. La Fe de Jesús mantiene `/studies/la-fe-de-jesus`; su índice propio pertenece a 5A.
+
+**Assets y procedencia:** `public/assets/home-rpsp-landscape-v1.webp` y `public/assets/home-study-invitation-v1.webp` son copias byte a byte de los WebP originales documentados en `docs/design/experiencias-lectura-v1/assets/`, con sus prompts y maestros conservados allí. Pesan 85 KB y 86 KB, dentro del presupuesto de 180 KB por tarjeta. Se retiraron los dos fondos editoriales reemplazados para no aumentar el precache con imágenes sin uso.
+
+**Verificado en local:**
+
+- `npm run lint`: aprobado.
+- `npm run build`: aprobado; índice, contenido del curso, contrato público y corpus auditados.
+- `npm run test:e2e -- e2e/home-reading-flow.spec.js`: 16 aprobadas.
+- Navegación desde Home: 2 pruebas aprobadas para el curso y 2 para Reavivados/temas; los destinos previos permanecen intactos.
+- [Capturas responsive](evidence/etapa-2-arte/README.md): 320, 390, 768 y 1440 px, claro/oscuro, con/sin historial, texto ampliado y movimiento reducido. Se comprobó que el libro de Reavivados se conserva en el tercio derecho y que el texto del curso no cubre rostro ni manos en móvil.
+- `git diff --check`: sin errores.
+
+**Prueba manual de cierre:** aprobada. Se confirmó el recorte de la Biblia y de la figura, el velo más corto y la interpretación azul petróleo/índigo propia del modo noche, junto con los destinos actuales de ambas tarjetas.
 
 ## Base anterior a las nuevas etapas
 
@@ -62,7 +81,7 @@ Base guardada y subida a `origin/main` en el commit [`4617e65`](https://github.c
 | 0A · Base para Luna | Completada | Base `1dbd071`, fuentes/estado local identificados y capturas iniciales guardadas. |
 | 0B · Cobertura de búsqueda | Completada e integrada | Palabras completas, total real, paginación, búsqueda en vivo y descarte de resultados anteriores. |
 | 1 · Primera tarjeta | Completada | Centrado móvil, tonos azules suaves y estados con/sin historial validados. |
-| 2 · Arte | Assets y mockups preparados; integración pendiente | Aplicar WebP entregados siguiendo la guía y las capturas. |
+| 2 · Arte | Completada e integrada | WebP originales, variante nocturna y evidencia responsive; rutas y progreso conservados. |
 | 3A · Fuente de audio | Investigación completada; integración pendiente | Endpoint RSS y fallback validado por fecha/referencia. |
 | 3B · Reproductor | Pendiente | Player directo y pruebas reales de reproducción. |
 | 3C · Reavivados | Pendiente | Ruta inmersiva del día. |

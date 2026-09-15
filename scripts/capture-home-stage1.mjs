@@ -3,9 +3,11 @@ import { resolve } from 'node:path'
 import { chromium } from '@playwright/test'
 
 const baseUrl = process.env.SANTA_BIBLIA_CAPTURE_URL || 'http://127.0.0.1:4176'
+const evidenceStage = process.env.SANTA_BIBLIA_CAPTURE_STAGE || 'etapa-1-home'
 const baseline = process.argv.includes('--baseline')
 const outputDirectory = resolve(
-  'docs/implementation/evidence/etapa-1-home',
+  'docs/implementation/evidence',
+  evidenceStage,
   baseline ? 'baseline' : 'final',
 )
 

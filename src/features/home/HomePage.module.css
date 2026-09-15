@@ -330,8 +330,27 @@
 }
 
 .dailyCard {
-  --card-image: url('/assets/home-daily-editorial-v2.webp');
-  --card-image-position: 75% 52%;
+  --card-image: url('/assets/home-rpsp-landscape-v1.webp');
+  --card-image-position: 72% 54%;
+  --feature-card-ink: #fff9ec;
+  --feature-card-kicker: #efe2b5;
+  --feature-card-muted: #f2ecdf;
+  min-height: 11.75rem;
+  border-color: rgb(235 226 190 / 32%);
+  background: #29475e;
+  box-shadow: 0 1.25rem 2.7rem -2rem rgb(21 52 73 / 56%), inset 0 1px 0 rgb(255 255 255 / 18%);
+  color: var(--feature-card-ink);
+}
+
+.dailyCard::before {
+  filter: saturate(0.84) contrast(1.02) brightness(0.9);
+  opacity: 1;
+}
+
+.dailyCard::after {
+  background:
+    linear-gradient(90deg, rgb(24 55 78 / 93%) 0%, rgb(24 55 78 / 78%) 43%, rgb(24 55 78 / 24%) 64%, transparent 84%),
+    linear-gradient(180deg, rgb(13 37 54 / 14%), rgb(13 37 54 / 32%));
 }
 
 .promisesCard {
@@ -340,8 +359,62 @@
 }
 
 .studyCard {
-  --card-image: url('/assets/home-study-editorial-v2.webp');
-  --card-image-position: 74% 54%;
+  --card-image: url('/assets/home-study-invitation-v1.webp');
+  --card-image-position: 70% 37%;
+  --feature-card-ink: #f9f5ee;
+  --feature-card-kicker: #ddd0b0;
+  --feature-card-muted: #ebe5dc;
+  grid-column: 1 / -1;
+  min-height: clamp(12.75rem, 19vw, 15.5rem);
+  border-color: rgb(222 209 176 / 30%);
+  background: #344963;
+  box-shadow: 0 1.4rem 3rem -2rem rgb(30 43 67 / 62%), inset 0 1px 0 rgb(255 255 255 / 16%);
+  color: var(--feature-card-ink);
+}
+
+.studyCard::before {
+  filter: saturate(0.76) contrast(1.02) brightness(0.88);
+  opacity: 1;
+}
+
+.studyCard::after {
+  background:
+    linear-gradient(90deg, rgb(38 60 81 / 93%) 0%, rgb(38 60 81 / 75%) 42%, rgb(38 60 81 / 22%) 63%, transparent 84%),
+    linear-gradient(180deg, rgb(24 40 62 / 12%), rgb(24 40 62 / 30%));
+}
+
+.dailyCard .eyebrow,
+.studyCard .eyebrow {
+  color: var(--feature-card-kicker);
+}
+
+.dailyCard .cardMeta,
+.studyCard .cardMeta {
+  color: var(--feature-card-muted);
+}
+
+.dailyCard .cardArrow,
+.studyCard .cardArrow {
+  border-color: rgb(255 249 236 / 28%);
+  background: rgb(22 47 66 / 44%);
+  color: var(--feature-card-ink);
+  box-shadow: 0 0.5rem 1.25rem -0.9rem rgb(15 36 53 / 48%);
+}
+
+.dailyCard .cardCopy {
+  max-width: min(100%, 19rem);
+}
+
+.studyCard .cardCopy {
+  max-width: min(100%, 29rem);
+}
+
+.studyCard .studyProgress {
+  background: rgb(249 245 238 / 26%);
+}
+
+.studyCard .studyProgress span {
+  background: linear-gradient(90deg, #e4c98b, #f1e5ce);
 }
 
 .readingCard:active,
@@ -393,6 +466,14 @@
 .studyCard .cardIcon {
   border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
   background: color-mix(in srgb, var(--accent-soft) 38%, var(--surface-raised));
+}
+
+.dailyCard .cardIcon,
+.studyCard .cardIcon {
+  border-color: rgb(255 249 236 / 30%);
+  background: rgb(22 47 66 / 46%);
+  color: var(--feature-card-kicker);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 16%);
 }
 
 .cardHeading {
@@ -462,10 +543,6 @@
   overflow: visible;
   text-overflow: clip;
   white-space: normal;
-}
-
-.studyCard {
-  grid-column: 1 / -1;
 }
 
 .studyCard .cardCopy strong {
@@ -636,6 +713,17 @@
     transform: translateX(2px);
   }
 
+  .dailyCard:hover,
+  .studyCard:hover {
+    border-color: rgb(255 249 236 / 52%);
+    box-shadow: 0 1.45rem 3rem -1.95rem rgb(14 37 53 / 72%), inset 0 1px 0 rgb(255 255 255 / 24%);
+  }
+
+  .dailyCard:hover .cardArrow,
+  .studyCard:hover .cardArrow {
+    background: rgb(22 47 66 / 70%);
+  }
+
   .interestCard:hover {
     border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
     box-shadow: var(--shadow-sm), inset 0 1px 0 var(--surface-highlight);
@@ -644,9 +732,7 @@
 }
 
 :global(:root[data-theme='dark']) .readingCard,
-:global(:root[data-theme='dark']) .dailyCard,
-:global(:root[data-theme='dark']) .promisesCard,
-:global(:root[data-theme='dark']) .studyCard {
+:global(:root[data-theme='dark']) .promisesCard {
   background: var(--surface-raised);
 }
 
@@ -656,11 +742,58 @@
 }
 
 :global(:root[data-theme='dark']) .readingCard::before,
-:global(:root[data-theme='dark']) .dailyCard::before,
-:global(:root[data-theme='dark']) .promisesCard::before,
-:global(:root[data-theme='dark']) .studyCard::before {
+:global(:root[data-theme='dark']) .promisesCard::before {
   filter: brightness(0.68) saturate(0.76);
   opacity: 0.78;
+}
+
+:global(:root[data-theme='dark']) .dailyCard::before {
+  filter: saturate(0.76) contrast(1.02) brightness(0.74);
+  opacity: 1;
+}
+
+:global(:root[data-theme='dark']) .studyCard::before {
+  filter: saturate(0.7) contrast(1.02) brightness(0.72);
+  opacity: 1;
+}
+
+:global(:root[data-theme='dark']) .dailyCard {
+  --feature-card-ink: #f7f2e9;
+  --feature-card-kicker: #e6d8ad;
+  --feature-card-muted: #d6e1df;
+  border-color: rgb(173 208 211 / 26%);
+  background: #1b3543;
+  box-shadow: 0 1.35rem 2.8rem -2rem rgb(0 0 0 / 78%), inset 0 1px 0 rgb(220 244 242 / 11%);
+}
+
+:global(:root[data-theme='dark']) .dailyCard::after {
+  background:
+    linear-gradient(90deg, rgb(11 31 42 / 95%) 0%, rgb(11 31 42 / 78%) 43%, rgb(11 31 42 / 22%) 64%, transparent 84%),
+    linear-gradient(180deg, rgb(7 20 29 / 20%), rgb(7 20 29 / 42%));
+}
+
+:global(:root[data-theme='dark']) .studyCard {
+  --feature-card-ink: #f8f2eb;
+  --feature-card-kicker: #ddd4bd;
+  --feature-card-muted: #dce0e8;
+  border-color: rgb(191 204 230 / 24%);
+  background: #27364d;
+  box-shadow: 0 1.35rem 2.8rem -2rem rgb(0 0 0 / 78%), inset 0 1px 0 rgb(225 231 255 / 10%);
+}
+
+:global(:root[data-theme='dark']) .studyCard::after {
+  background:
+    linear-gradient(90deg, rgb(24 35 54 / 95%) 0%, rgb(24 35 54 / 77%) 42%, rgb(24 35 54 / 21%) 63%, transparent 84%),
+    linear-gradient(180deg, rgb(13 19 35 / 18%), rgb(13 19 35 / 40%));
+}
+
+:global(:root[data-theme='dark']) .dailyCard .cardIcon,
+:global(:root[data-theme='dark']) .dailyCard .cardArrow,
+:global(:root[data-theme='dark']) .studyCard .cardIcon,
+:global(:root[data-theme='dark']) .studyCard .cardArrow {
+  border-color: rgb(239 244 240 / 26%);
+  background: rgb(9 21 32 / 58%);
+  box-shadow: inset 0 1px 0 rgb(240 248 245 / 12%);
 }
 
 @media (min-width: 600px) {
@@ -673,6 +806,14 @@
   .secondaryCards .studyCard {
     min-height: 10.5rem;
     padding: 1.2rem;
+  }
+
+  .secondaryCards .dailyCard {
+    min-height: 12rem;
+  }
+
+  .secondaryCards .studyCard {
+    min-height: clamp(13.75rem, 19vw, 15.5rem);
   }
 
   .interestGrid {
@@ -829,7 +970,8 @@
   .readingPrimaryAction,
   .readingSecondaryAction,
   .dailyCard,
-  .promisesCard {
+  .promisesCard,
+  .studyCard {
     transition: none;
   }
 }

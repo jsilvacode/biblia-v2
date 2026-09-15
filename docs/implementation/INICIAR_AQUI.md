@@ -1,6 +1,6 @@
 # Inicio de implementación — Santa Biblia
 
-Actualizado el 15/09/2026. Las etapas 0A, 1 (primera tarjeta) y 0B (cobertura de búsqueda) están cerradas e integradas en `main`. Consultar el [registro de ejecución](ESTADO_EXPERIENCIAS_LECTURA.md) y las dependencias del plan antes de escoger una sola etapa pendiente. El nombre de Luna en el plan no cambia su alcance.
+Actualizado el 15/09/2026. Las etapas 0A, 0B, 1 (primera tarjeta) y 2 (arte e identidad) están cerradas e integradas en `main`. La siguiente etapa concreta es 3A · Resolver audio; consultar el [registro de ejecución](ESTADO_EXPERIENCIAS_LECTURA.md) y sus dependencias antes de comenzar. El nombre de Luna en el plan no cambia su alcance.
 
 ## Documentos de referencia
 
@@ -17,7 +17,7 @@ La base de diseño y sus capturas se subieron a GitHub en `073f658`. Comprobar s
 
 ## Continuación
 
-Encargar una sola etapa concreta usando el mismo plan. Para elegirla, consultar dependencias y registro; no repetir 0A, 0B ni 1.
+Encargar una sola etapa concreta usando el mismo plan. Para elegirla, consultar dependencias y registro; no repetir 0A, 0B, 1 ni 2.
 
 Pendientes externos documentados: reproducción real del audio durante la integración de Reavivados y edición reutilizable para cada libro antes de importar su texto. Ninguno impide iniciar las etapas que no dependan de esas fuentes.
 
