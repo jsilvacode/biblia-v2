@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
-import { PageIntro } from '../../components/ui/PageIntro'
 import { useI18n } from '../../i18n'
 import { studyLessons } from './studyContent'
 import { getLessonAccess, getNextPendingLesson } from './studyAccess'
@@ -17,6 +16,28 @@ function getLessonStatus(lesson, progress) {
   return 'notStarted'
 }
 
+function StudyHero({ resumePath, summary, t }) {
+  const actionLabel = summary.isComplete
+    ? t('studies.reviewStudy')
+    : summary.hasStarted
+      ? t('studies.continueStudy')
+      : t('studies.startStudy')
+
+  return (
+    <section aria-labelledby="study-title" className={styles.studyHero}>
+      <div className={styles.studyHeroCopy}>
+        <p className={styles.studyHeroEyebrow}>{t('studies.eyebrow')}</p>
+        <h1 id="study-title">{t('studies.title')}</h1>
+        <p>{t('studies.subtitle')}</p>
+        <Link className={styles.heroAction} to={resumePath}>
+          <span>{actionLabel}</span>
+          <Icon name="arrowRight" size={17} />
+        </Link>
+      </div>
+    </section>
+  )
+}
+
 export default function StudyIndexPage() {
   const { locale, t } = useI18n()
   const { isPersistent, progress, summary } = useStudyProgress()
@@ -27,9 +48,7 @@ export default function StudyIndexPage() {
 
   return (
     <div className={`page ${styles.studyIndexPage}`}>
-      <PageIntro eyebrow={t('studies.eyebrow')} title={t('studies.title')}>
-        {t('studies.subtitle')}
-      </PageIntro>
+      <StudyHero resumePath={resumePath} summary={summary} t={t} />
 
       {locale !== 'es' && <p className={styles.languageNotice}><Icon name="language" size={15} /> {t('studies.contentLanguage')}</p>}
 
@@ -42,6 +61,10 @@ export default function StudyIndexPage() {
           </span>
           <small>{t('studies.progressPercent', { percent: summary.percent })}</small>
         </div>
+        <p className={styles.nextStep}>{summary.isComplete
+          ? t('studies.courseCompleted')
+          : t('studies.nextStep', { title: resumeLesson.title })}
+        </p>
         <div
           aria-label={t('studies.progressPercent', { percent: summary.percent })}
           aria-valuemax="100"
@@ -52,10 +75,6 @@ export default function StudyIndexPage() {
         >
           <span style={{ width: `${summary.percent}%` }} />
         </div>
-        <Link className={styles.primaryAction} to={resumePath}>
-          <span>{summary.isComplete ? t('studies.reviewStudy') : summary.hasStarted ? t('studies.continueStudy') : t('studies.startStudy')}</span>
-          <Icon name="arrowRight" size={17} />
-        </Link>
       </section>
 
       <section aria-labelledby="study-lessons-title" className={styles.lessonIndex}>

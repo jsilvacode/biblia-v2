@@ -227,6 +227,7 @@ export default {
     progress: 'Tu avance',
     progressCount: '{{completed}} de {{total}} lecciones',
     progressPercent: '{{percent}} % completado',
+    nextStep: 'Siguiente paso: {{title}}',
     continueStudy: 'Continuar estudio',
     startStudy: 'Comenzar estudio',
     lessons: 'Lecciones',

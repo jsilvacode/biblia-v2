@@ -4,6 +4,26 @@ Actualizado: 16 de septiembre de 2026. Encargo: [plan principal para Luna](PLAN_
 
 Actualización visual 14/09/2026: guía, mockups navegables, artes originales y capturas en [docs/design](../design/GUIA_VISUAL_LUNA_2026-09-10.md). Diseño preparado para revisión; las etapas de integración de la app continúan pendientes. Consultar el [reporte visual](../design/experiencias-lectura-v1/qa-report.json) para resultados de esta muestra, separados de las pruebas de la aplicación.
 
+## Etapa 5A · Índice de La Fe de Jesús
+
+**Estado:** implementada, verificada e integrada en `main`.
+
+**Implementado:** `/studies/la-fe-de-jesus` adquiere una portada propia, sin alterar ninguna lección ni su contenido. Combina el arte instalado del curso con un velo azul/lila, título y texto HTML, y una acción que muestra “Comenzar estudio” a una persona nueva o “Continuar estudio” hacia su próximo paso real si existe avance. El progreso continúa leyendo la misma clave y conserva sus valores, su porcentaje y la lección de retorno.
+
+El recorrido mantiene las mismas veinte lecciones, orden, rutas, bloqueos y requisitos. En escritorio las fichas aparecen en dos columnas; en móvil se muestran en una sola columna para proteger los títulos y estados. Las fichas completadas, en curso y bloqueadas conservan su semántica y siguen apuntando a los mismos destinos.
+
+**Verificado en local:**
+
+- `npm run lint`: aprobado.
+- `npm run test`: 160 pruebas aprobadas.
+- `npm run test:e2e -- e2e/study-flow.spec.js`: 6 pruebas aprobadas en móvil y escritorio. Incluye una comprobación nueva de ruta, inicio, continuación, progreso real, veinte lecciones y disposición responsive.
+- `npm run build`: aprobado; índice, contenido del curso, contrato público y corpus auditados.
+- `git diff --check`: sin errores.
+
+**Evidencia durable:** [capturas responsive del índice](evidence/etapa-5a-indice-curso/README.md), con 320/390/768/1440 px, claro/oscuro, texto ampliado y dos estados de avance. Son emulación Chromium.
+
+**Siguiente paso tras integrar:** 5B · páginas de lección y evaluación. No se han rediseñado todavía las lecciones, sus preguntas ni sus ejercicios.
+
 ## Etapas 0A y 1 · primera tarjeta del Home
 
 **Estado:** implementadas, verificadas e integradas en `main`. La base inicial registrada fue `1dbd071`; no había cambios locales que preservar. Se identificaron las claves locales existentes `santa_biblia_v2_reading` para historial/progreso y `santa_biblia_v2_settings` para tema, idioma y preferencias. La etapa no depende de flags ni de fuentes externas.
@@ -206,7 +226,8 @@ Base guardada y subida a `origin/main` en el commit [`4617e65`](https://github.c
 | 3C · Reavivados | Completada e integrada | Ruta inmersiva, capítulo independiente, progreso separado y evidencia responsive. |
 | 4A · Índice de temas | Completada e integrada | Explorador, búsqueda, filtros URL y 92 situaciones accesibles. |
 | 4B · Ficha temática | Completada e integrada | Ruta propia, pasaje central, complementarias bajo demanda e inmersión móvil. |
-| 5A / 5B · Curso | Planificados | Índice y lección con identidad propia. |
+| 5A · Índice del curso | Completada e integrada | Portada, avance real y recorrido responsive de 20 lecciones. |
+| 5B · Lecciones | Planificada | Encabezado, composición y evaluación de cada estudio, sin alterar progreso ni desbloqueos. |
 | 6A · Fuente de libros | Investigación completada; fuente interna sin cerrar | Edición apta o catálogo de enlaces oficiales. |
 | 6B / 6C · Libros internos | Dependientes de fuente por título | Texto íntegro y lector separado. |
 | 7 · Integración nueva | Pendiente | QA conjunta y estado de publicación. |

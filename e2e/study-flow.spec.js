@@ -8,6 +8,52 @@ async function clearStudyProgress(page) {
   await page.reload()
 }
 
+async function setStudyProgress(page, progress) {
+  await page.goto('/')
+  await page.evaluate((value) => {
+    window.localStorage.setItem('santa-biblia-v2:study:la-fe-de-jesus:v1', JSON.stringify(value))
+  }, progress)
+}
+
+test('the course index keeps its real route, progress and responsive lesson journey', async ({ page }, testInfo) => {
+  await clearStudyProgress(page)
+  await page.goto('/studies/la-fe-de-jesus')
+
+  const hero = page.locator('section').filter({ has: page.getByRole('heading', { name: studyName }) }).first()
+  await expect(hero).toBeVisible()
+  await expect(hero.getByRole('link', { name: /Comenzar estudio|Start study|Começar estudo/ })).toHaveAttribute('href', '/studies/la-fe-de-jesus/quien-es-dios')
+  await expect(page.getByText(/0 de 20 lecciones|0 of 20 lessons|0 de 20 lições/).first()).toBeVisible()
+  await expect(page.getByText(/Siguiente paso: ¿Quién es Dios\?|Next step: Who is God\?|Próximo passo: Quem é Deus\?/).first()).toBeVisible()
+  await expect(page.locator('ol > li')).toHaveCount(20)
+
+  const firstLesson = page.locator('ol > li').nth(0)
+  const secondLesson = page.locator('ol > li').nth(1)
+  const firstBox = await firstLesson.boundingBox()
+  const secondBox = await secondLesson.boundingBox()
+  expect(firstBox).not.toBeNull()
+  expect(secondBox).not.toBeNull()
+  if (testInfo.project.name === 'desktop') {
+    expect(Math.abs(firstBox.y - secondBox.y)).toBeLessThanOrEqual(2)
+    expect(secondBox.x).toBeGreaterThan(firstBox.x)
+  } else {
+    expect(secondBox.y).toBeGreaterThan(firstBox.y)
+  }
+
+  await setStudyProgress(page, {
+    version: 2,
+    lastLessonSlug: 'la-santa-biblia',
+    lastQuestionId: null,
+    completedLessonSlugs: ['quien-es-dios'],
+    courseCompletedAt: null,
+    lessonProgress: {},
+    updatedAt: Date.now(),
+  })
+  await page.goto('/studies/la-fe-de-jesus')
+  await expect(page.getByRole('link', { name: /Continuar estudio|Continue study|Continuar estudo/ })).toHaveAttribute('href', '/studies/la-fe-de-jesus/la-santa-biblia')
+  await expect(page.getByText(/1 de 20 lecciones|1 of 20 lessons|1 de 20 lições/).first()).toBeVisible()
+  await expect(page.getByText(/Siguiente paso: La Santa Biblia|Next step: The Holy Bible|Próximo passo: A Santa Bíblia/).first()).toBeVisible()
+})
+
 test('Home opens the Bible study and publishes the four selected interest links', async ({ page }) => {
   await clearStudyProgress(page)
 
