@@ -54,6 +54,39 @@ test('the course index keeps its real route, progress and responsive lesson jour
   await expect(page.getByText(/Siguiente paso: La Santa Biblia|Next step: The Holy Bible|Próximo passo: A Santa Bíblia/).first()).toBeVisible()
 })
 
+test('a study lesson keeps the global navigation fixed on compact screens', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile', 'The compact global navigation is not rendered on desktop.')
+  await clearStudyProgress(page)
+  await page.goto('/studies/la-fe-de-jesus/quien-es-dios')
+  await expect(page.getByRole('heading', { name: '¿Quién es Dios?', exact: true })).toBeVisible()
+
+  const navigation = page.locator('.mobile-navigation')
+  await expect(navigation).toBeVisible()
+  await page.waitForTimeout(3400)
+  await expect(navigation).toHaveCSS('visibility', 'visible')
+
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
+  await expect(navigation).toBeVisible()
+  await page.waitForTimeout(3400)
+  await expect(navigation).toBeVisible()
+})
+
+test('a study lesson follows the saved reading preferences', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    window.localStorage.setItem('santa_biblia_v2_settings', JSON.stringify({
+      bibleVersion: 'nbla', fontFamily: 'sans', locale: 'es', readerFontScale: 1.3, readerLineHeight: 'spacious', theme: 'light',
+    }))
+  })
+  await page.goto('/studies/la-fe-de-jesus/quien-es-dios')
+  await expect(page.getByRole('heading', { name: '¿Quién es Dios?', exact: true })).toBeVisible()
+
+  const lessonPage = page.locator('[data-study-font]')
+  await expect(lessonPage).toHaveAttribute('data-study-font', 'sans')
+  await expect(lessonPage).toHaveAttribute('data-study-line-height', 'spacious')
+  await expect(lessonPage.locator('details summary strong').first()).toHaveCSS('font-family', /Inter/)
+})
+
 test('Home opens the Bible study and publishes the four selected interest links', async ({ page }) => {
   await clearStudyProgress(page)
 
@@ -96,7 +129,11 @@ test('a reader advances sequentially, retries answers and keeps progress when re
   await expect(quickTest).toBeVisible()
   await expect(firstQuestion.locator('form')).toHaveCount(0)
 
-  const firstCheck = page.locator('#test-q-01-01 form')
+  const firstTest = page.locator('#test-q-01-01')
+  await expect(firstTest).not.toHaveAttribute('open', '')
+  await firstTest.locator('summary').click()
+  await expect(firstTest).toHaveAttribute('open', '')
+  const firstCheck = firstTest.locator('form')
   await firstCheck.getByRole('radio').first().check()
   await firstCheck.getByRole('button', { name: /Comprobar respuesta|Check answer|Conferir resposta/ }).click()
   await expect(firstCheck.getByText(/Aún no|Not yet|Ainda não/).first()).toBeVisible()
@@ -114,13 +151,16 @@ test('a reader advances sequentially, retries answers and keeps progress when re
   await expect(page).toHaveURL(/\/studies\/la-fe-de-jesus\/quien-es-dios#q-01-01$/)
   await expect(page.locator('#q-01-01')).toHaveAttribute('open', '')
   await expect(page.locator('#q-01-01')).toBeInViewport()
+  await page.locator('#test-q-01-01 summary').click()
   await expect(page.locator('#test-q-01-01 form').getByText(/Correcto|Correct|Correto/).first()).toBeVisible()
 
   const completeButton = page.getByRole('button', { name: /Marcar lección como completada|Mark lesson as completed|Marcar lição como concluída/ })
   await expect(completeButton).toBeDisabled()
 
   for (const questionId of ['q-01-02', 'q-01-04']) {
-    const check = page.locator(`#test-${questionId} form`)
+    const testItem = page.locator(`#test-${questionId}`)
+    await testItem.locator('summary').click()
+    const check = testItem.locator('form')
     for (let optionIndex = 0; optionIndex < 3; optionIndex += 1) {
       await check.getByRole('radio').nth(optionIndex).check()
       await check.getByRole('button', { name: /Comprobar respuesta|Check answer|Conferir resposta/ }).click()

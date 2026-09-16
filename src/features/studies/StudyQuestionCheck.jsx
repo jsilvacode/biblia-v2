@@ -3,7 +3,7 @@ import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import styles from './Studies.module.css'
 
-export function StudyQuestionCheck({ checkpoint, initialCorrectOptionId, onCorrect }) {
+export function StudyQuestionCheck({ checkpoint, initialCorrectOptionId, onCorrect, promptIsVisible = false }) {
   const { t } = useI18n()
   const groupId = useId()
   const [selectedOptionId, setSelectedOptionId] = useState(initialCorrectOptionId ?? '')
@@ -26,7 +26,7 @@ export function StudyQuestionCheck({ checkpoint, initialCorrectOptionId, onCorre
   return (
     <form className={styles.questionCheck} id={`check-${checkpoint.id}`} onSubmit={handleSubmit}>
       <fieldset>
-        <legend tabIndex={-1}>{checkpoint.prompt}</legend>
+        <legend className={promptIsVisible ? styles.srOnly : undefined} tabIndex={-1}>{checkpoint.prompt}</legend>
         <p className={styles.checkHint}>{t('studies.chooseAnswer')}</p>
         <div className={styles.answerOptions}>
           {checkpoint.options.map((option) => {

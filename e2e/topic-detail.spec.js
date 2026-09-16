@@ -31,24 +31,18 @@ test.describe('thematic guide details', () => {
     await expect(page.getByRole('link', { name: /Ir a la guía|Go to the guide|Ir ao guia/ })).toHaveAttribute('href', '/topics')
   })
 
-  test('uses the reader-like compact navigation while reading a topic', async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name !== 'mobile', 'Automatic immersion is reserved for compact surfaces')
+  test('keeps global compact navigation fixed while reading a topic', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'mobile', 'The compact global navigation is not rendered on desktop.')
     await page.goto('/topics/temor-ansiedad-y-paz/tengo-miedo')
 
     const navigation = page.locator('.mobile-navigation')
     await expect(navigation).toHaveCSS('visibility', 'visible')
-    await expect(page.locator('html')).not.toHaveAttribute('data-topic-immersive', 'true')
-    await expect(page.locator('html')).toHaveAttribute('data-topic-immersive', 'true', { timeout: 4500 })
-    await expect(navigation).toHaveCSS('visibility', 'hidden')
-
-    await page.evaluate(() => window.scrollBy(0, 160))
-    await expect(page.locator('html')).not.toHaveAttribute('data-topic-immersive', 'true')
+    await page.waitForTimeout(3400)
     await expect(navigation).toHaveCSS('visibility', 'visible')
 
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
     await expect.poll(() => page.evaluate(() => window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2)).toBe(true)
     await page.waitForTimeout(3400)
-    await expect(page.locator('html')).not.toHaveAttribute('data-topic-immersive', 'true')
     await expect(navigation).toHaveCSS('visibility', 'visible')
   })
 })

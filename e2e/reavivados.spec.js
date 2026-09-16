@@ -128,8 +128,8 @@ test('opening Reavivados starts from its header even when daily progress exists'
   await expect.poll(() => page.locator('[data-rpsp-verse]').first().evaluate((element) => getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
 })
 
-test('Reavivados shares the reader navigation behavior and keeps it visible at the end', async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== 'mobile', 'Automatic immersion is reserved for touch surfaces')
+test('Reavivados keeps the global navigation fixed on compact screens', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile', 'The compact global navigation is not rendered on desktop.')
   await page.route('**/api/rpsp?date=*', async (route) => {
     const date = new URL(route.request().url()).searchParams.get('date')
     await route.fulfill({ contentType: 'application/json', json: metadataFor(date) })
@@ -137,9 +137,8 @@ test('Reavivados shares the reader navigation behavior and keeps it visible at t
 
   await page.goto('/reavivados')
   const navigation = page.locator('.mobile-navigation')
-  await expect(navigation).toHaveCSS('visibility', 'hidden', { timeout: 4500 })
-
-  await page.evaluate(() => window.scrollBy(0, 160))
+  await expect(navigation).toHaveCSS('visibility', 'visible')
+  await page.waitForTimeout(3400)
   await expect(navigation).toHaveCSS('visibility', 'visible')
 
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))

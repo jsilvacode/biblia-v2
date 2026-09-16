@@ -6,4 +6,4 @@ Muestran el retorno a la guía con sus filtros, el pasaje central inmediato y el
 
 Las imágenes son una comparación de composición en Chromium. Las rutas antiguas `?category=…#topic-…` y una ficha inexistente se validan por navegador; no se representan como capturas porque son estados de compatibilidad y recuperación, no la presentación editorial habitual.
 
-En móvil, la ficha reutiliza el mismo comportamiento de inmersión del lector y de Reavivados: tras una pausa de lectura la barra inferior se desvanece; un gesto o desplazamiento la revela y al final del documento permanece visible. `e2e/topic-detail.spec.js` comprueba las tres condiciones sin cambiar la navegación propia del lector.
+En móvil, la ficha mantiene la barra inferior global fija, como las demás secciones fuera del lector bíblico. El auto-ocultamiento y su transición suave pertenecen únicamente al lector. `e2e/topic-detail.spec.js` comprueba esta separación sin cambiar la navegación propia del lector.

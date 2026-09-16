@@ -1,6 +1,6 @@
 # Inicio de implementación — Santa Biblia
 
-Actualizado el 16/09/2026. Las etapas 0A, 0B, 1 (primera tarjeta), 2 (arte e identidad), 3A (fuente de audio), 3B (reproductor), 3C (experiencia diaria), 4A (índice de la guía temática), 4B (ficha temática) y 5A (índice de La Fe de Jesús) están cerradas e integradas en `main`. Consultar el [registro de ejecución](ESTADO_EXPERIENCIAS_LECTURA.md) antes de cambiar de etapa. El nombre de Luna en el plan no cambia su alcance.
+Actualizado el 16/09/2026. Las etapas 0A, 0B, 1 (primera tarjeta), 2 (arte e identidad), 3A (fuente de audio), 3B (reproductor), 3C (experiencia diaria), 4A (índice de la guía temática), 4B (ficha temática), 5A (índice de La Fe de Jesús) y 5B (lecciones) están cerradas e integradas en `main`. Consultar el [registro de ejecución](ESTADO_EXPERIENCIAS_LECTURA.md) antes de cambiar de etapa. El nombre de Luna en el plan no cambia su alcance.
 
 ## Documentos de referencia
 
@@ -13,7 +13,7 @@ La base de diseño y sus capturas se subieron a GitHub en `073f658`. Comprobar s
 
 ## Continuación
 
-Iniciar 5B: dar composición propia a las páginas de lección y a su evaluación, manteniendo preguntas, lectura, bloqueos, rutas y progreso. No repetir 0A, 0B, 1, 2, 3A, 3B, 3C, 4A, 4B ni 5A.
+La siguiente etapa es 6A: investigar y documentar una fuente de libros con edición reutilizable. No iniciar 6B/6C sin esa fuente. No repetir 0A, 0B, 1, 2, 3A, 3B, 3C, 4A, 4B, 5A ni 5B.
 
 Pendientes externos documentados: reproducción real del audio durante la integración de Reavivados y edición reutilizable para cada libro antes de importar su texto. Ninguno impide iniciar las etapas que no dependan de esas fuentes.
 

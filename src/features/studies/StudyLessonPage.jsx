@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useLocation, useParams } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
+import { useSettings } from '../settings/SettingsProvider'
 import { TopicPassage } from '../topics/TopicPassage.jsx'
 import { getLessonAccess, getLessonRequirements, getNextPendingLesson } from './studyAccess'
 import { getStudyLesson, loadStudyLesson, studyLessons } from './studyContent'
@@ -56,10 +57,14 @@ function StudyQuestion({ initialOpen, lesson, question, recordPosition, sectionT
   )
 }
 
-function LessonShell({ children, t }) {
+function LessonShell({ children, fontFamily, lineHeight, t }) {
   return (
-    <div className={`page ${styles.studyLessonPage}`}>
-      <Link className={styles.backLink} to={COURSE_PATH}>
+    <div
+      className={`page ${styles.studyLessonPage}`}
+      data-study-font={fontFamily}
+      data-study-line-height={lineHeight}
+    >
+      <Link className={styles.backLink} data-reader-chrome to={COURSE_PATH}>
         <Icon name="arrowLeft" size={17} />
         <span>{t('studies.backToCourse')}</span>
       </Link>
@@ -72,6 +77,7 @@ export default function StudyLessonPage() {
   const { lessonSlug } = useParams()
   const location = useLocation()
   const { locale, t } = useI18n()
+  const { settings } = useSettings()
   const {
     completeLesson,
     isPersistent,
@@ -119,6 +125,12 @@ export default function StudyLessonPage() {
   }, [initialQuestionId, lesson, recordPosition])
 
   useEffect(() => {
+    if (!initialQuestionId?.startsWith('test-')) return
+    const target = document.getElementById(initialQuestionId)
+    if (target instanceof HTMLDetailsElement) target.open = true
+  }, [initialQuestionId])
+
+  useEffect(() => {
     if (!initialQuestionId) return undefined
     let delayedFrame
     const frame = window.requestAnimationFrame(() => {
@@ -137,7 +149,7 @@ export default function StudyLessonPage() {
   if (!access.accessible) {
     const resumeLesson = getNextPendingLesson(progress, studyLessons) ?? studyLessons[0]
     return (
-      <LessonShell t={t}>
+      <LessonShell fontFamily={settings.fontFamily} lineHeight={settings.readerLineHeight} t={t}>
         <article className={styles.lockedLesson}>
           <Icon name="lock" size={28} />
           <p className={styles.progressEyebrow}>{t('studies.lessonLocked')}</p>
@@ -153,8 +165,8 @@ export default function StudyLessonPage() {
 
   if (!lesson) {
     return (
-      <LessonShell t={t}>
-        <article aria-busy={lessonStatus === 'loading'}>
+      <LessonShell fontFamily={settings.fontFamily} lineHeight={settings.readerLineHeight} t={t}>
+        <article aria-busy={lessonStatus === 'loading'} className={styles.lessonArticle}>
           <header className={styles.lessonHeader}>
             <div className={styles.lessonMeta}><span>{t('studies.lessonNumber', { number: lessonSummary.order })}</span></div>
             <h1>{lessonSummary.title}</h1>
@@ -191,6 +203,8 @@ export default function StudyLessonPage() {
     const pending = lesson.checkpoints.find((checkpoint) => correctAnswers[checkpoint.id] !== checkpoint.correctOptionId)
     if (!pending) return
     const testQuestionId = `test-${pending.id}`
+    const target = document.getElementById(testQuestionId)
+    if (target instanceof HTMLDetailsElement) target.open = true
     recordPosition(lesson.slug, testQuestionId)
     window.history.replaceState(window.history.state, '', `${location.pathname}#${testQuestionId}`)
     window.requestAnimationFrame(() => {
@@ -199,8 +213,8 @@ export default function StudyLessonPage() {
   }
 
   return (
-    <LessonShell t={t}>
-      <article>
+    <LessonShell fontFamily={settings.fontFamily} lineHeight={settings.readerLineHeight} t={t}>
+      <article className={styles.lessonArticle}>
         <header className={styles.lessonHeader}>
           <div className={styles.lessonMeta}>
             <span>{t('studies.lessonNumber', { number: lesson.order })}</span>
@@ -243,13 +257,31 @@ export default function StudyLessonPage() {
           </header>
           <div className={styles.quickTestList}>
             {lesson.checkpoints.map((checkpoint, index) => (
-              <div className={styles.quickTestItem} id={`test-${checkpoint.id}`} key={checkpoint.id}>
-                <p className={styles.quickTestProgress}>
-                  {t('studies.testQuestionProgress', {
-                    current: index + 1,
-                    total: lesson.checkpoints.length,
-                  })}
-                </p>
+              <details
+                className={styles.quickTestItem}
+                id={`test-${checkpoint.id}`}
+                key={checkpoint.id}
+                onToggle={(event) => {
+                  if (!event.currentTarget.open) return
+                  const targetId = `test-${checkpoint.id}`
+                  recordPosition(lesson.slug, targetId)
+                  if (window.location.hash !== `#${targetId}`) {
+                    window.history.replaceState(window.history.state, '', `${location.pathname}#${targetId}`)
+                  }
+                }}
+              >
+                <summary>
+                  <span>
+                    <span className={styles.quickTestProgress}>
+                      {t('studies.testQuestionProgress', {
+                        current: index + 1,
+                        total: lesson.checkpoints.length,
+                      })}
+                    </span>
+                    <strong>{checkpoint.prompt}</strong>
+                  </span>
+                  <Icon className={styles.quickTestChevron} name="chevronDown" size={18} />
+                </summary>
                 <StudyQuestionCheck
                   checkpoint={checkpoint}
                   initialCorrectOptionId={correctAnswers[checkpoint.id]}
@@ -257,8 +289,9 @@ export default function StudyLessonPage() {
                     recordPosition(lesson.slug, `test-${questionId}`)
                     recordCorrectAnswer(lesson, questionId, optionId)
                   }}
+                  promptIsVisible
                 />
-              </div>
+              </details>
             ))}
           </div>
         </section>

@@ -22,7 +22,30 @@ El recorrido mantiene las mismas veinte lecciones, orden, rutas, bloqueos y requ
 
 **Evidencia durable:** [capturas responsive del índice](evidence/etapa-5a-indice-curso/README.md), con 320/390/768/1440 px, claro/oscuro, texto ampliado y dos estados de avance. Son emulación Chromium.
 
-**Siguiente paso tras integrar:** 5B · páginas de lección y evaluación. No se han rediseñado todavía las lecciones, sus preguntas ni sus ejercicios.
+**Siguiente paso tras integrar:** 5B · páginas de lección y evaluación. Esta etapa se encuentra implementada localmente y pendiente de la revisión manual descrita más abajo.
+
+## Etapa 5B · Lecciones de La Fe de Jesús
+
+**Estado:** implementada, verificada y aprobada en la prueba manual; integrada en `main`.
+
+**Implementado:** cada ruta de lección conserva sus textos, preguntas, respuestas, requisitos, rutas y claves de progreso, pero recibe una composición propia: retorno contextual, cabecera de papel con medallón ocre, título en Playfair y cuerpo centrado de hasta 46 rem. La lectura se adapta a la familia tipográfica, escala y espaciado elegidos por la persona; las ilustraciones no invaden los párrafos.
+
+Las preguntas de estudio conservan sus lecturas bíblicas bajo demanda. El test final sigue al término de cada lección, pero sus tres preguntas comienzan cerradas para reducir el largo vertical; al abrir una se registra la posición, y al volver desde una lectura bíblica se reabre exactamente la pregunta pendiente. La corrección, el reintento, el desbloqueo, la revisión de una lección completada y el siguiente paso real conservan su comportamiento previo.
+
+**Navegación móvil:** el auto-ocultamiento queda reservado al lector bíblico genérico. La navegación inferior global permanece fija en Reavivados, fichas temáticas y lecciones del curso, incluso al llegar al final del contenido.
+
+**Verificado en local:**
+
+- `npm run lint`: aprobado.
+- `npm run test -- src/features/studies src/features/reader/useReaderImmersion.test.js`: 26 pruebas aprobadas.
+- `npm run test:e2e -- e2e/study-flow.spec.js e2e/topic-detail.spec.js e2e/reavivados.spec.js`: 23 pruebas aprobadas y 3 omitidas por pertenecer al proyecto de escritorio. Cubre el test final cerrado, avance y reintento, retorno desde el lector, preferencias de lectura y la barra global fija fuera del lector.
+- `npm run test`: 160 pruebas aprobadas.
+- `npm run build`: aprobado; índice bíblico, contenido de las 20 lecciones, contrato público y corpus auditados.
+- `git diff --check`: sin errores.
+
+**Evidencia durable:** [capturas de lección](evidence/etapa-5b-lecciones-curso/README.md) a 320, 390, 768 y 1440 px, claro/oscuro y texto ampliado. Son emulación Chromium.
+
+**Prueba manual de cierre:** aprobada antes de integrar. Se revisó la primera lección, el espacio recuperado con el test final cerrado y la barra inferior fija en móvil fuera del lector.
 
 ## Etapas 0A y 1 · primera tarjeta del Home
 
@@ -134,7 +157,7 @@ El componente diferencia metadata pendiente, disponible, sin audio y fuera de ca
 
 **Implementado:** `/reavivados` resuelve el día civil local, conserva el encabezado, navegación móvil de cuatro destinos y footer globales, y concentra el contenido en el paisaje de Reavivados, un reproductor único y el capítulo bíblico del día. La tarjeta de Home ya apunta a esta ruta; `/plans` conserva su función de calendario secundario.
 
-El bloque editorial “Reflexión del día” se separa del control de audio y conserva “Ver fuente” fuera de él. El player concentra el título de la reflexión y la referencia bíblica, sin una atribución fija que no provenga del episodio. Así, el control no se convierte en una segunda tarjeta de contenido ni desplaza la lectura inicial fuera del primer viewport de 390 px. En móvil, Reavivados comparte el auto-ocultamiento y la transición suave del lector: la barra reaparece con un gesto o scroll y queda visible al alcanzar el final del contenido.
+El bloque editorial “Reflexión del día” se separa del control de audio y conserva “Ver fuente” fuera de él. El player concentra el título de la reflexión y la referencia bíblica, sin una atribución fija que no provenga del episodio. Así, el control no se convierte en una segunda tarjeta de contenido ni desplaza la lectura inicial fuera del primer viewport de 390 px. En móvil, Reavivados conserva la navegación inferior global fija; el auto-ocultamiento y su transición suave quedan reservados para el lector bíblico.
 
 El capítulo utiliza la versión bíblica y escala de texto elegidas. Carga y reintenta en forma independiente de la metadata/audio: sin reflexión, la lectura sigue disponible. No añade selector, siguiente capítulo, lista de episodios, notas, guardados ni sugerencias dentro de la cápsula. El capítulo y episodio en curso se mantienen al cambiar el día durante una sesión de audio; la persona ve una acción explícita para abrir la lectura del nuevo día.
 
@@ -145,7 +168,7 @@ El progreso de esta experiencia se guarda únicamente en `santa_biblia_v2_rpsp`,
 - `npm run lint`: aprobado.
 - `npm run test`: 152 pruebas aprobadas.
 - `npm run build`: aprobado; índice, curso, contrato público y corpus auditados.
-- `npm run test:e2e -- e2e/reavivados.spec.js e2e/reading-flow.spec.js`: las pruebas relevantes aprobaron en móvil y escritorio, con metadata interceptada y determinista. Cubren la entrada desde el encabezado aun con progreso guardado y que la navegación inferior del lector siga visible al final; su ocultamiento y transición durante la lectura no se modifican.
+- `npm run test:e2e -- e2e/reavivados.spec.js e2e/reading-flow.spec.js`: las pruebas relevantes aprobaron en móvil y escritorio, con metadata interceptada y determinista. Cubren la entrada desde el encabezado aun con progreso guardado, la navegación global fija de Reavivados y que la navegación propia del lector siga visible al final; su ocultamiento y transición durante la lectura no se modifican.
 - El flujo de navegador comprueba el enlace Home → `/reavivados`, un único reproductor sin `src` inicial, reproducción iniciada por gesto, una sola navegación global, footer, lectura disponible sin audio y fallo/reintento independiente del capítulo.
 - `npm run test:e2e` completo: 86 aprobadas y 13 omitidas por proyecto no aplicable. Persiste una sola comprobación histórica ajena a esta entrega: restauración de scroll de Home en móvil obtuvo `188 px` frente al umbral de `>200 px`, ya registrada en 0B; Reavivados y Home actualizado aprobaron.
 - `git diff --check`: aprobado durante la implementación.
@@ -162,7 +185,7 @@ El progreso de esta experiencia se guarda únicamente en `santa_biblia_v2_rpsp`,
 
 **Implementado:** cada tarjeta del índice ahora abre `/topics/:categoryId/:situationId` y conserva los filtros `q` y `category` de la guía. La ficha muestra de inmediato sólo el pasaje central y ofrece hasta cinco complementarias por enlaces estables `?reading=companion-N`; sin ese parámetro no se carga ninguna lectura secundaria. Elegir una complementaria conserva la URL compartible y carga sólo ese pasaje.
 
-“Volver a la guía” mantiene la consulta y el área, y la posición del índice se restaura al retornar. “Leer en el lector” pasa el retorno exacto con ficha, parámetros y complementaria activa; el lector regresa a ese punto sin cambiar su navegación. En móvil, la ficha adopta la inmersión ya usada por el lector y Reavivados: la navegación inferior se desvanece sólo durante una pausa de lectura, se revela con gesto o scroll y queda fija al llegar al final. Los enlaces previos del tipo `?category=…#topic-…` se resuelven comparando IDs editoriales completos, incluso con guiones, y llevan a la ficha equivalente. Una situación inexistente muestra una salida clara hacia la guía.
+“Volver a la guía” mantiene la consulta y el área, y la posición del índice se restaura al retornar. “Leer en el lector” pasa el retorno exacto con ficha, parámetros y complementaria activa; el lector regresa a ese punto sin cambiar su navegación. En móvil, la ficha conserva la navegación inferior global fija, igual que las demás secciones fuera del lector bíblico. Los enlaces previos del tipo `?category=…#topic-…` se resuelven comparando IDs editoriales completos, incluso con guiones, y llevan a la ficha equivalente. Una situación inexistente muestra una salida clara hacia la guía.
 
 **Datos y límites:** se conservan los 92 IDs, títulos, orden, central y complementarias de `topics.es.json`; no se añadió contenido doctrinal ni se alteró `TopicPassage`, por lo que las lecciones del curso continúan usando su estilo y retorno actual.
 
@@ -171,7 +194,7 @@ El progreso de esta experiencia se guarda únicamente en `santa_biblia_v2_rpsp`,
 - `npm run lint`: aprobado.
 - `npm run test`: 160 pruebas aprobadas.
 - `npm run build`: aprobado; índice, curso, contrato público y corpus auditados.
-- `npm run test:e2e -- e2e/topics-explorer.spec.js e2e/topic-detail.spec.js e2e/mobile-navigation.spec.js`: cubre índice, ficha, complementaria bajo demanda, lector y retorno, rutas antiguas, ficha inexistente, inmersión móvil, texto ampliado, 320/390 px y dos columnas desde 768 px.
+- `npm run test:e2e -- e2e/topics-explorer.spec.js e2e/topic-detail.spec.js e2e/mobile-navigation.spec.js`: cubre índice, ficha, complementaria bajo demanda, lector y retorno, rutas antiguas, ficha inexistente, navegación global fija en móvil, texto ampliado, 320/390 px y dos columnas desde 768 px.
 - `git diff --check`: aprobado.
 
 **Evidencia durable:** [capturas responsive de la ficha](evidence/etapa-4b-ficha-tematica/README.md). Incluye claro/oscuro, 320/390/768/1440 px y texto ampliado; se complementa con las pruebas de interacción porque la captura sólo representa el estado editorial inicial sin complementaria cargada.
@@ -223,11 +246,11 @@ Base guardada y subida a `origin/main` en el commit [`4617e65`](https://github.c
 | 2 · Arte | Completada e integrada | WebP originales, variante nocturna y evidencia responsive; rutas y progreso conservados. |
 | 3A · Fuente de audio | Completada e integrada | Endpoint RSS/WordPress, caché, snapshot exacto y repositorio validados en `6e6f1ca`. |
 | 3B · Reproductor | Completada e integrada | Player directo, controles, estados y seguridad de sesión. |
-| 3C · Reavivados | Completada e integrada | Ruta inmersiva, capítulo independiente, progreso separado y evidencia responsive. |
+| 3C · Reavivados | Completada e integrada | Ruta diaria, capítulo independiente, progreso separado y evidencia responsive. |
 | 4A · Índice de temas | Completada e integrada | Explorador, búsqueda, filtros URL y 92 situaciones accesibles. |
-| 4B · Ficha temática | Completada e integrada | Ruta propia, pasaje central, complementarias bajo demanda e inmersión móvil. |
+| 4B · Ficha temática | Completada e integrada | Ruta propia, pasaje central, complementarias bajo demanda y navegación fija en móvil. |
 | 5A · Índice del curso | Completada e integrada | Portada, avance real y recorrido responsive de 20 lecciones. |
-| 5B · Lecciones | Planificada | Encabezado, composición y evaluación de cada estudio, sin alterar progreso ni desbloqueos. |
+| 5B · Lecciones | Completada e integrada | Composición de lección, evaluación final colapsada y navegación fija fuera del lector. |
 | 6A · Fuente de libros | Investigación completada; fuente interna sin cerrar | Edición apta o catálogo de enlaces oficiales. |
 | 6B / 6C · Libros internos | Dependientes de fuente por título | Texto íntegro y lector separado. |
 | 7 · Integración nueva | Pendiente | QA conjunta y estado de publicación. |

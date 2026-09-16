@@ -5,7 +5,6 @@ import { useI18n } from '../../i18n'
 import { formatReference, getBook, getLocalizedBookName, getVersion } from '../bible/catalog'
 import { loadChapter } from '../bible/bibleRepository'
 import { useSettings } from '../settings/SettingsProvider'
-import { useReaderImmersion } from '../reader/useReaderImmersion'
 import { DailyAudioPlayer } from './DailyAudioPlayer'
 import { DailyChapterText } from './DailyChapterText'
 import { getRpspReadingForDate } from './rpspDate'
@@ -63,19 +62,6 @@ export default function DailyReadingPage() {
   const dateLabel = sessionDate
     ? new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(`${sessionDate}T12:00:00`))
     : ''
-  const {
-    isImmersive,
-    onPointerDown,
-    onPointerUp,
-  } = useReaderImmersion({ chapterKey, enabled: chapterStatus === 'ready', isOverlayOpen: false })
-
-  useEffect(() => {
-    const root = document.documentElement
-    if (isImmersive) root.dataset.rpspImmersive = 'true'
-    else delete root.dataset.rpspImmersive
-    return () => delete root.dataset.rpspImmersive
-  }, [isImmersive])
-
   useEffect(() => {
     if (!localDate || localDate === sessionDate) return
     if (audioSessionActive) {
@@ -183,7 +169,7 @@ export default function DailyReadingPage() {
   }
 
   return (
-    <div className={`${styles.dailyPage}${settings.fontFamily === 'sans' ? ` ${styles.fontSans}` : ''}`} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
+    <div className={`${styles.dailyPage}${settings.fontFamily === 'sans' ? ` ${styles.fontSans}` : ''}`}>
       <section aria-label="Reavivados por su Palabra" className={styles.hero}>
         <div aria-hidden="true" className={styles.heroImage} />
         <div className={styles.heroInner}>

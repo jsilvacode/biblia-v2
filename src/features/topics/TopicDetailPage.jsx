@@ -5,7 +5,6 @@ import { PageIntro } from '../../components/ui/PageIntro'
 import { useI18n } from '../../i18n'
 import library from './data/topics.es.json'
 import { TopicPassage } from './TopicPassage.jsx'
-import { useReaderImmersion } from '../reader/useReaderImmersion'
 import {
   createCompanionId,
   createTopicsIndexPath,
@@ -78,20 +77,6 @@ export default function TopicDetailPage() {
   const indexPath = createTopicsIndexPath(searchParams)
   const reading = searchParams.get('reading')
   const companion = resolveTopicCompanion(reading, situation?.companions ?? [])
-  const readingKey = situation ? `${categoryId}:${situationId}:${reading ?? 'central'}` : null
-  const {
-    isImmersive,
-    onPointerDown,
-    onPointerUp,
-  } = useReaderImmersion({ chapterKey: readingKey, enabled: Boolean(situation), isOverlayOpen: false })
-
-  useEffect(() => {
-    const root = document.documentElement
-    if (isImmersive) root.dataset.topicImmersive = 'true'
-    else delete root.dataset.topicImmersive
-    return () => delete root.dataset.topicImmersive
-  }, [isImmersive])
-
   useEffect(() => {
     if (!reading || companion.isValid) return
     const next = new URLSearchParams(searchParams)
@@ -102,7 +87,7 @@ export default function TopicDetailPage() {
   if (!situation) return <MissingTopic indexPath={indexPath} t={t} />
 
   return (
-    <div className={`page ${styles.topicDetailPage}`} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
+    <div className={`page ${styles.topicDetailPage}`}>
       <Link className={styles.backLink} to={indexPath}>
         <Icon name="arrowLeft" size={17} />
         <span>{t('topics.backToGuide')}</span>
