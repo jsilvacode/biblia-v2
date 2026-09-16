@@ -23,13 +23,14 @@
   font-size: 1.12rem;
   font-weight: 600;
   letter-spacing: -0.038em;
-  white-space: nowrap;
+  white-space: normal;
+  line-height: 1.15;
 }
 
 .homeBrandMark {
   display: grid;
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 30px;
+  height: 30px;
   flex: 0 0 auto;
   place-items: center;
   border: 0;
@@ -50,8 +51,8 @@
 
 .headerIconButton {
   display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   place-items: center;
   border: 1px solid transparent;
@@ -86,7 +87,7 @@
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1024px) {
   .homeDesktopNavigation {
     display: flex;
     align-items: center;
@@ -118,7 +119,7 @@
 
 }
 
-@media (min-width: 900px) and (hover: hover) and (pointer: fine) {
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
   .homeNavigationLink:hover {
     background: color-mix(in srgb, var(--bg-reader) 66%, transparent);
     color: var(--accent-deep);
@@ -131,8 +132,8 @@
   }
 
   .headerIconButton {
-    width: 2.65rem;
-    height: 2.65rem;
+    width: 42px;
+    height: 42px;
   }
 }
 
@@ -142,3 +143,6 @@
     transition: none;
   }
 }
+
+.homeBrand > span:last-child { min-width: 0; }
+.homeHeaderControls { flex-shrink: 0; }

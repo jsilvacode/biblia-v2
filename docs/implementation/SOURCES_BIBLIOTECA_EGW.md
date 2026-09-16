@@ -2,11 +2,13 @@
 
 Consulta: 10 de septiembre de 2026. Alcance: identificar una fuente completa y documentada para el lector solicitado. La [sección 7 del plan](PLAN_EXPERIENCIAS_LECTURA_LUNA_2026-09-10.md) fija el comportamiento del producto.
 
+La decisión ejecutable y la verificación vigente por edición se registran en [docs/content-sources/egw.md](../content-sources/egw.md). Este informe conserva el inventario de investigación inicial; no autoriza una importación distinta de la decisión vigente.
+
 ## Resultado
 
 En la búsqueda realizada no se encontró un repositorio que reúna texto español completo, edición identificada y permiso verificable de reutilización de esa edición. No es una afirmación sobre todas las ediciones históricas posibles. Un repositorio público o un descargador MIT no acreditan por sí solos derechos del texto obtenido.
 
-Se propone empezar por **El Camino a Cristo** cuando se cierre la fuente. Mientras tanto, la modalidad concreta disponible es un catálogo con enlaces oficiales identificados como externos. La investigación no autoriza ni realiza contacto con editoriales, extracción masiva o publicación de corpus.
+Se propone empezar por **El Camino a Cristo** cuando se cierre la fuente. Por decisión del usuario, mientras no haya texto íntegro reutilizable la biblioteca permanece oculta, sin catálogo externo de sustitución. La investigación no autoriza ni realiza contacto con editoriales, extracción masiva o publicación de corpus.
 
 ## Fuentes oficiales
 

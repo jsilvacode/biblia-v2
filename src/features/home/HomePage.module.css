@@ -255,8 +255,8 @@
 .readingCard {
   --card-image: url('/assets/home-continue-editorial-v2.webp');
   --card-image-position: 74% 58%;
-  --reading-action-primary: var(--accent-blue-deep);
-  --reading-action-primary-text: var(--text-inverse);
+  --reading-action-primary: var(--action-reading-bg);
+  --reading-action-primary-text: var(--action-reading-ink);
   --reading-action-secondary: color-mix(in srgb, var(--accent-mist) 78%, var(--surface-raised));
   --reading-action-secondary-border: color-mix(in srgb, var(--accent-blue-deep) 30%, var(--border));
   grid-template-columns: auto minmax(0, 1fr);
@@ -737,7 +737,6 @@
 }
 
 :global(:root[data-theme='dark']) .readingCard {
-  --reading-action-primary-text: #142336;
   --reading-action-secondary: color-mix(in srgb, var(--accent-mist) 88%, var(--surface-raised));
 }
 

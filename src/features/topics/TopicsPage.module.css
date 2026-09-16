@@ -404,3 +404,7 @@
     animation: none;
   }
 }
+
+.passageHeading { flex-wrap: wrap; }
+.openPassage { max-width: 100%; flex-shrink: 1; }
+.openPassage svg { flex-shrink: 0; }

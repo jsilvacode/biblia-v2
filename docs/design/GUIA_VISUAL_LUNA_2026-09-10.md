@@ -1,5 +1,7 @@
 # Guía visual de ejecución — experiencias de lectura
 
+**Referencia vigente para el sitio completo:** [Sistema editorial](SISTEMA_EDITORIAL_VIGENTE.md), revisión del 16/09/2026. La propuesta histórica siguiente documenta el origen de las etapas; consultar el registro para conocer lo implementado.
+
 Fecha: 10 de septiembre de 2026. Revisión y capturas: 14 de septiembre de 2026. Estado: propuesta visual para revisión; no es una aprobación del usuario ni una implementación de producción.
 
 Esta guía acompaña al [plan funcional](../implementation/PLAN_EXPERIENCIAS_LECTURA_LUNA_2026-09-10.md) y al [prototipo navegable](experiencias-lectura-v1/index.html). Su objetivo es que Luna implemente una composición definida, sin inventar una dirección estética por etapa.

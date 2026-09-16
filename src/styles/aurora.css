@@ -163,14 +163,15 @@ body,
 }
 
 .button {
-  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
-  box-shadow: 0 0.5rem 1.1rem color-mix(in srgb, var(--accent-deep) 18%, transparent);
+  background: var(--action-reading-bg);
+  color: var(--action-reading-ink);
+  box-shadow: var(--shadow-sm);
   transition: transform var(--duration-fast) var(--ease-premium), box-shadow var(--duration-fast) var(--ease-premium), background var(--duration-fast) var(--ease-premium);
 }
 
 .button:hover {
-  background: linear-gradient(135deg, var(--accent-deep), var(--accent));
-  box-shadow: 0 0.72rem 1.35rem color-mix(in srgb, var(--accent-deep) 26%, transparent);
+  background: var(--action-reading-bg);
+  box-shadow: var(--shadow-md);
 }
 
 .card,
@@ -381,3 +382,23 @@ body,
     outline-color: var(--accent);
   }
 }
+
+/* Shared editorial hierarchy, including the older search/saved screens. */
+.page-intro .eyebrow {
+  color: var(--accent-deep);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+}
+.page-intro__row { flex-wrap: wrap; }
+.page-intro__row > div { min-width: 0; }
+.button { max-width: 100%; text-align: center; }
+
+.saved-tabs { flex-wrap: wrap; gap: 0.4rem 1.2rem; }
+.saved-tabs button { min-width: 0; overflow-wrap: anywhere; }
+.saved-tabs button.is-selected { color: var(--accent-deep); }
+
+.mobile-navigation .navigation-link, .reader-bottom-navigation__link { overflow-wrap: anywhere; text-align: center; }
+.mobile-navigation .navigation-link > span, .reader-bottom-navigation__link > span { max-width: 100%; }

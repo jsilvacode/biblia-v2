@@ -212,3 +212,6 @@
   .readingFlow { margin-top: 2rem; }
   .chapter { padding-inline: 0.65rem; }
 }
+
+.readingFlow > * { min-width: 0; }
+.audioContext { flex-wrap: wrap; }

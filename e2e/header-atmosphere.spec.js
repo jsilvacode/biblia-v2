@@ -24,3 +24,22 @@ test('the Home landscape and transparent active navigation carry to desktop and 
   await page.goto('/bible')
   await expect.poll(() => headerBackground(page, '.site-header')).not.toContain('aurora-champagne-landscape.webp')
 })
+
+
+test('tablet navigation switches once without duplicated menus', async ({ page }) => {
+  for (const path of ['/', '/topics', '/studies/la-fe-de-jesus', '/read/43/3']) {
+    await page.goto(path)
+    for (const width of [950, 1024]) {
+      await page.setViewportSize({ width, height: 900 })
+      const upperLink = page.locator('header a[href="/saved"]')
+      const bottomLink = page.locator('.mobile-navigation a[href="/saved"], .reader-bottom-navigation a[href="/saved"]')
+      if (width < 1024) {
+        await expect(upperLink).toBeHidden()
+        await expect(bottomLink).toBeVisible()
+      } else {
+        await expect(upperLink).toBeVisible()
+        await expect(bottomLink).toBeHidden()
+      }
+    }
+  }
+})

@@ -270,7 +270,7 @@ Lector: encabezado con libro y capítulo, índice accesible, texto, anterior/sig
 
 Offline: capítulos visitados bajo el caché de datos existente, con política explícita; descarga completa optativa sólo una vez aprobado el contenido. Avisar si no está disponible offline. Cambiar versión de contenido invalida únicamente la caché de esa edición.
 
-Archivos previstos: `src/features/library/LibraryPage.jsx`, `BookIndexPage.jsx`, `BookReaderPage.jsx`, `libraryRepository.js`, `libraryProgress.js`, `data/catalog.json`, `public/data/library/<book>/<version>/<chapter>.json`, `scripts/import-library-book.mjs`. No construir esta infraestructura antes de cerrar la fuente o elegir explícitamente la modalidad de catálogo externo.
+Archivos previstos: `src/features/library/LibraryPage.jsx`, `BookIndexPage.jsx`, `BookReaderPage.jsx`, `libraryRepository.js`, `libraryProgress.js`, `data/catalog.json`, `public/data/library/<book>/<version>/<chapter>.json`, `scripts/import-library-book.mjs`. No construir esta infraestructura antes de cerrar la fuente.
 
 ## 8. Etapas pequeñas y verificables
 
@@ -329,3 +329,8 @@ Paquete de fuentes complementario: `SOURCES_AUDIO_RPSP.md`, `SOURCES_BIBLIOTECA_
 > Lee `docs/implementation/PLAN_EXPERIENCIAS_LECTURA_LUNA_2026-09-10.md`. Ejecuta 0A y etapa 1; deja 0B y las demás etapas registradas para continuación. Centra los dos botones de la primera tarjeta respecto de toda la tarjeta en móvil; texto exacto “Continuar leyendo” y “Elegir una lectura”, mismo tamaño, tonos azules suaves integrados al Home. Sin historial, sólo elegir lectura. Conserva el hero y haz únicamente el retoque limitado permitido si aporta una mejora comprobable. Trabaja sobre el estado real del checkout, preserva cambios y progreso, ejecuta las pruebas pertinentes y entrega capturas claro/oscuro móvil/escritorio. Actualiza el registro de ejecución. No implementes audio, temas, curso ni biblioteca en esta primera etapa y no declares terminadas las etapas siguientes. Para publicar, sigue la autorización de la tarea en la que se te entregue este encargo.
 
 Las siguientes ejecuciones indican el número exacto de etapa y reutilizan este mismo documento. Luna no tiene que decidir la arquitectura ni volver a redactar el plan.
+
+
+### Decisión vigente sobre biblioteca — 16/09/2026
+
+La biblioteca sólo se habilita con texto íntegro de una edición reutilizable verificada. Queda descartado el catálogo de enlaces externos como sustituto; esta decisión del usuario prevalece sobre cualquier fallback anterior de este documento. 6B y 6C siguen pendientes.

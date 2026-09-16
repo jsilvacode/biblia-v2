@@ -147,3 +147,13 @@
   .companionChoice { transition: none; }
   .companionPassage { animation: none; }
 }
+
+.topicDetailPage, .topicDetailPage > *, .centralReading > *, .companions > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.backLink, .guideLink { max-width: 100%; }
+.backLink:focus-visible, .guideLink:focus-visible, .companionChoice:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

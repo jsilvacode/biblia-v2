@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Outlet, NavLink, useLocation, useNavigationType } from 'react-router-dom'
 import { useI18n } from '../../i18n'
 import { Icon } from '../ui/Icon'
@@ -32,21 +32,56 @@ function Navigation({ links, className }) {
 }
 
 function RouteTransition() {
-  const { pathname } = useLocation()
+  const { pathname, key, hash } = useLocation()
   const navigationType = useNavigationType()
+  const positions = useRef(new Map())
+  const previousPath = useRef(pathname)
 
   useEffect(() => {
-    // On browser back/forward, let the browser restore the reader's prior
-    // position. New in-app destinations always begin at their content start.
-    if (navigationType === 'POP') return undefined
+    // Track while this history entry is active; reading scrollY during route
+    // cleanup can see the shorter destination document instead of the origin.
+    const remember = () => positions.current.set(key, window.scrollY)
+    window.addEventListener('scroll', remember, { passive: true })
+    return () => window.removeEventListener('scroll', remember)
+  }, [key])
 
+  useEffect(() => {
+    // The reader owns verse/progress restoration. Other lazy routes may mount
+    // after native history restoration has already tried a too-short document.
+    const changedPage = previousPath.current !== pathname
+    previousPath.current = pathname
+    const savedY = positions.current.get(key)
+    if (navigationType === 'POP') {
+      if (pathname.startsWith('/read/') || hash || savedY === undefined) return undefined
+      let frame
+      const restore = () => {
+        window.cancelAnimationFrame(frame)
+        frame = window.requestAnimationFrame(() => {
+          if (document.querySelector('.route-loading')) return
+          if (document.documentElement.scrollHeight - window.innerHeight < savedY) return
+          window.scrollTo({ top: savedY, left: 0, behavior: 'instant' })
+          observer.disconnect()
+        })
+      }
+      const observer = new ResizeObserver(restore)
+      observer.observe(document.body)
+      restore()
+      const stop = window.setTimeout(() => observer.disconnect(), 3000)
+      return () => {
+        window.cancelAnimationFrame(frame)
+        window.clearTimeout(stop)
+        observer.disconnect()
+      }
+    }
+
+    if (!changedPage) return undefined
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     const frame = window.requestAnimationFrame(() => {
       document.getElementById('main-content')?.focus({ preventScroll: true })
     })
 
     return () => window.cancelAnimationFrame(frame)
-  }, [navigationType, pathname])
+  }, [navigationType, pathname, key, hash])
 
   return null
 }

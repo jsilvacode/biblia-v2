@@ -305,6 +305,8 @@ test('the compact reader keeps its bottom navigation visible at the end of the c
   const reader = page.locator('.reader-page')
   const bottomNavigation = page.locator('.reader-bottom-navigation')
 
+  await expect(page.locator('.verse').last()).toBeAttached()
+  await page.evaluate(() => document.fonts.ready)
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
   await expect.poll(() => page.evaluate(() => window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2)).toBe(true)
   await expect(reader).not.toHaveClass(/reader-page--immersive/)

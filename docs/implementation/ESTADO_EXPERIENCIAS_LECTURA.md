@@ -4,6 +4,27 @@ Actualizado: 16 de septiembre de 2026. Encargo: [plan principal para Luna](PLAN_
 
 Actualización visual 14/09/2026: guía, mockups navegables, artes originales y capturas en [docs/design](../design/GUIA_VISUAL_LUNA_2026-09-10.md). Diseño preparado para revisión; las etapas de integración de la app continúan pendientes. Consultar el [reporte visual](../design/experiencias-lectura-v1/qa-report.json) para resultados de esta muestra, separados de las pruebas de la aplicación.
 
+## Revisión transversal · diseño editorial y navegación · 16/09/2026
+
+**Alcance:** sitio completo, incluidas las pantallas anteriores al plan. Se conserva el hero y el carácter de las ilustraciones; la guía vigente es [Sistema editorial](../design/SISTEMA_EDITORIAL_VIGENTE.md).
+
+**Refinamientos:**
+
+- Acciones principales unificadas en azul suave mediante un par fondo/tinta explícito para día y noche; las pantallas antiguas dejan de usar el degradado coral. El coral se reserva para detalles y estados activos.
+- Distintivos del curso con superficie cálida y tinta propia en cada tema; avisos de error adaptados a noche. Sombras comunes más discretas y rótulos de página con la misma jerarquía tipográfica.
+- Eliminada la doble navegación entre 900 y 1023px. Encabezado y etiquetas permiten texto ampliado sin solaparse; el lector conserva su animación y auto-ocultamiento originales.
+- Corregido el reflujo al 200% en filtros/rejilla de temas, lecciones, Guardados y contexto del audio. El tamaño de los controles gráficos compactos del reproductor deja de duplicarse al ampliar sólo texto.
+- Restauración de posición por entrada de historial para páginas generales que cargan después de la restauración nativa; no interfiere con referencias/progreso del lector ni reinicia la página al escribir una consulta.
+- Alineada la documentación de biblioteca con la decisión del usuario: sin texto íntegro reutilizable no se publica sección ni catálogo externo.
+
+**Evidencia:** [capturas y reproducción](evidence/revision-integracion/README.md). Diez pantallas, ambos temas: 100 combinaciones a tamaño normal (320, 390, 768, 950 y 1440px), y 80 con texto al 200% (320, 390, 768 y 1440px), sin desbordamiento horizontal. Se inspeccionaron además las capturas para detectar solapamientos que la medida de ancho no descubre.
+
+**Verificación técnica:** lint y build aprobados, incluidos contrato público y auditoría del corpus. La suite unitaria inicial pasó 158/160; dos pruebas de imágenes sociales agotaron tiempo con tareas concurrentes. Su archivo completo pasó después aislado (7/7), sin modificar límites ni lógica. La restauración al Home pasó cinco repeticiones aisladas. La prueba del final de capítulo espera ahora fuentes y texto antes de desplazar; no se cambió el auto-ocultamiento de producción.
+
+**Cierre de verificaciones:** `npm run test -- --maxWorkers=2`: 160/160 aprobadas. E2E finales ejecutados en dos grupos: navegación/lector/búsqueda 66 aprobadas y 14 omitidas por plataforma; Home/Reavivados/curso/temas 48 aprobadas y 6 omitidas. Total: 114 aprobadas, 20 omisiones previstas, sin fallos pendientes. `npm run lint`, `npm run build` y `git diff --check`: aprobados. El usuario autorizó sincronizar `main` local con `origin/main` tras cerrar la revisión.
+
+**Límites:** emulación Chromium; esta revisión no certifica Safari/iOS físico, reproducción real del proveedor ni cierra los pendientes de fuentes de biblioteca. La etapa 7 queda cubierta en su revisión visual y regresión de los flujos existentes; no equivale a implementar 6B/6C.
+
 ## Etapa 5A · Índice de La Fe de Jesús
 
 **Estado:** implementada, verificada e integrada en `main`.
@@ -46,6 +67,16 @@ Las preguntas de estudio conservan sus lecturas bíblicas bajo demanda. El test 
 **Evidencia durable:** [capturas de lección](evidence/etapa-5b-lecciones-curso/README.md) a 320, 390, 768 y 1440 px, claro/oscuro y texto ampliado. Son emulación Chromium.
 
 **Prueba manual de cierre:** aprobada antes de integrar. Se revisó la primera lección, el espacio recuperado con el test final cerrado y la barra inferior fija en móvil fuera del lector.
+
+## Etapa 6A · Derechos de biblioteca
+
+**Estado:** investigación documentada; no se ha verificado una fuente reutilizable de estas ediciones entre las revisadas. La biblioteca no está disponible en la app.
+
+**Decisión de fuente:** la revisión actual de las ediciones españolas de *El Camino a Cristo* y *El Deseado de Todas las Gentes* no autoriza importarlas. El aviso legal de White Estate reserva sus contenidos y el EULA no concede a terceros la redistribución ni una base de datos en línea. La evidencia por edición, edición/año, URL y decisión está en [docs/content-sources/egw.md](../content-sources/egw.md).
+
+**Alcance cerrado:** no hay ruta `/library`, tarjeta o enlace desde Home, catálogo externo, lector, capítulo, búsqueda, progreso, caché offline, PDF, portada ni corpus de estas obras en Santa Biblia. El acceso gratuito en EGW Writings no se presenta como biblioteca disponible dentro de la aplicación.
+
+**Condición para reabrir:** una autorización escrita o licencia pública verificable que cubra la edición española concreta, el servicio web, la transformación por capítulos y, si corresponde, el repositorio público y la caché offline. Hasta entonces `6B` y `6C` permanecen bloqueadas.
 
 ## Etapas 0A y 1 · primera tarjeta del Home
 
@@ -251,7 +282,7 @@ Base guardada y subida a `origin/main` en el commit [`4617e65`](https://github.c
 | 4B · Ficha temática | Completada e integrada | Ruta propia, pasaje central, complementarias bajo demanda y navegación fija en móvil. |
 | 5A · Índice del curso | Completada e integrada | Portada, avance real y recorrido responsive de 20 lecciones. |
 | 5B · Lecciones | Completada e integrada | Composición de lección, evaluación final colapsada y navegación fija fuera del lector. |
-| 6A · Fuente de libros | Investigación completada; fuente interna sin cerrar | Edición apta o catálogo de enlaces oficiales. |
+| 6A · Derechos de biblioteca | Investigación documentada | Sin fuente apta; no se expone biblioteca ni lector. |
 | 6B / 6C · Libros internos | Dependientes de fuente por título | Texto íntegro y lector separado. |
 | 7 · Integración nueva | Pendiente | QA conjunta y estado de publicación. |
 

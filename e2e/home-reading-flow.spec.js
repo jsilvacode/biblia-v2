@@ -56,6 +56,13 @@ test('Home always gives a daily promise, the annual reading and the promises gui
   await expect(page.getByRole('link', { name: /La Fe de Jesús|The Faith of Jesus|A Fé de Jesus/ })).toHaveAttribute('href', '/studies/la-fe-de-jesus')
 })
 
+test('the unavailable Christian library has no route until a redistributable edition is verified', async ({ page }) => {
+  await page.goto('/library')
+
+  await expect(page).toHaveURL(/\/$/)
+  await expect(page.getByText(/Lecturas para seguir creciendo|Readings to keep growing|Leituras para continuar crescendo/)).toHaveCount(0)
+})
+
 test('a new reader starts from a clean book and chapter picker', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 })
   await clearAppStorage(page)
