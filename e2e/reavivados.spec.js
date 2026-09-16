@@ -63,7 +63,10 @@ test('Reavivados combines one day, one player and one chapter without duplicatin
   await expect(page.getByRole('button', { name: 'Reproducir reflexión' })).toBeVisible()
 
   const player = page.getByLabel('Reflexión del día')
-  await expect(player.getByRole('heading')).toHaveCount(0)
+  await expect(player.getByRole('heading', { name: 'Reavivados por su Palabra' })).toBeVisible()
+  await expect(player.getByRole('button', { name: 'Activar reproducción en bucle' })).toBeVisible()
+  await player.getByRole('button', { name: 'Abrir control de volumen' }).click()
+  await expect(player.getByRole('slider', { name: 'Volumen' })).toBeVisible()
   const audio = page.locator('audio')
   await expect(audio).toHaveAttribute('preload', 'none')
   await expect(audio).not.toHaveAttribute('src')
@@ -118,6 +121,7 @@ test('opening Reavivados starts from its header even when daily progress exists'
   await page.reload()
   await expect(page.getByRole('heading', { name: /Salmos 39|Psalms 39|Salmos 39/ }).first()).toBeVisible()
   await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0)
+  await expect.poll(() => page.locator('[data-rpsp-verse]').first().evaluate((element) => getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
 })
 
 test('Reavivados shares the reader navigation behavior and keeps it visible at the end', async ({ page }, testInfo) => {

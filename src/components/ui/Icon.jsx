@@ -35,6 +35,8 @@ import {
   Sparkles,
   Sun,
   Type,
+  Repeat,
+  Volume2,
   X,
 } from 'lucide-react'
 
@@ -71,12 +73,14 @@ const icons = {
   play: CirclePlay,
   pause: Pause,
   radio: Radio,
+  repeat: Repeat,
   rewind: RotateCcw,
   forward: RotateCw,
   search: Search,
   share: Share2,
   sun: Sun,
   type: Type,
+  volume: Volume2,
   close: X,
 }
 

@@ -5,7 +5,7 @@ function validHeading(value) {
   return heading && !/^[,.:;)}\]]/u.test(heading) ? heading : null
 }
 
-export function DailyChapterText({ chapter, onVerseVisible, restoredVerse }) {
+export function DailyChapterText({ chapter, onVerseVisible }) {
   return (
     <div className={styles.chapterText}>
       {chapter.map((item) => {
@@ -14,7 +14,6 @@ export function DailyChapterText({ chapter, onVerseVisible, restoredVerse }) {
           <section className={styles.verseBlock} key={item.verse}>
             {heading && <h2>{heading}</h2>}
             <p
-              className={restoredVerse === item.verse ? styles.restoredVerse : undefined}
               data-rpsp-verse={item.verse}
               id={`rpsp-verse-${item.verse}`}
               ref={(element) => {

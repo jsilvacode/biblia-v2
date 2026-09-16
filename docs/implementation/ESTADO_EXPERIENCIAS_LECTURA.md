@@ -87,11 +87,11 @@ Cuando el RSS no contiene la entrada, consulta de forma acotada la API oficial d
 
 ## Etapa 3B · Reproductor de Reavivados
 
-**Estado:** implementada y verificada localmente junto con 3C en `mejoras/experiencia-reavivados`; ambas quedan pendientes de revisión y de integración en `main` como una entrega coherente.
+**Estado:** implementada, verificada e integrada en `main` junto con 3C mediante `94b5453` (**Crea experiencia diaria de Reavivados**).
 
-**Implementado:** `DailyAudioPlayer` contiene un único `HTMLAudioElement` con `preload="none"` y sin `src` hasta que la persona pulsa reproducir. Reacciona a los eventos reales del medio, no muestra pausa antes de `playing`, muestra duración desconocida como `—:—`, permite pausar, buscar con slider accesible, avanzar/retroceder 15 segundos y alternar 1×/1.25×/1.5×. No añade control de volumen propio.
+**Implementado:** `DailyAudioPlayer` contiene un único `HTMLAudioElement` con `preload="none"` y sin `src` hasta que la persona pulsa reproducir. Reacciona a los eventos reales del medio, no muestra pausa antes de `playing`, muestra duración desconocida como `—:—`, permite pausar, buscar con slider accesible, avanzar/retroceder 15 segundos, controlar volumen y activar bucle. La tarjeta muestra en dos líneas el título normalizado de la reflexión y su referencia bíblica; los tiempos quedan a ambos lados de su línea de progreso.
 
-La identidad de la cápsula, la fuente y su enlace están fuera del reproductor. El control queda deliberadamente bajo: una fila de transporte, línea de tiempo y estado compacto, para que el encabezado de la lectura y sus primeros versículos entren antes en la pantalla móvil.
+El vínculo verificable “Ver fuente” permanece fuera del reproductor. El control queda deliberadamente bajo: título de dos líneas, una fila equilibrada con play protagonista, volumen desplegable hacia arriba y línea de tiempo compacta. Los cambios de estado normales no añaden mensajes bajo la línea de tiempo, para que el encabezado de la lectura y sus primeros versículos entren antes en la pantalla móvil.
 
 El componente diferencia metadata pendiente, disponible, sin audio y fuera de calendario; maneja rechazo de `play()`, error recuperable y reintento. Al desmontar pausa y elimina la fuente. Si llega un episodio nuevo mientras existe una sesión activa, mantiene el audio actual y presenta “Ya está disponible la lectura de hoy” con una acción explícita para cambiar; no sustituye el MP3 a mitad de escucha.
 
@@ -110,11 +110,11 @@ El componente diferencia metadata pendiente, disponible, sin audio y fuera de ca
 
 ## Etapa 3C · Experiencia diaria de Reavivados
 
-**Estado:** implementada y verificada localmente en `mejoras/experiencia-reavivados`; pendiente de prueba manual de la persona y de integración en `main` junto con 3B.
+**Estado:** implementada, verificada e integrada en `main` junto con 3B mediante `94b5453` (**Crea experiencia diaria de Reavivados**). La validación física del audio directo depende todavía de que Nuevo Tiempo permita el medio publicado.
 
 **Implementado:** `/reavivados` resuelve el día civil local, conserva el encabezado, navegación móvil de cuatro destinos y footer globales, y concentra el contenido en el paisaje de Reavivados, un reproductor único y el capítulo bíblico del día. La tarjeta de Home ya apunta a esta ruta; `/plans` conserva su función de calendario secundario.
 
-El bloque editorial “Reflexión del día · Reavivados por su Palabra · Nuevo Tiempo” se separa del control de audio y conserva “Ver fuente” fuera de él. Así, el control no se convierte en una segunda tarjeta de contenido ni desplaza la lectura inicial fuera del primer viewport de 390 px. En móvil, Reavivados comparte el auto-ocultamiento y la transición suave del lector: la barra reaparece con un gesto o scroll y queda visible al alcanzar el final del contenido.
+El bloque editorial “Reflexión del día” se separa del control de audio y conserva “Ver fuente” fuera de él. El player concentra el título de la reflexión y la referencia bíblica, sin una atribución fija que no provenga del episodio. Así, el control no se convierte en una segunda tarjeta de contenido ni desplaza la lectura inicial fuera del primer viewport de 390 px. En móvil, Reavivados comparte el auto-ocultamiento y la transición suave del lector: la barra reaparece con un gesto o scroll y queda visible al alcanzar el final del contenido.
 
 El capítulo utiliza la versión bíblica y escala de texto elegidas. Carga y reintenta en forma independiente de la metadata/audio: sin reflexión, la lectura sigue disponible. No añade selector, siguiente capítulo, lista de episodios, notas, guardados ni sugerencias dentro de la cápsula. El capítulo y episodio en curso se mantienen al cambiar el día durante una sesión de audio; la persona ve una acción explícita para abrir la lectura del nuevo día.
 
@@ -134,7 +134,27 @@ El progreso de esta experiencia se guarda únicamente en `santa_biblia_v2_rpsp`,
 
 **Observación de fuente en la revisión local:** la URL directa que el propio episodio oficial publica para Salmos 39 (`vod.nuevotiempo.org`) devolvió `403 Forbidden` tanto a una solicitud de rango de un byte como al control del navegador observado en esta revisión. La app no la reemplaza ni la proxifica: muestra el enlace “Ver fuente”, deja el capítulo disponible y comunica que la fuente no permitió cargar el audio. La metadata ya se resuelve; la disponibilidad real del archivo sigue siendo una dependencia de Nuevo Tiempo que debe comprobarse de nuevo antes de integrar.
 
-**Siguiente paso tras integrar 3B/3C:** 4A · nueva navegación de la guía temática. No iniciar 4A antes de cerrar la prueba manual y la integración de esta entrega.
+**Siguiente paso tras integrar 3B/3C:** 4A · nueva navegación de la guía temática.
+
+## Etapa 4A · Índice de la guía temática
+
+**Estado:** implementada y verificada localmente en `mejoras/guia-tematica`; pendiente de prueba manual e integración en `main`.
+
+**Implementado:** `/topics` ya no exige escoger un área antes de mostrar contenido. Parte con doce de las 92 situaciones, en el orden editorial del catálogo, y permite ampliar el listado sin ocultar que existen más resultados. El buscador actualiza la URL con reemplazo de historial y compara todos los términos normalizados de título, área y referencias; entiende acentos y referencias con o sin espacios o signos.
+
+En escritorio las 13 áreas son una columna lateral fija y los resultados aparecen en dos columnas. En móvil sólo se desplaza horizontalmente la fila de filtros; “Ver áreas” revela el panel completo y el listado de tarjetas conserva una sola columna legible. Las categorías siguen siendo filtros combinables con la consulta mediante `?category` y `?q`. Cada tarjeta expone área, situación y lectura central, conserva el despliegue bajo demanda de la lectura existente y no carga pasajes de las 92 situaciones al abrir el índice.
+
+**Alcance deliberado:** la ficha con ruta propia, pasaje central y complementarias es la etapa 4B. Mientras se desarrolla, el despliegue actual preserva un destino de lectura funcional para cada tarjeta.
+
+**Verificado en local:**
+
+- `npm run lint`: aprobado.
+- `npm run test -- src/features/topics/topicSearch.test.js src/i18n/locales/locales.test.js`: 6 pruebas aprobadas.
+- `npm run build`: aprobado; índice, curso, contrato público y corpus auditados.
+- `npm run test:e2e -- e2e/topics-explorer.spec.js`: 7 aprobadas y 3 omitidas por proyecto no aplicable. Cubre las 92 entradas, 12 iniciales, búsqueda en vivo normalizada, filtros URL combinables, panel de 13 áreas, ausencia de desborde a 320 px, texto ampliado y dos columnas desde 768 px.
+- `git diff --check`: aprobado.
+
+**Evidencia durable:** [capturas responsive](evidence/etapa-4a-guia-tematica/README.md) a 320, 390, 768 y 1440 px, claro/oscuro y texto ampliado. La pasada conjunta de navegación conserva una comprobación histórica ajena a esta entrega: restauración de scroll de Home en móvil obtuvo `188 px` frente al umbral de `>200 px`.
 
 ## Base anterior a las nuevas etapas
 
@@ -160,9 +180,10 @@ Base guardada y subida a `origin/main` en el commit [`4617e65`](https://github.c
 | 1 · Primera tarjeta | Completada | Centrado móvil, tonos azules suaves y estados con/sin historial validados. |
 | 2 · Arte | Completada e integrada | WebP originales, variante nocturna y evidencia responsive; rutas y progreso conservados. |
 | 3A · Fuente de audio | Completada e integrada | Endpoint RSS/WordPress, caché, snapshot exacto y repositorio validados en `6e6f1ca`. |
-| 3B · Reproductor | Implementada localmente junto con 3C; pendiente de revisión e integración | Player directo, controles, estados y seguridad de sesión. |
-| 3C · Reavivados | Implementada localmente; pendiente de prueba manual e integración | Ruta inmersiva, capítulo independiente, progreso separado y evidencia responsive. |
-| 4A / 4B · Temas | Planificados | Explorador y ficha de situación. |
+| 3B · Reproductor | Completada e integrada | Player directo, controles, estados y seguridad de sesión. |
+| 3C · Reavivados | Completada e integrada | Ruta inmersiva, capítulo independiente, progreso separado y evidencia responsive. |
+| 4A · Índice de temas | Lista para prueba local | Explorador, búsqueda, filtros URL y 92 situaciones accesibles. |
+| 4B · Ficha temática | Pendiente | Ruta propia, pasaje central y lecturas complementarias. |
 | 5A / 5B · Curso | Planificados | Índice y lección con identidad propia. |
 | 6A · Fuente de libros | Investigación completada; fuente interna sin cerrar | Edición apta o catálogo de enlaces oficiales. |
 | 6B / 6C · Libros internos | Dependientes de fuente por título | Texto íntegro y lector separado. |

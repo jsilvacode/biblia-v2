@@ -243,8 +243,7 @@ test.describe('editorial page composition', () => {
     await expect(thematicCard.getByText(/Guía de consulta bíblica|Bible reference guide|Guia de consulta bíblica/i)).toBeVisible()
     await thematicCard.click()
     await expect(page).toHaveURL(/\/topics$/)
-    await expect(page.getByRole('heading', { name: /Qué leer cuando|What to read when|O que ler quando/i })).toBeVisible()
-    await page.getByRole('button', { name: /Temor, ansiedad y paz/ }).click()
+    await expect(page.getByRole('heading', { name: /¿Qué necesitas hoy|What do you need today|Do que você precisa hoje/i })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Tengo miedo', exact: true })).toBeVisible()
     await expect(page.getByRole('heading', { name: /Salmos? 27/, exact: true })).toHaveCount(0)
     const fearSituation = page.locator('summary', { has: page.getByRole('heading', { name: 'Tengo miedo', exact: true }) })
@@ -267,7 +266,7 @@ test.describe('editorial page composition', () => {
     await expect(backToGuide).toBeInViewport()
     await backToGuide.click()
 
-    await expect(page).toHaveURL(/\/topics\?category=temor-ansiedad-y-paz#topic-temor-ansiedad-y-paz-tengo-miedo$/)
+    await expect(page).toHaveURL(/\/topics#topic-temor-ansiedad-y-paz-tengo-miedo$/)
     await expect(page.getByRole('heading', { name: 'Tengo miedo', exact: true })).toBeInViewport()
     await expect(page.locator('#topic-temor-ansiedad-y-paz-tengo-miedo')).toHaveAttribute('open', '')
   })

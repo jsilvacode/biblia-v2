@@ -24,23 +24,16 @@ export function formatAudioTime(value) {
     : `${minutes}:${paddedSeconds}`
 }
 
-function playbackMessage(state) {
-  const messages = {
-    loading: 'Cargando audio…',
-    playing: 'Reproduciendo reflexión.',
-    paused: 'Reflexión en pausa.',
-    seeking: 'Buscando posición…',
-    ended: 'La reflexión ha terminado.',
-    error: 'La fuente no permitió cargar el audio.',
-  }
-  return messages[state] ?? ''
-}
-
 function noAudioMessage(status) {
   if (status === 'loading') return 'Buscando la reflexión de hoy…'
   if (status === 'unavailable') return 'No pudimos cargar el audio. La lectura sigue disponible.'
   if (status === 'out_of_calendar') return 'No hay audio disponible para esta fecha.'
   return 'El audio de hoy aún no está disponible. Puedes comenzar con la lectura.'
+}
+
+function getTrackTitle(title) {
+  const [firstPart] = String(title ?? '').split('|').map((part) => part.trim()).filter(Boolean)
+  return firstPart || 'Reavivados por su Palabra'
 }
 
 function releaseAudio(audio) {
@@ -70,8 +63,10 @@ export function DailyAudioPlayer({
   onRetry,
   onSessionChange,
   onUseAvailableEpisode,
+  referenceLabel = '',
 } = {}) {
   const audioRef = useRef(null)
+  const volumeControlRef = useRef(null)
   const activeEpisodeRef = useRef(episode)
   const sourceEpisodeIdRef = useRef(null)
   const positionRef = useRef(0)
@@ -85,6 +80,9 @@ export function DailyAudioPlayer({
   const [position, setPosition] = useState(0)
   const [duration, setDuration] = useState(null)
   const [hasStarted, setHasStarted] = useState(false)
+  const [volume, setVolume] = useState(1)
+  const [isLooping, setIsLooping] = useState(false)
+  const [isVolumeOpen, setIsVolumeOpen] = useState(false)
 
   useEffect(() => {
     onPositionChangeRef.current = onPositionChange
@@ -173,6 +171,25 @@ export function DailyAudioPlayer({
     if (activeEpisode?.id !== activeEpisodeRef.current?.id) activeEpisodeRef.current = activeEpisode
   }, [activeEpisode])
 
+  useEffect(() => {
+    if (!isVolumeOpen) return undefined
+
+    function closeVolume(event) {
+      if (event.type === 'keydown') {
+        if (event.key === 'Escape') setIsVolumeOpen(false)
+        return
+      }
+      if (!volumeControlRef.current?.contains(event.target)) setIsVolumeOpen(false)
+    }
+
+    document.addEventListener('pointerdown', closeVolume)
+    document.addEventListener('keydown', closeVolume)
+    return () => {
+      document.removeEventListener('pointerdown', closeVolume)
+      document.removeEventListener('keydown', closeVolume)
+    }
+  }, [isVolumeOpen])
+
   function useAvailableEpisode() {
     if (!availableEpisode) return
     releaseAudio(audioRef.current)
@@ -238,6 +255,21 @@ export function DailyAudioPlayer({
     }
   }
 
+  function changeVolume(nextValue) {
+    const nextVolume = clamp(Number(nextValue), 0, 1)
+    setVolume(nextVolume)
+    const audio = audioRef.current
+    if (!audio) return
+    audio.volume = nextVolume
+    audio.muted = nextVolume === 0
+  }
+
+  function toggleLoop() {
+    const nextLooping = !isLooping
+    setIsLooping(nextLooping)
+    if (audioRef.current) audioRef.current.loop = nextLooping
+  }
+
   function retry() {
     releaseAudio(audioRef.current)
     resetPlayback()
@@ -253,6 +285,7 @@ export function DailyAudioPlayer({
   const actionLabel = playbackState === 'ended'
     ? 'Reproducir de nuevo'
     : isPlaying ? 'Pausar reflexión' : 'Reproducir reflexión'
+  const audioTitle = getTrackTitle(activeEpisode?.title)
 
   return (
     <section
@@ -261,7 +294,7 @@ export function DailyAudioPlayer({
       className={styles.player}
       data-playback-state={playbackState}
     >
-      <audio aria-hidden="true" className={styles.media} preload="none" ref={audioRef} />
+      <audio aria-hidden="true" className={styles.media} loop={isLooping} preload="none" ref={audioRef} />
 
       {availableEpisode && (
         <aside className={styles.availableNotice} role="status">
@@ -269,6 +302,13 @@ export function DailyAudioPlayer({
           <button onClick={useAvailableEpisode} type="button">Cambiar a la lectura de hoy</button>
         </aside>
       )}
+
+      <header className={styles.trackHeader}>
+        <div>
+          <h2 title={audioTitle}>{audioTitle}</h2>
+          {referenceLabel && <p>{referenceLabel}</p>}
+        </div>
+      </header>
 
       {!showControls ? (
         <div className={styles.noAudio} role={metadataStatus === 'loading' ? 'status' : undefined}>
@@ -280,6 +320,9 @@ export function DailyAudioPlayer({
       ) : (
         <div className={styles.body}>
           <div className={styles.controls}>
+            <button aria-label={isLooping ? 'Desactivar reproducción en bucle' : 'Activar reproducción en bucle'} aria-pressed={isLooping} className={styles.loopButton} onClick={toggleLoop} type="button">
+              <Icon name="repeat" size={17} />
+            </button>
             <button aria-label="Retroceder 15 segundos" className={styles.skipButton} disabled={!activeDuration} onClick={() => seek(displayedPosition - 15)} type="button">
               <span aria-hidden="true" className={styles.skipMark}>«</span>
             </button>
@@ -289,10 +332,29 @@ export function DailyAudioPlayer({
             <button aria-label="Avanzar 15 segundos" className={styles.skipButton} disabled={!activeDuration} onClick={() => seek(displayedPosition + 15)} type="button">
               <span aria-hidden="true" className={styles.skipMark}>»</span>
             </button>
+            <div className={styles.volumeControl} ref={volumeControlRef}>
+              <button
+                aria-controls="daily-audio-volume"
+                aria-expanded={isVolumeOpen}
+                aria-label={isVolumeOpen ? 'Cerrar control de volumen' : 'Abrir control de volumen'}
+                className={styles.volumeButton}
+                onClick={() => setIsVolumeOpen((open) => !open)}
+                type="button"
+              >
+                <Icon name="volume" size={17} />
+              </button>
+              {isVolumeOpen && (
+                <div className={styles.volumePopover} id="daily-audio-volume" role="group" aria-label="Control de volumen">
+                  <input aria-label="Volumen" max="1" min="0" onChange={(event) => changeVolume(event.target.value)} step="0.05" type="range" value={volume} />
+                  <span aria-hidden="true">{Math.round(volume * 100)}%</span>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className={styles.timelineGroup}>
             <label className={styles.timelineLabel} htmlFor="daily-audio-position">Posición del audio</label>
+            <span aria-hidden="true" className={styles.elapsedTime}>{formatAudioTime(displayedPosition)}</span>
             <input
               aria-valuetext={`${formatAudioTime(displayedPosition)} de ${formatAudioTime(activeDuration)}`}
               className={styles.timeline}
@@ -305,16 +367,13 @@ export function DailyAudioPlayer({
               type="range"
               value={displayedPosition}
             />
-            <div className={styles.times} aria-hidden="true">
-              <span>{formatAudioTime(displayedPosition)}</span>
-              <span>{formatAudioTime(activeDuration)}</span>
-            </div>
+            <span aria-hidden="true" className={styles.totalTime}>{formatAudioTime(activeDuration)}</span>
           </div>
 
-          {playbackMessage(playbackState) && (
+          {playbackState === 'error' && (
             <div className={styles.feedback}>
-              <p className={styles.playbackMessage} role="status">{playbackMessage(playbackState)}</p>
-              {playbackState === 'error' && <button className={styles.retryButton} onClick={retry} type="button">Reintentar</button>}
+              <p className={styles.playbackMessage} role="status">La fuente no permitió cargar el audio.</p>
+              <button className={styles.retryButton} onClick={retry} type="button">Reintentar</button>
             </div>
           )}
         </div>

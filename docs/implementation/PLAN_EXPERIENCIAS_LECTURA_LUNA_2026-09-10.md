@@ -104,8 +104,10 @@ Composición:
 Navegación compacta: Inicio / Reavivados                  Ajustes
 Franja de paisaje; Reavivados por su Palabra · fecha · referencia
 
-Reflexión del día · Pr. Bruno Raso*         Fuente: Nuevo Tiempo
-[ −15 s ] [ Reproducir/Pausar ] [ +15 s ]          [ 1× ]
+Reflexión del día                            Ver fuente
+Título de la reflexión
+Referencia bíblica
+[ Bucle ] [ −15 s ] [ Reproducir/Pausar ] [ +15 s ] [ Volumen ]
 00:00 ─────────────────────────────────────────── duración real
 
 Salmos 34 · versión elegida
@@ -190,7 +192,7 @@ No crear un cron de Codex ni GitHub Action diario sólo para que el sitio cambie
 
 ### 4.4 Player y lectura
 
-Crear `DailyAudioPlayer.jsx/.module.css` alrededor de un solo `HTMLAudioElement`, con reproducción iniciada únicamente por gesto del usuario. `preload="none"`; cargar el medio al reproducir. Inicialmente duración “—:—”, nunca un número ficticio. Controles: reproducir/pausar, ±15 segundos, progreso accesible con teclado y velocidad 1×/1.25×/1.5×. Volumen no es requisito para móvil; usar el control del dispositivo.
+Crear `DailyAudioPlayer.jsx/.module.css` alrededor de un solo `HTMLAudioElement`, con reproducción iniciada únicamente por gesto del usuario. `preload="none"`; cargar el medio al reproducir. Inicialmente duración “—:—”, nunca un número ficticio. Dentro del reproductor, el título normalizado de la reflexión y la referencia bíblica ocupan dos líneas; la fuente verificable se mantiene como enlace externo fuera. Controles: reproducción/pausa protagonista, ±15 segundos, bucle, botón de volumen con slider vertical desplegable hacia arriba y progreso accesible con teclado, con tiempos a ambos lados de la línea. Los estados normales no agregan texto inferior que aumente la altura. Mantener el conjunto bajo para que la lectura comience en el primer viewport móvil.
 
 Estados a implementar: metadata pendiente, listo, cargando tras play, reproduciendo, pausado, buscando posición, finalizado, error recuperable y sin audio. Actualizar UI desde eventos `loadedmetadata`, `play`, `pause`, `waiting`, `playing`, `timeupdate`, `seeking`, `seeked`, `ended`, `error`. Atrapar rechazo de `play()`. No usar el icono de pausa como señal optimista si el audio no empezó.
 

@@ -2,23 +2,25 @@ import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { PageIntro } from '../../components/ui/PageIntro'
-import { normalizeText } from '../bible/catalog'
 import { useI18n } from '../../i18n'
 import library from './data/topics.es.json'
 import { TopicPassage } from './TopicPassage.jsx'
-import styles from './TopicsPage.module.css'
+import { filterTopicSituations, getTopicSituations } from './topicSearch'
+import styles from './TopicsExplorer.module.css'
 
-function TopicSituation({ categoryId, initialOpen, location, situation, t }) {
+const INITIAL_VISIBLE_SITUATIONS = 12
+
+function TopicSituation({ initialOpen, location, situation, t }) {
   const [isOpen, setIsOpen] = useState(initialOpen)
   const [hasOpened, setHasOpened] = useState(initialOpen)
-  const sectionId = `topic-${categoryId}-${situation.id}`
-  const readingCount = 1 + situation.companions.length
+  const sectionId = `topic-${situation.categoryId}-${situation.id}`
   const returnTo = `${location.pathname}${location.search}#${sectionId}`
 
   function handleToggle(event) {
     const nextOpen = event.currentTarget.open
     setIsOpen(nextOpen)
     if (!nextOpen) return
+
     setHasOpened(true)
     if (window.location.hash !== `#${sectionId}`) {
       window.history.replaceState(window.history.state, '', returnTo)
@@ -28,12 +30,13 @@ function TopicSituation({ categoryId, initialOpen, location, situation, t }) {
   return (
     <details className={styles.situationCard} id={sectionId} onToggle={handleToggle} open={isOpen}>
       <summary className={styles.situationSummary}>
-        <span className={styles.situationTitle}>
-          <span aria-level="3" className={styles.situationHeading} role="heading">{situation.title}</span>
-          <small>{t('topics.readingCount', { count: readingCount })}</small>
+        <span className={styles.situationCopy}>
+          <small className={styles.situationMeta}>{situation.categoryTitle}</small>
+          <span aria-level="3" className={styles.situationTitle} role="heading">{situation.title}</span>
+          <small className={styles.situationReference}>{t('topics.centralReading')}: {situation.central}</small>
         </span>
         <span aria-hidden="true" className={styles.situationChevron}>
-          <Icon name="chevronDown" size={18} />
+          <Icon name="chevronRight" size={18} />
         </span>
       </summary>
       {hasOpened ? (
@@ -48,41 +51,37 @@ function TopicSituation({ categoryId, initialOpen, location, situation, t }) {
   )
 }
 
+function CategoryButton({ category, isSelected, onSelect, t }) {
+  return (
+    <button aria-pressed={isSelected} className={styles.areaOption} onClick={() => onSelect(category.id)} type="button">
+      <span className={styles.areaNumber}>{String(category.number).padStart(2, '0')}</span>
+      <span>{category.title}</span>
+      <small>{t('topics.situationCount', { count: category.situations.length })}</small>
+    </button>
+  )
+}
+
 export default function TopicsPage() {
-  const { t } = useI18n()
+  const { locale, t } = useI18n()
   const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
   const query = searchParams.get('q') ?? ''
   const selectedCategoryId = searchParams.get('category')
-  const normalizedQuery = normalizeText(query)
+  const [visibleLimit, setVisibleLimit] = useState({ key: null, value: INITIAL_VISIBLE_SITUATIONS })
+  const [areasOpen, setAreasOpen] = useState(false)
+  const allSituations = useMemo(() => getTopicSituations(library), [])
+  const selectedCategory = library.categories.find((category) => category.id === selectedCategoryId) ?? null
 
-  const visibleCategories = useMemo(() => {
-    if (normalizedQuery) {
-      return library.categories
-        .map((category) => ({
-          ...category,
-          situations: category.situations.filter((situation) => normalizeText([
-            category.title,
-            situation.title,
-            situation.central,
-            ...situation.companions,
-          ].join(' ')).includes(normalizedQuery)),
-        }))
-        .filter((category) => category.situations.length > 0)
-    }
-
-    if (selectedCategoryId) {
-      return library.categories.filter((category) => category.id === selectedCategoryId)
-    }
-
-    return []
-  }, [normalizedQuery, selectedCategoryId])
-
-  const resultCount = visibleCategories.reduce((total, category) => total + category.situations.length, 0)
-  const showingIndex = !normalizedQuery && !selectedCategoryId
+  const results = useMemo(() => filterTopicSituations(allSituations, {
+    categoryId: selectedCategory?.id,
+    query,
+  }), [allSituations, query, selectedCategory?.id])
+  const filterKey = `${query}\u0000${selectedCategory?.id ?? ''}`
+  const currentVisibleLimit = visibleLimit.key === filterKey ? visibleLimit.value : INITIAL_VISIBLE_SITUATIONS
+  const visibleSituations = results.slice(0, currentVisibleLimit)
 
   useEffect(() => {
-    if (!location.hash) return undefined
+    if (!location.hash || !results.length) return undefined
     const targetId = decodeURIComponent(location.hash.slice(1))
     let delayedFrame
     const frame = window.requestAnimationFrame(() => {
@@ -96,7 +95,7 @@ export default function TopicsPage() {
       if (delayedFrame) window.cancelAnimationFrame(delayedFrame)
       window.clearTimeout(timeout)
     }
-  }, [location.hash, selectedCategoryId])
+  }, [location.hash, results.length])
 
   function updateQuery(value) {
     const next = new URLSearchParams(searchParams)
@@ -106,7 +105,11 @@ export default function TopicsPage() {
   }
 
   function selectCategory(categoryId) {
-    setSearchParams({ category: categoryId })
+    const next = new URLSearchParams(searchParams)
+    if (categoryId) next.set('category', categoryId)
+    else next.delete('category')
+    setSearchParams(next)
+    setAreasOpen(false)
     window.requestAnimationFrame(() => document.getElementById('topic-results')?.focus({ preventScroll: false }))
   }
 
@@ -115,10 +118,11 @@ export default function TopicsPage() {
       <PageIntro eyebrow={t('topics.eyebrow')} title={t('topics.title')}>
         {t('topics.subtitle')}
       </PageIntro>
+      {locale !== 'es' && <p className={styles.contentLanguage}>{t('topics.contentLanguage')}</p>}
 
       <label className={styles.searchField}>
         <span className="sr-only">{t('topics.searchLabel')}</span>
-        <Icon name="search" size={19} />
+        <Icon name="search" size={20} />
         <input
           onChange={(event) => updateQuery(event.target.value)}
           placeholder={t('topics.searchPlaceholder')}
@@ -127,70 +131,87 @@ export default function TopicsPage() {
         />
       </label>
 
-      {showingIndex ? (
-        <section aria-labelledby="topic-index-title">
-          <div className={styles.sectionHeading}>
-            <div>
-              <p className="eyebrow">{t('topics.indexEyebrow')}</p>
-              <h2 id="topic-index-title">{t('topics.chooseArea')}</h2>
+      <div className={styles.explorer}>
+        <aside aria-label={t('topics.areasLabel')} className={styles.desktopFilters}>
+          <h2 className={styles.filterHeading}>{t('topics.areasLabel')}</h2>
+          <button aria-pressed={!selectedCategory} className={styles.filterButton} onClick={() => selectCategory(null)} type="button">
+            {t('topics.allAreas')}
+          </button>
+          {library.categories.map((category) => (
+            <CategoryButton category={category} isSelected={category.id === selectedCategory?.id} key={category.id} onSelect={selectCategory} t={t} />
+          ))}
+        </aside>
+
+        <div>
+          <div className={styles.mobileFilters}>
+            <div aria-label={t('topics.areasLabel')} className={styles.filterRow}>
+              <button aria-pressed={!selectedCategory} className={styles.filterButton} onClick={() => selectCategory(null)} type="button">
+                {t('topics.allAreas')}
+              </button>
+              {selectedCategory && (
+                <button aria-pressed="true" className={styles.filterButton} onClick={() => setAreasOpen(true)} type="button">
+                  {selectedCategory.title}
+                </button>
+              )}
+              <button aria-expanded={areasOpen} aria-controls="topic-areas" className={styles.areasToggle} onClick={() => setAreasOpen((open) => !open)} type="button">
+                {t('topics.viewAreas')} <Icon name="chevronDown" size={16} />
+              </button>
             </div>
-            <span>{t('topics.situationCount', { count: library.totalSituations })}</span>
-          </div>
-          <div className={styles.categoryGrid}>
-            {library.categories.map((category) => (
-              <button className={styles.categoryCard} key={category.id} onClick={() => selectCategory(category.id)} type="button">
-                <span className={styles.categoryNumber}>{String(category.number).padStart(2, '0')}</span>
-                <span>
-                  <strong>{category.title}</strong>
-                  <small>{t('topics.readingCount', { count: category.situations.length })}</small>
-                </span>
-                <Icon name="chevronRight" size={18} />
-              </button>
-            ))}
-          </div>
-        </section>
-      ) : (
-        <section aria-live="polite" className={styles.results} id="topic-results" tabIndex={-1}>
-          <div className={styles.resultsHeading}>
-            {selectedCategoryId && !normalizedQuery ? (
-              <button className={styles.backButton} onClick={() => setSearchParams({})} type="button">
-                <Icon name="arrowLeft" size={17} /> {t('topics.allAreas')}
-              </button>
-            ) : <span />}
-            <span>{t('topics.resultCount', { count: resultCount })}</span>
+            {areasOpen && (
+              <section aria-label={t('topics.areasLabel')} className={styles.areasPanel} id="topic-areas">
+                <h2>{t('topics.chooseArea')}</h2>
+                <div className={styles.areasList}>
+                  {library.categories.map((category) => (
+                    <CategoryButton category={category} isSelected={category.id === selectedCategory?.id} key={category.id} onSelect={selectCategory} t={t} />
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
 
-          {visibleCategories.length ? visibleCategories.map((category) => (
-            <div className={styles.categorySection} key={category.id}>
-              <div className={styles.categoryTitle}>
-                <span>{String(category.number).padStart(2, '0')}</span>
-                <h2>{category.title}</h2>
+          <section aria-live="polite" className={styles.results} id="topic-results" tabIndex={-1}>
+            <header className={styles.resultsHeading}>
+              <div>
+                <h2>{selectedCategory ? selectedCategory.title : t('topics.allSituations')}</h2>
+                <p>{query ? t('topics.searchResultsFor', { query }) : t('topics.resultsSupport')}</p>
               </div>
-              <div className={styles.situationGrid}>
-                {category.situations.map((situation) => {
-                  const sectionId = `topic-${category.id}-${situation.id}`
-                  const initialOpen = location.hash === `#${sectionId}`
-                  return (
-                    <TopicSituation
-                      categoryId={category.id}
-                      initialOpen={initialOpen}
-                      key={`${category.id}-${situation.id}-${initialOpen ? 'open' : 'closed'}`}
-                      location={location}
-                      situation={situation}
-                      t={t}
-                    />
-                  )
-                })}
+              <span className={styles.resultsCount}>{t('topics.showingCount', { shown: visibleSituations.length, count: results.length, total: library.totalSituations })}</span>
+            </header>
+
+            {results.length ? (
+              <>
+                <div className={styles.situationGrid}>
+                  {visibleSituations.map((situation) => {
+                    const sectionId = `topic-${situation.categoryId}-${situation.id}`
+                    return (
+                      <TopicSituation
+                        initialOpen={location.hash === `#${sectionId}`}
+                        key={`${sectionId}-${location.hash === `#${sectionId}` ? 'open' : 'closed'}`}
+                        location={location}
+                        situation={situation}
+                        t={t}
+                      />
+                    )
+                  })}
+                </div>
+                {visibleSituations.length < results.length && (
+                  <div className={styles.moreRow}>
+                    <button className={styles.moreButton} onClick={() => setVisibleLimit({ key: filterKey, value: currentVisibleLimit + INITIAL_VISIBLE_SITUATIONS })} type="button">
+                      {t('topics.showMore')}
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className={styles.emptyState}>
+                <Icon name="search" size={24} />
+                <p>{t('topics.noResults')}</p>
+                {(query || selectedCategory) && <button className={styles.emptyAction} onClick={() => setSearchParams({})} type="button">{t('topics.clearFilters')}</button>}
               </div>
-            </div>
-          )) : (
-            <div className={styles.emptyState}>
-              <Icon name="search" size={24} />
-              <p>{t('topics.noResults')}</p>
-            </div>
-          )}
-        </section>
-      )}
+            )}
+          </section>
+        </div>
+      </div>
 
       <aside className={styles.contextNote}>
         <Icon name="bookOpen" size={20} />

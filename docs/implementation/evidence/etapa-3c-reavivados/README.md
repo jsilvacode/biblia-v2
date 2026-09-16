@@ -2,7 +2,7 @@
 
 La evidencia visual se genera con `node scripts/capture-reavivados-stage3c.mjs`. El script intercepta `GET /api/rpsp` con metadata determinista del mismo capítulo que corresponda al día civil solicitado: no consulta Nuevo Tiempo, no descarga el MP3 y no toma un audio de otro día.
 
-Las capturas de `final/` cubren 320, 390, 768 y 1440 px, claro y oscuro, además de 390 px con texto ampliado en ambos temas. Muestran la identidad de la reflexión y “Ver fuente” fuera del control compacto; a 390 px ya aparece el inicio del capítulo. Son capturas de Chromium para comparar composición y no reemplazan la reproducción física en Safari/iOS y Chrome/Android.
+Las capturas de `final/` cubren 320, 390, 768 y 1440 px, claro y oscuro, además de 390 px con texto ampliado en ambos temas. Muestran el título de la reflexión y su referencia bíblica en el control compacto, sus acciones de bucle, ±15 segundos y volumen desplegable, y “Ver fuente” como vínculo verificable externo; a 390 px ya aparece el inicio del capítulo. Son capturas de Chromium para comparar composición y no reemplazan la reproducción física en Safari/iOS y Chrome/Android.
 
 Las pruebas de navegador de `e2e/reavivados.spec.js` validan la misma ruta, el único reproductor, la ausencia de doble navegación, el footer global, el capítulo disponible sin audio y su fallo/reintento independiente.
 

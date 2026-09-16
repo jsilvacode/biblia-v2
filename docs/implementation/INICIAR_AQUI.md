@@ -1,6 +1,6 @@
 # Inicio de implementación — Santa Biblia
 
-Actualizado el 15/09/2026. Las etapas 0A, 0B, 1 (primera tarjeta), 2 (arte e identidad) y 3A (fuente de audio) están cerradas e integradas en `main`. Las implementaciones de 3B · Reproductor y 3C · Reavivados están listas para revisión y pruebas locales en `mejoras/experiencia-reavivados`; consultar el [registro de ejecución](ESTADO_EXPERIENCIAS_LECTURA.md) antes de cambiar de etapa. No iniciar 4A hasta integrar o descartar esta entrega. El nombre de Luna en el plan no cambia su alcance.
+Actualizado el 15/09/2026. Las etapas 0A, 0B, 1 (primera tarjeta), 2 (arte e identidad), 3A (fuente de audio), 3B (reproductor) y 3C (experiencia diaria) están cerradas e integradas en `main`. La etapa 4A · índice de la guía temática está lista para prueba local en `mejoras/guia-tematica`; consultar el [registro de ejecución](ESTADO_EXPERIENCIAS_LECTURA.md) antes de cambiar de etapa. El nombre de Luna en el plan no cambia su alcance.
 
 ## Documentos de referencia
 
@@ -13,7 +13,7 @@ La base de diseño y sus capturas se subieron a GitHub en `073f658`. Comprobar s
 
 ## Continuación
 
-Revisar 3B/3C como una sola experiencia: duración desconocida, evento `playing`, pausa, seek, error, reintento, cambio de día, capítulo sin audio y el progreso separado. La ruta de prueba manual es `/reavivados`; usar gesto real de reproducción en Safari/iOS y Chrome/Android antes de integrar. Tras integrarla, encargar una sola etapa concreta: 4A · nueva navegación de la guía temática. No repetir 0A, 0B, 1, 2, 3A, 3B ni 3C.
+Revisar 4A como un índice: las 92 situaciones deben estar accesibles sin elegir área, el buscador debe actualizar resultados mientras se escribe y las categorías deben conservar consulta y filtro en la URL. La ruta de prueba local es `/topics`. Tras integrarla, encargar una sola etapa concreta: 4B · ficha temática. No repetir 0A, 0B, 1, 2, 3A, 3B, 3C ni 4A.
 
 Pendientes externos documentados: reproducción real del audio durante la integración de Reavivados y edición reutilizable para cada libro antes de importar su texto. Ninguno impide iniciar las etapas que no dependan de esas fuentes.
 

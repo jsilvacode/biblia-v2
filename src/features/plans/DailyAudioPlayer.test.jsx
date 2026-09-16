@@ -75,6 +75,7 @@ describe('DailyAudioPlayer', () => {
   it('updates the accessible timeline and seek controls from media events', () => {
     render(<DailyAudioPlayer episode={episode} />)
     const audio = mediaElement()
+    expect(screen.getByRole('heading', { name: 'Salmo 34' })).toBeTruthy()
     setMediaTiming(audio, { currentTime: 20, duration: 120 })
 
     fireEvent(audio, new Event('loadedmetadata'))
@@ -88,7 +89,16 @@ describe('DailyAudioPlayer', () => {
     fireEvent(audio, new Event('seeked'))
     expect(screen.getByRole('button', { name: 'Reproducir reflexión' })).toBeTruthy()
 
-    expect(screen.queryByRole('button', { name: /Velocidad de reproducción/i })).toBeNull()
+    const loop = screen.getByRole('button', { name: 'Activar reproducción en bucle' })
+    fireEvent.click(loop)
+    expect(audio.loop).toBe(true)
+    expect(loop.getAttribute('aria-pressed')).toBe('true')
+
+    const volumeButton = screen.getByRole('button', { name: 'Abrir control de volumen' })
+    fireEvent.click(volumeButton)
+    expect(volumeButton.getAttribute('aria-expanded')).toBe('true')
+    fireEvent.change(screen.getByLabelText('Volumen'), { target: { value: '0.35' } })
+    expect(audio.volume).toBeCloseTo(0.35)
   })
 
   it('reflects buffering, pause, seek and completion from the media element', () => {
@@ -100,18 +110,18 @@ describe('DailyAudioPlayer', () => {
     expect(screen.getByRole('button', { name: 'Pausar reflexión' })).toBeTruthy()
 
     fireEvent(audio, new Event('waiting'))
-    expect(screen.getByText('Cargando audio…')).toBeTruthy()
+    expect(screen.queryByText('Cargando audio…')).toBeNull()
     expect(screen.getByRole('button', { name: 'Pausar reflexión' })).toBeTruthy()
 
     fireEvent(audio, new Event('pause'))
-    expect(screen.getByText('Reflexión en pausa.')).toBeTruthy()
+    expect(screen.queryByText('Reflexión en pausa.')).toBeNull()
     expect(screen.getByRole('button', { name: 'Reproducir reflexión' })).toBeTruthy()
 
     fireEvent(audio, new Event('seeking'))
-    expect(screen.getByText('Buscando posición…')).toBeTruthy()
+    expect(screen.queryByText('Buscando posición…')).toBeNull()
 
     fireEvent(audio, new Event('ended'))
-    expect(screen.getByText('La reflexión ha terminado.')).toBeTruthy()
+    expect(screen.queryByText('La reflexión ha terminado.')).toBeNull()
     expect(screen.getByRole('button', { name: 'Reproducir de nuevo' })).toBeTruthy()
 
     fireEvent(audio, new Event('error'))

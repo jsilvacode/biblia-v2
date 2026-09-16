@@ -41,7 +41,6 @@ export default function DailyReadingPage() {
   const [chapterRetry, setChapterRetry] = useState(0)
   const [metadataResult, setMetadataResult] = useState({ key: null, status: 'loading', value: null })
   const [chapterResult, setChapterResult] = useState({ key: null, status: 'loading', data: [] })
-  const [restoreProgress, setRestoreProgress] = useState(null)
   const visibleVerseRef = useRef(null)
   const savedProgressRef = useRef(null)
 
@@ -120,7 +119,6 @@ export default function DailyReadingPage() {
     if (!sessionDate || !reading) return
     const progress = readRpspProgressForReading({ date: sessionDate, reference: reading })
     savedProgressRef.current = progress
-    setRestoreProgress(progress)
     visibleVerseRef.current = null
   }, [reading, sessionDate])
 
@@ -206,8 +204,6 @@ export default function DailyReadingPage() {
         <header className={styles.audioContext}>
           <div>
             <p className={styles.audioKicker}><Icon name="headphones" size="sm" /> Reflexión del día</p>
-            <h2>Reavivados por su Palabra</h2>
-            <p>Nuevo Tiempo</p>
           </div>
           {episode?.sourcePageUrl && (
             <a className={styles.audioSourceLink} href={episode.sourcePageUrl} rel="noreferrer" target="_blank">
@@ -223,6 +219,7 @@ export default function DailyReadingPage() {
           onPositionChange={handleAudioPosition}
           onRetry={() => setMetadataRetry((value) => value + 1)}
           onSessionChange={setAudioSessionActive}
+          referenceLabel={referenceLabel}
         />
 
         <article aria-busy={chapterStatus === 'loading'} className={styles.chapter}>
@@ -245,7 +242,6 @@ export default function DailyReadingPage() {
               onVerseVisible={(element, verse) => {
                 if (element.getBoundingClientRect().bottom > 112) visibleVerseRef.current = verse
               }}
-              restoredVerse={restoreProgress?.verse ?? null}
             />
           )}
         </article>

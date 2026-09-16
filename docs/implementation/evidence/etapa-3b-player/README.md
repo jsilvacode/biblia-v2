@@ -9,7 +9,7 @@ Fecha de ejecución: 15 de septiembre de 2026. Esta etapa entrega el componente 
 - un único `HTMLAudioElement` sin `src` inicial y con `preload="none"`;
 - duración desconocida como `—:—`, reproducción sólo tras la acción de la persona y cambio visual a pausa únicamente después de `playing`;
 - eventos `loadedmetadata`, `waiting`, `playing`, `pause`, `seeking`, `seeked`, `timeupdate`, `ended` y `error`;
-- avance o retroceso de 15 segundos, slider accesible y velocidades 1×, 1.25× y 1.5×;
+- avance o retroceso de 15 segundos, slider accesible, volumen y reproducción en bucle;
 - rechazo de `play()`, ausencia de metadata, reintento y liberación de la fuente al desmontar;
 - llegada de un episodio nuevo durante una escucha: mantiene el episodio activo y exige la acción visible “Cambiar a la lectura de hoy”.
 
@@ -17,7 +17,7 @@ Fecha de ejecución: 15 de septiembre de 2026. Esta etapa entrega el componente 
 
 No hay `fetch` del MP3, `crossOrigin`, blob, proxy, descarga ni precache. La prueba de reproducción real con gesto en Safari/iOS y Chrome/Android queda para 3C, cuando el componente tenga la ruta inmersiva donde pueda probarse sin introducir una pantalla temporal en la aplicación.
 
-La cabecera editorial y el enlace de fuente no pertenecen al componente: los entrega la ruta inmersiva. Esto permite que el control conserve una altura baja y reutilizable, sin duplicar títulos ni ocultar el comienzo del capítulo en móvil.
+El componente muestra el título normalizado de la reflexión y recibe la referencia bíblica de su ruta. La etiqueta editorial y el enlace verificable de la fuente pertenecen a la ruta inmersiva. Esto permite que el control conserve una altura baja y reutilizable, sin duplicar contenido ni ocultar el comienzo del capítulo en móvil.
 
 ## Comprobaciones
 
