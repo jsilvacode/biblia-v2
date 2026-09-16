@@ -5,6 +5,8 @@ import { useI18n } from '../../i18n'
 import { formatReference, getBook, getVersion } from '../bible/catalog'
 import { InstallInvitation } from '../install/InstallInvitation'
 import { getRpspPlanState } from '../plans/rpsp2026'
+import { getLocalRpspDate } from '../plans/rpspDate'
+import { readRpspProgressForReading } from '../plans/rpspProgress'
 import { useReadingState } from '../reading/ReadingProvider'
 import { QuickNavigationSheet } from '../reader/QuickNavigationSheet'
 import { createVerseShareData, createVerseShareUrl, shareVerse } from '../reader/shareVerse'
@@ -63,6 +65,9 @@ export default function HomePage() {
   const lastReference = formatReference(lastRead, locale)
   const dailyPlan = getRpspPlanState(new Date())
   const dailyReference = formatReference(dailyPlan.reading, locale)
+  const dailyProgress = dailyPlan.status === 'active'
+    ? readRpspProgressForReading({ date: getLocalRpspDate(), reference: dailyPlan.reading })
+    : null
   const promiseReference = formatPromiseReference(promise, locale)
   const promisePath = promise ? getReaderPath({
     book: promise.reference.book,
@@ -212,14 +217,14 @@ export default function HomePage() {
         {hasReadingHistory && <InstallInvitation />}
 
         <div className={styles.secondaryCards}>
-          <Link className={styles.dailyCard} to={getReaderPath(dailyPlan.reading)} {...readingIntentProps(dailyPlan.reading)}>
+          <Link className={styles.dailyCard} to="/reavivados">
             <span className={styles.cardHeading}>
               <span aria-hidden="true" className={styles.cardIcon}><Icon name="calendar" size={18} /></span>
               <span className={styles.eyebrow}>{t('plans.featured')}</span>
             </span>
             <span className={styles.cardCopy}>
               <strong>{dailyReference}</strong>
-              <small className={styles.cardMeta}>{t(`plans.${dailyPlan.status}`)}</small>
+              <small className={styles.cardMeta}>{dailyProgress ? t('plans.resumeToday') : t(`plans.${dailyPlan.status}`)}</small>
             </span>
             <span aria-hidden="true" className={styles.cardArrow}><Icon name="arrowRight" size={19} /></span>
           </Link>

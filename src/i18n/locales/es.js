@@ -179,6 +179,7 @@ export default {
     upcoming: 'Próximo calendario',
     completed: 'Calendario completado',
     openReading: 'Leer el capítulo',
+    resumeToday: 'Retomar la lectura de hoy',
     progressLabel: '{{progress}}% del plan completado',
     calendar: 'Calendario 2026',
     nextReadings: 'Lecturas del plan',

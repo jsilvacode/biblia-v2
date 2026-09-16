@@ -231,12 +231,12 @@ test.describe('editorial page composition', () => {
     }
   })
 
-  test('opens the daily plan and the thematic reading library from Home', async ({ page }) => {
+  test('opens Reavivados and the thematic reading library from Home', async ({ page }) => {
     await page.goto('/')
 
     const dailyCard = page.getByRole('link', { name: /Reavivados por su Palabra|Revived by His Word|Reavivados por Sua Palavra/ })
     await expect(dailyCard).toBeVisible()
-    await expect(dailyCard).toHaveAttribute('href', /\/read\/\d+\/\d+$/)
+    await expect(dailyCard).toHaveAttribute('href', '/reavivados')
 
     const thematicCard = page.getByRole('link', { name: /Promesas de Dios|Promises of God|Promessas de Deus/ }).last()
     await expect(thematicCard.getByText(/Qué leer cuando|What to read when|O que ler quando/)).toBeVisible()

@@ -15,6 +15,11 @@ function hasTextSelection() {
   return Boolean(window.getSelection?.()?.toString().trim())
 }
 
+function isAtDocumentBottom() {
+  const root = document.documentElement
+  return window.innerHeight + window.scrollY >= root.scrollHeight - 2
+}
+
 function supportsCompactAutoHide() {
   if (typeof window === 'undefined') return false
   const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -49,7 +54,7 @@ export function useReaderImmersion({ chapterKey, enabled, isOverlayOpen }) {
 
   const schedule = useCallback(() => {
     clearTimer()
-    if (!enabled || !supportsAutoHide || overlayRef.current || document.visibilityState !== 'visible' || hasTextSelection()) return
+    if (!enabled || !supportsAutoHide || overlayRef.current || document.visibilityState !== 'visible' || hasTextSelection() || isAtDocumentBottom()) return
     if (document.activeElement?.closest?.('[data-reader-chrome]')) return
     timerRef.current = window.setTimeout(() => {
       if (!overlayRef.current && !hasTextSelection() && !document.activeElement?.closest?.('[data-reader-chrome]')) {
@@ -107,7 +112,7 @@ export function useReaderImmersion({ chapterKey, enabled, isOverlayOpen }) {
       if (document.visibilityState !== 'visible') clearTimer()
       else revealChrome(true)
     }
-    const handleScroll = () => revealChrome(true)
+    const handleScroll = () => revealChrome(!isAtDocumentBottom())
     const handleKeyDown = () => revealChrome(true)
     const handleSelection = () => {
       if (hasTextSelection()) revealChrome(false)

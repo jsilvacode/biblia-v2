@@ -1,6 +1,6 @@
 # Inicio de implementación — Santa Biblia
 
-Actualizado el 15/09/2026. Las etapas 0A, 0B, 1 (primera tarjeta) y 2 (arte e identidad) están cerradas e integradas en `main`. La implementación de 3A · Resolver audio está lista para revisión local en `mejoras/fuente-audio-reavivados`; consultar el [registro de ejecución](ESTADO_EXPERIENCIAS_LECTURA.md) antes de cambiar de etapa. No iniciar 3B hasta integrar o descartar 3A. El nombre de Luna en el plan no cambia su alcance.
+Actualizado el 15/09/2026. Las etapas 0A, 0B, 1 (primera tarjeta), 2 (arte e identidad) y 3A (fuente de audio) están cerradas e integradas en `main`. Las implementaciones de 3B · Reproductor y 3C · Reavivados están listas para revisión y pruebas locales en `mejoras/experiencia-reavivados`; consultar el [registro de ejecución](ESTADO_EXPERIENCIAS_LECTURA.md) antes de cambiar de etapa. No iniciar 4A hasta integrar o descartar esta entrega. El nombre de Luna en el plan no cambia su alcance.
 
 ## Documentos de referencia
 
@@ -13,7 +13,7 @@ La base de diseño y sus capturas se subieron a GitHub en `073f658`. Comprobar s
 
 ## Continuación
 
-Validar primero 3A en local mediante `GET /api/rpsp?date=2026-09-10` y `GET /api/rpsp?date=2026-09-11`: el primero debe entregar Salmos 34 y el segundo nunca debe recibir ese MP3 como sustituto. Tras integrar esa etapa, encargar una sola etapa concreta: 3B · Reproductor. No repetir 0A, 0B, 1, 2 ni 3A, y no adelantar la ruta inmersiva de 3C.
+Revisar 3B/3C como una sola experiencia: duración desconocida, evento `playing`, pausa, seek, error, reintento, cambio de día, capítulo sin audio y el progreso separado. La ruta de prueba manual es `/reavivados`; usar gesto real de reproducción en Safari/iOS y Chrome/Android antes de integrar. Tras integrarla, encargar una sola etapa concreta: 4A · nueva navegación de la guía temática. No repetir 0A, 0B, 1, 2, 3A, 3B ni 3C.
 
 Pendientes externos documentados: reproducción real del audio durante la integración de Reavivados y edición reutilizable para cada libro antes de importar su texto. Ninguno impide iniciar las etapas que no dependan de esas fuentes.
 

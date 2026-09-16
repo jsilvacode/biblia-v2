@@ -21,7 +21,7 @@ Actualización visual 14/09/2026: guía, mockups navegables, artes originales y 
 
 **Evidencia durable:** [capturas iniciales y finales](evidence/etapa-1-home/README.md). Incluye matriz de 16 combinaciones regulares y cuatro capturas con texto ampliado, generadas por `scripts/capture-home-stage1.mjs`. Es emulación Chromium, no validación en hardware físico.
 
-**Siguiente etapa concreta recomendada:** ejecutar 3A · Resolver audio. Mantenerla limitada a metadata, endpoint, caché/fallback y pruebas, sin construir todavía el reproductor ni la ruta inmersiva.
+**Registro histórico:** la siguiente etapa de esta base fue 3A · Resolver audio; quedó integrada posteriormente en `main` como se describe abajo.
 
 ## Etapa 0B · cobertura de búsqueda bíblica
 
@@ -61,7 +61,7 @@ Actualización visual 14/09/2026: guía, mockups navegables, artes originales y 
 
 ## Etapa 3A · Fuente de audio de Reavivados
 
-**Estado:** implementada y verificada localmente en `mejoras/fuente-audio-reavivados`; queda pendiente la revisión local del usuario y su integración en `main`. Esta etapa no crea todavía reproductor, ruta inmersiva ni cambios de interfaz.
+**Estado:** implementada, verificada e integrada en `main` mediante `6e6f1ca` (**Resuelve la fuente de audio de Reavivados**). Esta etapa no creó reproductor, ruta inmersiva ni cambios de interfaz.
 
 **Implementado:** `GET /api/rpsp?date=YYYY-MM-DD` valida fechas civiles estrictas y resuelve la referencia desde el calendario instalado, sin convertirla por UTC ni aceptar URLs externas. Consume el RSS oficial con límite de 1 MB, timeout de seis segundos, presupuesto total de doce, ETag/Last-Modified, deduplicación en proceso y coincidencia exacta de fecha, libro y capítulo. No confunde, por ejemplo, Salmo 134 con Salmo 34.
 
@@ -81,7 +81,60 @@ Cuando el RSS no contiene la entrada, consulta de forma acotada la API oficial d
 
 **Evidencia durable:** [metadata, pruebas y límites de alcance](evidence/etapa-3a-audio/README.md). La fuente y la procedencia del snapshot se documentan en [SOURCES_AUDIO_RPSP.md](SOURCES_AUDIO_RPSP.md). La reproducción real sigue pendiente para 3B/3C.
 
+**Ajuste local posterior a la integración:** la fuente oficial respondió lentamente el 15/09/2026. La rama `mejoras/experiencia-reavivados` prioriza WordPress, concede hasta 12 segundos a cada una de las dos consultas oficiales necesarias y amplía el presupuesto total a 28 segundos; RSS queda como respaldo. En `http://127.0.0.1:4179/api/rpsp?date=2026-09-15` resolvió Salmos 39 con metadata exacta y procedencia `wordpress` en 12,26 segundos. Mantiene la regla de 3A: sólo entrega metadata y nunca descarga, proxifica ni precachea el MP3.
+
 **Siguiente paso tras integrar 3A:** 3B · Reproductor, limitado a un `HTMLAudioElement` directo y sus controles accesibles. La ruta inmersiva de Reavivados continúa en 3C.
+
+## Etapa 3B · Reproductor de Reavivados
+
+**Estado:** implementada y verificada localmente junto con 3C en `mejoras/experiencia-reavivados`; ambas quedan pendientes de revisión y de integración en `main` como una entrega coherente.
+
+**Implementado:** `DailyAudioPlayer` contiene un único `HTMLAudioElement` con `preload="none"` y sin `src` hasta que la persona pulsa reproducir. Reacciona a los eventos reales del medio, no muestra pausa antes de `playing`, muestra duración desconocida como `—:—`, permite pausar, buscar con slider accesible, avanzar/retroceder 15 segundos y alternar 1×/1.25×/1.5×. No añade control de volumen propio.
+
+La identidad de la cápsula, la fuente y su enlace están fuera del reproductor. El control queda deliberadamente bajo: una fila de transporte, línea de tiempo y estado compacto, para que el encabezado de la lectura y sus primeros versículos entren antes en la pantalla móvil.
+
+El componente diferencia metadata pendiente, disponible, sin audio y fuera de calendario; maneja rechazo de `play()`, error recuperable y reintento. Al desmontar pausa y elimina la fuente. Si llega un episodio nuevo mientras existe una sesión activa, mantiene el audio actual y presenta “Ya está disponible la lectura de hoy” con una acción explícita para cambiar; no sustituye el MP3 a mitad de escucha.
+
+**Alcance deliberado:** 3B aporta sólo el reproductor. La integración visual, el capítulo diario, la navegación y el progreso independiente se describen en 3C. El código no descarga, proxifica, convierte a blob, reenvía ni precachea el audio.
+
+**Verificado en local:**
+
+- `npm run lint`: aprobado.
+- `npm run test`: 149 pruebas aprobadas.
+- `npm run build`: aprobado; índice, curso, contrato público y corpus auditados.
+- `npm run test:e2e -- e2e/home-reading-flow.spec.js`: 16 pruebas aprobadas.
+- Pruebas del componente: reproducción confirmada, pausa, buffering, seek, finalización, error, reintento, cambio de día y limpieza de fuente.
+- `git diff --check`: sin errores antes de la revisión.
+
+**Evidencia durable:** [cobertura y límites de 3B](evidence/etapa-3b-player/README.md). Safari/iOS y Android/Chrome quedan como prueba manual de 3C, cuando el player sea alcanzable desde la experiencia inmersiva.
+
+## Etapa 3C · Experiencia diaria de Reavivados
+
+**Estado:** implementada y verificada localmente en `mejoras/experiencia-reavivados`; pendiente de prueba manual de la persona y de integración en `main` junto con 3B.
+
+**Implementado:** `/reavivados` resuelve el día civil local, conserva el encabezado, navegación móvil de cuatro destinos y footer globales, y concentra el contenido en el paisaje de Reavivados, un reproductor único y el capítulo bíblico del día. La tarjeta de Home ya apunta a esta ruta; `/plans` conserva su función de calendario secundario.
+
+El bloque editorial “Reflexión del día · Reavivados por su Palabra · Nuevo Tiempo” se separa del control de audio y conserva “Ver fuente” fuera de él. Así, el control no se convierte en una segunda tarjeta de contenido ni desplaza la lectura inicial fuera del primer viewport de 390 px. En móvil, Reavivados comparte el auto-ocultamiento y la transición suave del lector: la barra reaparece con un gesto o scroll y queda visible al alcanzar el final del contenido.
+
+El capítulo utiliza la versión bíblica y escala de texto elegidas. Carga y reintenta en forma independiente de la metadata/audio: sin reflexión, la lectura sigue disponible. No añade selector, siguiente capítulo, lista de episodios, notas, guardados ni sugerencias dentro de la cápsula. El capítulo y episodio en curso se mantienen al cambiar el día durante una sesión de audio; la persona ve una acción explícita para abrir la lectura del nuevo día.
+
+El progreso de esta experiencia se guarda únicamente en `santa_biblia_v2_rpsp`, con fecha civil, referencia, versículo, porcentaje de scroll y posición de audio. Entrar a Reavivados siempre conserva el encabezado en pantalla: el progreso no desplaza automáticamente la nueva visita. El estado de lectura libre de Home no se modifica. Si el progreso pertenece al capítulo de hoy, la tarjeta de Reavivados muestra “Retomar la lectura de hoy”.
+
+**Verificado en local:**
+
+- `npm run lint`: aprobado.
+- `npm run test`: 152 pruebas aprobadas.
+- `npm run build`: aprobado; índice, curso, contrato público y corpus auditados.
+- `npm run test:e2e -- e2e/reavivados.spec.js e2e/reading-flow.spec.js`: las pruebas relevantes aprobaron en móvil y escritorio, con metadata interceptada y determinista. Cubren la entrada desde el encabezado aun con progreso guardado y que la navegación inferior del lector siga visible al final; su ocultamiento y transición durante la lectura no se modifican.
+- El flujo de navegador comprueba el enlace Home → `/reavivados`, un único reproductor sin `src` inicial, reproducción iniciada por gesto, una sola navegación global, footer, lectura disponible sin audio y fallo/reintento independiente del capítulo.
+- `npm run test:e2e` completo: 86 aprobadas y 13 omitidas por proyecto no aplicable. Persiste una sola comprobación histórica ajena a esta entrega: restauración de scroll de Home en móvil obtuvo `188 px` frente al umbral de `>200 px`, ya registrada en 0B; Reavivados y Home actualizado aprobaron.
+- `git diff --check`: aprobado durante la implementación.
+
+**Evidencia durable:** [capturas y alcance de 3C](evidence/etapa-3c-reavivados/README.md). Incluye 320, 390, 768 y 1440 px, claro/oscuro y texto ampliado, con metadata simulada del capítulo correcto. La reproducción real con gesto en Safari/iOS y Chrome/Android sigue siendo la prueba manual externa pendiente.
+
+**Observación de fuente en la revisión local:** la URL directa que el propio episodio oficial publica para Salmos 39 (`vod.nuevotiempo.org`) devolvió `403 Forbidden` tanto a una solicitud de rango de un byte como al control del navegador observado en esta revisión. La app no la reemplaza ni la proxifica: muestra el enlace “Ver fuente”, deja el capítulo disponible y comunica que la fuente no permitió cargar el audio. La metadata ya se resuelve; la disponibilidad real del archivo sigue siendo una dependencia de Nuevo Tiempo que debe comprobarse de nuevo antes de integrar.
+
+**Siguiente paso tras integrar 3B/3C:** 4A · nueva navegación de la guía temática. No iniciar 4A antes de cerrar la prueba manual y la integración de esta entrega.
 
 ## Base anterior a las nuevas etapas
 
@@ -106,9 +159,9 @@ Base guardada y subida a `origin/main` en el commit [`4617e65`](https://github.c
 | 0B · Cobertura de búsqueda | Completada e integrada | Palabras completas, total real, paginación, búsqueda en vivo y descarte de resultados anteriores. |
 | 1 · Primera tarjeta | Completada | Centrado móvil, tonos azules suaves y estados con/sin historial validados. |
 | 2 · Arte | Completada e integrada | WebP originales, variante nocturna y evidencia responsive; rutas y progreso conservados. |
-| 3A · Fuente de audio | Implementada localmente; pendiente de revisión e integración | Endpoint RSS/WordPress, caché, snapshot exacto y repositorio validados. |
-| 3B · Reproductor | Pendiente | Player directo y pruebas reales de reproducción. |
-| 3C · Reavivados | Pendiente | Ruta inmersiva del día. |
+| 3A · Fuente de audio | Completada e integrada | Endpoint RSS/WordPress, caché, snapshot exacto y repositorio validados en `6e6f1ca`. |
+| 3B · Reproductor | Implementada localmente junto con 3C; pendiente de revisión e integración | Player directo, controles, estados y seguridad de sesión. |
+| 3C · Reavivados | Implementada localmente; pendiente de prueba manual e integración | Ruta inmersiva, capítulo independiente, progreso separado y evidencia responsive. |
 | 4A / 4B · Temas | Planificados | Explorador y ficha de situación. |
 | 5A / 5B · Curso | Planificados | Índice y lección con identidad propia. |
 | 6A · Fuente de libros | Investigación completada; fuente interna sin cerrar | Edición apta o catálogo de enlaces oficiales. |

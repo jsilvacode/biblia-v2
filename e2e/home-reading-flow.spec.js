@@ -49,7 +49,7 @@ test('Home always gives a daily promise, the annual reading and the promises gui
   await expect(promiseReading).toHaveAttribute('href', /^\/read\/\d+\/\d+\/\d+$/)
 
   const dailyReading = page.getByRole('link', { name: /Reavivados por su Palabra|Revived by His Word|Reavivados por Sua Palavra/ })
-  await expect(dailyReading).toHaveAttribute('href', /^\/read\/\d+\/\d+$/)
+  await expect(dailyReading).toHaveAttribute('href', '/reavivados')
   await expect(page.getByRole('link', { name: /Promesas de Dios|Promises of God|Promessas de Deus/ }).last()).toHaveAttribute('href', '/topics')
   await expect(page.getByText(/Qué leer cuando|What to read when|O que ler quando/)).toBeVisible()
   await expect(page.getByText(/Guía de consulta bíblica|Bible reference guide|Guia de consulta bíblica/i)).toBeVisible()

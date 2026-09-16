@@ -16,7 +16,8 @@ import {
 const SCHEMA_VERSION = 1
 const POSITIVE_CACHE_CONTROL = 'public, s-maxage=900, stale-while-revalidate=3600'
 const SHORT_CACHE_CONTROL = 'public, s-maxage=120, stale-while-revalidate=120'
-const TOTAL_TIMEOUT_MS = 12_000
+const TOTAL_TIMEOUT_MS = 28_000
+const WORDPRESS_REQUEST_TIMEOUT_MS = 12_000
 
 let sharedMetadataRequests = new Map()
 
@@ -87,16 +88,16 @@ function createMetadata({ date, reference, status, episode = null, provenance, c
   }
 }
 
-function remainingRequestTimeout(deadline) {
+function remainingRequestTimeout(deadline, maximum = 6_000) {
   const remaining = deadline - Date.now()
   if (remaining <= 0) throw new Error('RPSP request budget exhausted')
-  return Math.min(6_000, remaining)
+  return Math.min(maximum, remaining)
 }
 
 async function loadWordpressEpisode({ date, reference, fetchImpl, deadline }) {
   const candidatesDocument = await fetchRpspDocument(createRpspWordpressCandidatesUrl(date), {
     fetchImpl,
-    timeoutMs: remainingRequestTimeout(deadline),
+    timeoutMs: remainingRequestTimeout(deadline, WORDPRESS_REQUEST_TIMEOUT_MS),
   })
   const candidates = JSON.parse(candidatesDocument.text)
   const result = findRpspWordpressCandidate(candidates, { date, reference })
@@ -105,7 +106,7 @@ async function loadWordpressEpisode({ date, reference, fetchImpl, deadline }) {
 
   const pageDocument = await fetchRpspDocument(result.candidate.sourcePageUrl, {
     fetchImpl,
-    timeoutMs: remainingRequestTimeout(deadline),
+    timeoutMs: remainingRequestTimeout(deadline, WORDPRESS_REQUEST_TIMEOUT_MS),
   })
   return {
     episode: createRpspWordpressEpisode(result.candidate, extractRpspAudioUrl(pageDocument.text)),
@@ -152,25 +153,7 @@ export async function resolveRpspMetadata({
   }
 
   const deadline = Date.now() + TOTAL_TIMEOUT_MS
-  let feedAvailable = false
-  try {
-    const feed = await getRpspFeed({ fetchImpl, timeoutMs: remainingRequestTimeout(deadline) })
-    feedAvailable = true
-    const episode = findRpspFeedEpisode(feed.text, { date: reading.date, reference })
-    if (episode) {
-      return createMetadata({
-        date: reading.date,
-        reference,
-        status: 'ready',
-        episode: normalizeEpisode(episode),
-        provenance: 'rss',
-        checkedAt,
-      })
-    }
-  } catch {
-    // WordPress is a separate official source and can still resolve the day.
-  }
-
+  let wordpressAvailable = false
   try {
     const { episode, ambiguous } = await loadWordpressEpisode({
       date: reading.date,
@@ -178,6 +161,7 @@ export async function resolveRpspMetadata({
       fetchImpl,
       deadline,
     })
+    wordpressAvailable = true
     if (ambiguous) {
       return createMetadata({
         date: reading.date,
@@ -197,12 +181,29 @@ export async function resolveRpspMetadata({
         checkedAt,
       })
     }
+  } catch {
+    // The RSS feed remains a bounded fallback for an official source outage.
+  }
+
+  try {
+    const feed = await getRpspFeed({ fetchImpl, timeoutMs: remainingRequestTimeout(deadline) })
+    const episode = findRpspFeedEpisode(feed.text, { date: reading.date, reference })
+    if (episode) {
+      return createMetadata({
+        date: reading.date,
+        reference,
+        status: 'ready',
+        episode: normalizeEpisode(episode),
+        provenance: 'rss',
+        checkedAt,
+      })
+    }
 
     return createMetadata({
       date: reading.date,
       reference,
       status: 'pending',
-      provenance: feedAvailable ? 'rss' : 'wordpress',
+      provenance: wordpressAvailable ? 'wordpress' : 'rss',
       checkedAt,
     })
   } catch {
@@ -222,7 +223,7 @@ export async function resolveRpspMetadata({
       date: reading.date,
       reference,
       status: 'unavailable',
-      provenance: feedAvailable ? 'wordpress' : 'unavailable',
+      provenance: wordpressAvailable ? 'wordpress' : 'unavailable',
       checkedAt,
     })
   }

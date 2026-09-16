@@ -31,6 +31,7 @@ function handlerWith(fetchImpl, options = {}) {
 describe('RPSP metadata endpoint', () => {
   it('serves verified feed metadata and never the audio itself', async () => {
     const fetchMock = vi.fn(async (url) => {
+      if (url.includes('/wp-json/wp/v2/audio')) return new Response('[]', { status: 200 })
       expect(url).toBe(RPSP_RSS_URL)
       return new Response(feed(), { headers: { etag: '"rpsp"' }, status: 200 })
     })
@@ -74,7 +75,7 @@ describe('RPSP metadata endpoint', () => {
 
     const response = await handlerWith(fetchMock)(new Request(`${origin}/api/rpsp?date=2026-09-10`))
     await expect(response.json()).resolves.toMatchObject({ status: 'ready', provenance: 'wordpress', episode: { audioUrl } })
-    expect(fetchMock).toHaveBeenCalledTimes(3)
+    expect(fetchMock).toHaveBeenCalledTimes(2)
   })
 
   it('reports pending when official sources are available but the day has not been published', async () => {

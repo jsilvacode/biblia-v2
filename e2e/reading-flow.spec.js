@@ -299,6 +299,20 @@ test('the compact reader hides only its bottom navigation and restores it on scr
   await expect(bottomNavigation).toHaveCSS('opacity', '1')
 })
 
+test('the compact reader keeps its bottom navigation visible at the end of the chapter', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile', 'Automatic immersion is reserved for touch surfaces')
+  await page.goto('/read/43/3')
+  const reader = page.locator('.reader-page')
+  const bottomNavigation = page.locator('.reader-bottom-navigation')
+
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
+  await expect.poll(() => page.evaluate(() => window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2)).toBe(true)
+  await expect(reader).not.toHaveClass(/reader-page--immersive/)
+  await page.waitForTimeout(3400)
+  await expect(reader).not.toHaveClass(/reader-page--immersive/)
+  await expect(bottomNavigation).toHaveCSS('visibility', 'visible')
+})
+
 test('desktop readers expose icon-only primary navigation in the constrained header', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'Desktop-only reader navigation coverage')
   await page.goto('/read/43/3')
