@@ -108,12 +108,8 @@
   }
 
   .homeNavigationLink.isActive {
-    background: color-mix(in srgb, var(--bg-reader) 66%, transparent);
-    color: var(--accent-deep);
-  }
-
-  .heroHeader .homeNavigationLink.isActive {
     background: transparent;
+    color: var(--accent-deep);
   }
 
   .homeHeaderControls {

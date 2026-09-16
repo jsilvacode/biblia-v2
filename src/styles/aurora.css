@@ -51,6 +51,73 @@ body,
   box-shadow: 0 1px 0 rgb(255 255 255 / 22%);
 }
 
+@media (min-width: 600px) {
+  /* The pseudo-elements keep the Home hero's full geometry and only reveal
+     its top bar-height. Re-sizing the landscape to a short header would pick
+     a different vertical slice from the one visible on Home. */
+  :root .site-header,
+  :root .reader-header {
+    --hero-strip-height: clamp(29rem, 70vh, 35rem);
+    isolation: isolate;
+    background: transparent;
+  }
+
+  :root .site-header::before,
+  :root .site-header::after,
+  :root .reader-header::before,
+  :root .reader-header::after {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: var(--hero-strip-height);
+    clip-path: inset(0 0 calc(100% - var(--topbar-height)));
+    content: '';
+    pointer-events: none;
+  }
+
+  :root .site-header::before,
+  :root .reader-header::before {
+    background: url('/assets/aurora-champagne-landscape.webp') 61% 50% / cover;
+    filter: contrast(1.12) saturate(1.15);
+  }
+
+  :root .site-header::after,
+  :root .reader-header::after {
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent) 0%, transparent 23%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 48%, var(--bg-reader) 100%),
+      linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 68%, transparent) 0%, color-mix(in srgb, var(--bg-reader) 40%, transparent) 47%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 78%, transparent 100%),
+      radial-gradient(circle at 92% 24%, color-mix(in srgb, var(--accent-blue) 7%, transparent), transparent 18%);
+  }
+
+  :root .site-header > *,
+  :root .reader-header > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@media (min-width: 600px) {
+  :root[data-theme='dark'] .site-header,
+  :root[data-theme='dark'] .reader-header {
+    background: transparent;
+  }
+
+  :root[data-theme='dark'] .site-header::before,
+  :root[data-theme='dark'] .reader-header::before {
+    filter: brightness(0.78) contrast(1.08) saturate(1.02);
+  }
+
+  :root[data-theme='dark'] .site-header::after,
+  :root[data-theme='dark'] .reader-header::after {
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 33%, transparent) 0%, transparent 22%, color-mix(in srgb, var(--bg-reader) 12%, transparent) 48%, var(--bg-reader) 100%),
+      linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 84%, transparent) 0%, color-mix(in srgb, var(--bg-reader) 56%, transparent) 48%, color-mix(in srgb, var(--bg-reader) 14%, transparent) 78%, transparent 100%),
+      radial-gradient(circle at 92% 24%, color-mix(in srgb, var(--accent-champagne) 8%, transparent), transparent 18%);
+  }
+}
+
 .navigation-link {
   transition: background var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium), transform var(--duration-fast) var(--ease-premium);
 }

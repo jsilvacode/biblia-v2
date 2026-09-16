@@ -105,12 +105,16 @@ test('the chapter remains readable when the audio is not available', async ({ pa
 })
 
 test('opening Reavivados starts from its header even when daily progress exists', async ({ page }) => {
+  let requestedDate = null
   await page.route('**/api/rpsp?date=*', async (route) => {
     const date = new URL(route.request().url()).searchParams.get('date')
+    requestedDate = date
     await route.fulfill({ contentType: 'application/json', json: metadataFor(date) })
   })
 
   await page.goto('/reavivados')
+  await expect.poll(() => requestedDate).not.toBeNull()
+  const reference = readingForDate(requestedDate)
   await expect(page.locator('[data-rpsp-verse]').first()).toBeVisible()
   await page.evaluate(() => {
     const key = 'santa_biblia_v2_rpsp'
@@ -119,7 +123,7 @@ test('opening Reavivados starts from its header even when daily progress exists'
   })
 
   await page.reload()
-  await expect(page.getByRole('heading', { name: /Salmos 39|Psalms 39|Salmos 39/ }).first()).toBeVisible()
+  await expect(page.getByRole('heading', { name: new RegExp(` ${reference.chapter}$`) }).first()).toBeVisible()
   await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0)
   await expect.poll(() => page.locator('[data-rpsp-verse]').first().evaluate((element) => getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)')
 })

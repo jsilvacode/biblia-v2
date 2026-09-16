@@ -89,6 +89,16 @@ describe('RPSP metadata endpoint', () => {
     await expect(response.json()).resolves.toMatchObject({ status: 'pending', episode: null })
   })
 
+  it('keeps an unpublished day pending when WordPress is available but the RSS mirror fails', async () => {
+    const fetchMock = vi.fn(async (url) => {
+      if (url === RPSP_RSS_URL) throw new Error('RSS timeout')
+      return new Response('[]', { status: 200 })
+    })
+
+    const response = await handlerWith(fetchMock)(new Request(`${origin}/api/rpsp?date=2026-09-10`))
+    await expect(response.json()).resolves.toMatchObject({ status: 'pending', provenance: 'wordpress', episode: null })
+  })
+
   it('uses an exact snapshot after both official sources fail and never substitutes another day', async () => {
     const snapshot = [{
       date: '2026-09-10',

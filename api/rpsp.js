@@ -222,7 +222,9 @@ export async function resolveRpspMetadata({
     return createMetadata({
       date: reading.date,
       reference,
-      status: 'unavailable',
+      // WordPress responded correctly but has not published this date yet.
+      // A failing RSS mirror must not turn that known state into an error.
+      status: wordpressAvailable ? 'pending' : 'unavailable',
       provenance: wordpressAvailable ? 'wordpress' : 'unavailable',
       checkedAt,
     })
