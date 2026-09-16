@@ -138,7 +138,7 @@ El progreso de esta experiencia se guarda únicamente en `santa_biblia_v2_rpsp`,
 
 ## Etapa 4B · Ficha temática
 
-**Estado:** implementada y verificada localmente en `mejoras/ficha-tematica`; pendiente de prueba manual e integración en `main`.
+**Estado:** completada e integrada en `main` mediante `7791640` (**Crea fichas para la guía temática**).
 
 **Implementado:** cada tarjeta del índice ahora abre `/topics/:categoryId/:situationId` y conserva los filtros `q` y `category` de la guía. La ficha muestra de inmediato sólo el pasaje central y ofrece hasta cinco complementarias por enlaces estables `?reading=companion-N`; sin ese parámetro no se carga ninguna lectura secundaria. Elegir una complementaria conserva la URL compartible y carga sólo ese pasaje.
 
@@ -205,7 +205,7 @@ Base guardada y subida a `origin/main` en el commit [`4617e65`](https://github.c
 | 3B · Reproductor | Completada e integrada | Player directo, controles, estados y seguridad de sesión. |
 | 3C · Reavivados | Completada e integrada | Ruta inmersiva, capítulo independiente, progreso separado y evidencia responsive. |
 | 4A · Índice de temas | Completada e integrada | Explorador, búsqueda, filtros URL y 92 situaciones accesibles. |
-| 4B · Ficha temática | Lista para prueba local | Ruta propia, pasaje central y lecturas complementarias bajo demanda. |
+| 4B · Ficha temática | Completada e integrada | Ruta propia, pasaje central, complementarias bajo demanda e inmersión móvil. |
 | 5A / 5B · Curso | Planificados | Índice y lección con identidad propia. |
 | 6A · Fuente de libros | Investigación completada; fuente interna sin cerrar | Edición apta o catálogo de enlaces oficiales. |
 | 6B / 6C · Libros internos | Dependientes de fuente por título | Texto íntegro y lector separado. |
