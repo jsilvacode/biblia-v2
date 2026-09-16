@@ -1,53 +1,42 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useLocation, useSearchParams } from 'react-router-dom'
+import { Link, Navigate, useLocation, useSearchParams } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { useI18n } from '../../i18n'
 import library from './data/topics.es.json'
-import { TopicPassage } from './TopicPassage.jsx'
 import { filterTopicSituations, getTopicSituations } from './topicSearch'
+import { createTopicDetailPath, findTopicSituationByLegacyHash } from './topicRoutes'
 import styles from './TopicsExplorer.module.css'
 
 const INITIAL_VISIBLE_SITUATIONS = 12
+const TOPICS_SCROLL_KEY = 'santa-biblia-topics-index-scroll'
 
-function TopicSituation({ initialOpen, location, situation, t }) {
-  const [isOpen, setIsOpen] = useState(initialOpen)
-  const [hasOpened, setHasOpened] = useState(initialOpen)
-  const sectionId = `topic-${situation.categoryId}-${situation.id}`
-  const returnTo = `${location.pathname}${location.search}#${sectionId}`
+function saveTopicsScroll(location) {
+  window.sessionStorage.setItem(TOPICS_SCROLL_KEY, JSON.stringify({
+    pathname: location.pathname,
+    search: location.search,
+    y: window.scrollY,
+  }))
+}
 
-  function handleToggle(event) {
-    const nextOpen = event.currentTarget.open
-    setIsOpen(nextOpen)
-    if (!nextOpen) return
-
-    setHasOpened(true)
-    if (window.location.hash !== `#${sectionId}`) {
-      window.history.replaceState(window.history.state, '', returnTo)
-    }
-  }
+function TopicSituation({ location, situation, t }) {
+  const destination = createTopicDetailPath({
+    categoryId: situation.categoryId,
+    situationId: situation.id,
+    searchParams: location.search,
+  })
 
   return (
-    <details className={styles.situationCard} id={sectionId} onToggle={handleToggle} open={isOpen}>
-      <summary className={styles.situationSummary}>
-        <span className={styles.situationCopy}>
-          <small className={styles.situationMeta}>{situation.categoryTitle}</small>
-          <span aria-level="3" className={styles.situationTitle} role="heading">{situation.title}</span>
-          <small className={styles.situationReference}>{t('topics.centralReading')}: {situation.central}</small>
-        </span>
-        <span aria-hidden="true" className={styles.situationChevron}>
-          <Icon name="chevronRight" size={18} />
-        </span>
-      </summary>
-      {hasOpened ? (
-        <div className={styles.passageStream}>
-          <TopicPassage kind="central" label={situation.central} returnTo={returnTo} title={situation.title} />
-          {situation.companions.map((reference, index) => (
-            <TopicPassage key={`${reference}-${index}`} kind="companion" label={reference} returnTo={returnTo} title={situation.title} />
-          ))}
-        </div>
-      ) : null}
-    </details>
+    <Link className={styles.situationCard} onClick={() => saveTopicsScroll(location)} to={destination}>
+      <span className={styles.situationCopy}>
+        <small className={styles.situationMeta}>{situation.categoryTitle}</small>
+        <span aria-level="3" className={styles.situationTitle} role="heading">{situation.title}</span>
+        <small className={styles.situationReference}>{t('topics.centralReading')}: {situation.central}</small>
+      </span>
+      <span aria-hidden="true" className={styles.situationChevron}>
+        <Icon name="chevronRight" size={18} />
+      </span>
+    </Link>
   )
 }
 
@@ -71,6 +60,7 @@ export default function TopicsPage() {
   const [areasOpen, setAreasOpen] = useState(false)
   const allSituations = useMemo(() => getTopicSituations(library), [])
   const selectedCategory = library.categories.find((category) => category.id === selectedCategoryId) ?? null
+  const legacySituation = useMemo(() => findTopicSituationByLegacyHash(library, location.hash), [location.hash])
 
   const results = useMemo(() => filterTopicSituations(allSituations, {
     categoryId: selectedCategory?.id,
@@ -81,21 +71,32 @@ export default function TopicsPage() {
   const visibleSituations = results.slice(0, currentVisibleLimit)
 
   useEffect(() => {
-    if (!location.hash || !results.length) return undefined
-    const targetId = decodeURIComponent(location.hash.slice(1))
+    let saved
+    try {
+      saved = JSON.parse(window.sessionStorage.getItem(TOPICS_SCROLL_KEY) ?? 'null')
+    } catch {
+      saved = null
+    }
+
+    if (!saved || saved.pathname !== location.pathname || saved.search !== location.search || !Number.isFinite(saved.y)) return undefined
+    window.sessionStorage.removeItem(TOPICS_SCROLL_KEY)
     let delayedFrame
     const frame = window.requestAnimationFrame(() => {
-      delayedFrame = window.requestAnimationFrame(() => {
-        document.getElementById(targetId)?.scrollIntoView({ block: 'start' })
-      })
+      delayedFrame = window.requestAnimationFrame(() => window.scrollTo({ top: saved.y, behavior: 'auto' }))
     })
-    const timeout = window.setTimeout(() => document.getElementById(targetId)?.scrollIntoView({ block: 'start' }), 220)
     return () => {
       window.cancelAnimationFrame(frame)
       if (delayedFrame) window.cancelAnimationFrame(delayedFrame)
-      window.clearTimeout(timeout)
     }
-  }, [location.hash, results.length])
+  }, [location.pathname, location.search])
+
+  if (legacySituation) {
+    return <Navigate replace to={createTopicDetailPath({
+      categoryId: legacySituation.categoryId,
+      situationId: legacySituation.id,
+      searchParams: location.search,
+    })} />
+  }
 
   function updateQuery(value) {
     const next = new URLSearchParams(searchParams)
@@ -181,18 +182,14 @@ export default function TopicsPage() {
             {results.length ? (
               <>
                 <div className={styles.situationGrid}>
-                  {visibleSituations.map((situation) => {
-                    const sectionId = `topic-${situation.categoryId}-${situation.id}`
-                    return (
-                      <TopicSituation
-                        initialOpen={location.hash === `#${sectionId}`}
-                        key={`${sectionId}-${location.hash === `#${sectionId}` ? 'open' : 'closed'}`}
-                        location={location}
-                        situation={situation}
-                        t={t}
-                      />
-                    )
-                  })}
+                  {visibleSituations.map((situation) => (
+                    <TopicSituation
+                      key={`${situation.categoryId}-${situation.id}`}
+                      location={location}
+                      situation={situation}
+                      t={t}
+                    />
+                  ))}
                 </div>
                 {visibleSituations.length < results.length && (
                   <div className={styles.moreRow}>

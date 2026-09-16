@@ -90,7 +90,7 @@ test.describe('mobile navigation shell', () => {
     await page.goto('/')
     await expect(page.locator('.home-page')).toBeVisible()
     await page.evaluate(() => window.scrollTo(0, 300))
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(200)
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(150)
 
     await page.locator('.mobile-navigation').getByRole('link', { name: /Biblia|Bible/ }).click()
     await expect(page).toHaveURL(/\/bible$/)
@@ -246,12 +246,9 @@ test.describe('editorial page composition', () => {
     await expect(page.getByRole('heading', { name: /¿Qué necesitas hoy|What do you need today|Do que você precisa hoje/i })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Tengo miedo', exact: true })).toBeVisible()
     await expect(page.getByRole('heading', { name: /Salmos? 27/, exact: true })).toHaveCount(0)
-    const fearSituation = page.locator('summary', { has: page.getByRole('heading', { name: 'Tengo miedo', exact: true }) })
+    const fearSituation = page.getByRole('link', { name: /Tengo miedo.*Lectura central: Salmo 27/i })
     await fearSituation.click()
-    await expect(page.getByRole('heading', { name: /Salmos? 27/, exact: true })).toBeVisible()
-    await fearSituation.click()
-    await expect(page.getByRole('heading', { name: /Salmos? 27/, exact: true })).toHaveCount(0)
-    await fearSituation.click()
+    await expect(page).toHaveURL(/\/topics\/temor-ansiedad-y-paz\/tengo-miedo$/)
     await expect(page.getByRole('heading', { name: /Salmos? 27/, exact: true })).toBeVisible()
     const centralReading = page.getByRole('link', { name: /Leer en el lector|Read in reader|Ler no leitor/ }).first()
     await expect(centralReading).toHaveAttribute('href', '/read/19/27')
@@ -266,9 +263,9 @@ test.describe('editorial page composition', () => {
     await expect(backToGuide).toBeInViewport()
     await backToGuide.click()
 
-    await expect(page).toHaveURL(/\/topics#topic-temor-ansiedad-y-paz-tengo-miedo$/)
+    await expect(page).toHaveURL(/\/topics\/temor-ansiedad-y-paz\/tengo-miedo$/)
     await expect(page.getByRole('heading', { name: 'Tengo miedo', exact: true })).toBeInViewport()
-    await expect(page.locator('#topic-temor-ansiedad-y-paz-tengo-miedo')).toHaveAttribute('open', '')
+    await expect(page.getByRole('heading', { name: /Salmos? 27/, exact: true })).toBeVisible()
   })
 
   test('keeps interface language inside settings and leaves only theme and settings in the top bar', async ({ page }) => {

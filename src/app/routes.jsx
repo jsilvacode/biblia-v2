@@ -10,6 +10,7 @@ const SavedPage = lazy(() => import('../features/saved/SavedPage'))
 const PlansPage = lazy(() => import('../features/plans/PlansPage'))
 const DailyReadingPage = lazy(() => import('../features/plans/DailyReadingPage'))
 const TopicsPage = lazy(() => import('../features/topics/TopicsPage'))
+const TopicDetailPage = lazy(() => import('../features/topics/TopicDetailPage'))
 const StudyIndexPage = lazy(() => import('../features/studies/StudyIndexPage'))
 const StudyLessonPage = lazy(() => import('../features/studies/StudyLessonPage'))
 
@@ -33,6 +34,7 @@ export function AppRoutes() {
         <Route path="plans" element={<DeferredRoute><PlansPage /></DeferredRoute>} />
         <Route path="reavivados" element={<DeferredRoute><DailyReadingPage /></DeferredRoute>} />
         <Route path="topics" element={<DeferredRoute><TopicsPage /></DeferredRoute>} />
+        <Route path="topics/:categoryId/:situationId" element={<DeferredRoute><TopicDetailPage /></DeferredRoute>} />
         <Route path="studies/la-fe-de-jesus" element={<DeferredRoute><StudyIndexPage /></DeferredRoute>} />
         <Route path="studies/la-fe-de-jesus/:lessonSlug" element={<DeferredRoute><StudyLessonPage /></DeferredRoute>} />
         <Route path="settings" element={<Navigate replace state={{ openSettings: true }} to="/" />} />

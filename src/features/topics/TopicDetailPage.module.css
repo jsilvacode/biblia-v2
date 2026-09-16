@@ -1,0 +1,149 @@
+.topicDetailPage {
+  display: grid;
+  gap: clamp(1.3rem, 3vw, 2.15rem);
+  max-width: 58rem;
+}
+
+.backLink,
+.guideLink {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-height: 2.65rem;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-raised) 92%, var(--surface-celeste));
+  box-shadow: var(--shadow-sm);
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  font-weight: 720;
+  text-decoration: none;
+}
+
+.backLink:hover,
+.backLink:focus-visible,
+.guideLink:hover,
+.guideLink:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 44%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 52%, var(--surface-raised));
+  color: var(--accent-deep);
+  outline: none;
+}
+
+.topicDetailPage > :global(.page-intro) {
+  margin: 0;
+}
+
+.centralReading,
+.companions {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.sectionHeading {
+  display: grid;
+  gap: 0.24rem;
+}
+
+.sectionHeading :global(.eyebrow) {
+  margin-bottom: 0.12rem;
+}
+
+.sectionHeading h2 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 1.7rem);
+  font-weight: 540;
+  letter-spacing: -0.03em;
+}
+
+.sectionHeading p:not(:global(.eyebrow)) {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.centralReading :global([class*='passage']) {
+  border-radius: 1.25rem;
+}
+
+.companionChoices {
+  display: flex;
+  gap: 0.55rem;
+  overflow-x: auto;
+  padding: 0.08rem 0.05rem 0.38rem;
+  scrollbar-width: thin;
+}
+
+.companionChoice {
+  flex: 0 0 auto;
+  min-height: 2.55rem;
+  padding: 0.6rem 0.82rem;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 0.82rem;
+  background: color-mix(in srgb, var(--surface-raised) 94%, var(--surface-celeste));
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  font-weight: 690;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: border-color var(--duration-fast) var(--ease-premium), background var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium), transform var(--duration-fast) var(--ease-premium);
+}
+
+.companionChoice:hover,
+.companionChoice:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 46%, var(--surface-raised));
+  color: var(--accent-deep);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.companionChoice[aria-current='true'] {
+  border-color: color-mix(in srgb, var(--accent) 58%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 72%, var(--surface-raised));
+  color: var(--accent-deep);
+}
+
+.companionPassage {
+  animation: revealCompanion 180ms var(--ease-premium) both;
+}
+
+.companionPassage :global([class*='passage']) {
+  border-radius: 1.1rem;
+}
+
+.missingTopic {
+  display: grid;
+  justify-items: start;
+  gap: 0.75rem;
+  padding: clamp(1.5rem, 5vw, 2.7rem);
+  border: 1px dashed color-mix(in srgb, var(--border) 76%, transparent);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--surface-raised) 92%, var(--surface-celeste));
+  color: var(--ink-muted);
+}
+
+.missingTopic svg { color: var(--accent); }
+.missingTopic h1 { margin: 0; color: var(--ink); font-family: var(--font-display); font-size: clamp(1.65rem, 5vw, 2.2rem); font-weight: 520; }
+.missingTopic p { max-width: 34rem; margin: 0; line-height: 1.55; }
+.guideLink { margin-top: 0.35rem; color: var(--accent-deep); }
+
+@keyframes revealCompanion {
+  from { opacity: 0; transform: translateY(-0.22rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 760px) {
+  .topicDetailPage { padding-top: 0.35rem; }
+  .companionChoices { flex-wrap: wrap; overflow: visible; padding-bottom: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .companionChoice { transition: none; }
+  .companionPassage { animation: none; }
+}

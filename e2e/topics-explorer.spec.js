@@ -13,17 +13,17 @@ test.describe('thematic guide explorer', () => {
     await page.goto('/topics')
 
     await expect(page.getByRole('heading', { name: /¿Qué necesitas hoy|What do you need today|Do que você precisa hoje/i })).toBeVisible()
-    await expect(page.locator('details[class*="situationCard"]')).toHaveCount(12)
+    await expect(page.locator('a[class*="situationCard"]')).toHaveCount(12)
     await expect(page.getByText(/12 de 92 situaciones|12 of 92 situations|12 de 92 situações/)).toBeVisible()
 
     await page.getByRole('button', { name: /Ver más situaciones|Show more situations|Ver mais situações/ }).click()
-    await expect(page.locator('details[class*="situationCard"]')).toHaveCount(24)
+    await expect(page.locator('a[class*="situationCard"]')).toHaveCount(24)
 
     const search = page.getByRole('searchbox', { name: /Buscar una situación o referencia|Search for a situation or reference|Buscar uma situação ou referência/ })
     await search.fill('corazón quebrantado')
 
     await expect(page).toHaveURL(/\/topics\?q=coraz%C3%B3n(?:\+|%20)quebrantado$/)
-    await expect(page.locator('details[class*="situationCard"]')).toHaveCount(1)
+    await expect(page.locator('a[class*="situationCard"]')).toHaveCount(1)
     await expect(page.getByRole('heading', { name: 'Siento el corazón quebrantado', exact: true })).toBeVisible()
     await expect(page.getByRole('button', { name: /Ver más situaciones|Show more situations|Ver mais situações/ })).toHaveCount(0)
   })
@@ -33,12 +33,12 @@ test.describe('thematic guide explorer', () => {
     await selectFearArea(page, testInfo)
 
     await expect(page).toHaveURL(/\/topics\?category=temor-ansiedad-y-paz$/)
-    await expect(page.locator('details[class*="situationCard"]')).toHaveCount(8)
+    await expect(page.locator('a[class*="situationCard"]')).toHaveCount(8)
 
     const search = page.getByRole('searchbox')
     await search.fill('miedo')
     await expect(page).toHaveURL(/\/topics\?category=temor-ansiedad-y-paz&q=miedo|\/topics\?q=miedo&category=temor-ansiedad-y-paz/)
-    await expect(page.locator('details[class*="situationCard"]')).toHaveCount(2)
+    await expect(page.locator('a[class*="situationCard"]')).toHaveCount(2)
     await expect(page.getByRole('heading', { name: 'Tengo miedo', exact: true })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Tengo miedo del futuro', exact: true })).toBeVisible()
   })
@@ -62,8 +62,8 @@ test.describe('thematic guide explorer', () => {
       await page.evaluate(() => { document.documentElement.style.fontSize = '20px' })
 
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth)).toBe(true)
-      await expect(page.locator('details[class*="situationCard"]')).toHaveCount(12)
-      expect(await page.locator('details[class*="situationCard"] summary').evaluateAll((cards) => (
+      await expect(page.locator('a[class*="situationCard"]')).toHaveCount(12)
+      expect(await page.locator('a[class*="situationCard"]').evaluateAll((cards) => (
         cards.every((card) => card.scrollWidth <= card.clientWidth)
       ))).toBe(true)
     }
@@ -75,7 +75,7 @@ test.describe('thematic guide explorer', () => {
     for (const viewport of [{ width: 768, height: 1024 }, { width: 1440, height: 900 }]) {
       await page.setViewportSize(viewport)
       await page.goto('/topics')
-      const cards = page.locator('details[class*="situationCard"]')
+      const cards = page.locator('a[class*="situationCard"]')
       await expect(cards).toHaveCount(12)
       const [first, second] = await Promise.all([cards.nth(0).boundingBox(), cards.nth(1).boundingBox()])
 

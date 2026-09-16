@@ -1,6 +1,6 @@
 # Estado de ejecución — experiencias de lectura
 
-Actualizado: 15 de septiembre de 2026. Encargo: [plan principal para Luna](PLAN_EXPERIENCIAS_LECTURA_LUNA_2026-09-10.md).
+Actualizado: 16 de septiembre de 2026. Encargo: [plan principal para Luna](PLAN_EXPERIENCIAS_LECTURA_LUNA_2026-09-10.md).
 
 Actualización visual 14/09/2026: guía, mockups navegables, artes originales y capturas en [docs/design](../design/GUIA_VISUAL_LUNA_2026-09-10.md). Diseño preparado para revisión; las etapas de integración de la app continúan pendientes. Consultar el [reporte visual](../design/experiencias-lectura-v1/qa-report.json) para resultados de esta muestra, separados de las pruebas de la aplicación.
 
@@ -136,9 +136,31 @@ El progreso de esta experiencia se guarda únicamente en `santa_biblia_v2_rpsp`,
 
 **Siguiente paso tras integrar 3B/3C:** 4A · nueva navegación de la guía temática.
 
+## Etapa 4B · Ficha temática
+
+**Estado:** implementada y verificada localmente en `mejoras/ficha-tematica`; pendiente de prueba manual e integración en `main`.
+
+**Implementado:** cada tarjeta del índice ahora abre `/topics/:categoryId/:situationId` y conserva los filtros `q` y `category` de la guía. La ficha muestra de inmediato sólo el pasaje central y ofrece hasta cinco complementarias por enlaces estables `?reading=companion-N`; sin ese parámetro no se carga ninguna lectura secundaria. Elegir una complementaria conserva la URL compartible y carga sólo ese pasaje.
+
+“Volver a la guía” mantiene la consulta y el área, y la posición del índice se restaura al retornar. “Leer en el lector” pasa el retorno exacto con ficha, parámetros y complementaria activa; el lector regresa a ese punto sin cambiar su navegación. En móvil, la ficha adopta la inmersión ya usada por el lector y Reavivados: la navegación inferior se desvanece sólo durante una pausa de lectura, se revela con gesto o scroll y queda fija al llegar al final. Los enlaces previos del tipo `?category=…#topic-…` se resuelven comparando IDs editoriales completos, incluso con guiones, y llevan a la ficha equivalente. Una situación inexistente muestra una salida clara hacia la guía.
+
+**Datos y límites:** se conservan los 92 IDs, títulos, orden, central y complementarias de `topics.es.json`; no se añadió contenido doctrinal ni se alteró `TopicPassage`, por lo que las lecciones del curso continúan usando su estilo y retorno actual.
+
+**Verificado en local:**
+
+- `npm run lint`: aprobado.
+- `npm run test`: 160 pruebas aprobadas.
+- `npm run build`: aprobado; índice, curso, contrato público y corpus auditados.
+- `npm run test:e2e -- e2e/topics-explorer.spec.js e2e/topic-detail.spec.js e2e/mobile-navigation.spec.js`: cubre índice, ficha, complementaria bajo demanda, lector y retorno, rutas antiguas, ficha inexistente, inmersión móvil, texto ampliado, 320/390 px y dos columnas desde 768 px.
+- `git diff --check`: aprobado.
+
+**Evidencia durable:** [capturas responsive de la ficha](evidence/etapa-4b-ficha-tematica/README.md). Incluye claro/oscuro, 320/390/768/1440 px y texto ampliado; se complementa con las pruebas de interacción porque la captura sólo representa el estado editorial inicial sin complementaria cargada.
+
+**Siguiente paso tras integrar:** 5A · índice del curso.
+
 ## Etapa 4A · Índice de la guía temática
 
-**Estado:** implementada y verificada localmente en `mejoras/guia-tematica`; pendiente de prueba manual e integración en `main`.
+**Estado:** completada e integrada en `main` mediante `2872641` (**Mejora la guía temática y el audio de Reavivados**).
 
 **Implementado:** `/topics` ya no exige escoger un área antes de mostrar contenido. Parte con doce de las 92 situaciones, en el orden editorial del catálogo, y permite ampliar el listado sin ocultar que existen más resultados. El buscador actualiza la URL con reemplazo de historial y compara todos los términos normalizados de título, área y referencias; entiende acentos y referencias con o sin espacios o signos.
 
@@ -182,8 +204,8 @@ Base guardada y subida a `origin/main` en el commit [`4617e65`](https://github.c
 | 3A · Fuente de audio | Completada e integrada | Endpoint RSS/WordPress, caché, snapshot exacto y repositorio validados en `6e6f1ca`. |
 | 3B · Reproductor | Completada e integrada | Player directo, controles, estados y seguridad de sesión. |
 | 3C · Reavivados | Completada e integrada | Ruta inmersiva, capítulo independiente, progreso separado y evidencia responsive. |
-| 4A · Índice de temas | Lista para prueba local | Explorador, búsqueda, filtros URL y 92 situaciones accesibles. |
-| 4B · Ficha temática | Pendiente | Ruta propia, pasaje central y lecturas complementarias. |
+| 4A · Índice de temas | Completada e integrada | Explorador, búsqueda, filtros URL y 92 situaciones accesibles. |
+| 4B · Ficha temática | Lista para prueba local | Ruta propia, pasaje central y lecturas complementarias bajo demanda. |
 | 5A / 5B · Curso | Planificados | Índice y lección con identidad propia. |
 | 6A · Fuente de libros | Investigación completada; fuente interna sin cerrar | Edición apta o catálogo de enlaces oficiales. |
 | 6B / 6C · Libros internos | Dependientes de fuente por título | Texto íntegro y lector separado. |

@@ -94,7 +94,7 @@ svg { display: block; flex: none; }
   transition: opacity 480ms linear, transform 520ms cubic-bezier(0.22, 0.61, 0.36, 1), visibility 0s linear;
 }
 
-:root[data-rpsp-immersive='true'] .mobile-navigation {
+:root:is([data-rpsp-immersive='true'], [data-topic-immersive='true']) .mobile-navigation {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
