@@ -20,24 +20,32 @@ if (JSON.stringify(books) !== JSON.stringify(sourceBooks) || JSON.stringify(vers
 }
 
 let chapterCount = 0
-for (const book of books) {
-  const aggregatePath = join(distDataDir, 'rva2015', `${book.file}.json`)
-  const aggregate = JSON.parse(await readFile(aggregatePath, 'utf8'))
-  if (aggregate.version !== 'rva2015' || aggregate.book !== book.id || aggregate.name !== book.name) {
-    throw new Error(`Invalid aggregated metadata for ${book.name}`)
-  }
-  if (!Array.isArray(aggregate.chapters) || aggregate.chapters.length !== book.chapters) {
-    throw new Error(`Invalid chapter count for ${book.name}`)
-  }
-
-  for (let chapter = 1; chapter <= book.chapters; chapter += 1) {
-    const source = JSON.parse(await readFile(join(publicDataDir, 'rva2015', book.file, `${chapter}.json`), 'utf8'))
-    const deployed = aggregate.chapters[chapter - 1]
-    if (deployed.chapter !== chapter || JSON.stringify(deployed.verses) !== JSON.stringify(source)) {
-      throw new Error(`Aggregated chapter mismatch: ${book.name} ${chapter}`)
+const availableVersions = versions.filter(({ available }) => available)
+for (const version of availableVersions) {
+  for (const book of books) {
+    const aggregatePath = join(distDataDir, version.id, `${book.file}.json`)
+    const aggregate = JSON.parse(await readFile(aggregatePath, 'utf8'))
+    if (aggregate.version !== version.id || aggregate.book !== book.id || aggregate.name !== book.name) {
+      throw new Error(`Invalid aggregated metadata for ${version.id} ${book.name}`)
     }
+    if (!Array.isArray(aggregate.chapters) || aggregate.chapters.length !== book.chapters) {
+      throw new Error(`Invalid chapter count for ${version.id} ${book.name}`)
+    }
+
+    for (let chapter = 1; chapter <= book.chapters; chapter += 1) {
+      const source = JSON.parse(await readFile(join(publicDataDir, version.id, book.file, `${chapter}.json`), 'utf8'))
+      const deployed = aggregate.chapters[chapter - 1]
+      if (deployed.chapter !== chapter || JSON.stringify(deployed.verses) !== JSON.stringify(source)) {
+        throw new Error(`Aggregated chapter mismatch: ${version.id} ${book.name} ${chapter}`)
+      }
+      chapterCount += 1
+    }
+  }
+}
+
+for (const book of books) {
+  for (let chapter = 1; chapter <= book.chapters; chapter += 1) {
     await access(join(distDataDir, 'cba', String(book.id), `${chapter}.json`))
-    chapterCount += 1
   }
 }
 
@@ -76,4 +84,5 @@ if (socialImage[0] !== 0xFF || socialImage[1] !== 0xD8 || socialImageStats.size 
   throw new Error(`Invalid or oversized static social image (${socialImageStats.size} bytes)`)
 }
 
-console.log(`Public data contract verified: ${books.length} books, ${chapterCount} RVA2015 chapters and ${chapterCount} CBA chapters.`)
+const totalBooks = books.length * availableVersions.length
+console.log(`Public data contract verified: ${totalBooks} aggregated books across ${availableVersions.map(({ id }) => id).join(', ')}, ${chapterCount} translation chapters and ${books.reduce((total, { chapters }) => total + chapters, 0)} CBA chapters.`)
