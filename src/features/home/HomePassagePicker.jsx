@@ -40,11 +40,18 @@ function viewportBounds() {
   }
 }
 
-export function HomePassagePicker({ onGoToChapter }) {
+export function HomePassagePicker({ onGoToChapter, compact = false, initialReference = null, bookTriggerRef, onOpenChange }) {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
   const id = useId()
-  const [selection, setSelection] = useState({ bookId: null, chapter: null })
+  const [selection, setSelection] = useState(() => {
+    const book = getBook(initialReference?.book)
+    const chapter = Number(initialReference?.chapter)
+    return {
+      bookId: book?.id ?? null,
+      chapter: book && Number.isInteger(chapter) && chapter >= 1 && chapter <= book.chapters ? chapter : null,
+    }
+  })
   const [popup, setPopup] = useState(null)
   const popupRef = useRef(null)
   const triggersRef = useRef({ book: null, chapter: null })
@@ -52,6 +59,7 @@ export function HomePassagePicker({ onGoToChapter }) {
   const anchorsRef = useRef({ book: null, chapter: null })
   const keepActiveVisibleRef = useRef(true)
   const typeaheadRef = useRef({ text: '', at: 0 })
+  const openChangeRef = useRef(onOpenChange)
   const selectedBook = getBook(selection.bookId)
   const version = getVersion(settings.bibleVersion)
   const ready = Boolean(selectedBook && Number.isInteger(selection.chapter)
@@ -77,12 +85,18 @@ export function HomePassagePicker({ onGoToChapter }) {
     })),
   }), [locale, selection.bookId])
 
+  useEffect(() => { openChangeRef.current = onOpenChange }, [onOpenChange])
+  useEffect(() => () => {
+    if (popupRef.current) openChangeRef.current?.(false)
+  }, [])
+
   const closePicker = useCallback((restoreFocus = false) => {
     const name = popupRef.current?.name
     if (!name) return
     popupRef.current = null
     typeaheadRef.current = { text: '', at: 0 }
     setPopup(null)
+    openChangeRef.current?.(false)
     if (restoreFocus) triggersRef.current[name]?.focus({ preventScroll: true })
   }, [])
 
@@ -140,9 +154,11 @@ export function HomePassagePicker({ onGoToChapter }) {
   const updateActiveOption = (name, index) => {
     const boundedIndex = Math.max(0, Math.min(optionLists[name].length - 1, index))
     const next = { name, index: boundedIndex }
+    const wasOpen = Boolean(popupRef.current)
     popupRef.current = next
     keepActiveVisibleRef.current = true
     setPopup(next)
+    if (!wasOpen) openChangeRef.current?.(true)
   }
 
   const openPicker = (name, firstIndex = null) => {
@@ -313,7 +329,10 @@ export function HomePassagePicker({ onGoToChapter }) {
               // keyup click would toggle the list a second time.
               if (event.key === ' ') event.preventDefault()
             }}
-            ref={(node) => { triggersRef.current[name] = node }}
+            ref={(node) => {
+              triggersRef.current[name] = node
+              if (name === 'book' && bookTriggerRef) bookTriggerRef.current = node
+            }}
             role="combobox"
             type="button"
           >
@@ -352,16 +371,19 @@ export function HomePassagePicker({ onGoToChapter }) {
   return (
     <form
       aria-label={`${t('home.chooseReading')} · ${version.short}`}
-      className={styles.picker}
-      data-testid="home-reading-actions"
+      className={`${styles.picker}${compact ? ` ${styles.compact}` : ''}`}
+      data-testid={compact ? 'reader-passage-picker' : 'home-reading-actions'}
       onSubmit={(event) => {
         event.preventDefault()
-        if (ready) onGoToChapter(selection.bookId, selection.chapter)
+        if (ready) {
+          closePicker()
+          onGoToChapter(selection.bookId, selection.chapter)
+        }
       }}
     >
       {renderPicker('book', bookLabel, selectedBook ? getLocalizedBookName(selectedBook, locale) : selectBookLabel)}
       {renderPicker('chapter', chapterLabel, selection.chapter ?? '—', !selectedBook)}
-      <button className={styles.openChapter} disabled={!ready} type="submit">
+      <button aria-label={compact ? openChapterLabel : undefined} className={styles.openChapter} disabled={!ready} type="submit">
         <span>{openChapterLabel}</span>
         <Icon name="arrowRight" size={17} />
       </button>

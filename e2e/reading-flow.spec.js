@@ -1,5 +1,35 @@
 import { expect, test } from '@playwright/test'
 
+function passagePicker(page) {
+  const form = page.getByTestId('reader-passage-picker')
+  return {
+    form,
+    book: form.getByRole('combobox', { name: /^(Libro|Book|Livro)$/ }),
+    chapter: form.getByRole('combobox', { name: /^(Capítulo|Chapter)$/ }),
+    open: form.getByRole('button', { name: /^(Abrir capítulo|Open chapter)$/ }),
+  }
+}
+
+async function selectPassageOption(page, trigger, name) {
+  await trigger.click()
+  await page.getByRole('listbox').getByRole('option', { name, exact: true }).click()
+  await expect(page.getByRole('listbox')).toHaveCount(0)
+}
+
+async function expectContainedReaderList(page) {
+  const list = page.getByRole('listbox')
+  await expect(list).toBeVisible()
+  const box = await list.boundingBox()
+  const viewport = page.viewportSize()
+  expect(box).not.toBeNull()
+  expect(box.x).toBeGreaterThanOrEqual(0)
+  expect(box.y).toBeGreaterThanOrEqual(0)
+  expect(box.x + box.width).toBeLessThanOrEqual(viewport.width)
+  expect(box.y + box.height).toBeLessThanOrEqual(viewport.height)
+  expect(box.height).toBeLessThanOrEqual(289)
+  return box
+}
+
 test('a shared verse URL opens the exact Bible version encoded in the link', async ({ page }) => {
   await page.goto('/read/43/3/16?v=rva2015')
 
@@ -121,7 +151,8 @@ test('the commentary modal keeps its title clear at maximum text size on narrow 
   expect(commentaryFontSize).toBe('21.12px')
 })
 
-test('a reader can highlight a verse and use the quick chapter picker', async ({ page }) => {
+
+test('a reader can highlight a verse and choose another passage from the inline picker', async ({ page }) => {
   await page.goto('/read/43/3/16')
   const verse = page.locator('#verse-16')
   await verse.click()
@@ -131,43 +162,58 @@ test('a reader can highlight a verse and use the quick chapter picker', async ({
   await expect(verse).toHaveClass(/is-highlighted/)
   await expect(verse).not.toHaveClass(/is-selected/)
 
-  await page.getByRole('button', { name: /Juan 3|John 3|João 3/ }).click()
-  const navigation = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
-  await expect(navigation).toBeVisible()
-  await navigation.getByRole('button', { name: /Antiguo Testamento|Old Testament|Antigo Testamento/ }).click()
-  await navigation.getByRole('button', { name: /Génesis|Genesis|Gênesis/ }).click()
-  await navigation.getByRole('button', { name: '1', exact: true }).click()
+  const picker = passagePicker(page)
+  await expect(picker.book).toHaveText(/Juan|John|João/)
+  await expect(picker.chapter).toHaveText('3')
+  await selectPassageOption(page, picker.book, /Génesis|Genesis|Gênesis/)
+  await expect(picker.chapter).toHaveText('—')
+  await expect(picker.open).toBeDisabled()
+  await selectPassageOption(page, picker.chapter, '1')
+  await picker.open.click()
   await expect(page).toHaveURL(/\/read\/1\/1$/)
+  await expect(picker.book).toHaveText(/Génesis|Genesis|Gênesis/)
+  await expect(picker.chapter).toHaveText('1')
 
   await page.goto('/saved')
   await page.getByRole('tab', { name: /Resaltados|Highlights|Destaques/ }).click()
   await expect(page.locator('.saved-list').getByRole('link', { name: /Juan 3:16|John 3:16|João 3:16/ })).toBeVisible()
 })
 
-test('the quick chapter picker uses the responsive reader surface', async ({ page }) => {
+
+test('the inline reader picker is bounded, keyboard accessible and separate from reading options', async ({ page }) => {
   await page.goto('/read/43/3/16')
-  const trigger = page.getByRole('button', { name: /Juan 3|John 3|João 3/ })
-  await trigger.click()
+  const picker = passagePicker(page)
+  await expect(picker.book).toHaveText(/Juan|John|João/)
+  await expect(picker.chapter).toHaveText('3')
+  await expect(picker.open).toBeEnabled()
+  await picker.book.click()
+  await expectContainedReaderList(page)
+  await expect(page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })).toHaveCount(0)
+  await expect(page.locator('.reader-dialog-backdrop')).toHaveCount(0)
+  await expect(page.locator('body')).not.toHaveCSS('position', 'fixed')
+  await picker.book.press('Escape')
+  await expect(page.getByRole('listbox')).toHaveCount(0)
+  await expect(picker.book).toBeFocused()
 
-  const navigation = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
-  await expect(navigation).toBeVisible()
-  await expect(page.locator('.reader-dialog-backdrop')).toHaveCount(1)
-  await expect(page.locator('body')).toHaveCSS('position', 'fixed')
-  const navigationBox = await navigation.boundingBox()
-  expect(navigationBox).not.toBeNull()
-  expect(navigationBox.y).toBeGreaterThanOrEqual(0)
-  expect(navigationBox.y + navigationBox.height).toBeLessThanOrEqual(page.viewportSize().height)
+  await picker.book.press('ArrowDown')
+  await picker.book.press('End')
+  await picker.book.press('Enter')
+  await expect(picker.book).toHaveText(/Apocalipsis|Revelation|Apocalipse/)
+  await expect(picker.open).toBeDisabled()
+  await picker.chapter.focus()
+  await picker.chapter.press('ArrowDown')
+  await picker.chapter.press('End')
+  await expectContainedReaderList(page)
+  await picker.chapter.press('Enter')
+  await expect(picker.chapter).toHaveText('22')
+
+  await picker.book.click()
+  await page.getByRole('button', { name: /Abrir menú de lectura|Open reading menu|Abrir menu de leitura/ }).click()
+  await expect(page.getByRole('listbox')).toHaveCount(0)
+  await expect(page.getByRole('dialog', { name: /Opciones rápidas|Quick options|Opções rápidas/ })).toBeVisible()
   await page.keyboard.press('Escape')
-
-  await expect(navigation).toBeHidden()
-  await expect(trigger).not.toBeFocused()
-
-  await trigger.focus()
-  await page.keyboard.press('Enter')
-  await expect(navigation).toBeVisible()
-  await page.keyboard.press('Escape')
-  await expect(navigation).toBeHidden()
-  await expect(trigger).toBeFocused()
+  await picker.open.click()
+  await expect(page).toHaveURL(/\/read\/66\/22$/)
 })
 
 test('a deep-linked verse is brought into the reading viewport', async ({ page }) => {
@@ -315,36 +361,46 @@ test('the compact reader keeps its bottom navigation visible at the end of the c
   await expect(bottomNavigation).toHaveCSS('visibility', 'visible')
 })
 
-test('desktop readers expose icon-only primary navigation in the constrained header', async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== 'desktop', 'Desktop-only reader navigation coverage')
-  await page.goto('/read/43/3')
-  await page.waitForTimeout(4200)
 
+test('desktop readers separate the shared navigation bar from the compact passage row', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'Desktop-only reader navigation coverage')
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/read/43/3')
+  const header = page.locator('.reader-header')
   const navigation = page.locator('.reader-header__desktop-navigation')
   await expect(navigation).toBeVisible()
   await expect(navigation.getByRole('link')).toHaveCount(4)
-  const home = navigation.getByRole('link', { name: /Inicio|Home|Início/ })
-  await expect(home).toHaveAttribute('href', '/')
-  await expect(navigation.getByRole('link', { name: /Biblia|Bible|Bíblia/ })).toHaveAttribute('href', '/bible')
-  await expect(navigation.getByRole('link', { name: /Buscar|Search/ })).toHaveAttribute('href', '/search')
-  await expect(navigation.getByRole('link', { name: /Guardados|Saved|Salvos/ })).toHaveAttribute('href', '/saved')
-
-  const headerBox = await page.locator('.reader-header__inner').boundingBox()
-  expect(headerBox).not.toBeNull()
-  // The reader shares the approved editorial header width with Home.
-  expect(headerBox.width).toBeLessThanOrEqual(1100)
-  expect(Math.abs(headerBox.x - ((page.viewportSize().width - headerBox.width) / 2))).toBeLessThanOrEqual(1)
-  const chapterSelector = page.getByRole('button', { name: /Juan 3|John 3|João 3/ })
-  await chapterSelector.click()
-  const chapterDialog = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
-  await expect(chapterDialog).toBeVisible()
-  await chapterDialog.getByRole('button', { name: /Cerrar|Close|Fechar/ }).click()
-
-  await page.getByRole('button', { name: /Abrir menú de lectura|Open reading menu|Abrir menu de leitura/ }).click()
+  for (const [name, href] of [[/Inicio|Home|Início/, '/'], [/Biblia|Bible|Bíblia/, '/bible'], [/Buscar|Search/, '/search'], [/Guardados|Saved|Salvos/, '/saved']]) {
+    const link = navigation.getByRole('link', { name })
+    await expect(link).toHaveAttribute('href', href)
+    await expect(link).toContainText(name)
+    await expect(link.locator('svg')).toHaveCount(1)
+  }
+  const back = header.getByRole('button', { name: /^(Volver|Back|Voltar)$/ })
+  const brand = header.getByRole('link', { name: 'Santa Biblia', exact: true })
+  const theme = header.getByRole('button', { name: /Activar (?:modo|tema) (?:claro|oscuro)|Use (?:light|dark) theme/i })
+  const options = header.getByRole('button', { name: /Abrir menú de lectura|Open reading menu|Abrir menu de leitura/ })
+  const [backBox, brandBox, navigationBox, themeBox, optionsBox, rowBox] = await Promise.all([
+    back.boundingBox(), brand.boundingBox(), navigation.boundingBox(), theme.boundingBox(), options.boundingBox(),
+    page.getByTestId('reader-passage-row').boundingBox(),
+  ])
+  expect([backBox, brandBox, navigationBox, themeBox, optionsBox, rowBox].every(Boolean)).toBe(true)
+  expect(backBox.x + backBox.width).toBeLessThanOrEqual(brandBox.x)
+  expect(brandBox.x + brandBox.width).toBeLessThanOrEqual(navigationBox.x)
+  expect(Math.abs(navigationBox.x + navigationBox.width / 2 - 720)).toBeLessThanOrEqual(2)
+  expect(themeBox.x).toBeGreaterThanOrEqual(navigationBox.x + navigationBox.width)
+  expect(optionsBox.x).toBeGreaterThanOrEqual(themeBox.x + themeBox.width)
+  expect(rowBox.y).toBeGreaterThanOrEqual(Math.max(brandBox.y + brandBox.height, themeBox.y + themeBox.height, navigationBox.y + navigationBox.height))
+  const picker = passagePicker(page)
+  const [bookBox, chapterBox, openBox] = await Promise.all([picker.book.boundingBox(), picker.chapter.boundingBox(), picker.open.boundingBox()])
+  expect(bookBox.x + bookBox.width).toBeLessThanOrEqual(chapterBox.x)
+  expect(chapterBox.x + chapterBox.width).toBeLessThanOrEqual(openBox.x)
+  expect(Math.abs(bookBox.y - chapterBox.y)).toBeLessThanOrEqual(1)
+  await expect(options.locator('svg.lucide-settings-2')).toHaveCount(1)
+  await options.click()
   await expect(page.getByRole('dialog', { name: /Opciones rápidas|Quick options|Opções rápidas/ })).toBeVisible()
   await page.keyboard.press('Escape')
-
-  await home.click()
+  await navigation.getByRole('link', { name: /Inicio|Home|Início/ }).click()
   await expect(page).toHaveURL(/\/$/)
 })
 
@@ -438,57 +494,51 @@ test('the desktop Bible browser scrolls books without moving the chapter pane', 
   await expect(chaptersPane.getByRole('link', { name: '1', exact: true })).toBeInViewport()
 })
 
-test('the mobile reading chooser presents books in two usable columns', async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== 'mobile', 'Mobile-only compact book grid coverage')
+
+test('the compact reader book list contains both testaments without leaving the mobile screen', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile', 'Mobile-only reader dropdown coverage')
+  await page.setViewportSize({ width: 320, height: 568 })
   await page.goto('/read/43/3')
-
-  await page.getByRole('button', { name: /Juan 3|John 3|João 3/ }).click()
-  const navigation = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
-  await navigation.getByRole('button', { name: /Antiguo Testamento|Old Testament|Antigo Testamento/ }).click()
-
-  const genesis = navigation.getByRole('button', { name: /^(Génesis|Genesis|Gênesis) Capítulos: 50$/ })
-  const exodus = navigation.getByRole('button', { name: /^(Éxodo|Exodus|Êxodo) Capítulos: 40$/ })
-  const [genesisBox, exodusBox] = await Promise.all([genesis.boundingBox(), exodus.boundingBox()])
-
-  expect(genesisBox).not.toBeNull()
-  expect(exodusBox).not.toBeNull()
-  expect(Math.abs(genesisBox.y - exodusBox.y)).toBeLessThanOrEqual(1)
-  expect(exodusBox.x).toBeGreaterThan(genesisBox.x + genesisBox.width - 1)
+  const picker = passagePicker(page)
+  await picker.book.click()
+  await expectContainedReaderList(page)
+  const list = page.getByRole('listbox')
+  await expect(list.getByRole('option')).toHaveCount(66)
+  await expect(list.getByRole('group', { name: /Antiguo Testamento|Old Testament|Antigo Testamento/ })).toHaveCount(1)
+  await expect(list.getByRole('group', { name: /Nuevo Testamento|New Testament|Novo Testamento/ })).toHaveCount(1)
+  await expect(list.getByRole('option', { selected: true })).toHaveText(/Juan|John|João/)
+  await list.evaluate((element) => { element.scrollTop = element.scrollHeight })
+  await expect(list.getByRole('option', { name: /Apocalipsis|Revelation|Apocalipse/, exact: true })).toBeInViewport()
+  await picker.book.press('Escape')
+  await expect(page).toHaveURL(/\/read\/43\/3$/)
 })
 
-test('the reading chooser finds verses containing every searched word', async ({ page }) => {
-  await page.goto('/read/43/3')
-  await page.getByRole('button', { name: /Juan 3|John 3|João 3/ }).click()
 
-  const navigation = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
-  const searchbox = navigation.getByRole('searchbox', { name: /palabra, frase, libro o referencia|word, phrase, book, or reference|palavra, frase, livro ou referência/i })
+test('the Bible catalogue finds verses containing every searched word', async ({ page }) => {
+  await page.goto('/bible')
+  const catalogue = page.locator('main')
+  const searchbox = catalogue.getByRole('searchbox', { name: /palabra, frase, libro o referencia|word, phrase, book, or reference|palavra, frase, livro ou referência/i })
   await searchbox.fill('tal manera mundo')
-
-  await expect(navigation.getByText('1 de 1 resultados', { exact: true })).toBeVisible()
-  await expect(navigation.getByRole('button', { name: /Marcos 1:27/ })).toHaveCount(0)
-  const result = navigation.getByRole('button', { name: /Juan 3:16.*Porque de tal manera amó Dios al mundo/i })
+  await expect(catalogue.getByText('1 de 1 resultados', { exact: true })).toBeVisible()
+  await expect(catalogue.getByRole('link', { name: /Marcos 1:27/ })).toHaveCount(0)
+  const result = catalogue.getByRole('link', { name: /Juan 3:16.*Porque de tal manera amó Dios al mundo/i })
   await expect(result).toBeVisible()
   await result.click()
-
   await expect(page).toHaveURL(/\/read\/43\/3\/16$/)
   await expect(page.locator('#verse-16')).toBeVisible()
   await expect(page.locator('#verse-16')).toHaveClass(/is-attention-pulsing/)
 })
 
-test('the reading chooser shares the paginated text search contract', async ({ page }) => {
-  await page.goto('/read/43/3')
-  await page.getByRole('button', { name: /Juan 3|John 3|João 3/ }).click()
 
-  const navigation = page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })
-  const searchbox = navigation.getByRole('searchbox', { name: /palabra, frase, libro o referencia|word, phrase, book, or reference|palavra, frase, livro ou referência/i })
-  await searchbox.fill('mundo')
-
-  const resultCount = navigation.getByText(/50 de [1-9]\d{2} resultados/, { exact: true })
-  const loadMore = navigation.getByRole('button', { name: /Ver más resultados|Show more results|Ver mais resultados/ })
-  await expect(resultCount).toBeVisible()
+test('the Bible catalogue shares the paginated text search contract', async ({ page }) => {
+  await page.goto('/bible')
+  const catalogue = page.locator('main')
+  await catalogue.getByRole('searchbox', { name: /palabra, frase, libro o referencia|word, phrase, book, or reference|palavra, frase, livro ou referência/i }).fill('mundo')
+  await expect(catalogue.getByText(/50 de [1-9]\d{2} resultados/, { exact: true })).toBeVisible()
+  const loadMore = catalogue.getByRole('button', { name: /Ver más resultados|Show more results|Ver mais resultados/ })
   await expect(loadMore).toBeVisible()
   await loadMore.click()
-  await expect(navigation.getByText(/100 de [1-9]\d{2} resultados/, { exact: true })).toBeVisible()
+  await expect(catalogue.getByText(/100 de [1-9]\d{2} resultados/, { exact: true })).toBeVisible()
 })
 
 test('saved surfaces only expose completed saved-verse features', async ({ page }) => {

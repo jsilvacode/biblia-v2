@@ -13,16 +13,22 @@ const navigation = [
   ['saved', '/saved', 'bookmark'],
 ]
 
-export function HomeHeader({ variant = 'hero' }) {
+export function HomeHeader({ variant = 'hero', leading, readerMenu }) {
   const location = useLocation()
   const navigate = useNavigate()
   const { t } = useI18n()
   const { resolvedTheme, toggleTheme } = useSettings()
-  const requestedSettings = location.state?.openSettings === true
+  const isReader = variant === 'reader'
+  const requestedSettings = !isReader && location.state?.openSettings === true
   const [isSettingsOpen, setIsSettingsOpen] = useState(requestedSettings)
   const settingsTriggerRef = useRef(null)
   const settingsReturnFocusRef = useRef(null)
   const nextThemeIsDark = resolvedTheme !== 'dark'
+  const variantClassName = isReader ? styles.readerHeader : variant === 'site' ? styles.siteHeader : styles.heroHeader
+  const brand = <Link aria-label="Santa Biblia" className={`${styles.homeBrand}${isReader ? ' reader-header__brand' : ''}`} to="/">
+    <span aria-hidden="true" className={styles.homeBrandMark}><Icon name="bookOpen" size={17} /></span>
+    <span>Santa Biblia</span>
+  </Link>
 
   function handleThemeToggle(event) {
     toggleTheme()
@@ -46,29 +52,46 @@ export function HomeHeader({ variant = 'hero' }) {
 
   return (
     <>
-      <header className={`${styles.homeHeader} ${variant === 'site' ? styles.siteHeader : styles.heroHeader}`}>
-        <Link aria-label="Santa Biblia" className={styles.homeBrand} to="/">
-          <span aria-hidden="true" className={styles.homeBrandMark}><Icon name="bookOpen" size={17} /></span>
-          <span>Santa Biblia</span>
-        </Link>
-        <nav aria-label={t('app.name')} className={styles.homeDesktopNavigation}>
-          {navigation.map(([label, path, icon]) => (
-            <NavLink className={({ isActive }) => `${styles.homeNavigationLink}${isActive ? ` ${styles.isActive}` : ''}`} end={path === '/'} key={path} to={path}>
-              <Icon name={icon} size={17} />
-              <span>{t(`nav.${label}`)}</span>
-            </NavLink>
-          ))}
+      <header className={`${styles.homeHeader} ${variantClassName ?? ''}${isReader ? ' reader-header__inner' : ''}`}>
+        {isReader ? <div className="reader-header__leading">{leading}{brand}</div> : leading ?? brand}
+        <nav aria-label={t('app.name')} className={`${styles.homeDesktopNavigation}${isReader ? ' reader-header__desktop-navigation' : ''}`}>
+          {navigation.map(([label, path, icon]) => {
+            const content = <><Icon name={icon} size={17} /><span>{t(`nav.${label}`)}</span></>
+            return isReader ? (
+              <Link
+                aria-current={label === 'bible' ? 'page' : undefined}
+                aria-label={t(`nav.${label}`)}
+                className={`${styles.homeNavigationLink} reader-header__navigation-link${label === 'bible' ? ` ${styles.isActive}` : ''}`}
+                key={path}
+                to={path}
+              >
+                {content}
+              </Link>
+            ) : (
+              <NavLink className={({ isActive }) => `${styles.homeNavigationLink}${isActive ? ` ${styles.isActive}` : ''}`} end={path === '/'} key={path} to={path}>
+                {content}
+              </NavLink>
+            )
+          })}
         </nav>
-        <div className={styles.homeHeaderControls}>
+        <div className={`${styles.homeHeaderControls}${isReader ? ' reader-header__controls' : ''}`}>
           <button aria-label={t(nextThemeIsDark ? 'home.useDarkTheme' : 'home.useLightTheme')} className={styles.headerIconButton} onClick={handleThemeToggle} type="button">
             <Icon name={nextThemeIsDark ? 'moon' : 'sun'} size={17} />
           </button>
-          <button aria-expanded={isSettingsOpen} aria-haspopup="dialog" aria-label={t('nav.settings')} className={styles.headerIconButton} onClick={handleSettingsToggle} ref={settingsTriggerRef} type="button">
+          <button
+            aria-expanded={isReader ? readerMenu?.isOpen ?? false : isSettingsOpen}
+            aria-haspopup="dialog"
+            aria-label={t(isReader ? 'reader.openReaderMenu' : 'nav.settings')}
+            className={`${styles.headerIconButton}${isReader ? ' reader-header__menu' : ''}`}
+            onClick={isReader ? readerMenu?.onOpen : handleSettingsToggle}
+            ref={settingsTriggerRef}
+            type="button"
+          >
             <Icon name="gear" size={17} />
           </button>
         </div>
       </header>
-      {isSettingsOpen && (
+      {!isReader && isSettingsOpen && (
         <SettingsPopover
           anchorRef={settingsTriggerRef}
           isOpen

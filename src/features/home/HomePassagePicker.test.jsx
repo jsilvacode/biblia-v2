@@ -65,6 +65,29 @@ describe('HomePassagePicker', () => {
     expect(onGoToChapter).not.toHaveBeenCalled()
   })
 
+  it('initializes the compact reader with its current passage and exposes its book trigger', () => {
+    const onGoToChapter = vi.fn()
+    const onOpenChange = vi.fn()
+    const bookTriggerRef = { current: null }
+    render(<HomePassagePicker compact initialReference={{ book: 43, chapter: 3 }} bookTriggerRef={bookTriggerRef} onGoToChapter={onGoToChapter} onOpenChange={onOpenChange} />)
+    const book = screen.getByRole('combobox', { name: 'Libro', exact: true })
+    const chapter = screen.getByRole('combobox', { name: 'Capítulo', exact: true })
+    const open = screen.getByRole('button', { name: 'Abrir capítulo', exact: true })
+
+    expect(screen.getByTestId('reader-passage-picker')).toBeTruthy()
+    expect(bookTriggerRef.current).toBe(book)
+    expect(book.textContent).toBe('Juan')
+    expect(chapter.textContent).toBe('3')
+    expect(open.disabled).toBe(false)
+    expect(open.getAttribute('aria-label')).toBe('Abrir capítulo')
+    fireEvent.click(book)
+    expect(onOpenChange).toHaveBeenLastCalledWith(true)
+    fireEvent.keyDown(book, { key: 'Escape' })
+    expect(onOpenChange).toHaveBeenLastCalledWith(false)
+    fireEvent.click(open)
+    expect(onGoToChapter).toHaveBeenCalledExactlyOnceWith(43, 3)
+  })
+
   it('keeps the chapter for the same book and clears it when the book changes', () => {
     const onGoToChapter = vi.fn()
     render(<HomePassagePicker onGoToChapter={onGoToChapter} />)

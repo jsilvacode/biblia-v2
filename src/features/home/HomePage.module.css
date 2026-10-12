@@ -38,12 +38,13 @@
   --glass-light: light-dark(rgb(255 255 255 / .42), rgb(255 255 255 / .14));
   --glass-tint: light-dark(rgb(255 208 180 / .055), rgb(255 208 180 / .035));
   --glass-glow: light-dark(rgb(255 255 255 / .55), rgb(255 208 180 / .12));
+  --mantle-width: min(calc(100% + 16px), 1100px);
   --mantle-mask: linear-gradient(180deg, transparent 0px, rgb(0 0 0 / .35) 20px, #000 60px, #000 58%, rgb(0 0 0 / .5) 82%, transparent 100%);
   --mantle-side-mask: radial-gradient(ellipse 50% 95% at 50% 44%, #000 0%, #000 60%, rgb(0 0 0 / .8) 76%, rgb(0 0 0 / .25) 93%, transparent 100%);
   position: relative;
   isolation: isolate;
 }
-.glassMantle::before, .glassMantle::after { position: absolute; top: 0; bottom: 0; left: 50%; width: min(calc(100% + 16px), 1100px); transform: translateX(-50%); border-radius: 44px 52px 0 0 / 42px 48px 0 0; mask-image: var(--mantle-mask), var(--mantle-side-mask); mask-composite: intersect; -webkit-mask-image: var(--mantle-mask), var(--mantle-side-mask); -webkit-mask-composite: source-in; pointer-events: none; content: ''; }
+.glassMantle::before, .glassMantle::after { position: absolute; top: 0; bottom: 0; left: 50%; width: var(--mantle-width); transform: translateX(-50%); border-radius: 44px 52px 0 0 / 42px 48px 0 0; mask-image: var(--mantle-mask), var(--mantle-side-mask); mask-composite: intersect; -webkit-mask-image: var(--mantle-mask), var(--mantle-side-mask); -webkit-mask-composite: source-in; pointer-events: none; content: ''; }
 .glassMantle::before { z-index: -1; background: radial-gradient(ellipse 78% 32% at 25% 12%, var(--glass-light), transparent 75%), radial-gradient(ellipse 70% 58% at 74% 44%, var(--glass-tint), transparent 80%), radial-gradient(ellipse 86% 78% at 50% 35%, var(--glass-fill), transparent 85%); backdrop-filter: blur(7px) saturate(118%); -webkit-backdrop-filter: blur(7px) saturate(118%); }
 .glassMantle::after { z-index: -2; background: radial-gradient(ellipse 70% 30% at 24% 10%, var(--glass-glow), transparent 76%), radial-gradient(ellipse 78% 70% at 74% 42%, var(--glass-glow), transparent 80%); filter: blur(18px); opacity: .55; }
 .readingPanel { position: relative; padding: 24px 0 22px; }
@@ -79,6 +80,13 @@
 .interestCopy small { display: block; margin-top: 3px; color: var(--ink-muted); font-size: .75rem; line-height: 1.45; }
 .interestCard > svg { color: var(--ink-muted); }
 .promiseFeedback { position: fixed; z-index: 102; right: 1rem; bottom: 5.5rem; left: 1rem; max-width: 26rem; margin-inline: auto; padding: .75rem 1rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-raised); color: var(--ink); box-shadow: var(--shadow-sm); text-align: center; font-size: .875rem; }
+@media (min-width: 801px) {
+  .glassMantle {
+    --mantle-bleed: min(28px, calc(var(--home-gutter) - 12px));
+    --mantle-width: calc(100% + var(--mantle-bleed) * 2);
+    --mantle-side-mask: linear-gradient(90deg, transparent, #000 var(--mantle-bleed), #000 calc(100% - var(--mantle-bleed)), transparent);
+  }
+}
 @media (hover: hover) and (pointer: fine) {
   .editorialEntry:hover .entryTitle { transform: translateX(2px); text-decoration-color: color-mix(in srgb, var(--accent-deep) 32%, transparent); }
   .editorialEntry:hover .entryAction svg { transform: translateX(3px); }

@@ -130,6 +130,40 @@ test('reducing transparency keeps a visible Home mantle surface in both themes',
   }
 })
 
+test('the desktop glass mantle covers the full width of every editorial entry', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+  const editorial = page.getByRole('region', { name: /También en Santa Biblia|Also in Santa Biblia|Também na Santa Bíblia/ })
+  await expect(editorial.getByRole('link')).toHaveCount(3)
+  const geometry = await editorial.evaluate((section) => {
+    const readingPanel = document.querySelector('[data-testid="home-reading-panel"]')
+    let surface = section.parentElement
+    while (surface && !surface.contains(readingPanel)) surface = surface.parentElement
+    if (!surface) return null
+    const surfaceRect = surface.getBoundingClientRect()
+    const style = getComputedStyle(surface, '::before')
+    const transform = style.transform === 'none' ? null : new DOMMatrixReadOnly(style.transform)
+    const left = surfaceRect.left + parseFloat(style.left) + (transform?.m41 ?? 0)
+    return {
+      content: style.content,
+      display: style.display,
+      left,
+      right: left + parseFloat(style.width),
+      entries: Array.from(section.querySelectorAll('a')).map((entry) => {
+        const rect = entry.getBoundingClientRect()
+        return { left: rect.left, right: rect.right }
+      }),
+    }
+  })
+  expect(geometry).not.toBeNull()
+  expect(geometry.display).not.toBe('none')
+  expect(geometry.content).not.toBe('none')
+  for (const entry of geometry.entries) {
+    expect(geometry.left).toBeLessThanOrEqual(entry.left)
+    expect(geometry.right).toBeGreaterThanOrEqual(entry.right)
+  }
+})
+
 test('tablet navigation switches once without duplicated menus', async ({ page }) => {
   for (const path of ['/', '/topics', '/studies/la-fe-de-jesus', '/read/43/3']) {
     await page.goto(path)

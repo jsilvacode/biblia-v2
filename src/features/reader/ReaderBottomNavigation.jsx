@@ -17,7 +17,7 @@ export function ReaderBottomNavigation({ bibleIsOpen = false, onOpenBible }) {
         <Icon name="home" size={20} />
         <span>{t('nav.home')}</span>
       </Link>
-      <button aria-expanded={bibleIsOpen} aria-haspopup="dialog" aria-label={t('nav.bible')} className="reader-bottom-navigation__link reader-bottom-navigation__link--active" onClick={onOpenBible} type="button">
+      <button aria-expanded={bibleIsOpen} aria-haspopup="listbox" aria-label={t('nav.bible')} className="reader-bottom-navigation__link reader-bottom-navigation__link--active" onClick={onOpenBible} type="button">
         <Icon name="book" size={20} />
         <span>{t('nav.bible')}</span>
       </button>

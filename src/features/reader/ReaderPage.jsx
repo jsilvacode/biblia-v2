@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
@@ -10,25 +10,19 @@ import {
   getVersion,
 } from '../bible/catalog'
 import { loadChapter } from '../bible/bibleRepository'
+import { HomeHeader } from '../home/HomeHeader'
+import { HomePassagePicker } from '../home/HomePassagePicker'
 import { useReadingActions } from '../reading/ReadingProvider'
 import { useSaved } from '../saved/SavedProvider'
 import { SettingsPopover } from '../settings/SettingsPopover'
 import { useSettings } from '../settings/SettingsProvider'
 import { CommentarySheet } from './CommentarySheet'
-import { QuickNavigationSheet } from './QuickNavigationSheet'
 import { ReaderBottomNavigation } from './ReaderBottomNavigation'
 import { ReaderSectionMenu } from './ReaderSectionMenu'
 import { createVerseShareData, createVerseShareUrl, shareVerse } from './shareVerse'
 import { VerseActionsSheet } from './VerseActionsSheet'
 import { useReaderImmersion } from './useReaderImmersion'
 import { useReadingProgress } from './useReadingProgress'
-
-const readerDesktopLinks = [
-  ['home', '/', 'home'],
-  ['bible', '/bible', 'book'],
-  ['search', '/search', 'search'],
-  ['saved', '/saved', 'bookmark'],
-]
 
 function getValidHeading(value) {
   const heading = String(value ?? '').replace(/\s+/g, ' ').trim()
@@ -51,12 +45,14 @@ export default function ReaderPage() {
   const [chapterResult, setChapterResult] = useState({ key: null, status: 'loading', data: [] })
   const [chapterRetry, setChapterRetry] = useState(0)
   const [activeDialog, setActiveDialog] = useState(null)
+  const [isPassagePickerOpen, setIsPassagePickerOpen] = useState(false)
   const [actionFeedback, setActionFeedback] = useState('')
   const [attentionVerseKey, setAttentionVerseKey] = useState(null)
   const [selectedVerseOverride, setSelectedVerseOverride] = useState(null)
   const dialogTriggerRef = useRef(null)
   const dialogReturnFocusRef = useRef(null)
   const synchronizedSharedVersionRef = useRef(null)
+  const passageBookTriggerRef = useRef(null)
   const reference = useMemo(() => ({
     book: Number(rawBook),
     chapter: Number(rawChapter),
@@ -107,7 +103,12 @@ export default function ReaderPage() {
     onPointerDown,
     onPointerUp,
     revealChrome,
-  } = useReaderImmersion({ chapterKey: requestKey, enabled: status === 'ready', isOverlayOpen: Boolean(activeDialog) })
+  } = useReaderImmersion({ chapterKey: requestKey, enabled: status === 'ready', isOverlayOpen: Boolean(activeDialog) || isPassagePickerOpen })
+
+  const handlePassagePickerOpenChange = useCallback((isOpen) => {
+    setIsPassagePickerOpen(isOpen)
+    revealChrome(!isOpen)
+  }, [revealChrome])
 
   useEffect(() => {
     if (!sharedVersion) {
@@ -206,6 +207,13 @@ export default function ReaderPage() {
     setActiveDialog(name)
   }
 
+  function openPassagePicker() {
+    revealChrome(false)
+    const trigger = passageBookTriggerRef.current
+    trigger?.focus({ preventScroll: true })
+    if (trigger && trigger.getAttribute('aria-expanded') !== 'true') trigger.click()
+  }
+
   function openVerseActions(event, verse) {
     dialogTriggerRef.current = event.currentTarget
     dialogReturnFocusRef.current = event.detail === 0 ? event.currentTarget : null
@@ -280,42 +288,26 @@ export default function ReaderPage() {
 
   return (
     <div className={`reader-page reader-page--${settings.fontFamily} reader-page--${settings.readerLineHeight}${isImmersive ? ' reader-page--immersive' : ''}`} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
-      <header className="reader-header" data-reader-chrome>
-        <div className="reader-header__inner">
-          <button aria-label={t('common.back')} className="icon-button reader-header__back" onClick={handleBack} type="button"><Icon name="arrowLeft" size={18} /></button>
-          <button
-            aria-label={`${getLocalizedBookName(book, locale)} ${reference.chapter}. ${t('reader.changeBookOrChapter')}`}
-            aria-expanded={activeDialog === 'navigation'}
-            aria-haspopup="dialog"
-            className="reader-header__reference"
-            onClick={(event) => openDialog('navigation', event)}
-            type="button"
-          >
-            <span className="reader-header__reference-copy">
-              <strong>{getLocalizedBookName(book, locale)} {reference.chapter}</strong>
-              <small>{t('reader.changeBookOrChapter')}</small>
-            </span>
-            <Icon name="chevronDown" size={17} />
-          </button>
-          <nav aria-label={t('app.name')} className="reader-header__desktop-navigation">
-            {readerDesktopLinks.map(([label, path, icon]) => (
-              <Link aria-label={t(`nav.${label}`)} className="icon-button reader-header__navigation-link" key={path} to={path}>
-                <Icon name={icon} size={18} />
-              </Link>
-            ))}
-          </nav>
-          <button
-            aria-expanded={activeDialog === 'sections'}
-            aria-haspopup="dialog"
-            aria-label={t('reader.openReaderMenu')}
-            className="icon-button reader-header__menu"
-            onClick={(event) => openDialog('sections', event)}
-            type="button"
-          >
-            <Icon name="menu" size={18} />
-          </button>
+      <div className="reader-header" data-reader-chrome>
+        <HomeHeader
+          variant="reader"
+          leading={<button aria-label={t('common.back')} className="icon-button reader-header__back" onClick={handleBack} type="button"><Icon name="arrowLeft" size={18} /></button>}
+          readerMenu={{
+            isOpen: activeDialog === 'sections',
+            onOpen: (event) => openDialog('sections', event),
+          }}
+        />
+        <div className="reader-header__passage" data-testid="reader-passage-row">
+          <HomePassagePicker
+            compact
+            initialReference={reference}
+            key={`${reference.book}:${reference.chapter}`}
+            bookTriggerRef={passageBookTriggerRef}
+            onGoToChapter={goToChapter}
+            onOpenChange={handlePassagePickerOpenChange}
+          />
         </div>
-      </header>
+      </div>
 
       <div aria-hidden="true" className="reading-progress" data-reader-chrome><span style={{ width: `${progress}%` }} /></div>
       {returnTo && (
@@ -375,8 +367,8 @@ export default function ReaderPage() {
         </button>
       </nav>
       <ReaderBottomNavigation
-        bibleIsOpen={activeDialog === 'navigation'}
-        onOpenBible={(event) => openDialog('navigation', event)}
+        bibleIsOpen={isPassagePickerOpen}
+        onOpenBible={openPassagePicker}
       />
 
       {activeDialog === 'actions' && selectedItem && (
@@ -409,18 +401,6 @@ export default function ReaderPage() {
           anchorRef={dialogTriggerRef}
           isOpen
           onClose={closeDialog}
-          returnFocusRef={dialogReturnFocusRef}
-        />
-      )}
-      {activeDialog === 'navigation' && (
-        <QuickNavigationSheet
-          book={book}
-          chapter={reference.chapter}
-          isOpen
-          key={requestKey}
-          onClose={closeDialog}
-          onGoToChapter={goToChapter}
-          anchorRef={dialogTriggerRef}
           returnFocusRef={dialogReturnFocusRef}
         />
       )}

@@ -41,11 +41,14 @@
 }
 
 .headerIconButton[aria-expanded='true'] { background: color-mix(in srgb, var(--accent-soft) 50%, transparent); color: var(--accent-deep); }
-.siteHeader { position: relative; inset: auto; width: min(calc(100% - var(--chrome-gutter) * 2), 1100px); margin-inline: auto; }
+.siteHeader, .readerHeader { position: relative; inset: auto; width: min(calc(100% - var(--chrome-gutter) * 2), 1100px); margin-inline: auto; }
 .heroHeader { position: absolute; }
 
 @media (min-width: 1024px) {
-  .homeDesktopNavigation { display: flex; align-items: center; gap: 18px; margin-left: auto; }
+  .homeHeader:is(.heroHeader, .siteHeader, .readerHeader) { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+  .homeDesktopNavigation { display: flex; align-items: center; justify-self: center; gap: 18px; margin-left: 0; }
+  .homeHeader .homeHeaderControls { justify-self: end; margin-left: 0; }
+  .homeBrand, .readerHeader > :global(.reader-header__leading) { max-width: 100%; justify-self: start; }
   .homeNavigationLink {
     display: inline-flex;
     align-items: center;
