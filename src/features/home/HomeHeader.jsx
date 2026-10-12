@@ -48,23 +48,23 @@ export function HomeHeader({ variant = 'hero' }) {
     <>
       <header className={`${styles.homeHeader} ${variant === 'site' ? styles.siteHeader : styles.heroHeader}`}>
         <Link aria-label="Santa Biblia" className={styles.homeBrand} to="/">
-          <span aria-hidden="true" className={styles.homeBrandMark}><Icon name="bookOpen" size={20} strokeWidth={1.55} /></span>
+          <span aria-hidden="true" className={styles.homeBrandMark}><Icon name="bookOpen" size={17} /></span>
           <span>Santa Biblia</span>
         </Link>
         <nav aria-label={t('app.name')} className={styles.homeDesktopNavigation}>
           {navigation.map(([label, path, icon]) => (
             <NavLink className={({ isActive }) => `${styles.homeNavigationLink}${isActive ? ` ${styles.isActive}` : ''}`} end={path === '/'} key={path} to={path}>
-              <Icon name={icon} size={20} strokeWidth={1.65} />
+              <Icon name={icon} size={17} />
               <span>{t(`nav.${label}`)}</span>
             </NavLink>
           ))}
         </nav>
         <div className={styles.homeHeaderControls}>
           <button aria-label={t(nextThemeIsDark ? 'home.useDarkTheme' : 'home.useLightTheme')} className={styles.headerIconButton} onClick={handleThemeToggle} type="button">
-            <Icon name={nextThemeIsDark ? 'moon' : 'sun'} size={20} strokeWidth={1.65} />
+            <Icon name={nextThemeIsDark ? 'moon' : 'sun'} size={17} />
           </button>
           <button aria-expanded={isSettingsOpen} aria-haspopup="dialog" aria-label={t('nav.settings')} className={styles.headerIconButton} onClick={handleSettingsToggle} ref={settingsTriggerRef} type="button">
-            <Icon name="gear" size={20} strokeWidth={1.65} />
+            <Icon name="gear" size={17} />
           </button>
         </div>
       </header>

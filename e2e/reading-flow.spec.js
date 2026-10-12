@@ -331,7 +331,8 @@ test('desktop readers expose icon-only primary navigation in the constrained hea
 
   const headerBox = await page.locator('.reader-header__inner').boundingBox()
   expect(headerBox).not.toBeNull()
-  expect(headerBox.width).toBeLessThanOrEqual(1056)
+  // The reader shares the approved editorial header width with Home.
+  expect(headerBox.width).toBeLessThanOrEqual(1100)
   expect(Math.abs(headerBox.x - ((page.viewportSize().width - headerBox.width) / 2))).toBeLessThanOrEqual(1)
   const chapterSelector = page.getByRole('button', { name: /Juan 3|John 3|João 3/ })
   await chapterSelector.click()

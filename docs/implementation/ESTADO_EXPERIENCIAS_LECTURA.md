@@ -6,7 +6,7 @@ Actualización visual 14/09/2026: guía, mockups navegables, artes originales y 
 
 ## Renovación del Home · 12/10/2026
 
-**Estado:** implementada y verificada en la aplicación; el usuario autorizó integrar esta entrega en `origin/main` y publicar por el despliegue de producción de Vercel. La comprobación del despliegue debe realizarse contra el SHA que recibe GitHub después del push, separada de la validación local registrada aquí.
+**Estado:** publicada en `origin/main` mediante `62f2eeb`. Vercel confirmó `READY`, entorno de producción, fuente GitHub `main` y el mismo SHA; `www.santabiblia.cloud` entrega el nuevo bundle. Ocho comprobaciones sobre el dominio público aprobaron, incluidas imágenes, selector, capítulo y ambos temas.
 
 **Entregado:** hero con paisaje continuo y velo localizado bajo la promesa; acceso bíblico centrado, sin selección inicial; última lectura real con enlace directo. El manto de vidrio se extiende detrás del selector y los tres artículos y se desvanece sin borde inferior. Las imágenes de los artículos son panorámicas, los títulos conservan el acento de cada tema y el hover es discreto, con respeto por movimiento reducido. Los cuatro enlaces externos originales se presentan en fichas compactas con iconos locales.
 
@@ -17,6 +17,12 @@ Actualización visual 14/09/2026: guía, mockups navegables, artes originales y 
 **Verificado:** lint; 164 unitarios en 37 archivos; build con auditoría del contrato público y corpus; `git diff --check`. La regresión general se complementó con la pasada final de Home/navegación: 38 casos aplicables aprobados y 8 omisiones previstas. Las tres imágenes editoriales también se cargan y decodifican en ambos proyectos E2E. Revisión visual de 24 combinaciones con/sin historial, tres idiomas, ambos temas y anchos de 320 a 1440 px, sin desborde y con siete imágenes cargadas por diseño. Gestos táctiles, apertura en ambas direcciones, límites y limpieza de listeners del selector comprobados en Chromium.
 
 **Evidencia:** [capturas, resultados y alcance](evidence/home-editorial-2026-10-12/README.md). Es emulación Chromium; no representa una prueba física en Safari/iOS ni modifica la disponibilidad del audio de Nuevo Tiempo.
+
+### Corrección de fidelidad con la maqueta · 12/10/2026
+
+La revisión del usuario detectó pérdida de detalles visuales al integrar. Se recuperan `BookOpen` para Biblia y `Settings2` para Ajustes, trazo 1.6 sin compensación absoluta, tamaños/espaciado y tipografía comunes de la cabecera. La variante de páginas deja de usar la marca pequeña en negrita y los enlaces antiguos. Site y lector comparten vidrio también en móvil; se preservan los controles funcionales y la inmersión del lector. El manto sigue visible al reducir transparencia y recupera reflejos más perceptibles. Se iguala además el velo nocturno de tablet con el gradiente de la maqueta.
+
+Lint, 164 unitarios, build y auditorías aprobados. Cabecera/Home/navegación: 46 casos aplicables verificados, ocho omisiones previstas; nueva regresión para el acabado y la preferencia de transparencia. La regresión general valida 120 casos aplicables y 20 omisiones previstas tras actualizar y repetir la expectativa del ancho editorial del lector. [Evidencia visual](evidence/home-integration-fidelity-2026-10-12/README.md): 48 combinaciones en Chromium y WebKit 26.5, sin desbordes. La publicación de esta corrección se valida contra su propio SHA después del push.
 
 ## Revisión transversal · diseño editorial y navegación · 16/09/2026
 

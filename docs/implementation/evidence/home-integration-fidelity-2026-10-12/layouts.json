@@ -1,0 +1,1416 @@
+{
+  "engines": [
+    "Chromium",
+    "WebKit 26.5"
+  ],
+  "results": [
+    {
+      "engine": "chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.055), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 135.890625,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.035), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(38, 31, 36, 0.1), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.0980392 0.0823529 0.0980392 / 0.85), color(srgb 0.0980392 0.0823529 0.0980392 / 0.56) 58%, color(srgb 0.0980392 0.0823529 0.0980392 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 135.890625,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.0980392 0.0823529 0.0980392 / 0.85), color(srgb 0.0980392 0.0823529 0.0980392 / 0.56) 58%, color(srgb 0.0980392 0.0823529 0.0980392 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.055), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 135.890625,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.035), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(38, 31, 36, 0.1), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.0980392 0.0823529 0.0980392 / 0.85), color(srgb 0.0980392 0.0823529 0.0980392 / 0.56) 58%, color(srgb 0.0980392 0.0823529 0.0980392 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 135.890625,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.0980392 0.0823529 0.0980392 / 0.85), color(srgb 0.0980392 0.0823529 0.0980392 / 0.56) 58%, color(srgb 0.0980392 0.0823529 0.0980392 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.055), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 135.890625,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.035), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(38, 31, 36, 0.1), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.0980392 0.0823529 0.0980392 / 0.85), color(srgb 0.0980392 0.0823529 0.0980392 / 0.56) 58%, color(srgb 0.0980392 0.0823529 0.0980392 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 135.890625,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.0980392 0.0823529 0.0980392 / 0.85), color(srgb 0.0980392 0.0823529 0.0980392 / 0.56) 58%, color(srgb 0.0980392 0.0823529 0.0980392 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.055), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 135.890625,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.035), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(38, 31, 36, 0.1), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.0980392 0.0823529 0.0980392 / 0.85), color(srgb 0.0980392 0.0823529 0.0980392 / 0.56) 58%, color(srgb 0.0980392 0.0823529 0.0980392 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 135.890625,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.0980392 0.0823529 0.0980392 / 0.85), color(srgb 0.0980392 0.0823529 0.0980392 / 0.56) 58%, color(srgb 0.0980392 0.0823529 0.0980392 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 320,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.055), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 320,
+      "theme": "light",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 320,
+      "theme": "light",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 136.1875,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 320,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.035), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(38, 31, 36, 0.1), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 320,
+      "theme": "dark",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.098039 0.082353 0.098039 / 0.85), color(srgb 0.098039 0.082353 0.098039 / 0.56) 58%, color(srgb 0.098039 0.082353 0.098039 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 320,
+      "theme": "dark",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 136.1875,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.098039 0.082353 0.098039 / 0.85), color(srgb 0.098039 0.082353 0.098039 / 0.56) 58%, color(srgb 0.098039 0.082353 0.098039 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.055), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "theme": "light",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "theme": "light",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 136.1875,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.035), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(38, 31, 36, 0.1), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "theme": "dark",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.098039 0.082353 0.098039 / 0.85), color(srgb 0.098039 0.082353 0.098039 / 0.56) 58%, color(srgb 0.098039 0.082353 0.098039 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "theme": "dark",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 136.1875,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.098039 0.082353 0.098039 / 0.85), color(srgb 0.098039 0.082353 0.098039 / 0.56) 58%, color(srgb 0.098039 0.082353 0.098039 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 768,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.055), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 768,
+      "theme": "light",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 768,
+      "theme": "light",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 136.1875,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 768,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.035), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(38, 31, 36, 0.1), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 768,
+      "theme": "dark",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.098039 0.082353 0.098039 / 0.85), color(srgb 0.098039 0.082353 0.098039 / 0.56) 58%, color(srgb 0.098039 0.082353 0.098039 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 768,
+      "theme": "dark",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 136.1875,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.098039 0.082353 0.098039 / 0.85), color(srgb 0.098039 0.082353 0.098039 / 0.56) 58%, color(srgb 0.098039 0.082353 0.098039 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.055), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "light",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "light",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 136.1875,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "display": "block",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.035), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(38, 31, 36, 0.1), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/bible",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 40,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 40,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.098039 0.082353 0.098039 / 0.85), color(srgb 0.098039 0.082353 0.098039 / 0.56) 58%, color(srgb 0.098039 0.082353 0.098039 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/read/43/3",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Volver",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Juan 3. Cambiar libro o capítulo",
+          "width": 136.1875,
+          "height": 52
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.098039 0.082353 0.098039 / 0.85), color(srgb 0.098039 0.082353 0.098039 / 0.56) 58%, color(srgb 0.098039 0.082353 0.098039 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    }
+  ]
+}

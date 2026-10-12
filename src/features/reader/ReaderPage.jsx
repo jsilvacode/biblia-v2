@@ -282,7 +282,7 @@ export default function ReaderPage() {
     <div className={`reader-page reader-page--${settings.fontFamily} reader-page--${settings.readerLineHeight}${isImmersive ? ' reader-page--immersive' : ''}`} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
       <header className="reader-header" data-reader-chrome>
         <div className="reader-header__inner">
-          <button aria-label={t('common.back')} className="icon-button reader-header__back" onClick={handleBack} type="button"><Icon name="arrowLeft" size={20} strokeWidth={1.65} /></button>
+          <button aria-label={t('common.back')} className="icon-button reader-header__back" onClick={handleBack} type="button"><Icon name="arrowLeft" size={18} /></button>
           <button
             aria-label={`${getLocalizedBookName(book, locale)} ${reference.chapter}. ${t('reader.changeBookOrChapter')}`}
             aria-expanded={activeDialog === 'navigation'}
@@ -295,12 +295,12 @@ export default function ReaderPage() {
               <strong>{getLocalizedBookName(book, locale)} {reference.chapter}</strong>
               <small>{t('reader.changeBookOrChapter')}</small>
             </span>
-            <Icon name="chevronDown" size={18} strokeWidth={1.65} />
+            <Icon name="chevronDown" size={17} />
           </button>
           <nav aria-label={t('app.name')} className="reader-header__desktop-navigation">
             {readerDesktopLinks.map(([label, path, icon]) => (
               <Link aria-label={t(`nav.${label}`)} className="icon-button reader-header__navigation-link" key={path} to={path}>
-                <Icon name={icon} size={20} strokeWidth={1.65} />
+                <Icon name={icon} size={18} />
               </Link>
             ))}
           </nav>
@@ -312,7 +312,7 @@ export default function ReaderPage() {
             onClick={(event) => openDialog('sections', event)}
             type="button"
           >
-            <Icon name="menu" size={20} strokeWidth={1.65} />
+            <Icon name="menu" size={18} />
           </button>
         </div>
       </header>

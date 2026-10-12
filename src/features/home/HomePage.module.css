@@ -35,10 +35,10 @@
 .homeFeed { position: relative; z-index: 1; padding-top: 12px; }
 .glassMantle {
   --glass-fill: light-dark(rgb(255 255 255 / .09), rgb(38 31 36 / .10));
-  --glass-light: light-dark(rgb(255 255 255 / .27), rgb(255 255 255 / .075));
+  --glass-light: light-dark(rgb(255 255 255 / .42), rgb(255 255 255 / .14));
   --glass-tint: light-dark(rgb(255 208 180 / .055), rgb(255 208 180 / .035));
-  --glass-glow: light-dark(rgb(255 255 255 / .42), rgb(255 208 180 / .08));
-  --mantle-mask: linear-gradient(180deg, transparent 0px, rgb(0 0 0 / .12) 20px, #000 80px, #000 58%, rgb(0 0 0 / .5) 82%, transparent 100%);
+  --glass-glow: light-dark(rgb(255 255 255 / .55), rgb(255 208 180 / .12));
+  --mantle-mask: linear-gradient(180deg, transparent 0px, rgb(0 0 0 / .35) 20px, #000 60px, #000 58%, rgb(0 0 0 / .5) 82%, transparent 100%);
   --mantle-side-mask: radial-gradient(ellipse 50% 95% at 50% 44%, #000 0%, #000 60%, rgb(0 0 0 / .8) 76%, rgb(0 0 0 / .25) 93%, transparent 100%);
   position: relative;
   isolation: isolate;
@@ -97,7 +97,7 @@
   .heroCopy { width: 100%; max-width: 740px; align-items: center; margin-inline: auto; text-align: center; }
   .heroActions { justify-content: center; }
   .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 40%, transparent), color-mix(in srgb, var(--bg-reader) 28%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 30%, transparent), color-mix(in srgb, var(--bg-reader) 24%, transparent) 50%, color-mix(in srgb, var(--bg-reader) 6%, transparent)); }
-  :global(:root[data-theme='dark']) .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, transparent 25%), color-mix(in srgb, var(--bg-reader) 40%, transparent); }
+  :global(:root[data-theme='dark']) .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 36%, transparent), color-mix(in srgb, var(--bg-reader) 30%, transparent) 50%, color-mix(in srgb, var(--bg-reader) 9%, transparent)); }
   .editorialEntry { grid-template-columns: 20px minmax(0, 1fr) 32%; gap: 22px; padding-block: 34px; }
   .entryTitle { font-size: 1.75rem; }
   .entryDetail { font-size: .8125rem; }
@@ -168,7 +168,10 @@
   .heroActions { margin-top: 20px; }
   .readingHeading h2 { font-size: 2.25rem; }
 }
-@media (prefers-reduced-transparency: reduce) { .glassMantle::before, .glassMantle::after { display: none; } }
+@media (prefers-reduced-transparency: reduce) {
+  .glassMantle::before { background: var(--surface-raised); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .glassMantle::after { display: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .entryTitle, .entryAction svg, .entryImage img, .interestCard, .heroPrimaryAction, .heroSecondaryAction { transition: none; }
   .editorialEntry:hover .entryTitle, .editorialEntry:hover .entryAction svg, .editorialEntry:hover .entryImage img, .interestCard:hover { transform: none; }

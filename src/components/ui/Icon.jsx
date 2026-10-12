@@ -1,7 +1,6 @@
 import {
   ArrowLeft,
   ArrowRight,
-  Book,
   BookOpen,
   Bookmark,
   CalendarDays,
@@ -29,7 +28,7 @@ import {
   RotateCcw,
   RotateCw,
   Search,
-  Settings,
+  Settings2,
   Share2,
   Pause,
   Sparkles,
@@ -46,7 +45,7 @@ import {
 const icons = {
   arrowLeft: ArrowLeft,
   arrowRight: ArrowRight,
-  book: Book,
+  book: BookOpen,
   bookOpen: BookOpen,
   bookmark: Bookmark,
   calendar: CalendarDays,
@@ -58,7 +57,7 @@ const icons = {
   commentary: MessageSquareText,
   download: Download,
   externalLink: ExternalLink,
-  gear: Settings,
+  gear: Settings2,
   graduation: GraduationCap,
   highlight: Highlighter,
   headphones: Headphones,
@@ -91,7 +90,7 @@ const iconSizes = {
   lg: 24,
 }
 
-export function Icon({ absoluteStrokeWidth = true, name, size = 'md', strokeWidth = 1.75, ...props }) {
+export function Icon({ absoluteStrokeWidth = false, name, size = 'md', strokeWidth = 1.6, ...props }) {
   const Glyph = icons[name] ?? Sparkles
   const resolvedSize = typeof size === 'string' ? (iconSizes[size] ?? iconSizes.md) : size
 
