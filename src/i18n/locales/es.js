@@ -124,6 +124,8 @@ export default {
     changeBookOrChapter: 'Cambiar libro o capítulo',
     previousDestination: 'Anterior: {{reference}}',
     nextDestination: 'Siguiente: {{reference}}',
+    chapterStart: 'Inicio',
+    goToChapterStart: 'Ir al inicio del capítulo',
     quickOptions: 'Opciones rápidas',
     sectionNavigation: 'Secciones',
     openSectionNavigation: 'Abrir secciones',

@@ -554,3 +554,36 @@ test('saved surfaces only expose completed saved-verse features', async ({ page 
   await page.goto('/saved')
   await expect(page.getByRole('tab')).toHaveCount(2)
 })
+
+for (const reducedMotion of ['reduce', 'no-preference']) {
+  test(`chapter start returns to the heading without changing the shared passage (${reducedMotion})`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion })
+    await page.goto('/read/46/15/57?v=rva2015')
+    await expect(page.locator('#verse-58')).toBeVisible()
+    await page.evaluate(() => document.fonts.ready)
+    // Finish the initial shared-verse scroll before testing the chapter pager.
+    await expect.poll(() => page.locator('#verse-57').evaluate(el => {
+      const rect = el.getBoundingClientRect()
+      return rect.top >= 0 && rect.bottom <= innerHeight
+    })).toBe(true)
+    const pager = page.locator('.chapter-pager')
+    const start = pager.getByRole('button', { name: /Ir al inicio del capítulo|Go to the start of the chapter|Ir ao início do capítulo/ })
+    await start.scrollIntoViewIfNeeded()
+    expect(await page.evaluate(() => scrollY)).toBeGreaterThan(500)
+    const before = await page.evaluate(() => ({ url: location.href, historyLength: history.length }))
+    await start.focus()
+    await page.keyboard.press('Enter')
+    await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
+    await expect(page.locator('.reader-content h1')).toBeFocused()
+    expect(await page.evaluate(() => ({ url: location.href, historyLength: history.length }))).toEqual(before)
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem('santa_biblia_v2_settings')).bibleVersion)).toBe('rva2015')
+    await pager.getByRole('button', { name: /Siguiente:|Next:|Próximo:/ }).click()
+    await expect(page).toHaveURL(/\/read\/46\/16$/)
+    await expect(page.locator('#verse-1')).toBeVisible()
+    await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
+    await pager.getByRole('button', { name: /Anterior:|Previous:/ }).click()
+    await expect(page).toHaveURL(/\/read\/46\/15$/)
+    await expect(page.locator('#verse-1')).toBeVisible()
+    await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
+  })
+}

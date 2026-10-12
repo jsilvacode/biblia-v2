@@ -40,6 +40,14 @@ El usuario señaló que los gradientes reforzados parecían una mancha. Se elimi
 
 Lint, build/auditorías, `git diff --check` y ocho E2E aprobados. [Evidencia](evidence/glass-specular-2026-10-12/README.md): 16 combinaciones Home en Chromium/WebKit, ambos temas, 320–1440 px. Sin cambios en la navegación o limpieza del lector; la publicación se contrasta después del push con el SHA propio de esta corrección.
 
+### Aire, footer compartido y regreso al inicio del capítulo · 12/10/2026
+
+El vidrio termina bajo el selector y se desvanece antes de “También en Santa Biblia”, manteniendo su ancho. Hero y selector ganan un espaciado moderado. Se elimina la excepción que lavaba el footer del Home y se igualan a 44 × 44 px los controles de tema/ajustes de la cabecera compartida.
+
+Al final del lector, Anterior / Inicio / Siguiente aprovechan el ancho disponible; Inicio sube al capítulo actual y enfoca el título sin cambiar la URL ni la versión. Se respeta movimiento reducido, se simplifican etiquetas visibles en móvil y se conserva el destino completo accesible.
+
+Lint, build/auditorías, 14 E2E distintos y `git diff --check` aprobados. [Evidencia](evidence/home-spacing-chapter-start-2026-10-12/README.md): 24 vistas Chromium/WebKit, cuatro casos EN/PT al 200% y ocho verificaciones de límites de la Biblia. La publicación se contrasta después del push con el SHA propio de este ajuste.
+
 ## Revisión transversal · diseño editorial y navegación · 16/09/2026
 
 **Alcance:** sitio completo, incluidas las pantallas anteriores al plan. Se conserva el hero y el carácter de las ilustraciones; la guía vigente es [Sistema editorial](../design/SISTEMA_EDITORIAL_VIGENTE.md).

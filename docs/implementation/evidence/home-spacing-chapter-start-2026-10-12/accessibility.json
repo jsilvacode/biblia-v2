@@ -1,0 +1,114 @@
+[
+  {
+    "engine": "chromium",
+    "locale": "en",
+    "fontSize": 32,
+    "overflow": false,
+    "docWidth": 320,
+    "innerWidth": 320,
+    "buttons": [
+      {
+        "left": 20,
+        "right": 109.328125,
+        "width": 89.328125,
+        "height": 136.765625
+      },
+      {
+        "left": 115.328125,
+        "right": 204.65625,
+        "width": 89.328125,
+        "height": 136.765625
+      },
+      {
+        "left": 210.65625,
+        "right": 300,
+        "width": 89.34375,
+        "height": 136.765625
+      }
+    ]
+  },
+  {
+    "engine": "chromium",
+    "locale": "pt-BR",
+    "fontSize": 32,
+    "overflow": false,
+    "docWidth": 320,
+    "innerWidth": 320,
+    "buttons": [
+      {
+        "left": 20,
+        "right": 109.328125,
+        "width": 89.328125,
+        "height": 136.765625
+      },
+      {
+        "left": 115.328125,
+        "right": 204.65625,
+        "width": 89.328125,
+        "height": 136.765625
+      },
+      {
+        "left": 210.65625,
+        "right": 300,
+        "width": 89.34375,
+        "height": 136.765625
+      }
+    ]
+  },
+  {
+    "engine": "webkit",
+    "locale": "en",
+    "fontSize": 32,
+    "overflow": false,
+    "docWidth": 320,
+    "innerWidth": 320,
+    "buttons": [
+      {
+        "left": 20,
+        "right": 109.328125,
+        "width": 89.328125,
+        "height": 136.765625
+      },
+      {
+        "left": 115.328125,
+        "right": 204.65625,
+        "width": 89.328125,
+        "height": 136.765625
+      },
+      {
+        "left": 210.65625,
+        "right": 299.984375,
+        "width": 89.328125,
+        "height": 136.765625
+      }
+    ]
+  },
+  {
+    "engine": "webkit",
+    "locale": "pt-BR",
+    "fontSize": 32,
+    "overflow": false,
+    "docWidth": 320,
+    "innerWidth": 320,
+    "buttons": [
+      {
+        "left": 20,
+        "right": 109.328125,
+        "width": 89.328125,
+        "height": 136.765625
+      },
+      {
+        "left": 115.328125,
+        "right": 204.65625,
+        "width": 89.328125,
+        "height": 136.765625
+      },
+      {
+        "left": 210.65625,
+        "right": 299.984375,
+        "width": 89.328125,
+        "height": 136.765625
+      }
+    ]
+  }
+]

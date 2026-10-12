@@ -1,6 +1,7 @@
 import {
   ArrowLeft,
   ArrowRight,
+  ArrowUp,
   BookOpen,
   Bookmark,
   CalendarDays,
@@ -45,6 +46,7 @@ import {
 const icons = {
   arrowLeft: ArrowLeft,
   arrowRight: ArrowRight,
+  arrowUp: ArrowUp,
   book: BookOpen,
   bookOpen: BookOpen,
   bookmark: Bookmark,

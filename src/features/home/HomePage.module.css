@@ -20,7 +20,7 @@
 }
 .heroInner, .homeFeed { width: min(calc(100% - var(--home-gutter) * 2), var(--home-width)); margin-inline: auto; }
 .heroInner { position: relative; padding-top: 76px; }
-.heroCopy { display: flex; flex-direction: column; align-items: flex-start; width: 58%; max-width: 620px; padding: 52px 0 64px; }
+.heroCopy { display: flex; flex-direction: column; align-items: flex-start; width: 58%; max-width: 620px; padding: 64px 0 80px; }
 .heroKicker { margin: 0 0 16px; color: var(--ink); font: 500 .6875rem/1.4 var(--font-ui); letter-spacing: .16em; text-transform: uppercase; }
 :global(:root[data-theme='dark']) .heroKicker { color: var(--accent-deep); }
 .hero h1 { max-width: 28ch; margin: 0; color: var(--ink); font: 400 clamp(1.9375rem, 3.3vw, 2.75rem)/1.18 var(--font-display); letter-spacing: -.035em; text-wrap: balance; }
@@ -40,8 +40,8 @@
   --glass-lip: light-dark(rgb(255 255 255 / .72), rgb(255 255 255 / .22));
   --mantle-bleed: 8px;
   --mantle-width: min(calc(100% + 16px), 1100px);
-  --mantle-mask: linear-gradient(180deg, #000 0%, #000 55%, rgb(0 0 0 / .5) 80%, transparent 100%);
-  --mantle-rim-mask: linear-gradient(180deg, #000 0px, #000 30px, rgb(0 0 0 / .45) 180px, transparent 420px);
+  --mantle-mask: linear-gradient(180deg, #000 0%, #000 35%, rgb(0 0 0 / .72) 60%, rgb(0 0 0 / .2) 84%, transparent 100%);
+  --mantle-rim-mask: linear-gradient(180deg, #000 0%, #000 8%, rgb(0 0 0 / .4) 45%, rgb(0 0 0 / .08) 75%, transparent 100%);
   --mantle-side-mask: linear-gradient(90deg, transparent, #000 var(--mantle-bleed), #000 calc(100% - var(--mantle-bleed)), transparent);
   position: relative;
   isolation: isolate;
@@ -75,7 +75,7 @@
 .lastReference::before { content: '·'; }
 .continueLink { display: inline-flex; align-items: center; min-height: 44px; gap: 6px; color: var(--accent-blue-deep); text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 4px; }
 .eyebrow { margin: 0; color: var(--accent-deep); font: 500 .6875rem/1.4 var(--font-ui); letter-spacing: .12em; text-transform: uppercase; }
-.editorialSection { margin-top: 56px; }
+.editorialSection { margin-top: 76px; }
 .editorialSection > .eyebrow { margin-bottom: 20px; }
 .editorialEntry { display: grid; grid-template-columns: 24px minmax(0, 1fr) minmax(280px, 34%); align-items: center; gap: 32px; padding: 44px 0; border-bottom: 1px solid var(--border); }
 .entryNumber { color: var(--accent-deep); font: 400 .75rem/1.4 var(--font-reading); opacity: .75; }
@@ -129,7 +129,7 @@
 @media (max-width: 620px) {
   .homePage { --home-gutter: 18px; --home-tail: 180px; --home-mask: linear-gradient(180deg, #000 0%, #000 calc(100% - 260px), rgb(0 0 0 / .98) calc(100% - 220px), rgb(0 0 0 / .88) calc(100% - 180px), rgb(0 0 0 / .65) calc(100% - 135px), rgb(0 0 0 / .35) calc(100% - 90px), rgb(0 0 0 / .12) calc(100% - 45px), transparent 100%); }
   .heroInner { padding-top: 64px; }
-  .heroCopy { padding: 30px 9px 28px; }
+  .heroCopy { padding: 42px 9px 42px; }
   .hero h1 { max-width: 22ch; font-size: 1.875rem; line-height: 1.14; }
   .heroQuoteVeryLong { font-size: 1.6rem !important; }
   .heroQuoteExtended { font-size: 1.35rem !important; }
@@ -147,7 +147,7 @@
   .readingHeading p { font-size: .8125rem; }
   .lastReading { gap: 0 10px; margin-top: 10px; font-size: .6875rem; }
   .lastReference { gap: 10px; font-size: .75rem; }
-  .editorialSection { margin-top: 40px; }
+  .editorialSection { margin-top: 56px; }
   .editorialSection > .eyebrow { margin-bottom: 4px; }
   .eyebrow { font-size: .625rem; }
   .editorialEntry { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 28px 0 36px; }
@@ -168,10 +168,10 @@
   .hero h1 { font-size: 1.6875rem; }
   .heroCopy { padding-inline: 4px; }
 }
-@media (min-height: 1000px) and (min-width: 801px) { .heroCopy { padding-top: clamp(64px, 7vh, 86px); padding-bottom: clamp(72px, 8vh, 96px); } }
+@media (min-height: 1000px) and (min-width: 801px) { .heroCopy { padding-top: clamp(76px, 8vh, 98px); padding-bottom: clamp(88px, 9vh, 112px); } }
 @media (max-height: 850px) and (min-width: 801px) {
   .heroInner { padding-top: 68px; }
-  .heroCopy { padding: 30px 0 26px; }
+  .heroCopy { padding: 42px 0 42px; }
   .homeFeed { padding-top: 6px; }
   .readingPanel { padding: 16px 0 14px; }
   .readingLayout { gap: 16px; }
@@ -179,13 +179,13 @@
 }
 @media (max-height: 780px) and (min-width: 801px) {
   .heroInner { padding-top: 64px; }
-  .heroCopy { padding: 16px 0 20px; }
+  .heroCopy { padding: 26px 0 34px; }
   .readingPanel { padding: 14px 0 12px; }
   .readingLayout { gap: 14px; }
 }
 @media (max-height: 740px) and (min-width: 801px) {
   .heroInner { padding-top: 60px; }
-  .heroCopy { padding: 16px 0 14px; }
+  .heroCopy { padding: 26px 0 28px; }
   .hero h1 { font-size: clamp(1.875rem, 5.2vh, 2.4375rem); line-height: 1.16; }
   .promiseReference { margin-top: 14px; }
   .heroActions { margin-top: 20px; }

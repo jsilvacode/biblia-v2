@@ -53,6 +53,7 @@ export default function ReaderPage() {
   const dialogReturnFocusRef = useRef(null)
   const synchronizedSharedVersionRef = useRef(null)
   const passageBookTriggerRef = useRef(null)
+  const chapterHeadingRef = useRef(null)
   const reference = useMemo(() => ({
     book: Number(rawBook),
     chapter: Number(rawChapter),
@@ -239,6 +240,13 @@ export default function ReaderPage() {
     }
   }
 
+  function goToChapterStart() {
+    revealChrome(false)
+    chapterHeadingRef.current?.focus({ preventScroll: true })
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.scrollTo({ top: 0, left: 0, behavior: reducedMotion ? 'instant' : 'smooth' })
+  }
+
   function goToChapter(bookId, chapter, verse = null) {
     closeDialog()
     navigate(`/read/${bookId}/${chapter}${verse ? `/${verse}` : ''}`, {
@@ -325,7 +333,7 @@ export default function ReaderPage() {
         </div>
       )}
       <article className="reader-content" aria-busy={status === 'loading'}>
-        <h1>{getLocalizedBookName(book, locale)} {reference.chapter}</h1>
+        <h1 ref={chapterHeadingRef} tabIndex={-1}>{getLocalizedBookName(book, locale)} {reference.chapter}</h1>
         {chapterSubtitle && <p className="reader-chapter-subtitle">{chapterSubtitle}</p>}
         {status === 'loading' && <div className="reader-skeleton"><i /><i /><i /><i /><i /></div>}
         {status === 'error' && (
@@ -363,12 +371,18 @@ export default function ReaderPage() {
       {actionFeedback && <p aria-live="polite" className="reader-action-feedback" role="status">{actionFeedback}</p>}
 
       <nav className="chapter-pager" aria-label={t('reader.quickNavigation')}>
-        <button disabled={!previous} onClick={() => move('previous')} type="button">
+        <button aria-label={previous ? t('reader.previousDestination', { reference: formatReference(previous, locale) }) : t('common.previous')} disabled={!previous} onClick={() => move('previous')} type="button">
           <Icon name="arrowLeft" size={18} />
-          <span>{previous ? t('reader.previousDestination', { reference: formatReference(previous, locale) }) : t('common.previous')}</span>
+          <span className="chapter-pager__destination">{previous ? t('reader.previousDestination', { reference: formatReference(previous, locale) }) : t('common.previous')}</span>
+          <span aria-hidden="true" className="chapter-pager__compact-label">{t('common.previous')}</span>
         </button>
-        <button disabled={!next} onClick={() => move('next')} type="button">
-          <span>{next ? t('reader.nextDestination', { reference: formatReference(next, locale) }) : t('common.next')}</span>
+        <button aria-label={t('reader.goToChapterStart')} className="chapter-pager__start" onClick={goToChapterStart} type="button">
+          <Icon name="arrowUp" size={18} />
+          <span>{t('reader.chapterStart')}</span>
+        </button>
+        <button aria-label={next ? t('reader.nextDestination', { reference: formatReference(next, locale) }) : t('common.next')} disabled={!next} onClick={() => move('next')} type="button">
+          <span className="chapter-pager__destination">{next ? t('reader.nextDestination', { reference: formatReference(next, locale) }) : t('common.next')}</span>
+          <span aria-hidden="true" className="chapter-pager__compact-label">{t('common.next')}</span>
           <Icon name="arrowRight" size={18} />
         </button>
       </nav>

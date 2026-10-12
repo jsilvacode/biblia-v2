@@ -1,0 +1,744 @@
+{
+  "engines": [
+    "Chromium",
+    "WebKit 26.5"
+  ],
+  "results": [
+    {
+      "engine": "chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "306px",
+        "bodyWidth": 290,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/read/46/15",
+      "overflow": false,
+      "headerHeight": 180,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "306px",
+        "bodyWidth": 290,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/read/46/15",
+      "overflow": false,
+      "headerHeight": 180,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.0980392 0.0823529 0.0980392 / 0.85), color(srgb 0.0980392 0.0823529 0.0980392 / 0.56) 58%, color(srgb 0.0980392 0.0823529 0.0980392 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "370px",
+        "bodyWidth": 354,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "370px",
+        "bodyWidth": 354,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "736px",
+        "bodyWidth": 720,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "736px",
+        "bodyWidth": 720,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "1156px",
+        "bodyWidth": 1100,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 28px, rgb(0, 0, 0) calc(100% - 28px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/read/46/15",
+      "overflow": false,
+      "headerHeight": 140,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "1156px",
+        "bodyWidth": 1100,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 28px, rgb(0, 0, 0) calc(100% - 28px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/read/46/15",
+      "overflow": false,
+      "headerHeight": 140,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.0980392 0.0823529 0.0980392 / 0.85), color(srgb 0.0980392 0.0823529 0.0980392 / 0.56) 58%, color(srgb 0.0980392 0.0823529 0.0980392 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 320,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "306px",
+        "bodyWidth": 290,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 320,
+      "theme": "light",
+      "path": "/read/46/15",
+      "overflow": false,
+      "headerHeight": 180,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 320,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "306px",
+        "bodyWidth": 290,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 320,
+      "theme": "dark",
+      "path": "/read/46/15",
+      "overflow": false,
+      "headerHeight": 180,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.098039 0.082353 0.098039 / 0.85), color(srgb 0.098039 0.082353 0.098039 / 0.56) 58%, color(srgb 0.098039 0.082353 0.098039 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "370px",
+        "bodyWidth": 354,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 64,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "370px",
+        "bodyWidth": 354,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 768,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "736px",
+        "bodyWidth": 720,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 768,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "736px",
+        "bodyWidth": 720,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 8px, rgb(0, 0, 0) calc(100% - 8px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "light",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "1156px",
+        "bodyWidth": 1100,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 28px, rgb(0, 0, 0) calc(100% - 28px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "light",
+      "path": "/read/46/15",
+      "overflow": false,
+      "headerHeight": 140,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo oscuro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.62), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.984314 0.972549 0.956863 / 0.75), color(srgb 0.984314 0.972549 0.956863 / 0.42) 58%, color(srgb 0.984314 0.972549 0.956863 / 0.24)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/",
+      "overflow": false,
+      "headerHeight": 76,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Ajustes",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "none",
+        "blur": "none"
+      },
+      "mantle": {
+        "width": "1156px",
+        "bodyWidth": 1100,
+        "display": "block",
+        "mask": "linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 60%, rgba(0, 0, 0, 0.2) 84%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 28px, rgb(0, 0, 0) calc(100% - 28px), rgba(0, 0, 0, 0))",
+        "background": "none",
+        "blur": "blur(10px) saturate(1.12)"
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/read/46/15",
+      "overflow": false,
+      "headerHeight": 140,
+      "headerOverflow": false,
+      "buttons": [
+        {
+          "label": "Activar modo claro",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Abrir menú de lectura",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "glass": {
+        "background": "linear-gradient(rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0) 8%), linear-gradient(90deg, color(srgb 0.098039 0.082353 0.098039 / 0.85), color(srgb 0.098039 0.082353 0.098039 / 0.56) 58%, color(srgb 0.098039 0.082353 0.098039 / 0.28)), none",
+        "blur": "blur(12px) saturate(1.18)"
+      },
+      "mantle": null
+    }
+  ]
+}

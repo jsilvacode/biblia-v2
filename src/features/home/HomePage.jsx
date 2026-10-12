@@ -215,29 +215,29 @@ export default function HomePage() {
               </div>
             </article>
           </section>
-
-          {hasReadingHistory && <InstallInvitation />}
-
-          <section aria-labelledby="home-editorial-heading" className={styles.editorialSection}>
-            <h2 className={styles.eyebrow} id="home-editorial-heading">{t('home.alsoIn')}</h2>
-            <div className={styles.editorialList}>
-              {entries.map((entry, index) => (
-                <Link className={styles.editorialEntry} key={entry.href} to={entry.href}>
-                  <span aria-hidden="true" className={styles.entryNumber}>{String(index + 1).padStart(2, '0')}</span>
-                  <span className={styles.entryCopy}>
-                    <h3 className={styles.entryTitle}>{entry.title}</h3>
-                    <span className={styles.entryDetail}>{entry.detail}</span>
-                    <span className={styles.entryAction}>{entry.action}<Icon name="arrowRight" size={17} /></span>
-                  </span>
-                  <span aria-hidden="true" className={styles.entryImage}>
-                    <img alt="" decoding="async" height="720" loading="lazy" src={entry.image} width="1440" />
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </section>
-
         </div>
+
+        {hasReadingHistory && <InstallInvitation />}
+
+        <section aria-labelledby="home-editorial-heading" className={styles.editorialSection}>
+          <h2 className={styles.eyebrow} id="home-editorial-heading">{t('home.alsoIn')}</h2>
+          <div className={styles.editorialList}>
+            {entries.map((entry, index) => (
+              <Link className={styles.editorialEntry} key={entry.href} to={entry.href}>
+                <span aria-hidden="true" className={styles.entryNumber}>{String(index + 1).padStart(2, '0')}</span>
+                <span className={styles.entryCopy}>
+                  <h3 className={styles.entryTitle}>{entry.title}</h3>
+                  <span className={styles.entryDetail}>{entry.detail}</span>
+                  <span className={styles.entryAction}>{entry.action}<Icon name="arrowRight" size={17} /></span>
+                </span>
+                <span aria-hidden="true" className={styles.entryImage}>
+                  <img alt="" decoding="async" height="720" loading="lazy" src={entry.image} width="1440" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
         <section aria-labelledby="interest-links-title" className={styles.interestSection}>
           <h2 className={styles.eyebrow} id="interest-links-title">{t('home.interestTitle')} · {t('home.externalSites')}</h2>
           <div className={styles.interestGrid}>
