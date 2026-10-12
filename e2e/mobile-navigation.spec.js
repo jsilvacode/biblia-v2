@@ -168,7 +168,7 @@ test.describe('desktop navigation shell', () => {
 })
 
 test.describe('editorial page composition', () => {
-  test('keeps the Home hero full-bleed and separates the primary blocks', async ({ page }, testInfo) => {
+  test('keeps the Home hero full-bleed and separates the primary blocks', async ({ page }) => {
     await page.goto('/')
 
     const heroBox = await page.getByRole('region', { name: /Promesa del día|Promise of the day|Promessa do dia/ }).boundingBox()
@@ -176,7 +176,11 @@ test.describe('editorial page composition', () => {
     const heroRegion = page.getByRole('region', { name: /Promesa del día|Promise of the day|Promessa do dia/ })
     const heroKickerBox = await heroRegion.getByText(/Una promesa para hoy|A promise for today|Uma promessa para hoje/).boundingBox()
     const heroHeadingBox = await heroRegion.getByRole('heading').boundingBox()
-    const readingBox = await page.locator('article[class*="readingCard"]').boundingBox()
+    const heroActionBoxes = await Promise.all([
+      heroRegion.getByRole('link', { name: /Leer capítulo|Read chapter|Ler capítulo/ }).boundingBox(),
+      heroRegion.getByRole('button', { name: /Compartir promesa|Share promise|Compartilhar promessa/ }).boundingBox(),
+    ])
+    const readingBox = await page.getByTestId('home-reading-panel').boundingBox()
     const viewport = page.viewportSize()
 
     expect(heroBox).not.toBeNull()
@@ -192,23 +196,53 @@ test.describe('editorial page composition', () => {
     // main promise follows it with measured breathing room.
     expect(heroKickerBox.y - (homeHeaderBox.y + homeHeaderBox.height)).toBeLessThanOrEqual(70)
     expect(heroHeadingBox.y - (heroKickerBox.y + heroKickerBox.height)).toBeLessThanOrEqual(32)
-    expect(heroBox.height).toBeGreaterThanOrEqual(testInfo.project.name === 'desktop' ? 360 : 280)
-    // The primary reading card deliberately overlaps the quiet lower edge of
-    // the hero, but must remain a restrained transition rather than cover it.
-    expect(readingBox.y - (heroBox.y + heroBox.height)).toBeGreaterThanOrEqual(-40)
+    // The hero adapts to the promise length and viewport height. Its complete
+    // content must fit before the reading panel, including both actions.
+    for (const actionBox of heroActionBoxes) {
+      expect(actionBox).not.toBeNull()
+      expect(actionBox.y).toBeGreaterThan(heroHeadingBox.y + heroHeadingBox.height)
+      expect(actionBox.y + actionBox.height).toBeLessThanOrEqual(heroBox.y + heroBox.height)
+    }
+    // The primary reading panel follows the hero's quiet lower edge without
+    // covering the promise or its actions.
+    expect(readingBox.y - (heroBox.y + heroBox.height)).toBeGreaterThanOrEqual(0)
   })
 
-  test('keeps the Home and section headers at the same height', async ({ page }, testInfo) => {
-    await page.goto('/')
-    const homeHeader = await page.locator('header[class*="homeHeader"]').boundingBox()
+  test('keeps Home and section header controls consistent and unclipped', async ({ page }) => {
+    const controlSizes = []
+    for (const path of ['/', '/bible']) {
+      await page.goto(path)
+      const header = page.locator('header[class*="homeHeader"]')
+      const headerBox = await header.boundingBox()
+      expect(headerBox).not.toBeNull()
+      await expect(header.getByRole('link', { name: 'Santa Biblia', exact: true })).toHaveAttribute('href', '/')
 
-    await page.goto('/bible')
-    const sectionHeader = await page.locator('header[class*="homeHeader"]').boundingBox()
-
-    expect(homeHeader).not.toBeNull()
-    expect(sectionHeader).not.toBeNull()
-    expect(Math.abs(homeHeader.height - sectionHeader.height)).toBeLessThanOrEqual(1)
-    expect(homeHeader.height).toBeGreaterThanOrEqual(testInfo.project.name === 'desktop' ? 70 : 64)
+      const controls = [
+        header.getByRole('button', { name: /Activar modo oscuro|Activar modo claro|Use dark theme|Use light theme|Ativar modo escuro|Ativar modo claro/ }),
+        header.getByRole('button', { name: /Ajustes|Settings|Configurações/ }),
+      ]
+      const sizes = []
+      for (const control of controls) {
+        await expect(control).toBeVisible()
+        const box = await control.boundingBox()
+        expect(box).not.toBeNull()
+        expect(box.width).toBeGreaterThanOrEqual(40)
+        expect(box.height).toBeGreaterThanOrEqual(40)
+        expect(box.x).toBeGreaterThanOrEqual(headerBox.x)
+        expect(box.y).toBeGreaterThanOrEqual(headerBox.y)
+        expect(box.x + box.width).toBeLessThanOrEqual(headerBox.x + headerBox.width)
+        expect(box.y + box.height).toBeLessThanOrEqual(headerBox.y + headerBox.height)
+        await control.focus()
+        await expect(control).toBeFocused()
+        sizes.push({ width: box.width, height: box.height })
+      }
+      controlSizes.push(sizes)
+      expect(await header.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true)
+    }
+    for (let index = 0; index < controlSizes[0].length; index += 1) {
+      expect(Math.abs(controlSizes[0][index].width - controlSizes[1][index].width)).toBeLessThanOrEqual(1)
+      expect(Math.abs(controlSizes[0][index].height - controlSizes[1][index].height)).toBeLessThanOrEqual(1)
+    }
   })
 
   test('centers the shared content body on every primary section', async ({ page }) => {
@@ -238,9 +272,9 @@ test.describe('editorial page composition', () => {
     await expect(dailyCard).toBeVisible()
     await expect(dailyCard).toHaveAttribute('href', '/reavivados')
 
-    const thematicCard = page.getByRole('link', { name: /Promesas de Dios|Promises of God|Promessas de Deus/ }).last()
+    const thematicCard = page.getByRole('link', { name: /Qué leer cuando|What to read when|O que ler quando/ })
     await expect(thematicCard.getByText(/Qué leer cuando|What to read when|O que ler quando/)).toBeVisible()
-    await expect(thematicCard.getByText(/Guía de consulta bíblica|Bible reference guide|Guia de consulta bíblica/i)).toBeVisible()
+    await expect(thematicCard.getByText(/Guía bíblica para lo que estás viviendo|Biblical guidance for what you are going through|Orientação bíblica para o que você está vivendo/i)).toBeVisible()
     await thematicCard.click()
     await expect(page).toHaveURL(/\/topics$/)
     await expect(page.getByRole('heading', { name: /¿Qué necesitas hoy|What do you need today|Do que você precisa hoje/i })).toBeVisible()

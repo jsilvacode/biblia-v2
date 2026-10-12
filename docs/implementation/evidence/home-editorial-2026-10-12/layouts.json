@@ -1,0 +1,1062 @@
+{
+  "results": [
+    {
+      "width": 320,
+      "height": 568,
+      "theme": "light",
+      "history": false,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "theme": "light",
+      "history": true,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "theme": "dark",
+      "history": false,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "theme": "dark",
+      "history": true,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "history": false,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "history": true,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "history": false,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "history": true,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "theme": "light",
+      "history": false,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "theme": "light",
+      "history": true,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "theme": "dark",
+      "history": false,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "theme": "dark",
+      "history": true,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "theme": "light",
+      "history": false,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "theme": "light",
+      "history": true,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "theme": "dark",
+      "history": false,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "theme": "dark",
+      "history": true,
+      "locale": "es",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 390,
+      "height": 900,
+      "theme": "light",
+      "history": true,
+      "locale": "en",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 390,
+      "height": 900,
+      "theme": "dark",
+      "history": true,
+      "locale": "en",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "theme": "light",
+      "history": true,
+      "locale": "en",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "theme": "dark",
+      "history": true,
+      "locale": "en",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 390,
+      "height": 900,
+      "theme": "light",
+      "history": true,
+      "locale": "pt-BR",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 390,
+      "height": 900,
+      "theme": "dark",
+      "history": true,
+      "locale": "pt-BR",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "theme": "light",
+      "history": true,
+      "locale": "pt-BR",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)",
+        "rgb(145, 76, 57)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "theme": "dark",
+      "history": true,
+      "locale": "pt-BR",
+      "overflow": false,
+      "images": [
+        {
+          "src": "/assets/home-rpsp-landscape-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-guide-editorial-v2.webp",
+          "width": 1280
+        },
+        {
+          "src": "/assets/home-study-invitation-v1.webp",
+          "width": 1440
+        },
+        {
+          "src": "/assets/home-links/escuela-sabatica.svg",
+          "width": 150
+        },
+        {
+          "src": "/assets/home-links/dialogo-biblico.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/nuevo-tiempo.png",
+          "width": 64
+        },
+        {
+          "src": "/assets/home-links/adra.png",
+          "width": 64
+        }
+      ],
+      "accent": [
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)",
+        "rgb(255, 208, 180)"
+      ],
+      "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.12) 20px, rgb(0, 0, 0) 80px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)"
+    }
+  ],
+  "hover": "matrix(1, 0, 0, 1, 0, 0)",
+  "engine": "Chromium emulation"
+}

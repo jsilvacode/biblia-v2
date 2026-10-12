@@ -1,0 +1,208 @@
+.picker {
+  --picker-fill: light-dark(rgb(255 255 255 / 0.82), color-mix(in srgb, var(--surface-raised) 82%, transparent));
+  --picker-border: light-dark(rgb(255 255 255 / 0.28), rgb(255 255 255 / 0.1));
+  --picker-reflection: light-dark(rgb(255 255 255 / 0.3), rgb(255 255 255 / 0.085));
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px auto;
+  align-items: end;
+  width: 100%;
+  max-width: 560px;
+  gap: 16px;
+  margin-inline: auto;
+}
+
+.field {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  color: var(--ink-muted);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.field:has([aria-expanded='true']) { z-index: 2; }
+
+.control {
+  position: relative;
+  min-width: 0;
+  border-bottom: 1px solid var(--border);
+  transition: border-color 160ms ease;
+}
+
+.control:has(.trigger:not(:disabled)):hover,
+.control:focus-within {
+  border-color: color-mix(in srgb, var(--accent-blue) 70%, var(--border));
+}
+
+.control:has([aria-expanded='true']) {
+  border-color: var(--picker-border);
+  border-radius: 12px 12px 0 0;
+  background: radial-gradient(ellipse at 18% 0%, var(--picker-reflection), transparent 64%), var(--picker-fill);
+}
+
+.control:has(.menu[data-direction='up']:not([hidden])) { border-radius: 0 0 12px 12px; }
+
+.trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  margin: 0;
+  padding: 12px 32px 12px 2px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+
+.emptyControl .trigger { color: var(--ink-muted); }
+.trigger:disabled { opacity: 0.65; cursor: default; }
+
+/* Keep the filter on the trigger, a sibling of the menu. A filtered wrapper
+   would create a backdrop root and leave the expanded list's backdrop sharp. */
+.trigger[aria-expanded='true'] {
+  border-radius: inherit;
+  backdrop-filter: blur(16px) saturate(110%);
+  -webkit-backdrop-filter: blur(16px) saturate(110%);
+}
+
+.trigger:focus-visible,
+.openChapter:focus-visible {
+  outline: 2px solid var(--focus-ring, var(--accent-blue));
+  outline-offset: 4px;
+}
+
+.value { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  display: flex;
+  color: var(--accent-blue);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.trigger:disabled .arrow { color: var(--ink-muted); }
+
+.menu {
+  position: absolute;
+  z-index: 30;
+  top: 100%;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-height: 288px;
+  padding: 6px;
+  overflow-y: auto;
+  border: 1px solid var(--picker-border);
+  border-radius: 0 0 12px 12px;
+  background: radial-gradient(ellipse at 18% 0%, var(--picker-reflection), transparent 64%), var(--picker-fill);
+  backdrop-filter: blur(16px) saturate(110%);
+  -webkit-backdrop-filter: blur(16px) saturate(110%);
+  box-shadow: 0 12px 28px -16px color-mix(in srgb, var(--shadow-ink) 24%, transparent);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  visibility: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  touch-action: pan-y;
+}
+
+.menu[hidden] { display: none !important; }
+.menu[data-direction='down'] { border-top: 0; }
+.menu[data-direction='up'] { border-bottom: 0; border-radius: 12px 12px 0 0; }
+
+.groupLabel {
+  display: block;
+  padding: 10px 10px 6px;
+  color: var(--ink-muted);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.activeOption { background: color-mix(in srgb, var(--accent-blue) 13%, var(--surface-raised)); }
+.option[aria-selected='true'] { color: var(--accent-blue-deep, var(--accent-blue)); font-weight: 500; }
+.chapterMenu .option { justify-content: center; }
+
+.openChapter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 49px;
+  gap: 8px;
+  margin: 0;
+  padding: 13px 22px;
+  border: 1px solid var(--action-reading-bg, var(--accent-blue));
+  border-radius: 999px;
+  background: var(--action-reading-bg, var(--accent-blue));
+  color: var(--action-reading-ink, var(--surface-raised));
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.openChapter:hover:not(:disabled) { background: color-mix(in srgb, var(--action-reading-bg, var(--accent-blue)) 90%, var(--ink)); }
+
+.openChapter:disabled {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--ink-muted);
+  opacity: 1;
+  cursor: default;
+}
+
+.status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .picker { max-width: 320px; grid-template-columns: minmax(0, 1fr) 84px; gap: 14px; }
+  .trigger { padding-right: 28px; }
+  .openChapter { grid-column: 1 / -1; width: 100%; margin-top: 2px; padding: 12px 18px; font-size: 12px; }
+}
+
+@media (max-width: 350px) {
+  .picker { grid-template-columns: minmax(0, 1fr) 74px; gap: 12px; }
+  .trigger { padding-right: 26px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control, .openChapter { transition: none; }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "theme": "light",
+    "scrollTop": 129,
+    "keyboard": "Space/typeahead/ESC/Tab OK",
+    "listenersAfterUnmount": 0
+  },
+  {
+    "theme": "dark",
+    "scrollTop": 129,
+    "keyboard": "Space/typeahead/ESC/Tab OK",
+    "listenersAfterUnmount": 0
+  }
+]

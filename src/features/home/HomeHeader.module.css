@@ -146,3 +146,19 @@
 
 .homeBrand > span:last-child { min-width: 0; }
 .homeHeaderControls { flex-shrink: 0; }
+
+.heroHeader { min-height: 76px; }
+.heroHeader .homeBrand { font-size: 1.75rem; font-weight: 400; }
+.heroHeader .homeBrandMark { width: 24px; height: 24px; }
+.heroHeader .homeNavigationLink { font-size: .875rem; font-weight: 400; }
+.heroHeader .homeHeaderControls { margin-left: auto; }
+@media (min-width: 1024px) {
+  .heroHeader .homeDesktopNavigation { position: absolute; left: 50%; margin-left: 0; transform: translateX(-50%); }
+}
+@media (max-width: 620px) {
+  .heroHeader { min-height: 64px; }
+  .heroHeader .homeBrand { font-size: 1.25rem; }
+}
+@media (min-width: 801px) and (max-height: 850px) { .heroHeader { min-height: 68px; } }
+@media (min-width: 801px) and (max-height: 780px) { .heroHeader { min-height: 64px; } }
+@media (min-width: 801px) and (max-height: 740px) { .heroHeader { min-height: 60px; } }

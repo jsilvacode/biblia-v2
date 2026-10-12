@@ -1,0 +1,246 @@
+[
+  {
+    "width": 320,
+    "height": 568,
+    "theme": "light",
+    "geometries": [
+      {
+        "name": "book",
+        "direction": "up",
+        "height": 288,
+        "top": 142.953125,
+        "bottom": 430.953125,
+        "navTop": 504,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "rgba(255, 255, 255, 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "book",
+        "direction": "down",
+        "height": 288,
+        "top": 93.953125,
+        "bottom": 381.953125,
+        "navTop": 504,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "rgba(255, 255, 255, 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "chapter",
+        "direction": "up",
+        "height": 288,
+        "top": 142.953125,
+        "bottom": 430.953125,
+        "navTop": 504,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "rgba(255, 255, 255, 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "chapter",
+        "direction": "down",
+        "height": 288,
+        "top": 93.953125,
+        "bottom": 381.953125,
+        "navTop": 504,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "rgba(255, 255, 255, 0.82)",
+        "hit": true,
+        "overflow": false
+      }
+    ],
+    "typeahead": "1 Corintios/11/150 OK",
+    "focus": "ESC/Tab OK"
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "geometries": [
+      {
+        "name": "book",
+        "direction": "up",
+        "height": 288,
+        "top": 239.640625,
+        "bottom": 527.640625,
+        "navTop": 780,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "color(srgb 0.14902 0.121569 0.141176 / 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "book",
+        "direction": "down",
+        "height": 288,
+        "top": 93.640625,
+        "bottom": 381.640625,
+        "navTop": 780,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "color(srgb 0.14902 0.121569 0.141176 / 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "chapter",
+        "direction": "up",
+        "height": 288,
+        "top": 239.640625,
+        "bottom": 527.640625,
+        "navTop": 780,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "color(srgb 0.14902 0.121569 0.141176 / 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "chapter",
+        "direction": "down",
+        "height": 288,
+        "top": 93.640625,
+        "bottom": 381.640625,
+        "navTop": 780,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "color(srgb 0.14902 0.121569 0.141176 / 0.82)",
+        "hit": true,
+        "overflow": false
+      }
+    ],
+    "typeahead": "1 Corintios/11/150 OK",
+    "focus": "ESC/Tab OK"
+  },
+  {
+    "width": 844,
+    "height": 390,
+    "theme": "light",
+    "geometries": [
+      {
+        "name": "book",
+        "direction": "up",
+        "height": 240.765625,
+        "top": 12,
+        "bottom": 252.765625,
+        "navTop": 326,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "rgba(255, 255, 255, 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "book",
+        "direction": "down",
+        "height": 220.234375,
+        "top": 93.765625,
+        "bottom": 314,
+        "navTop": 326,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "rgba(255, 255, 255, 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "chapter",
+        "direction": "up",
+        "height": 240.765625,
+        "top": 12,
+        "bottom": 252.765625,
+        "navTop": 326,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "rgba(255, 255, 255, 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "chapter",
+        "direction": "down",
+        "height": 220.234375,
+        "top": 93.765625,
+        "bottom": 314,
+        "navTop": 326,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "rgba(255, 255, 255, 0.82)",
+        "hit": true,
+        "overflow": false
+      }
+    ],
+    "typeahead": "1 Corintios/11/150 OK",
+    "focus": "ESC/Tab OK"
+  },
+  {
+    "width": 1440,
+    "height": 900,
+    "theme": "dark",
+    "geometries": [
+      {
+        "name": "book",
+        "direction": "up",
+        "height": 288,
+        "top": 362.90625,
+        "bottom": 650.90625,
+        "navTop": 900,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "color(srgb 0.14902 0.121569 0.141176 / 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "book",
+        "direction": "down",
+        "height": 288,
+        "top": 93.90625,
+        "bottom": 381.90625,
+        "navTop": 900,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "color(srgb 0.14902 0.121569 0.141176 / 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "chapter",
+        "direction": "up",
+        "height": 288,
+        "top": 362.90625,
+        "bottom": 650.90625,
+        "navTop": 900,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "color(srgb 0.14902 0.121569 0.141176 / 0.82)",
+        "hit": true,
+        "overflow": false
+      },
+      {
+        "name": "chapter",
+        "direction": "down",
+        "height": 288,
+        "top": 93.90625,
+        "bottom": 381.90625,
+        "navTop": 900,
+        "gap": 0,
+        "blur": "blur(16px) saturate(1.1)",
+        "fill": "color(srgb 0.14902 0.121569 0.141176 / 0.82)",
+        "hit": true,
+        "overflow": false
+      }
+    ],
+    "typeahead": "1 Corintios/11/150 OK",
+    "focus": "ESC/Tab OK"
+  }
+]

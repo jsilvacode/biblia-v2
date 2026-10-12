@@ -3,11 +3,11 @@ import { useI18n } from '../../i18n'
 import { Icon } from '../ui/Icon'
 import styles from './AppFooter.module.css'
 
-export function AppFooter({ showSupport = false }) {
+export function AppFooter({ showSupport = false, editorial = false }) {
   const { t } = useI18n()
 
   return (
-    <footer className={styles.footer}>
+    <footer className={`${styles.footer}${editorial ? ` ${styles.editorial}` : ''}`}>
       <div className={styles.inner}>
         {showSupport && (
           <section aria-labelledby="support-project-title" className={styles.support}>

@@ -1,8 +1,22 @@
 # Estado de ejecución — experiencias de lectura
 
-Actualizado: 16 de septiembre de 2026. Encargo: [plan principal para Luna](PLAN_EXPERIENCIAS_LECTURA_LUNA_2026-09-10.md).
+Actualizado: 12 de octubre de 2026. Encargo: [plan principal para Luna](PLAN_EXPERIENCIAS_LECTURA_LUNA_2026-09-10.md).
 
 Actualización visual 14/09/2026: guía, mockups navegables, artes originales y capturas en [docs/design](../design/GUIA_VISUAL_LUNA_2026-09-10.md). Diseño preparado para revisión; las etapas de integración de la app continúan pendientes. Consultar el [reporte visual](../design/experiencias-lectura-v1/qa-report.json) para resultados de esta muestra, separados de las pruebas de la aplicación.
+
+## Renovación del Home · 12/10/2026
+
+**Estado:** implementada y verificada en la aplicación; el usuario autorizó integrar esta entrega en `origin/main` y publicar por el despliegue de producción de Vercel. La comprobación del despliegue debe realizarse contra el SHA que recibe GitHub después del push, separada de la validación local registrada aquí.
+
+**Entregado:** hero con paisaje continuo y velo localizado bajo la promesa; acceso bíblico centrado, sin selección inicial; última lectura real con enlace directo. El manto de vidrio se extiende detrás del selector y los tres artículos y se desvanece sin borde inferior. Las imágenes de los artículos son panorámicas, los títulos conservan el acento de cada tema y el hover es discreto, con respeto por movimiento reducido. Los cuatro enlaces externos originales se presentan en fichas compactas con iconos locales.
+
+**Selector:** libro y capítulo usan desplegables de vidrio unidos al campo, con apertura automática arriba/abajo, máximo común de 288 px y reducción según el espacio del viewport y la navegación móvil. Conserva desplazamiento interno, teclado, búsqueda por escritura, foco y cierre exterior; cambiar libro restablece el capítulo. La promesa, versión bíblica, historial, progreso de Reavivados y curso siguen usando sus datos y rutas reales.
+
+**Archivos:** `HomePage`, nuevo `HomePassagePicker`, variante de cabecera/footer del Home, traducciones ES/EN/PT, cuatro iconos externos y dos specs E2E adaptadas al nuevo acceso inline.
+
+**Verificado:** lint; 164 unitarios en 37 archivos; build con auditoría del contrato público y corpus; `git diff --check`. La regresión general se complementó con la pasada final de Home/navegación: 38 casos aplicables aprobados y 8 omisiones previstas. Las tres imágenes editoriales también se cargan y decodifican en ambos proyectos E2E. Revisión visual de 24 combinaciones con/sin historial, tres idiomas, ambos temas y anchos de 320 a 1440 px, sin desborde y con siete imágenes cargadas por diseño. Gestos táctiles, apertura en ambas direcciones, límites y limpieza de listeners del selector comprobados en Chromium.
+
+**Evidencia:** [capturas, resultados y alcance](evidence/home-editorial-2026-10-12/README.md). Es emulación Chromium; no representa una prueba física en Safari/iOS ni modifica la disponibilidad del audio de Nuevo Tiempo.
 
 ## Revisión transversal · diseño editorial y navegación · 16/09/2026
 
