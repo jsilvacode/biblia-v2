@@ -34,6 +34,12 @@ El selector compacto deja de recibir la referencia en curso: inicia neutro y se 
 
 Verificación: lint, 7 unitarios afectados, build y auditorías, 28 E2E aprobados/4 omisiones previstas, `git diff --check`. [Evidencia](evidence/glass-reader-refinement-2026-10-12/README.md): 40 combinaciones responsive en Chromium/WebKit y A/B de pintura real en ambos temas. Publicación pendiente de verificación contra el SHA propio del nuevo push.
 
+### Corrección del material de vidrio · 12/10/2026
+
+El usuario señaló que los gradientes reforzados parecían una mancha. Se eliminan las tintas radiales y el glow desenfocado: el acabado pasa a un plano neutro con desenfoque de 10 px y un reflejo/labio superior definido en una capa independiente. Los laterales se pierden en 420 px y no hay borde inferior. El paisaje se extiende debajo del selector para que el vidrio tenga textura real detrás; el manto conserva el ancho del cuerpo y su desvanecimiento detrás de los artículos.
+
+Lint, build/auditorías, `git diff --check` y ocho E2E aprobados. [Evidencia](evidence/glass-specular-2026-10-12/README.md): 16 combinaciones Home en Chromium/WebKit, ambos temas, 320–1440 px. Sin cambios en la navegación o limpieza del lector; la publicación se contrasta después del push con el SHA propio de esta corrección.
+
 ## Revisión transversal · diseño editorial y navegación · 16/09/2026
 
 **Alcance:** sitio completo, incluidas las pantallas anteriores al plan. Se conserva el hero y el carácter de las ilustraciones; la guía vigente es [Sistema editorial](../design/SISTEMA_EDITORIAL_VIGENTE.md).

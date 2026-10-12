@@ -1,7 +1,7 @@
 .homePage {
   --home-width: 68.75rem;
   --home-gutter: 40px;
-  --home-tail: 110px;
+  --home-tail: 240px;
   --home-mask: linear-gradient(180deg, #000 0%, #000 calc(100% - 310px), rgb(0 0 0 / .98) calc(100% - 260px), rgb(0 0 0 / .88) calc(100% - 210px), rgb(0 0 0 / .65) calc(100% - 155px), rgb(0 0 0 / .35) calc(100% - 100px), rgb(0 0 0 / .12) calc(100% - 50px), transparent 100%);
   width: 100%;
   margin: 0;
@@ -34,35 +34,35 @@
 .heroSecondaryAction { border-color: var(--border); background: var(--surface-raised); color: var(--ink); }
 .homeFeed { position: relative; z-index: 1; padding-top: 12px; }
 .glassMantle {
-  --glass-fill: light-dark(rgb(255 255 255 / .28), rgb(38 31 36 / .18));
-  --glass-light: light-dark(rgb(255 255 255 / .88), rgb(255 255 255 / .22));
-  --glass-tint: light-dark(rgb(201 171 151 / .18), rgb(255 208 180 / .075));
-  --glass-shade: light-dark(rgb(112 139 151 / .13), rgb(8 12 20 / .20));
-  --glass-glow: light-dark(rgb(255 255 255 / .90), rgb(255 222 201 / .18));
+  --glass-fill: light-dark(rgb(255 255 255 / .12), rgb(255 255 255 / .025));
+  --glass-edge: light-dark(rgb(255 255 255 / .90), rgb(255 255 255 / .38));
+  --glass-reflection: light-dark(rgb(255 255 255 / .38), rgb(255 255 255 / .095));
+  --glass-lip: light-dark(rgb(255 255 255 / .72), rgb(255 255 255 / .22));
+  --mantle-bleed: 8px;
   --mantle-width: min(calc(100% + 16px), 1100px);
-  --mantle-mask: linear-gradient(180deg, transparent 0px, rgb(0 0 0 / .65) 12px, #000 32px, #000 58%, rgb(0 0 0 / .5) 82%, transparent 100%);
-  --mantle-side-mask: radial-gradient(ellipse 50% 95% at 50% 44%, #000 0%, #000 60%, rgb(0 0 0 / .8) 76%, rgb(0 0 0 / .25) 93%, transparent 100%);
+  --mantle-mask: linear-gradient(180deg, #000 0%, #000 55%, rgb(0 0 0 / .5) 80%, transparent 100%);
+  --mantle-rim-mask: linear-gradient(180deg, #000 0px, #000 30px, rgb(0 0 0 / .45) 180px, transparent 420px);
+  --mantle-side-mask: linear-gradient(90deg, transparent, #000 var(--mantle-bleed), #000 calc(100% - var(--mantle-bleed)), transparent);
   position: relative;
   isolation: isolate;
 }
-.glassMantle::before, .glassMantle::after { position: absolute; top: 0; bottom: 0; left: 50%; width: var(--mantle-width); transform: translateX(-50%); border-radius: 44px 52px 0 0 / 42px 48px 0 0; mask-image: var(--mantle-mask), var(--mantle-side-mask); mask-composite: intersect; -webkit-mask-image: var(--mantle-mask), var(--mantle-side-mask); -webkit-mask-composite: source-in; pointer-events: none; content: ''; }
-/* These layers stay inside the isolated mantle, behind its content. The cool
-   refraction gives the light theme depth even where the landscape has faded. */
+.glassMantle::before, .glassMantle::after { position: absolute; top: 0; bottom: 0; left: 50%; box-sizing: border-box; width: var(--mantle-width); transform: translateX(-50%); border-radius: 44px 52px 0 0 / 42px 48px 0 0; mask-image: var(--mantle-mask), var(--mantle-side-mask); mask-composite: intersect; -webkit-mask-image: var(--mantle-mask), var(--mantle-side-mask); -webkit-mask-composite: source-in; pointer-events: none; content: ''; }
+/* Separate the frosted plane from its unblurred specular rim. Blurring the rim
+   or painting coloured glows made the material read as a stain on the page. */
 .glassMantle::before {
-  z-index: -1;
-  background: radial-gradient(ellipse 75% 20% at 24% 2%, var(--glass-light), transparent 76%),
-    linear-gradient(118deg, transparent 12%, var(--glass-fill) 27%, transparent 44%),
-    radial-gradient(ellipse 65% 55% at 85% 26%, var(--glass-shade), transparent 83%),
-    radial-gradient(ellipse 80% 70% at 25% 40%, var(--glass-tint), transparent 82%);
-  backdrop-filter: blur(12px) saturate(125%);
-  -webkit-backdrop-filter: blur(12px) saturate(125%);
+  z-index: -2;
+  background: var(--glass-fill);
+  backdrop-filter: blur(10px) saturate(112%);
+  -webkit-backdrop-filter: blur(10px) saturate(112%);
 }
 .glassMantle::after {
-  z-index: -2;
-  background: radial-gradient(ellipse 72% 12% at 46% 1%, var(--glass-glow), transparent 80%),
-    radial-gradient(ellipse 65% 65% at 70% 36%, var(--glass-glow), transparent 80%);
-  filter: blur(12px);
-  opacity: .65;
+  z-index: -1;
+  border: 1px solid var(--glass-edge);
+  border-bottom: 0;
+  background: linear-gradient(112deg, transparent 8%, var(--glass-reflection) 18%, transparent 31%);
+  box-shadow: inset 0 1px 0 var(--glass-lip), inset 0 12px 14px -14px var(--glass-lip);
+  mask-image: var(--mantle-rim-mask), var(--mantle-side-mask);
+  -webkit-mask-image: var(--mantle-rim-mask), var(--mantle-side-mask);
 }
 .readingPanel { position: relative; padding: 24px 0 22px; }
 .readingPanel:has([aria-expanded='true']) { z-index: 35; }
@@ -101,7 +101,6 @@
   .glassMantle {
     --mantle-bleed: min(28px, calc(var(--home-gutter) - 12px));
     --mantle-width: calc(100% + var(--mantle-bleed) * 2);
-    --mantle-side-mask: linear-gradient(90deg, transparent, #000 var(--mantle-bleed), #000 calc(100% - var(--mantle-bleed)), transparent);
   }
 }
 @media (hover: hover) and (pointer: fine) {
@@ -128,7 +127,7 @@
   .entryDetail { font-size: .8125rem; }
 }
 @media (max-width: 620px) {
-  .homePage { --home-gutter: 18px; --home-tail: 80px; --home-mask: linear-gradient(180deg, #000 0%, #000 calc(100% - 260px), rgb(0 0 0 / .98) calc(100% - 220px), rgb(0 0 0 / .88) calc(100% - 180px), rgb(0 0 0 / .65) calc(100% - 135px), rgb(0 0 0 / .35) calc(100% - 90px), rgb(0 0 0 / .12) calc(100% - 45px), transparent 100%); }
+  .homePage { --home-gutter: 18px; --home-tail: 180px; --home-mask: linear-gradient(180deg, #000 0%, #000 calc(100% - 260px), rgb(0 0 0 / .98) calc(100% - 220px), rgb(0 0 0 / .88) calc(100% - 180px), rgb(0 0 0 / .65) calc(100% - 135px), rgb(0 0 0 / .35) calc(100% - 90px), rgb(0 0 0 / .12) calc(100% - 45px), transparent 100%); }
   .heroInner { padding-top: 64px; }
   .heroCopy { padding: 30px 9px 28px; }
   .hero h1 { max-width: 22ch; font-size: 1.875rem; line-height: 1.14; }
@@ -142,7 +141,6 @@
   :global(:root[data-theme='dark']) .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, color-mix(in srgb, var(--bg-reader) 3%, transparent) 25%, transparent 35%), color-mix(in srgb, var(--bg-reader) 44%, transparent); }
   .homeFeed { padding-top: 6px; }
   .glassMantle::before, .glassMantle::after { border-radius: 34px 40px 0 0; }
-  .glassMantle::after { filter: blur(10px); opacity: .60; }
   .readingPanel { padding: 20px 0 27px; }
   .readingLayout { gap: 20px; }
   .readingHeading h2 { font-size: 2.0625rem; }
