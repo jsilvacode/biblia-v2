@@ -26,6 +26,14 @@ La ampliación pedida por el usuario lleva el manto a todo el ancho de los tres 
 
 Verificación final: lint, 165 unitarios, build y auditorías aprobados; E2E completo con 122 pruebas aprobadas y 20 omisiones previstas. [Evidencia visual](evidence/home-integration-fidelity-2026-10-12/README.md): 56 combinaciones en Chromium y WebKit 26.5, incluidos lector EN/PT y texto al 200%, sin desbordes ni solapes. La publicación de esta ampliación se valida contra su propio SHA después del push.
 
+### Visibilidad del vidrio y limpieza del lector · 12/10/2026
+
+El A/B de producción confirma que el manto estaba pintado, con poco contraste especialmente en claro; no estaba detrás de una capa opaca. Se refuerzan reflejo superior, refracción fría/cálida y luz diagonal, manteniendo su ancho y desaparición gradual al final de los artículos.
+
+El selector compacto deja de recibir la referencia en curso: inicia neutro y se limpia al abrir otro libro/capítulo. La marca del lector se alinea con Home; el botón textual “Volver” y el selector pasan a una banda del fondo de lectura situada debajo de la barra de vidrio. Se conserva retorno contextual, teclado, menús adaptativos y navegación inmersiva.
+
+Verificación: lint, 7 unitarios afectados, build y auditorías, 28 E2E aprobados/4 omisiones previstas, `git diff --check`. [Evidencia](evidence/glass-reader-refinement-2026-10-12/README.md): 40 combinaciones responsive en Chromium/WebKit y A/B de pintura real en ambos temas. Publicación pendiente de verificación contra el SHA propio del nuevo push.
+
 ## Revisión transversal · diseño editorial y navegación · 16/09/2026
 
 **Alcance:** sitio completo, incluidas las pantallas anteriores al plan. Se conserva el hero y el carácter de las ilustraciones; la guía vigente es [Sistema editorial](../design/SISTEMA_EDITORIAL_VIGENTE.md).

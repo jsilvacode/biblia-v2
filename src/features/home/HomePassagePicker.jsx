@@ -40,18 +40,11 @@ function viewportBounds() {
   }
 }
 
-export function HomePassagePicker({ onGoToChapter, compact = false, initialReference = null, bookTriggerRef, onOpenChange }) {
+export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerRef, onOpenChange }) {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
   const id = useId()
-  const [selection, setSelection] = useState(() => {
-    const book = getBook(initialReference?.book)
-    const chapter = Number(initialReference?.chapter)
-    return {
-      bookId: book?.id ?? null,
-      chapter: book && Number.isInteger(chapter) && chapter >= 1 && chapter <= book.chapters ? chapter : null,
-    }
-  })
+  const [selection, setSelection] = useState({ bookId: null, chapter: null })
   const [popup, setPopup] = useState(null)
   const popupRef = useRef(null)
   const triggersRef = useRef({ book: null, chapter: null })

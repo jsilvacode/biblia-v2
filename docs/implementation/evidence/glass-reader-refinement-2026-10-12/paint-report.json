@@ -1,0 +1,368 @@
+{
+  "base": "http://127.0.0.1:4180",
+  "results": [
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "light",
+      "rect": {
+        "x": 18,
+        "y": 393.75,
+        "width": 354,
+        "height": 1512.453125
+      },
+      "overflow": false,
+      "root": "light",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.65) 12px, rgb(0, 0, 0) 32px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(75% 20% at 24% 2%, rgba(255, 255, 255, 0.88), rgba(0, 0, 0, 0) 76%), linear-gradient(118deg, rgba(0, 0, 0, 0) 12%, rgba(255, 255, 255, 0.28) 27%, rgba(0, 0, 0, 0) 44%), radial-gradient(65% 55% at 85% 26%, rgba(112, 139, 151, 0.13), rgba(0, 0, 0, 0) 83%), radial-gradient(80% 70% at 25% 40%, rgba(201, 171, 151, 0.18), rgba(0, 0, 0, 0) 82%)",
+        "blur": "blur(12px) saturate(1.25)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.6",
+        "background": "radial-gradient(72% 12% at 46% 1%, rgba(255, 255, 255, 0.9), rgba(0, 0, 0, 0) 80%), radial-gradient(65% 65% at 70% 36%, rgba(255, 255, 255, 0.9), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 2.831745907192429,
+        "max": 31,
+        "pixelsAbove3": 0.35131378351717335
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "dark",
+      "rect": {
+        "x": 18,
+        "y": 393.75,
+        "width": 354,
+        "height": 1512.453125
+      },
+      "overflow": false,
+      "root": "dark",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.65) 12px, rgb(0, 0, 0) 32px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(75% 20% at 24% 2%, rgba(255, 255, 255, 0.22), rgba(0, 0, 0, 0) 76%), linear-gradient(118deg, rgba(0, 0, 0, 0) 12%, rgba(38, 31, 36, 0.18) 27%, rgba(0, 0, 0, 0) 44%), radial-gradient(65% 55% at 85% 26%, rgba(8, 12, 20, 0.2), rgba(0, 0, 0, 0) 83%), radial-gradient(80% 70% at 25% 40%, rgba(255, 208, 180, 0.075), rgba(0, 0, 0, 0) 82%)",
+        "blur": "blur(12px) saturate(1.25)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.6",
+        "background": "radial-gradient(72% 12% at 46% 1%, rgba(255, 222, 201, 0.18), rgba(0, 0, 0, 0) 80%), radial-gradient(65% 65% at 70% 36%, rgba(255, 222, 201, 0.18), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 6.4276615699600175,
+        "max": 60.666666666666664,
+        "pixelsAbove3": 0.43209876543209874
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "light",
+      "rect": {
+        "x": 170,
+        "y": 501.109375,
+        "width": 1100,
+        "height": 1192.1875
+      },
+      "overflow": false,
+      "root": "light",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.65) 12px, rgb(0, 0, 0) 32px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 28px, rgb(0, 0, 0) calc(100% - 28px), rgba(0, 0, 0, 0))",
+        "background": "radial-gradient(75% 20% at 24% 2%, rgba(255, 255, 255, 0.88), rgba(0, 0, 0, 0) 76%), linear-gradient(118deg, rgba(0, 0, 0, 0) 12%, rgba(255, 255, 255, 0.28) 27%, rgba(0, 0, 0, 0) 44%), radial-gradient(65% 55% at 85% 26%, rgba(112, 139, 151, 0.13), rgba(0, 0, 0, 0) 83%), radial-gradient(80% 70% at 25% 40%, rgba(201, 171, 151, 0.18), rgba(0, 0, 0, 0) 82%)",
+        "blur": "blur(12px) saturate(1.25)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.65",
+        "background": "radial-gradient(72% 12% at 46% 1%, rgba(255, 255, 255, 0.9), rgba(0, 0, 0, 0) 80%), radial-gradient(65% 65% at 70% 36%, rgba(255, 255, 255, 0.9), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 5.2793586028006745,
+        "max": 44.666666666666664,
+        "pixelsAbove3": 0.5736447528981086
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "dark",
+      "rect": {
+        "x": 170,
+        "y": 501.109375,
+        "width": 1100,
+        "height": 1192.1875
+      },
+      "overflow": false,
+      "root": "dark",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.65) 12px, rgb(0, 0, 0) 32px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 28px, rgb(0, 0, 0) calc(100% - 28px), rgba(0, 0, 0, 0))",
+        "background": "radial-gradient(75% 20% at 24% 2%, rgba(255, 255, 255, 0.22), rgba(0, 0, 0, 0) 76%), linear-gradient(118deg, rgba(0, 0, 0, 0) 12%, rgba(38, 31, 36, 0.18) 27%, rgba(0, 0, 0, 0) 44%), radial-gradient(65% 55% at 85% 26%, rgba(8, 12, 20, 0.2), rgba(0, 0, 0, 0) 83%), radial-gradient(80% 70% at 25% 40%, rgba(255, 208, 180, 0.075), rgba(0, 0, 0, 0) 82%)",
+        "blur": "blur(12px) saturate(1.25)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.65",
+        "background": "radial-gradient(72% 12% at 46% 1%, rgba(255, 222, 201, 0.18), rgba(0, 0, 0, 0) 80%), radial-gradient(65% 65% at 70% 36%, rgba(255, 222, 201, 0.18), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 9.90019244455969,
+        "max": 62.66666666666667,
+        "pixelsAbove3": 0.638498322147651
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "theme": "light",
+      "rect": {
+        "x": 18,
+        "y": 393.75,
+        "width": 354,
+        "height": 1512.453125
+      },
+      "overflow": false,
+      "root": "light",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.65) 12px, rgb(0, 0, 0) 32px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(75% 20% at 24% 2%, rgba(255, 255, 255, 0.88), rgba(0, 0, 0, 0) 76%), linear-gradient(118deg, rgba(0, 0, 0, 0) 12%, rgba(255, 255, 255, 0.28) 27%, rgba(0, 0, 0, 0) 44%), radial-gradient(65% 55% at 85% 26%, rgba(112, 139, 151, 0.13), rgba(0, 0, 0, 0) 83%), radial-gradient(80% 70% at 25% 40%, rgba(201, 171, 151, 0.18), rgba(0, 0, 0, 0) 82%)",
+        "blur": "blur(12px) saturate(1.25)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.6",
+        "background": "radial-gradient(72% 12% at 46% 1%, rgba(255, 255, 255, 0.9), rgba(0, 0, 0, 0) 80%), radial-gradient(65% 65% at 70% 36%, rgba(255, 255, 255, 0.9), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 2.6582705586944315,
+        "max": 31,
+        "pixelsAbove3": 0.33989477774788507
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "theme": "dark",
+      "rect": {
+        "x": 18,
+        "y": 393.75,
+        "width": 354,
+        "height": 1512.453125
+      },
+      "overflow": false,
+      "root": "dark",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.65) 12px, rgb(0, 0, 0) 32px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(75% 20% at 24% 2%, rgba(255, 255, 255, 0.22), rgba(0, 0, 0, 0) 76%), linear-gradient(118deg, rgba(0, 0, 0, 0) 12%, rgba(38, 31, 36, 0.18) 27%, rgba(0, 0, 0, 0) 44%), radial-gradient(65% 55% at 85% 26%, rgba(8, 12, 20, 0.2), rgba(0, 0, 0, 0) 83%), radial-gradient(80% 70% at 25% 40%, rgba(255, 208, 180, 0.075), rgba(0, 0, 0, 0) 82%)",
+        "blur": "blur(12px) saturate(1.25)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.6",
+        "background": "radial-gradient(72% 12% at 46% 1%, rgba(255, 222, 201, 0.18), rgba(0, 0, 0, 0) 80%), radial-gradient(65% 65% at 70% 36%, rgba(255, 222, 201, 0.18), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 6.845322168417144,
+        "max": 62.33333333333334,
+        "pixelsAbove3": 0.4636766508235435
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "light",
+      "rect": {
+        "x": 170,
+        "y": 501.109375,
+        "width": 1100,
+        "height": 1192.1875
+      },
+      "overflow": false,
+      "root": "light",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.65) 12px, rgb(0, 0, 0) 32px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 28px, rgb(0, 0, 0) calc(100% - 28px), rgba(0, 0, 0, 0))",
+        "background": "radial-gradient(75% 20% at 24% 2%, rgba(255, 255, 255, 0.88), rgba(0, 0, 0, 0) 76%), linear-gradient(118deg, rgba(0, 0, 0, 0) 12%, rgba(255, 255, 255, 0.28) 27%, rgba(0, 0, 0, 0) 44%), radial-gradient(65% 55% at 85% 26%, rgba(112, 139, 151, 0.13), rgba(0, 0, 0, 0) 83%), radial-gradient(80% 70% at 25% 40%, rgba(201, 171, 151, 0.18), rgba(0, 0, 0, 0) 82%)",
+        "blur": "blur(12px) saturate(1.25)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.65",
+        "background": "radial-gradient(72% 12% at 46% 1%, rgba(255, 255, 255, 0.9), rgba(0, 0, 0, 0) 80%), radial-gradient(65% 65% at 70% 36%, rgba(255, 255, 255, 0.9), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 4.989507067318359,
+        "max": 45,
+        "pixelsAbove3": 0.5626502440512507
+      }
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "theme": "dark",
+      "rect": {
+        "x": 170,
+        "y": 501.109375,
+        "width": 1100,
+        "height": 1192.1875
+      },
+      "overflow": false,
+      "root": "dark",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.65) 12px, rgb(0, 0, 0) 32px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 28px, rgb(0, 0, 0) calc(100% - 28px), rgba(0, 0, 0, 0))",
+        "background": "radial-gradient(75% 20% at 24% 2%, rgba(255, 255, 255, 0.22), rgba(0, 0, 0, 0) 76%), linear-gradient(118deg, rgba(0, 0, 0, 0) 12%, rgba(38, 31, 36, 0.18) 27%, rgba(0, 0, 0, 0) 44%), radial-gradient(65% 55% at 85% 26%, rgba(8, 12, 20, 0.2), rgba(0, 0, 0, 0) 83%), radial-gradient(80% 70% at 25% 40%, rgba(255, 208, 180, 0.075), rgba(0, 0, 0, 0) 82%)",
+        "blur": "blur(12px) saturate(1.25)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.65",
+        "background": "radial-gradient(72% 12% at 46% 1%, rgba(255, 222, 201, 0.18), rgba(0, 0, 0, 0) 80%), radial-gradient(65% 65% at 70% 36%, rgba(255, 222, 201, 0.18), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 10.376511083999576,
+        "max": 63.66666666666666,
+        "pixelsAbove3": 0.6680086943258084
+      }
+    }
+  ],
+  "method": "Captura A/B del manto real: misma p\u00e1gina y viewport, pseudoelementos visibles/ocultos, repintado completo antes de comparar. La cifra cuantifica presencia de pintura, no calidad est\u00e9tica.",
+  "baselineChromium": [
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "light",
+      "rect": {
+        "x": 18,
+        "y": 393.75,
+        "width": 354,
+        "height": 1512.453125
+      },
+      "overflow": false,
+      "root": "light",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.055), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.45",
+        "background": "radial-gradient(70% 30% at 24% 10%, rgba(255, 255, 255, 0.55), rgba(0, 0, 0, 0) 76%), radial-gradient(78% 70% at 74% 42%, rgba(255, 255, 255, 0.55), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 0.5520263504016288,
+        "max": 8.333333333333334,
+        "pixelsAbove3": 0.04496046692374376
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "theme": "dark",
+      "rect": {
+        "x": 18,
+        "y": 393.75,
+        "width": 354,
+        "height": 1512.453125
+      },
+      "overflow": false,
+      "root": "dark",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), radial-gradient(50% 95% at 50% 44%, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 0.25) 93%, rgba(0, 0, 0, 0) 100%)",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.035), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(38, 31, 36, 0.1), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.45",
+        "background": "radial-gradient(70% 30% at 24% 10%, rgba(255, 208, 180, 0.12), rgba(0, 0, 0, 0) 76%), radial-gradient(78% 70% at 74% 42%, rgba(255, 208, 180, 0.12), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 5.333626032542534,
+        "max": 41,
+        "pixelsAbove3": 0.3538808178638687
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "light",
+      "rect": {
+        "x": 170,
+        "y": 501.109375,
+        "width": 1100,
+        "height": 1192.1875
+      },
+      "overflow": false,
+      "root": "light",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 28px, rgb(0, 0, 0) calc(100% - 28px), rgba(0, 0, 0, 0))",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.055), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.55",
+        "background": "radial-gradient(70% 30% at 24% 10%, rgba(255, 255, 255, 0.55), rgba(0, 0, 0, 0) 76%), radial-gradient(78% 70% at 74% 42%, rgba(255, 255, 255, 0.55), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 0.9848764490447396,
+        "max": 13.666666666666668,
+        "pixelsAbove3": 0.08624161073825504
+      }
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "theme": "dark",
+      "rect": {
+        "x": 170,
+        "y": 501.109375,
+        "width": 1100,
+        "height": 1192.1875
+      },
+      "overflow": false,
+      "root": "dark",
+      "reduced": false,
+      "before": {
+        "z": "-1",
+        "mask": "linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.35) 20px, rgb(0, 0, 0) 60px, rgb(0, 0, 0) 58%, rgba(0, 0, 0, 0.5) 82%, rgba(0, 0, 0, 0) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(0, 0, 0) 28px, rgb(0, 0, 0) calc(100% - 28px), rgba(0, 0, 0, 0))",
+        "background": "radial-gradient(78% 32% at 25% 12%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0) 75%), radial-gradient(70% 58% at 74% 44%, rgba(255, 208, 180, 0.035), rgba(0, 0, 0, 0) 80%), radial-gradient(86% 78% at 50% 35%, rgba(38, 31, 36, 0.1), rgba(0, 0, 0, 0) 85%)",
+        "blur": "blur(7px) saturate(1.18)"
+      },
+      "after": {
+        "z": "-2",
+        "opacity": "0.55",
+        "background": "radial-gradient(70% 30% at 24% 10%, rgba(255, 208, 180, 0.12), rgba(0, 0, 0, 0) 76%), radial-gradient(78% 70% at 74% 42%, rgba(255, 208, 180, 0.12), rgba(0, 0, 0, 0) 80%)"
+      },
+      "paintDifference": {
+        "mean": 7.698696868012234,
+        "max": 43,
+        "pixelsAbove3": 0.5048787370347773
+      }
+    }
+  ]
+}

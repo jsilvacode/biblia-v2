@@ -289,23 +289,29 @@ export default function ReaderPage() {
   return (
     <div className={`reader-page reader-page--${settings.fontFamily} reader-page--${settings.readerLineHeight}${isImmersive ? ' reader-page--immersive' : ''}`} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
       <div className="reader-header" data-reader-chrome>
-        <HomeHeader
-          variant="reader"
-          leading={<button aria-label={t('common.back')} className="icon-button reader-header__back" onClick={handleBack} type="button"><Icon name="arrowLeft" size={18} /></button>}
-          readerMenu={{
-            isOpen: activeDialog === 'sections',
-            onOpen: (event) => openDialog('sections', event),
-          }}
-        />
-        <div className="reader-header__passage" data-testid="reader-passage-row">
-          <HomePassagePicker
-            compact
-            initialReference={reference}
-            key={`${reference.book}:${reference.chapter}`}
-            bookTriggerRef={passageBookTriggerRef}
-            onGoToChapter={goToChapter}
-            onOpenChange={handlePassagePickerOpenChange}
+        <div className="reader-header__bar">
+          <HomeHeader
+            variant="reader"
+            readerMenu={{
+              isOpen: activeDialog === 'sections',
+              onOpen: (event) => openDialog('sections', event),
+            }}
           />
+        </div>
+        <div className="reader-header__passage-band">
+          <div className="reader-header__passage" data-testid="reader-passage-row">
+            <button className="reader-header__back" onClick={handleBack} type="button">
+              <Icon name="arrowLeft" size={17} />
+              <span>{t('common.back')}</span>
+            </button>
+            <HomePassagePicker
+              compact
+              key={`${reference.book}:${reference.chapter}`}
+              bookTriggerRef={passageBookTriggerRef}
+              onGoToChapter={goToChapter}
+              onOpenChange={handlePassagePickerOpenChange}
+            />
+          </div>
         </div>
       </div>
 

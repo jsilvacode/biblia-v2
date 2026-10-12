@@ -34,19 +34,36 @@
 .heroSecondaryAction { border-color: var(--border); background: var(--surface-raised); color: var(--ink); }
 .homeFeed { position: relative; z-index: 1; padding-top: 12px; }
 .glassMantle {
-  --glass-fill: light-dark(rgb(255 255 255 / .09), rgb(38 31 36 / .10));
-  --glass-light: light-dark(rgb(255 255 255 / .42), rgb(255 255 255 / .14));
-  --glass-tint: light-dark(rgb(255 208 180 / .055), rgb(255 208 180 / .035));
-  --glass-glow: light-dark(rgb(255 255 255 / .55), rgb(255 208 180 / .12));
+  --glass-fill: light-dark(rgb(255 255 255 / .28), rgb(38 31 36 / .18));
+  --glass-light: light-dark(rgb(255 255 255 / .88), rgb(255 255 255 / .22));
+  --glass-tint: light-dark(rgb(201 171 151 / .18), rgb(255 208 180 / .075));
+  --glass-shade: light-dark(rgb(112 139 151 / .13), rgb(8 12 20 / .20));
+  --glass-glow: light-dark(rgb(255 255 255 / .90), rgb(255 222 201 / .18));
   --mantle-width: min(calc(100% + 16px), 1100px);
-  --mantle-mask: linear-gradient(180deg, transparent 0px, rgb(0 0 0 / .35) 20px, #000 60px, #000 58%, rgb(0 0 0 / .5) 82%, transparent 100%);
+  --mantle-mask: linear-gradient(180deg, transparent 0px, rgb(0 0 0 / .65) 12px, #000 32px, #000 58%, rgb(0 0 0 / .5) 82%, transparent 100%);
   --mantle-side-mask: radial-gradient(ellipse 50% 95% at 50% 44%, #000 0%, #000 60%, rgb(0 0 0 / .8) 76%, rgb(0 0 0 / .25) 93%, transparent 100%);
   position: relative;
   isolation: isolate;
 }
 .glassMantle::before, .glassMantle::after { position: absolute; top: 0; bottom: 0; left: 50%; width: var(--mantle-width); transform: translateX(-50%); border-radius: 44px 52px 0 0 / 42px 48px 0 0; mask-image: var(--mantle-mask), var(--mantle-side-mask); mask-composite: intersect; -webkit-mask-image: var(--mantle-mask), var(--mantle-side-mask); -webkit-mask-composite: source-in; pointer-events: none; content: ''; }
-.glassMantle::before { z-index: -1; background: radial-gradient(ellipse 78% 32% at 25% 12%, var(--glass-light), transparent 75%), radial-gradient(ellipse 70% 58% at 74% 44%, var(--glass-tint), transparent 80%), radial-gradient(ellipse 86% 78% at 50% 35%, var(--glass-fill), transparent 85%); backdrop-filter: blur(7px) saturate(118%); -webkit-backdrop-filter: blur(7px) saturate(118%); }
-.glassMantle::after { z-index: -2; background: radial-gradient(ellipse 70% 30% at 24% 10%, var(--glass-glow), transparent 76%), radial-gradient(ellipse 78% 70% at 74% 42%, var(--glass-glow), transparent 80%); filter: blur(18px); opacity: .55; }
+/* These layers stay inside the isolated mantle, behind its content. The cool
+   refraction gives the light theme depth even where the landscape has faded. */
+.glassMantle::before {
+  z-index: -1;
+  background: radial-gradient(ellipse 75% 20% at 24% 2%, var(--glass-light), transparent 76%),
+    linear-gradient(118deg, transparent 12%, var(--glass-fill) 27%, transparent 44%),
+    radial-gradient(ellipse 65% 55% at 85% 26%, var(--glass-shade), transparent 83%),
+    radial-gradient(ellipse 80% 70% at 25% 40%, var(--glass-tint), transparent 82%);
+  backdrop-filter: blur(12px) saturate(125%);
+  -webkit-backdrop-filter: blur(12px) saturate(125%);
+}
+.glassMantle::after {
+  z-index: -2;
+  background: radial-gradient(ellipse 72% 12% at 46% 1%, var(--glass-glow), transparent 80%),
+    radial-gradient(ellipse 65% 65% at 70% 36%, var(--glass-glow), transparent 80%);
+  filter: blur(12px);
+  opacity: .65;
+}
 .readingPanel { position: relative; padding: 24px 0 22px; }
 .readingPanel:has([aria-expanded='true']) { z-index: 35; }
 .readingLayout { display: grid; max-width: 760px; gap: 22px; margin-inline: auto; }
@@ -125,7 +142,7 @@
   :global(:root[data-theme='dark']) .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, color-mix(in srgb, var(--bg-reader) 3%, transparent) 25%, transparent 35%), color-mix(in srgb, var(--bg-reader) 44%, transparent); }
   .homeFeed { padding-top: 6px; }
   .glassMantle::before, .glassMantle::after { border-radius: 34px 40px 0 0; }
-  .glassMantle::after { filter: blur(14px); opacity: .45; }
+  .glassMantle::after { filter: blur(10px); opacity: .60; }
   .readingPanel { padding: 20px 0 27px; }
   .readingLayout { gap: 20px; }
   .readingHeading h2 { font-size: 2.0625rem; }

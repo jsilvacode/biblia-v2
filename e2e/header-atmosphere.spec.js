@@ -37,7 +37,7 @@ test('the shared landscape and glass remain visible in site and reader headers a
     { width: 1440, height: 900 },
   ]) {
     await page.setViewportSize(viewport)
-    for (const [path, selector] of [['/saved', '.site-header'], ['/read/43/3', '.reader-header']]) {
+    for (const [path, selector] of [['/saved', '.site-header'], ['/read/43/3', '.reader-header__bar']]) {
       await page.goto(path)
       for (const theme of ['light', 'dark']) {
         await page.evaluate((nextTheme) => { document.documentElement.dataset.theme = nextTheme }, theme)
@@ -67,7 +67,7 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
       await expect(brand.locator('svg.lucide-book-open')).toHaveCount(1)
       await expect(settings.locator('svg.lucide-settings-2')).toHaveCount(1)
       await expect(settings.locator('svg')).toHaveAttribute('width', '17')
-      const appearance = { brand: await typography(brand) }
+      const appearance = { brand: await typography(brand), brandX: (await brand.boundingBox()).x }
 
       const headerBible = header.locator('a[href="/bible"]')
       const bottomBible = page.locator('.mobile-navigation a[href="/bible"]')
@@ -85,11 +85,48 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
     expect(appearances[0]).toEqual(appearances[1])
 
     await page.goto('/read/43/3')
+    const readerBrand = page.locator('.reader-header__bar').getByRole('link', { name: 'Santa Biblia', exact: true })
+    expect(Math.abs((await readerBrand.boundingBox()).x - appearances[0].brandX)).toBeLessThanOrEqual(1)
     const readerBible = viewport.width >= 1024
       ? page.locator('.reader-header__desktop-navigation a[href="/bible"]')
       : page.locator('.reader-bottom-navigation').getByRole('button', { name: /Biblia|Bible|Bíblia/, exact: true })
     await expect(readerBible).toBeVisible()
     await expect(readerBible.locator('svg.lucide-book-open')).toHaveCount(1)
+  }
+})
+
+test('the reader puts Back and its neutral picker below the glass bar on the reading surface', async ({ page }) => {
+  for (const [width, fontSize] of [[1440, '16px'], [320, '16px'], [320, '32px']]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/read/43/3')
+    await page.evaluate((size) => { document.documentElement.style.fontSize = size }, fontSize)
+    const bar = page.locator('.reader-header__bar')
+    const band = page.locator('.reader-header__passage-band')
+    const row = page.getByTestId('reader-passage-row')
+    const picker = page.getByTestId('reader-passage-picker')
+    const back = row.getByRole('button', { name: /^(Volver|Back|Voltar)$/ })
+    await expect(bar.getByRole('button', { name: /^(Volver|Back|Voltar)$/ })).toHaveCount(0)
+    await expect(back).toContainText(/Volver|Back|Voltar/)
+    await expect(picker.getByRole('combobox', { name: /^(Libro|Book|Livro)$/ })).toHaveText(/Seleccionar libro|Select a book|Selecionar livro/)
+    await expect(picker.getByRole('combobox', { name: /^(Capítulo|Chapter)$/ })).toBeDisabled()
+    await expect(picker.getByRole('button', { name: /^(Abrir capítulo|Open chapter)$/ })).toBeDisabled()
+    const readingColor = await page.locator('.reader-page').evaluate((element) => getComputedStyle(element).backgroundColor)
+    await expect(band).toHaveCSS('background-color', readingColor)
+    await expect(band).toHaveCSS('backdrop-filter', 'none')
+    const [barBox, bandBox, rowBox, backBox, pickerBox] = await Promise.all([
+      bar.boundingBox(), band.boundingBox(), row.boundingBox(), back.boundingBox(), picker.boundingBox(),
+    ])
+    expect(bandBox.y).toBeGreaterThanOrEqual(barBox.y + barBox.height)
+    expect(rowBox.x).toBeGreaterThanOrEqual(0)
+    expect(rowBox.x + rowBox.width).toBeLessThanOrEqual(width)
+    if (width === 1440) {
+      expect(backBox.x + backBox.width).toBeLessThanOrEqual(pickerBox.x)
+      expect(Math.abs(backBox.y - pickerBox.y)).toBeLessThanOrEqual(1)
+    } else {
+      expect(backBox.y + backBox.height).toBeLessThanOrEqual(pickerBox.y)
+      expect(Math.abs(backBox.x - pickerBox.x)).toBeLessThanOrEqual(1)
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
   }
 })
 

@@ -10,6 +10,14 @@ function passagePicker(page) {
   }
 }
 
+async function expectNeutralPassagePicker(page) {
+  const picker = passagePicker(page)
+  await expect(picker.book).toHaveText(/^(Seleccionar libro|Select a book|Selecionar livro)$/)
+  await expect(picker.chapter).toHaveText('—')
+  await expect(picker.chapter).toBeDisabled()
+  await expect(picker.open).toBeDisabled()
+}
+
 async function selectPassageOption(page, trigger, name) {
   await trigger.click()
   await page.getByRole('listbox').getByRole('option', { name, exact: true }).click()
@@ -163,16 +171,15 @@ test('a reader can highlight a verse and choose another passage from the inline 
   await expect(verse).not.toHaveClass(/is-selected/)
 
   const picker = passagePicker(page)
-  await expect(picker.book).toHaveText(/Juan|John|João/)
-  await expect(picker.chapter).toHaveText('3')
+  await expectNeutralPassagePicker(page)
   await selectPassageOption(page, picker.book, /Génesis|Genesis|Gênesis/)
   await expect(picker.chapter).toHaveText('—')
   await expect(picker.open).toBeDisabled()
   await selectPassageOption(page, picker.chapter, '1')
   await picker.open.click()
   await expect(page).toHaveURL(/\/read\/1\/1$/)
-  await expect(picker.book).toHaveText(/Génesis|Genesis|Gênesis/)
-  await expect(picker.chapter).toHaveText('1')
+  await expect(page.getByRole('heading', { name: /Génesis 1|Genesis 1|Gênesis 1/, exact: true })).toBeVisible()
+  await expectNeutralPassagePicker(page)
 
   await page.goto('/saved')
   await page.getByRole('tab', { name: /Resaltados|Highlights|Destaques/ }).click()
@@ -183,9 +190,7 @@ test('a reader can highlight a verse and choose another passage from the inline 
 test('the inline reader picker is bounded, keyboard accessible and separate from reading options', async ({ page }) => {
   await page.goto('/read/43/3/16')
   const picker = passagePicker(page)
-  await expect(picker.book).toHaveText(/Juan|John|João/)
-  await expect(picker.chapter).toHaveText('3')
-  await expect(picker.open).toBeEnabled()
+  await expectNeutralPassagePicker(page)
   await picker.book.click()
   await expectContainedReaderList(page)
   await expect(page.getByRole('dialog', { name: /Elegir lectura|Choose a reading|Escolher leitura/ })).toHaveCount(0)
@@ -214,6 +219,7 @@ test('the inline reader picker is bounded, keyboard accessible and separate from
   await page.keyboard.press('Escape')
   await picker.open.click()
   await expect(page).toHaveURL(/\/read\/66\/22$/)
+  await expectNeutralPassagePicker(page)
 })
 
 test('a deep-linked verse is brought into the reading viewport', async ({ page }) => {
@@ -380,12 +386,12 @@ test('desktop readers separate the shared navigation bar from the compact passag
   const brand = header.getByRole('link', { name: 'Santa Biblia', exact: true })
   const theme = header.getByRole('button', { name: /Activar (?:modo|tema) (?:claro|oscuro)|Use (?:light|dark) theme/i })
   const options = header.getByRole('button', { name: /Abrir menú de lectura|Open reading menu|Abrir menu de leitura/ })
-  const [backBox, brandBox, navigationBox, themeBox, optionsBox, rowBox] = await Promise.all([
+  const [backBox, brandBox, navigationBox, themeBox, optionsBox, rowBox, barBox] = await Promise.all([
     back.boundingBox(), brand.boundingBox(), navigation.boundingBox(), theme.boundingBox(), options.boundingBox(),
-    page.getByTestId('reader-passage-row').boundingBox(),
+    page.getByTestId('reader-passage-row').boundingBox(), page.locator('.reader-header__bar').boundingBox(),
   ])
-  expect([backBox, brandBox, navigationBox, themeBox, optionsBox, rowBox].every(Boolean)).toBe(true)
-  expect(backBox.x + backBox.width).toBeLessThanOrEqual(brandBox.x)
+  expect([backBox, brandBox, navigationBox, themeBox, optionsBox, rowBox, barBox].every(Boolean)).toBe(true)
+  expect(backBox.y).toBeGreaterThanOrEqual(barBox.y + barBox.height)
   expect(brandBox.x + brandBox.width).toBeLessThanOrEqual(navigationBox.x)
   expect(Math.abs(navigationBox.x + navigationBox.width / 2 - 720)).toBeLessThanOrEqual(2)
   expect(themeBox.x).toBeGreaterThanOrEqual(navigationBox.x + navigationBox.width)
@@ -393,6 +399,8 @@ test('desktop readers separate the shared navigation bar from the compact passag
   expect(rowBox.y).toBeGreaterThanOrEqual(Math.max(brandBox.y + brandBox.height, themeBox.y + themeBox.height, navigationBox.y + navigationBox.height))
   const picker = passagePicker(page)
   const [bookBox, chapterBox, openBox] = await Promise.all([picker.book.boundingBox(), picker.chapter.boundingBox(), picker.open.boundingBox()])
+  expect(backBox.x + backBox.width).toBeLessThanOrEqual(bookBox.x)
+  expect(Math.abs(backBox.y - bookBox.y)).toBeLessThanOrEqual(1)
   expect(bookBox.x + bookBox.width).toBeLessThanOrEqual(chapterBox.x)
   expect(chapterBox.x + chapterBox.width).toBeLessThanOrEqual(openBox.x)
   expect(Math.abs(bookBox.y - chapterBox.y)).toBeLessThanOrEqual(1)
@@ -500,13 +508,14 @@ test('the compact reader book list contains both testaments without leaving the 
   await page.setViewportSize({ width: 320, height: 568 })
   await page.goto('/read/43/3')
   const picker = passagePicker(page)
+  await expectNeutralPassagePicker(page)
   await picker.book.click()
   await expectContainedReaderList(page)
   const list = page.getByRole('listbox')
   await expect(list.getByRole('option')).toHaveCount(66)
   await expect(list.getByRole('group', { name: /Antiguo Testamento|Old Testament|Antigo Testamento/ })).toHaveCount(1)
   await expect(list.getByRole('group', { name: /Nuevo Testamento|New Testament|Novo Testamento/ })).toHaveCount(1)
-  await expect(list.getByRole('option', { selected: true })).toHaveText(/Juan|John|João/)
+  await expect(list.getByRole('option', { selected: true })).toHaveCount(0)
   await list.evaluate((element) => { element.scrollTop = element.scrollHeight })
   await expect(list.getByRole('option', { name: /Apocalipsis|Revelation|Apocalipse/, exact: true })).toBeInViewport()
   await picker.book.press('Escape')

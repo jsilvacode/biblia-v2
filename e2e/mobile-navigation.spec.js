@@ -59,8 +59,10 @@ test.describe('mobile navigation shell', () => {
     await expect(bible).toHaveAttribute('aria-haspopup', 'listbox')
     await expect(bible).toHaveAttribute('aria-expanded', 'false')
     const picker = page.getByTestId('reader-passage-picker')
-    await expect(picker.getByRole('combobox', { name: /^(Libro|Book|Livro)$/ })).toHaveText(/Juan|John|João/)
-    await expect(picker.getByRole('combobox', { name: /^(Capítulo|Chapter)$/ })).toHaveText('3')
+    await expect(picker.getByRole('combobox', { name: /^(Libro|Book|Livro)$/ })).toHaveText(/^(Seleccionar libro|Select a book|Selecionar livro)$/)
+    await expect(picker.getByRole('combobox', { name: /^(Capítulo|Chapter)$/ })).toHaveText('—')
+    await expect(picker.getByRole('combobox', { name: /^(Capítulo|Chapter)$/ })).toBeDisabled()
+    await expect(picker.getByRole('button', { name: /^(Abrir capítulo|Open chapter)$/ })).toBeDisabled()
     await bible.click()
     const books = page.getByRole('listbox', { name: /^(Libro|Book|Livro)$/ })
     await expect(books).toBeVisible()
@@ -76,6 +78,10 @@ test.describe('mobile navigation shell', () => {
     await open.click()
     await expect(page).toHaveURL(/\/read\/1\/1$/)
     await expect(page.getByRole('heading', { name: /Génesis 1|Genesis 1|Gênesis 1/, exact: true })).toBeVisible()
+    await expect(picker.getByRole('combobox', { name: /^(Libro|Book|Livro)$/ })).toHaveText(/^(Seleccionar libro|Select a book|Selecionar livro)$/)
+    await expect(chapter).toHaveText('—')
+    await expect(chapter).toBeDisabled()
+    await expect(open).toBeDisabled()
   })
 
   test('keeps four primary destinations and exposes settings from the header', async ({ page }, testInfo) => {

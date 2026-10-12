@@ -53,7 +53,7 @@ body,
 }
 
 .site-header,
-.reader-header {
+.reader-header__bar {
   --hero-strip-height: clamp(29rem, 70vh, 35rem);
   min-height: var(--topbar-height);
   isolation: isolate;
@@ -65,9 +65,9 @@ body,
 /* One continuous landscape and glass treatment, including mobile. The reader
    keeps its own navigation controls and sticky/immersive behaviour. */
 .site-header::before,
-.reader-header::before,
+.reader-header__bar::before,
 .site-header::after,
-.reader-header::after {
+.reader-header__bar::after {
   position: absolute;
   z-index: 0;
   inset: 0 0 auto;
@@ -78,12 +78,12 @@ body,
 }
 
 .site-header::before,
-.reader-header::before {
+.reader-header__bar::before {
   background: url('/assets/aurora-champagne-landscape.webp') 60% 52% / cover;
 }
 
 .site-header::after,
-.reader-header::after {
+.reader-header__bar::after {
   background:
     linear-gradient(180deg, var(--chrome-reflection), transparent 8%),
     linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 75%, transparent), color-mix(in srgb, var(--bg-reader) 42%, transparent) 58%, color-mix(in srgb, var(--bg-reader) 24%, transparent)),
@@ -93,10 +93,10 @@ body,
 }
 
 .site-header > *,
-.reader-header > * { position: relative; z-index: 1; }
+.reader-header__bar > * { position: relative; z-index: 1; }
 
 :root[data-theme='dark'] .site-header::after,
-:root[data-theme='dark'] .reader-header::after {
+:root[data-theme='dark'] .reader-header__bar::after {
   background:
     linear-gradient(180deg, var(--chrome-reflection), transparent 8%),
     linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 85%, transparent), color-mix(in srgb, var(--bg-reader) 56%, transparent) 58%, color-mix(in srgb, var(--bg-reader) 28%, transparent)),
@@ -111,9 +111,9 @@ body,
 @media (min-width: 801px) and (max-height: 740px) { :root { --topbar-height: 60px; } }
 
 @media (prefers-reduced-transparency: reduce) {
-  .site-header, .reader-header { background: var(--surface-raised); }
-  .site-header::before, .reader-header::before { display: none; }
-  .site-header::after, .reader-header::after { background: var(--surface-raised); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .site-header, .reader-header__bar { background: var(--surface-raised); }
+  .site-header::before, .reader-header__bar::before { display: none; }
+  .site-header::after, .reader-header__bar::after { background: var(--surface-raised); backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
 
 .navigation-link {
@@ -398,14 +398,19 @@ body,
 
 /* Quiet editorial chrome shared with the renewed Home. */
 .reader-header__inner { width: min(calc(100% - var(--chrome-gutter) * 2), 1100px); }
-.reader-header { --chrome-height: calc(var(--topbar-height) + 56px); }
+.reader-header { min-height: 0; border: 0; background: var(--bg-reader); box-shadow: none; }
+.reader-header__bar { position: relative; }
 .reader-header__leading { display: flex; min-width: 0; align-items: center; gap: 6px; }
-.reader-header .reader-header__back { flex: 0 0 40px; width: 40px; height: 44px; }
+.reader-header__back { display: inline-flex; flex: 0 0 auto; align-items: center; min-height: 44px; gap: 7px; margin: 0; padding: 0; border: 0; background: transparent; color: var(--ink-muted); font: 400 .8125rem/1.4 var(--font-ui); cursor: pointer; }
+.reader-header__back:hover { color: var(--accent-deep); }
 .reader-header__brand { display: inline-flex; min-width: 0; align-items: center; min-height: 44px; gap: 8px; color: var(--ink); font: 400 1.3125rem/1.15 var(--font-display); letter-spacing: -.025em; }
 .reader-header__brand svg { color: var(--accent-deep); }
 .reader-header__brand > span { min-width: 0; overflow-wrap: anywhere; }
 .reader-header__desktop-navigation { gap: 18px; }
-.reader-header__passage { position: relative; z-index: 2; width: min(calc(100% - var(--chrome-gutter) * 2), 560px); margin-inline: auto; padding-bottom: 12px; }
+.reader-header__passage-band { position: relative; z-index: 2; padding: 8px 0 12px; background: var(--bg-reader); }
+.reader-header__passage { position: relative; display: flex; flex-wrap: wrap; align-items: center; width: min(calc(100% - var(--chrome-gutter) * 2), calc(560px + 5.5rem)); gap: 8px 16px; margin-inline: auto; }
+.reader-header__passage > form { flex: 1 1 360px; min-width: 0; max-width: 560px; margin-inline: 0; }
+@media (max-width: 620px) { .reader-header__passage { max-width: 320px; } }
 @media (max-width: 620px) { .reader-header__brand { font-size: 1.25rem; } }
 .mobile-navigation, .reader-bottom-navigation {
   background: light-dark(rgb(255 255 255 / .88), rgb(38 31 36 / .88));
