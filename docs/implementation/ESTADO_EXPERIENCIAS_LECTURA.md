@@ -52,7 +52,7 @@ Lint, build/auditorías, 14 E2E distintos y `git diff --check` aprobados. [Evide
 
 La función publicada devolvió `unavailable` para la lectura del día, aunque Nuevo Tiempo ya había publicado el episodio de Salmos 66. Las consultas a WordPress/RSS agotaban el tiempo; el VOD sí aceptó una petición de rango de un byte. Se añade metadata fallback verificada únicamente para el 12/10 y Salmos 66; nunca se asigna a otra lectura. El MP3 continúa directamente desde VOD, sin proxy ni descarga local.
 
-Prueba del endpoint con proveedores inalcanzables, validación de lectura distinta, lint y build/auditorías aprobados. [Fuente y comprobaciones](SOURCES_AUDIO_RPSP.md#respaldo-puntual-de-episodio-publicado--12-de-octubre-de-2026); publicación pendiente de confirmar el nuevo endpoint en producción.
+Prueba del endpoint con proveedores inalcanzables, validación de lectura distinta, lint y build/auditorías aprobados. Publicado en `origin/main` como `054b47e`; en producción se confirmó el título, el control de reproducción y el avance del MP3 oficial. [Fuente y comprobaciones](SOURCES_AUDIO_RPSP.md#respaldo-puntual-de-episodio-publicado--12-de-octubre-de-2026).
 
 ## Revisión transversal · diseño editorial y navegación · 16/09/2026
 
