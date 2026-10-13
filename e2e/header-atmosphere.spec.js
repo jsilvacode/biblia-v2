@@ -113,19 +113,21 @@ test('the reader puts Back and its neutral picker below the glass bar on the rea
     const readingColor = await page.locator('.reader-page').evaluate((element) => getComputedStyle(element).backgroundColor)
     await expect(band).toHaveCSS('background-color', readingColor)
     await expect(band).toHaveCSS('backdrop-filter', 'none')
-    const [barBox, bandBox, rowBox, backBox, pickerBox] = await Promise.all([
-      bar.boundingBox(), band.boundingBox(), row.boundingBox(), back.boundingBox(), picker.boundingBox(),
+    const [barBox, bandBox, rowBox, backBox, bookBox, chapterBox, openBox] = await Promise.all([
+      bar.boundingBox(), band.boundingBox(), row.boundingBox(), back.boundingBox(),
+      picker.getByRole('combobox', { name: /^(Libro|Book|Livro)$/ }).boundingBox(),
+      picker.getByRole('combobox', { name: /^(Capítulo|Chapter)$/ }).boundingBox(),
+      picker.getByRole('button', { name: /^(Abrir capítulo|Open chapter)$/ }).boundingBox(),
     ])
     expect(bandBox.y).toBeGreaterThanOrEqual(barBox.y + barBox.height)
     expect(rowBox.x).toBeGreaterThanOrEqual(0)
     expect(rowBox.x + rowBox.width).toBeLessThanOrEqual(width)
-    if (width === 1440) {
-      expect(backBox.x + backBox.width).toBeLessThanOrEqual(pickerBox.x)
-      expect(Math.abs(backBox.y - pickerBox.y)).toBeLessThanOrEqual(1)
-    } else {
-      expect(backBox.y + backBox.height).toBeLessThanOrEqual(pickerBox.y)
-      expect(Math.abs(backBox.x - pickerBox.x)).toBeLessThanOrEqual(1)
-    }
+    expect(backBox.x + backBox.width).toBeLessThanOrEqual(bookBox.x)
+    expect(bookBox.x + bookBox.width).toBeLessThanOrEqual(chapterBox.x)
+    expect(chapterBox.x + chapterBox.width).toBeLessThanOrEqual(openBox.x)
+    expect(Math.abs(backBox.y + backBox.height / 2 - bookBox.y - bookBox.height / 2)).toBeLessThanOrEqual(1)
+    expect(Math.abs(backBox.x - rowBox.x - 7)).toBeLessThanOrEqual(1)
+    expect(Math.abs(openBox.x + openBox.width - rowBox.x - rowBox.width + 7)).toBeLessThanOrEqual(1)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
   }
 })

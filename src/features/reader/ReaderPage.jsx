@@ -308,14 +308,16 @@ export default function ReaderPage() {
         </div>
         <div className="reader-header__passage-band">
           <div className="reader-header__passage" data-testid="reader-passage-row">
-            <button className="reader-header__back" onClick={handleBack} type="button">
-              <Icon name="arrowLeft" size={17} />
-              <span>{t('common.back')}</span>
-            </button>
             <HomePassagePicker
               compact
               key={`${reference.book}:${reference.chapter}`}
               bookTriggerRef={passageBookTriggerRef}
+              leadingAction={(
+                <button aria-label={t('common.back')} className="reader-header__back" onClick={handleBack} type="button">
+                  <Icon name="arrowLeft" size={17} />
+                  <span>{t('common.back')}</span>
+                </button>
+              )}
               onGoToChapter={goToChapter}
               onOpenChange={handlePassagePickerOpenChange}
             />

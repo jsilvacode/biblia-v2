@@ -40,7 +40,7 @@ function viewportBounds() {
   }
 }
 
-export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerRef, onOpenChange }) {
+export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerRef, onOpenChange, leadingAction }) {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
   const id = useId()
@@ -364,7 +364,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
   return (
     <form
       aria-label={`${t('home.chooseReading')} · ${version.short}`}
-      className={`${styles.picker}${compact ? ` ${styles.compact}` : ''}`}
+      className={`${styles.picker}${compact ? ` ${styles.compact}` : ''}${leadingAction ? ` ${styles.withLeadingAction}` : ''}`}
       data-testid={compact ? 'reader-passage-picker' : 'home-reading-actions'}
       onSubmit={(event) => {
         event.preventDefault()
@@ -374,6 +374,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
         }
       }}
     >
+      {leadingAction}
       {renderPicker('book', bookLabel, selectedBook ? getLocalizedBookName(selectedBook, locale) : selectBookLabel)}
       {renderPicker('chapter', chapterLabel, selection.chapter ?? '—', !selectedBook)}
       <button aria-label={compact ? openChapterLabel : undefined} className={styles.openChapter} disabled={!ready} type="submit">
