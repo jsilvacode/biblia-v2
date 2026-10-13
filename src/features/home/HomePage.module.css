@@ -32,7 +32,7 @@
 .heroPrimaryAction, .heroSecondaryAction { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; gap: 8px; padding: 12px 20px; border: 1px solid transparent; border-radius: 999px; font: 500 .8125rem/1.4 var(--font-ui); transition: background 180ms ease, border-color 180ms ease; }
 .heroPrimaryAction { background: var(--accent-deep); color: var(--bg-reader); }
 .heroSecondaryAction { border-color: var(--border); background: var(--surface-raised); color: var(--ink); }
-.homeFeed { position: relative; z-index: 1; padding-top: 12px; }
+.homeFeed { position: relative; z-index: 1; padding-top: 20px; }
 .glassMantle {
   --glass-fill: light-dark(rgb(255 255 255 / .12), rgb(255 255 255 / .025));
   --glass-edge: light-dark(rgb(255 255 255 / .90), rgb(255 255 255 / .38));
@@ -139,7 +139,7 @@
   .heroPrimaryAction, .heroSecondaryAction { padding: 12px 16px; font-size: .75rem; }
   .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 65%, transparent), color-mix(in srgb, var(--bg-reader) 52%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 34%, transparent) 15%, color-mix(in srgb, var(--bg-reader) 13%, transparent) 25%, transparent 35%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 30%, transparent), color-mix(in srgb, var(--bg-reader) 24%, transparent) 50%, color-mix(in srgb, var(--bg-reader) 6%, transparent)); }
   :global(:root[data-theme='dark']) .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, color-mix(in srgb, var(--bg-reader) 3%, transparent) 25%, transparent 35%), color-mix(in srgb, var(--bg-reader) 44%, transparent); }
-  .homeFeed { padding-top: 6px; }
+  .homeFeed { padding-top: 12px; }
   .glassMantle::before, .glassMantle::after { border-radius: 34px 40px 0 0; }
   .readingPanel { padding: 20px 0 27px; }
   .readingLayout { gap: 20px; }
