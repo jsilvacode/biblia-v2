@@ -109,6 +109,7 @@ test('the reader puts Back and its neutral picker below the glass bar on the rea
     await expect(back).toContainText(/Volver|Back|Voltar/)
     await expect(picker.getByRole('combobox', { name: /^(Libro|Book|Livro)$/ })).toHaveText(/Seleccionar libro|Select a book|Selecionar livro/)
     await expect(picker.getByRole('combobox', { name: /^(Capítulo|Chapter)$/ })).toBeDisabled()
+    await expect(picker.getByRole('combobox', { name: /^(Capítulo|Chapter)$/ })).toHaveText(/^(Capítulo|Chapter)$/)
     await expect(picker.getByRole('button', { name: /^(Abrir capítulo|Open chapter)$/ })).toBeDisabled()
     const readingColor = await page.locator('.reader-page').evaluate((element) => getComputedStyle(element).backgroundColor)
     await expect(band).toHaveCSS('background-color', readingColor)
@@ -123,9 +124,17 @@ test('the reader puts Back and its neutral picker below the glass bar on the rea
     expect(rowBox.x).toBeGreaterThanOrEqual(0)
     expect(rowBox.x + rowBox.width).toBeLessThanOrEqual(width)
     expect(backBox.x + backBox.width).toBeLessThanOrEqual(bookBox.x)
-    expect(bookBox.x + bookBox.width).toBeLessThanOrEqual(chapterBox.x)
+    if (width <= 365) {
+      expect(Math.abs(bookBox.x - chapterBox.x)).toBeLessThanOrEqual(1)
+      expect(bookBox.y + bookBox.height).toBeLessThanOrEqual(chapterBox.y)
+    } else {
+      expect(bookBox.x + bookBox.width).toBeLessThanOrEqual(chapterBox.x)
+      expect(Math.abs(backBox.y + backBox.height / 2 - bookBox.y - bookBox.height / 2)).toBeLessThanOrEqual(1)
+    }
     expect(chapterBox.x + chapterBox.width).toBeLessThanOrEqual(openBox.x)
-    expect(Math.abs(backBox.y + backBox.height / 2 - bookBox.y - bookBox.height / 2)).toBeLessThanOrEqual(1)
+    for (const label of await picker.getByRole('combobox').all()) {
+      expect(await label.locator('span').first().evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true)
+    }
     expect(Math.abs(backBox.x - rowBox.x - 7)).toBeLessThanOrEqual(1)
     expect(Math.abs(openBox.x + openBox.width - rowBox.x - rowBox.width + 7)).toBeLessThanOrEqual(1)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)

@@ -207,8 +207,8 @@
   .control, .openChapter { transition: none; }
 }
 
-.picker.compact { grid-template-columns: minmax(0, 1fr) 84px auto; align-items: center; gap: 10px; padding: 6px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface-raised); box-shadow: var(--shadow-sm); }
-.picker.compact.withLeadingAction { grid-template-columns: auto minmax(0, 1fr) 84px auto; }
+.picker.compact { grid-template-columns: minmax(0, 1fr) 104px auto; align-items: center; gap: 10px; padding: 6px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface-raised); box-shadow: var(--shadow-sm); }
+.picker.compact.withLeadingAction { grid-template-columns: auto minmax(0, 1fr) 104px auto; }
 .compact .field { gap: 0; }
 .compact .field + .field { padding-left: 8px; border-left: 1px solid var(--border); }
 .compact .control { border-bottom: 0; }
@@ -217,8 +217,17 @@
 .compact .openChapter { grid-column: auto; width: auto; min-height: 44px; margin-top: 0; padding: 10px 16px; font-size: 12px; }
 
 @media (max-width: 620px) {
-  .picker.compact { max-width: none; grid-template-columns: minmax(0, 1fr) 56px 44px; gap: 6px; }
-  .picker.compact.withLeadingAction { grid-template-columns: 44px minmax(0, 1fr) 56px 44px; }
+  .picker.compact { max-width: none; grid-template-columns: minmax(0, 1fr) 88px 44px; gap: 4px; }
+  .picker.compact.withLeadingAction { grid-template-columns: 44px minmax(0, 1fr) 88px 44px; }
+  .compact .trigger { padding-inline: 4px 22px; font-size: 13px; }
   .compact .openChapter { min-width: 44px; padding: 10px; gap: 0; }
   .compact .openChapter > span { display: none; }
+}
+
+@media (max-width: 365px) {
+  .picker.compact.withLeadingAction { grid-template-columns: 44px minmax(0, 1fr) 44px; grid-template-rows: repeat(2, auto); row-gap: 0; }
+  .withLeadingAction > :first-child { grid-column: 1; grid-row: 1 / -1; }
+  .withLeadingAction .field { grid-column: 2; }
+  .withLeadingAction .field + .field { padding-left: 0; border-left: 0; border-top: 1px solid var(--border); }
+  .withLeadingAction .openChapter { grid-column: 3; grid-row: 1 / -1; }
 }

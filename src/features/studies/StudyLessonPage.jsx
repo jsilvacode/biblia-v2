@@ -3,7 +3,7 @@ import { Link, Navigate, useLocation, useParams } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import { useSettings } from '../settings/SettingsProvider'
-import { TopicPassage } from '../topics/TopicPassage.jsx'
+import { PassagePreviewProvider, PassageReferences } from '../topics/PassagePreview'
 import { getLessonAccess, getLessonRequirements, getNextPendingLesson } from './studyAccess'
 import { getStudyLesson, loadStudyLesson, studyLessons } from './studyContent'
 import { useStudyLessonProgress } from './studyLessonProgress'
@@ -16,14 +16,12 @@ function StudyQuestion({ initialOpen, lesson, question, recordPosition, sectionT
   const { t } = useI18n()
   const location = useLocation()
   const [isOpen, setIsOpen] = useState(initialOpen)
-  const [hasOpened, setHasOpened] = useState(initialOpen)
   const returnTo = `${location.pathname}#${question.id}`
 
   function handleToggle(event) {
     const nextOpen = event.currentTarget.open
     setIsOpen(nextOpen)
     if (!nextOpen) return
-    setHasOpened(true)
     recordPosition(lesson.slug, question.id)
     if (window.location.hash !== `#${question.id}`) {
       window.history.replaceState(window.history.state, '', returnTo)
@@ -40,17 +38,9 @@ function StudyQuestion({ initialOpen, lesson, question, recordPosition, sectionT
         </span>
         <Icon className={styles.questionChevron} name="chevronDown" size={18} />
       </summary>
-      {hasOpened && (
+      {isOpen && (
         <div className={styles.questionReadings}>
-          {question.references.map((reference) => (
-            <TopicPassage
-              key={reference}
-              label={reference}
-              returnSource="study"
-              returnTo={returnTo}
-              title={`${lesson.title} · ${sectionTitle}`}
-            />
-          ))}
+          <PassageReferences references={question.references} title={`${lesson.title} · ${sectionTitle}`} />
         </div>
       )}
     </details>
@@ -73,7 +63,7 @@ function LessonShell({ children, fontFamily, lineHeight, t }) {
   )
 }
 
-export default function StudyLessonPage() {
+function StudyLessonContent() {
   const { lessonSlug } = useParams()
   const location = useLocation()
   const { locale, t } = useI18n()
@@ -359,4 +349,8 @@ export default function StudyLessonPage() {
       </nav>
     </LessonShell>
   )
+}
+
+export default function StudyLessonPage() {
+  return <PassagePreviewProvider><StudyLessonContent /></PassagePreviewProvider>
 }

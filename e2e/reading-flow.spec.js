@@ -13,7 +13,7 @@ function passagePicker(page) {
 async function expectNeutralPassagePicker(page) {
   const picker = passagePicker(page)
   await expect(picker.book).toHaveText(/^(Seleccionar libro|Select a book|Selecionar livro)$/)
-  await expect(picker.chapter).toHaveText('—')
+  await expect(picker.chapter).toHaveText(/^(Capítulo|Chapter)$/)
   await expect(picker.chapter).toBeDisabled()
   await expect(picker.open).toBeDisabled()
 }
@@ -173,7 +173,7 @@ test('a reader can highlight a verse and choose another passage from the inline 
   const picker = passagePicker(page)
   await expectNeutralPassagePicker(page)
   await selectPassageOption(page, picker.book, /Génesis|Genesis|Gênesis/)
-  await expect(picker.chapter).toHaveText('—')
+  await expect(picker.chapter).toHaveText(/^(Capítulo|Chapter)$/)
   await expect(picker.open).toBeDisabled()
   await selectPassageOption(page, picker.chapter, '1')
   await picker.open.click()

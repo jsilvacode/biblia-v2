@@ -3,41 +3,14 @@ import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import { bibleBooks, getBook, getLocalizedBookName, getVersion, normalizeText } from '../bible/catalog'
 import { useSettings } from '../settings/SettingsProvider'
+import { MAX_PICKER_HEIGHT, positionPickerMenu, revealPickerOption } from './pickerPosition'
 import styles from './HomePassagePicker.module.css'
 
-const MAX_PICKER_HEIGHT = 288
-const PICKER_GAP = 0
-const VIEWPORT_MARGIN = 12
 const TYPEAHEAD_TIMEOUT = 700
 const labelFallbacks = {
   es: { selectBook: 'Seleccionar libro', openChapter: 'Abrir capítulo' },
   en: { selectBook: 'Select a book', openChapter: 'Open chapter' },
   'pt-BR': { selectBook: 'Selecionar livro', openChapter: 'Abrir capítulo' },
-}
-
-function viewportBounds() {
-  const viewport = window.visualViewport
-  const top = viewport?.offsetTop ?? 0
-  const left = viewport?.offsetLeft ?? 0
-  const height = viewport?.height ?? window.innerHeight
-  const width = viewport?.width ?? window.innerWidth
-  let bottom = top + height - VIEWPORT_MARGIN
-
-  for (const navigation of document.querySelectorAll('.mobile-navigation, .reader-bottom-navigation')) {
-    const style = getComputedStyle(navigation)
-    if (style.display === 'none' || style.visibility === 'hidden') continue
-    const rect = navigation.getBoundingClientRect()
-    if (rect.bottom > top && rect.top < top + height) {
-      bottom = Math.min(bottom, rect.top - VIEWPORT_MARGIN)
-    }
-  }
-
-  return {
-    top: top + VIEWPORT_MARGIN,
-    bottom,
-    left: left + VIEWPORT_MARGIN,
-    right: left + width - VIEWPORT_MARGIN,
-  }
 }
 
 export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerRef, onOpenChange, leadingAction }) {
@@ -99,49 +72,12 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
     const anchorElement = anchorsRef.current[name]
     if (!list || !trigger || !anchorElement || trigger.disabled) return false
 
-    const anchor = anchorElement.getBoundingClientRect()
-    const bounds = viewportBounds()
-    if (anchor.bottom <= bounds.top || anchor.top >= bounds.bottom || bounds.right <= bounds.left) {
-      list.style.visibility = 'hidden'
-      return false
-    }
-
-    const width = Math.min(anchor.width, bounds.right - bounds.left)
-    const left = Math.max(bounds.left, Math.min(anchor.left, bounds.right - width))
-    list.style.width = `${width}px`
-    list.style.left = `${left - anchor.left}px`
-
-    const style = getComputedStyle(list)
-    const borderHeight = (parseFloat(style.borderTopWidth) || 0) + (parseFloat(style.borderBottomWidth) || 0)
-    const desired = Math.min(MAX_PICKER_HEIGHT, list.scrollHeight + borderHeight)
-    const below = Math.max(0, bounds.bottom - anchor.bottom - PICKER_GAP)
-    const above = Math.max(0, anchor.top - PICKER_GAP - bounds.top)
-    const direction = below >= desired ? 'down' : above >= desired ? 'up' : above > below ? 'up' : 'down'
-    const available = direction === 'up' ? above : below
-    if (available < Math.min(48, desired)) {
-      list.style.visibility = 'hidden'
-      return false
-    }
-
-    list.dataset.direction = direction
-    list.style.top = direction === 'down' ? `${anchor.height + PICKER_GAP}px` : 'auto'
-    list.style.bottom = direction === 'up' ? `${anchorElement.clientHeight + PICKER_GAP}px` : 'auto'
-    list.style.maxHeight = `${Math.min(MAX_PICKER_HEIGHT, available)}px`
-    list.style.visibility = 'visible'
-    return true
+    return positionPickerMenu(list, anchorElement)
   }, [])
 
   const revealActiveOption = useCallback((name, index) => {
     const list = menusRef.current[name]
-    const option = list?.querySelector(`[data-picker-index="${index}"]`)
-    if (!list || !option) return
-    const listRect = list.getBoundingClientRect()
-    const optionRect = option.getBoundingClientRect()
-    const style = getComputedStyle(list)
-    const top = listRect.top + (parseFloat(style.borderTopWidth) || 0)
-    const bottom = listRect.bottom - (parseFloat(style.borderBottomWidth) || 0)
-    if (optionRect.top < top) list.scrollTop -= Math.ceil(top - optionRect.top)
-    else if (optionRect.bottom > bottom) list.scrollTop += Math.ceil(optionRect.bottom - bottom)
+    revealPickerOption(list, index)
   }, [])
 
   const updateActiveOption = (name, index) => {
@@ -376,7 +312,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
     >
       {leadingAction}
       {renderPicker('book', bookLabel, selectedBook ? getLocalizedBookName(selectedBook, locale) : selectBookLabel)}
-      {renderPicker('chapter', chapterLabel, selection.chapter ?? '—', !selectedBook)}
+      {renderPicker('chapter', chapterLabel, selection.chapter ?? (compact ? chapterLabel : '—'), !selectedBook)}
       <button aria-label={compact ? openChapterLabel : undefined} className={styles.openChapter} disabled={!ready} type="submit">
         <span>{openChapterLabel}</span>
         <Icon name="arrowRight" size={17} />

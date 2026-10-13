@@ -1,88 +1,70 @@
 import { expect, test } from '@playwright/test'
 
-async function selectFearArea(page, testInfo) {
-  if (testInfo.project.name === 'mobile') {
-    await page.getByRole('button', { name: /Ver áreas|View areas|Ver áreas/ }).click()
-  }
+const situationName = /^(Situación|Situation|Situação)$/
+const closeReading = /Cerrar lectura|Close reading|Fechar leitura/
 
-  await page.getByRole('button', { name: /Temor, ansiedad y paz/ }).click()
-}
-
-test.describe('thematic guide explorer', () => {
-  test('starts with twelve situations and searches the full editorial collection as you type', async ({ page }) => {
+test.describe('simple thematic guide', () => {
+  test('chooses from all situations and fetches only the reading opened in the modal', async ({ page }) => {
+    const chapters = []
+    page.on('request', (request) => { if (/\/data\/nbla\//.test(request.url())) chapters.push(request.url()) })
     await page.goto('/topics')
-
-    await expect(page.getByRole('heading', { name: /¿Qué necesitas hoy|What do you need today|Do que você precisa hoje/i })).toBeVisible()
-    await expect(page.locator('a[class*="situationCard"]')).toHaveCount(12)
-    await expect(page.getByText(/12 de 92 situaciones|12 of 92 situations|12 de 92 situações/)).toBeVisible()
-
-    await page.getByRole('button', { name: /Ver más situaciones|Show more situations|Ver mais situações/ }).click()
-    await expect(page.locator('a[class*="situationCard"]')).toHaveCount(24)
-
-    const search = page.getByRole('searchbox', { name: /Buscar una situación o referencia|Search for a situation or reference|Buscar uma situação ou referência/ })
-    await search.fill('corazón quebrantado')
-
-    await expect(page).toHaveURL(/\/topics\?q=coraz%C3%B3n(?:\+|%20)quebrantado$/)
-    await expect(page.locator('a[class*="situationCard"]')).toHaveCount(1)
-    await expect(page.getByRole('heading', { name: 'Siento el corazón quebrantado', exact: true })).toBeVisible()
-    await expect(page.getByRole('button', { name: /Ver más situaciones|Show more situations|Ver mais situações/ })).toHaveCount(0)
+    await expect(page.getByRole('searchbox')).toHaveCount(0)
+    await expect(page.getByText('Explora una lectura bíblica para lo que estás viviendo.')).toHaveCount(0)
+    const selector = page.getByRole('combobox', { name: situationName })
+    await expect(selector).toHaveText(/Seleccionar situación|Select a situation|Selecionar situação/)
+    await selector.click()
+    await expect(page.getByRole('listbox').getByRole('option')).toHaveCount(92)
+    await page.getByRole('option', { name: 'Tengo miedo', exact: true }).click()
+    const readings = page.getByTestId('topic-readings')
+    await expect(readings.getByRole('button')).toHaveCount(6)
+    await expect(readings.getByRole('heading', { name: 'Tengo miedo', exact: true })).toBeVisible()
+    expect(chapters).toHaveLength(0)
+    const currentUrl = page.url()
+    const citation = readings.getByRole('button', { name: /Salmos? 27/ })
+    await citation.click()
+    const dialog = page.getByRole('dialog', { name: /Salmos? 27/ })
+    await expect(dialog.getByTestId('passage-preview-text')).toBeVisible()
+    expect(chapters).toHaveLength(1)
+    await dialog.getByRole('button', { name: closeReading }).click()
+    await expect(page).toHaveURL(currentUrl)
+    await expect(citation).toBeFocused()
+    await citation.click()
+    await expect(page.getByRole('dialog').getByTestId('passage-preview-text')).toBeVisible()
+    expect(chapters).toHaveLength(1)
   })
 
-  test('combines the URL area filter with a live query and keeps the first twelve limit', async ({ page }, testInfo) => {
-    await page.goto('/topics')
-    await selectFearArea(page, testInfo)
-
-    await expect(page).toHaveURL(/\/topics\?category=temor-ansiedad-y-paz$/)
-    await expect(page.locator('a[class*="situationCard"]')).toHaveCount(8)
-
-    const search = page.getByRole('searchbox')
-    await search.fill('miedo')
-    await expect(page).toHaveURL(/\/topics\?category=temor-ansiedad-y-paz&q=miedo|\/topics\?q=miedo&category=temor-ansiedad-y-paz/)
-    await expect(page.locator('a[class*="situationCard"]')).toHaveCount(2)
-    await expect(page.getByRole('heading', { name: 'Tengo miedo', exact: true })).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'Tengo miedo del futuro', exact: true })).toBeVisible()
-  })
-
-  test('opens the complete areas panel without making the page horizontally scroll on mobile', async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name !== 'mobile', 'Mobile-only guide layout coverage')
+  test('supports keyboard selection with a bounded menu and clear references on narrow screens', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 568 })
     await page.goto('/topics')
-
-    await page.getByRole('button', { name: /Ver áreas/ }).click()
-    await expect(page.locator('#topic-areas').getByRole('button')).toHaveCount(13)
-    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth)).toBe(true)
+    const selector = page.getByRole('combobox', { name: situationName })
+    await selector.focus()
+    await selector.press('Home')
+    const box = await page.getByRole('listbox').boundingBox()
+    expect(box.y).toBeGreaterThanOrEqual(0)
+    expect(box.y + box.height).toBeLessThanOrEqual(568)
+    expect(box.height).toBeLessThanOrEqual(289)
+    await selector.press('Enter')
+    await expect(page.getByRole('heading', { name: 'Tengo miedo', exact: true })).toBeVisible()
+    await page.evaluate(() => { document.documentElement.style.fontSize = '24px' })
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+    await page.getByTestId('topic-readings').getByRole('button', { name: /Salmos? 23:1-4/ }).click()
+    const dialog = page.getByRole('dialog')
+    await expect(dialog.getByTestId('passage-preview-text').locator('p')).toHaveCount(4)
+    await page.keyboard.press('Escape')
+    await expect(dialog).toHaveCount(0)
   })
 
-  test('keeps readable cards at compact widths and with enlarged browser text', async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name !== 'mobile', 'Mobile-only guide layout coverage')
-
-    for (const viewport of [{ width: 320, height: 568 }, { width: 390, height: 844 }]) {
-      await page.setViewportSize(viewport)
-      await page.goto('/topics')
-      await page.evaluate(() => { document.documentElement.style.fontSize = '20px' })
-
-      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth)).toBe(true)
-      await expect(page.locator('a[class*="situationCard"]')).toHaveCount(12)
-      expect(await page.locator('a[class*="situationCard"]').evaluateAll((cards) => (
-        cards.every((card) => card.scrollWidth <= card.clientWidth)
-      ))).toBe(true)
-    }
-  })
-
-  test('uses two result columns beside a sticky area index from tablet width', async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name !== 'desktop', 'Desktop-only guide layout coverage')
-
-    for (const viewport of [{ width: 768, height: 1024 }, { width: 1440, height: 900 }]) {
-      await page.setViewportSize(viewport)
-      await page.goto('/topics')
-      const cards = page.locator('a[class*="situationCard"]')
-      await expect(cards).toHaveCount(12)
-      const [first, second] = await Promise.all([cards.nth(0).boundingBox(), cards.nth(1).boundingBox()])
-
-      if (!first || !second) throw new Error('The first two situation cards should be rendered.')
-      expect(Math.abs(first.y - second.y)).toBeLessThanOrEqual(1)
-      expect(second.x).toBeGreaterThan(first.x)
-      await expect(page.locator('[class*="desktopFilters"]')).toHaveCSS('position', 'sticky')
-    }
+  test('keeps the chosen situation in the URL and restores it with browser Back', async ({ page }) => {
+    await page.goto('/topics')
+    const selector = page.getByRole('combobox', { name: situationName })
+    await selector.click()
+    await page.getByRole('option', { name: 'Tengo miedo', exact: true }).click()
+    const firstUrl = page.url()
+    await selector.click()
+    await page.getByRole('option', { name: 'Necesito paz interior', exact: true }).click()
+    await expect(page.getByRole('heading', { name: 'Necesito paz interior', exact: true })).toBeVisible()
+    await page.goBack()
+    await expect(page).toHaveURL(firstUrl)
+    await expect(page.getByRole('heading', { name: 'Tengo miedo', exact: true })).toBeVisible()
   })
 })

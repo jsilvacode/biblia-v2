@@ -102,7 +102,7 @@ test('Home opens the Bible study and publishes the four selected interest links'
   await expect(interests.getByRole('link', { name: /ADRA/ })).toHaveAttribute('href', 'https://adra.cl/')
 })
 
-test('a reader advances sequentially, retries answers and keeps progress when returning from the Bible', async ({ page }) => {
+test('a reader advances sequentially, retries answers and keeps progress while reading in the modal', async ({ page }) => {
   await clearStudyProgress(page)
   await page.getByRole('link', { name: studyName }).click()
 
@@ -123,7 +123,7 @@ test('a reader advances sequentially, retries answers and keeps progress when re
   const firstQuestion = page.locator('details').first()
   await firstQuestion.locator('summary').click()
   await expect(firstQuestion).toHaveAttribute('open', '')
-  await expect(firstQuestion.getByRole('heading', { name: /Efesios 4:6/ })).toBeVisible()
+  await expect(firstQuestion.getByRole('button', { name: /Efesios 4:6/ })).toBeVisible()
 
   const quickTest = page.getByRole('region', { name: /Test rápido|Quick test|Teste rápido/ })
   await expect(quickTest).toBeVisible()
@@ -142,16 +142,15 @@ test('a reader advances sequentially, retries answers and keeps progress when re
   await firstCheck.getByRole('button', { name: /Comprobar respuesta|Check answer|Conferir resposta/ }).click()
   await expect(firstCheck.getByText(/Correcto|Correct|Correto/).first()).toBeVisible()
 
-  await firstQuestion.getByRole('link', { name: /Leer en el lector|Read in reader|Ler no leitor/ }).click()
-  await expect(page).toHaveURL(/\/read\/49\/4\/6$/)
-  const backToStudy = page.getByRole('button', { name: /Volver al estudio|Back to the study|Voltar ao estudo/ })
-  await expect(backToStudy).toBeVisible()
-  await backToStudy.click()
+  const studyUrl = page.url()
+  await firstQuestion.getByRole('button', { name: /Efesios 4:6/ }).click()
+  const reading = page.getByRole('dialog', { name: /Efesios 4:6/ })
+  await expect(reading.getByTestId('passage-preview-text')).toBeVisible()
+  await reading.getByRole('button', { name: /Cerrar lectura|Close reading|Fechar leitura/ }).click()
 
-  await expect(page).toHaveURL(/\/studies\/la-fe-de-jesus\/quien-es-dios#q-01-01$/)
+  await expect(page).toHaveURL(studyUrl)
   await expect(page.locator('#q-01-01')).toHaveAttribute('open', '')
   await expect(page.locator('#q-01-01')).toBeInViewport()
-  await page.locator('#test-q-01-01 summary').click()
   await expect(page.locator('#test-q-01-01 form').getByText(/Correcto|Correct|Correto/).first()).toBeVisible()
 
   const completeButton = page.getByRole('button', { name: /Marcar lección como completada|Mark lesson as completed|Marcar lição como concluída/ })

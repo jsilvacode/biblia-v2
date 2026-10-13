@@ -1,0 +1,25 @@
+.referenceGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: 12px; }
+.referenceButton { display: flex; align-items: center; min-width: 0; min-height: 68px; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface-raised); color: var(--accent-blue-deep); text-align: left; cursor: pointer; transition: border-color 160ms ease, background 160ms ease; }
+.referenceButton > span { flex: 1; min-width: 0; }
+.referenceButton svg { flex: 0 0 auto; }
+.referenceButton strong { display: block; font: 500 .875rem/1.5 var(--font-ui); overflow-wrap: anywhere; }
+.referenceButton small { display: block; margin-top: 3px; color: var(--accent-deep); font-size: .6875rem; }
+.primaryReference { border-color: color-mix(in srgb, var(--accent-deep) 35%, var(--border)); background: color-mix(in srgb, var(--accent-soft) 25%, var(--surface-raised)); }
+.referenceButton:hover { border-color: var(--accent-blue-deep); background: color-mix(in srgb, var(--accent-mist) 30%, var(--surface-raised)); }
+.referenceButton:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+.dialog { min-height: min(45dvh, 22rem); max-height: min(85dvh, 48rem); }
+.context { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 12px 0; color: var(--ink-muted); font: 400 .8125rem/1.5 var(--font-ui); }
+.context > span { margin-left: auto; font-size: .6875rem; }
+.reading { font: 400 calc(1.0625rem * var(--reader-scale, 1))/1.75 var(--font-reading); overflow-wrap: anywhere; }
+.reading[data-font='sans'] { font-family: var(--font-ui); }
+.reading[data-line-height='compact'] { line-height: 1.5; }
+.reading[data-line-height='spacious'] { line-height: 2; }
+.verses p { margin: 0 0 1rem; }
+.verses sup { margin-right: .45em; color: var(--accent-deep); font: 500 .65em var(--font-ui); }
+.error { font: 400 .875rem/1.5 var(--font-ui); }
+@media (min-width: 760px) {
+  :global(.reader-dialog-backdrop):has(.dialog) { align-items: center; padding: 24px; }
+  .dialog { border-bottom: 1px solid var(--border); border-radius: 20px; padding: 20px 24px; }
+  .dialog :global(.reader-dialog__handle) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .referenceButton { transition: none; } }

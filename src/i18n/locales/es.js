@@ -202,6 +202,9 @@ export default {
     sourceNote: 'Secuencia 2026 de Reavivados por su Palabra: un capítulo diario desde 1 Samuel 24 hasta Salmos 146.',
   },
   topics: {
+    situationLabel: 'Situación',
+    selectSituation: 'Seleccionar situación',
+    closeReading: 'Cerrar lectura',
     eyebrow: 'Guía de consulta bíblica',
     title: '¿Qué necesitas hoy?',
     subtitle: 'Explora una lectura bíblica para lo que estás viviendo.',

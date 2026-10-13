@@ -77,7 +77,7 @@ describe('HomePassagePicker', () => {
     expect(screen.getByTestId('reader-passage-picker')).toBeTruthy()
     expect(bookTriggerRef.current).toBe(book)
     expect(book.textContent).toBe('Seleccionar libro')
-    expect(chapter.textContent).toBe('—')
+    expect(chapter.textContent).toBe('Capítulo')
     expect(chapter.disabled).toBe(true)
     expect(open.disabled).toBe(true)
     expect(open.getAttribute('aria-label')).toBe('Abrir capítulo')
