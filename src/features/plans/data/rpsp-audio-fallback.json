@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "verifiedAt": "2026-09-10T04:00:00.000Z",
+  "verifiedAt": "2026-10-12T04:00:00.000Z",
   "source": "https://www.nuevotiempo.org/audio/reavivados-por-su-palabra-2/feed/",
   "entries": [
     {
@@ -14,6 +14,21 @@
         "language": "es",
         "sourcePageUrl": "https://www.nuevotiempo.org/audio/reavivados-por-su-palabra-2/gustad-y-ved-que-bueno-es-el-senor-salmo-34-reavivados-por-su-palabra/",
         "audioUrl": "https://vod.nuevotiempo.org/ReavivadosA/Reavivados10-09-2026.mp3",
+        "mimeType": "audio/mpeg",
+        "durationSeconds": null
+      }
+    },
+    {
+      "date": "2026-10-12",
+      "reference": { "book": 19, "chapter": 66 },
+      "episode": {
+        "id": "alabemos-al-dios-que-nos-prueba-salmo-66-2026-10-12",
+        "title": "Alabemos al Dios que nos prueba y nos salva | Salmo 66 | Reavivados por su Palabra",
+        "publishedAt": "2026-10-12T04:00:00.000Z",
+        "presenter": null,
+        "language": "es",
+        "sourcePageUrl": "https://www.nuevotiempo.org/audio/reavivados-por-su-palabra-2/alabemos-al-dios-que-nos-prueba-y-nos-salva-salmo-66-reavivados-por-su-palabra/",
+        "audioUrl": "https://vod.nuevotiempo.org/ReavivadosA/Reavivados12-10-2026.mp3",
         "mimeType": "audio/mpeg",
         "durationSeconds": null
       }

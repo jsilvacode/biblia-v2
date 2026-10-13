@@ -8,6 +8,12 @@ El [archivo oficial de Nuevo Tiempo](https://www.nuevotiempo.org/audio/reavivado
 
 El snapshot salta del 4 al 7 de septiembre: no permite inferir una secuencia diaria por posición. Tampoco demuestra que los episodios omitidos no existan fuera del feed. Aparecen referencias como `Salmo 34` y `|Ester 9|`: normalizar singular, acentos y espacios; comparar libro y capítulo completos. Estos datos describen la respuesta consultada, no garantizan el comportamiento futuro del proveedor.
 
+## Respaldo puntual de episodio publicado · 12 de octubre de 2026
+
+La [página oficial](https://www.nuevotiempo.org/audio/reavivados-por-su-palabra-2/alabemos-al-dios-que-nos-prueba-y-nos-salva-salmo-66-reavivados-por-su-palabra/) confirma el título “Alabemos al Dios que nos prueba y nos salva | Salmo 66” y su publicación del 12/10/2026 a la 01:00. El archivo `https://vod.nuevotiempo.org/ReavivadosA/Reavivados12-10-2026.mp3` respondió `206 Partial Content`, `audio/mpeg` y `Content-Range: bytes 0-0/24261593` a una petición de un byte. No se descargó el MP3.
+
+Durante esta revisión, `/api/rpsp?date=2026-10-12` devolvió `unavailable`, sin episodio; las consultas del endpoint de Nuevo Tiempo agotaron el tiempo de espera. Se añade metadata estática sólo para esta fecha y referencia, sin cambiar el comportamiento para días distintos. Al restablecerse la fuente se puede retirar el registro. [Prueba y evidencia de interfaz](evidence/rpsp-audio-recovery-2026-10-12/README.md).
+
 ## Episodio de referencia
 
 La [página aportada por el usuario, Salmo 34](https://www.nuevotiempo.org/audio/reavivados-por-su-palabra-2/gustad-y-ved-que-bueno-es-el-senor-salmo-34-reavivados-por-su-palabra/) y su enclosure apuntan al mismo medio:

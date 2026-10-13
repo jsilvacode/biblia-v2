@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createRpspHandler, resetRpspMetadataMemory } from '../../../api/rpsp.js'
 import { RPSP_RSS_URL, resetRpspFeedMemory } from '../../../api/_lib/rpspFeed.js'
+import fallbackSnapshot from './data/rpsp-audio-fallback.json'
 
 const origin = 'https://www.santabiblia.cloud'
 const sourcePageUrl = 'https://www.nuevotiempo.org/audio/reavivados-por-su-palabra-2/gustad-y-ved-que-bueno-es-el-senor-salmo-34-reavivados-por-su-palabra/'
@@ -121,6 +122,30 @@ describe('RPSP metadata endpoint', () => {
     await expect(matching.json()).resolves.toMatchObject({ status: 'ready', provenance: 'snapshot', episode: { id: '38751' } })
 
     const anotherDay = await handlerWith(unavailable, { fallbackEntries: snapshot })(new Request(`${origin}/api/rpsp?date=2026-09-11`))
+    await expect(anotherDay.json()).resolves.toMatchObject({ status: 'unavailable', episode: null })
+  })
+
+  it('keeps today’s verified Psalm 66 episode playable while Nuevo Tiempo metadata is unreachable', async () => {
+    const unavailable = async () => { throw new Error('source timeout') }
+    const response = await handlerWith(unavailable, { fallbackEntries: fallbackSnapshot.entries })(
+      new Request(`${origin}/api/rpsp?date=2026-10-12`),
+    )
+
+    await expect(response.json()).resolves.toMatchObject({
+      date: '2026-10-12',
+      reference: { book: 19, chapter: 66 },
+      status: 'ready',
+      provenance: 'snapshot',
+      episode: {
+        title: expect.stringContaining('Salmo 66'),
+        sourcePageUrl: 'https://www.nuevotiempo.org/audio/reavivados-por-su-palabra-2/alabemos-al-dios-que-nos-prueba-y-nos-salva-salmo-66-reavivados-por-su-palabra/',
+        audioUrl: 'https://vod.nuevotiempo.org/ReavivadosA/Reavivados12-10-2026.mp3',
+      },
+    })
+
+    const anotherDay = await handlerWith(unavailable, { fallbackEntries: fallbackSnapshot.entries })(
+      new Request(`${origin}/api/rpsp?date=2026-10-13`),
+    )
     await expect(anotherDay.json()).resolves.toMatchObject({ status: 'unavailable', episode: null })
   })
 

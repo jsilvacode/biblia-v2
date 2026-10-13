@@ -48,6 +48,12 @@ Al final del lector, Anterior / Inicio / Siguiente aprovechan el ancho disponibl
 
 Lint, build/auditorías, 14 E2E distintos y `git diff --check` aprobados. [Evidencia](evidence/home-spacing-chapter-start-2026-10-12/README.md): 24 vistas Chromium/WebKit, cuatro casos EN/PT al 200% y ocho verificaciones de límites de la Biblia. La publicación se contrasta después del push con el SHA propio de este ajuste.
 
+### Recuperación de audio cuando Nuevo Tiempo no responde · 12/10/2026
+
+La función publicada devolvió `unavailable` para la lectura del día, aunque Nuevo Tiempo ya había publicado el episodio de Salmos 66. Las consultas a WordPress/RSS agotaban el tiempo; el VOD sí aceptó una petición de rango de un byte. Se añade metadata fallback verificada únicamente para el 12/10 y Salmos 66; nunca se asigna a otra lectura. El MP3 continúa directamente desde VOD, sin proxy ni descarga local.
+
+Prueba del endpoint con proveedores inalcanzables, validación de lectura distinta, lint y build/auditorías aprobados. [Fuente y comprobaciones](SOURCES_AUDIO_RPSP.md#respaldo-puntual-de-episodio-publicado--12-de-octubre-de-2026); publicación pendiente de confirmar el nuevo endpoint en producción.
+
 ## Revisión transversal · diseño editorial y navegación · 16/09/2026
 
 **Alcance:** sitio completo, incluidas las pantallas anteriores al plan. Se conserva el hero y el carácter de las ilustraciones; la guía vigente es [Sistema editorial](../design/SISTEMA_EDITORIAL_VIGENTE.md).
