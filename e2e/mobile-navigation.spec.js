@@ -131,11 +131,12 @@ test.describe('mobile navigation shell', () => {
     const selectedBook = page.getByRole('button', { name: /Apocalipsis|Revelation|Apocalipse/ })
     await selectedBook.click()
 
-    const chapterPicker = page.getByRole('region', { name: /Capítulos|Chapters/ })
+    const chapterPicker = page.getByRole('dialog', { name: /Apocalipsis|Revelation|Apocalipse/ })
     await expect(chapterPicker).toBeVisible()
     await expect(chapterPicker.getByRole('link', { name: '1', exact: true })).toBeInViewport()
-    await chapterPicker.getByRole('button', { name: /Todos los libros|All books|Todos os livros/ }).click()
+    await chapterPicker.getByRole('button', { name: /Cerrar|Close|Fechar/ }).click()
     await expect(selectedBook).toBeVisible()
+    await expect(selectedBook).toBeFocused()
   })
 
   test('keeps the compact shell free of horizontal overflow', async ({ page }, testInfo) => {
@@ -195,9 +196,12 @@ test.describe('editorial page composition', () => {
   test('keeps the Home hero full-bleed and separates the primary blocks', async ({ page }) => {
     await page.goto('/')
 
-    const heroBox = await page.getByRole('region', { name: /Promesa del día|Promise of the day|Promessa do dia/ }).boundingBox()
-    const homeHeaderBox = await page.locator('header[class*="homeHeader"]').boundingBox()
     const heroRegion = page.getByRole('region', { name: /Promesa del día|Promise of the day|Promessa do dia/ })
+    // Measure the final promise rather than mixing its loading and ready layouts.
+    await expect(heroRegion).toHaveAttribute('aria-busy', 'false')
+    await page.evaluate(() => document.fonts.ready)
+    const heroBox = await heroRegion.boundingBox()
+    const homeHeaderBox = await page.locator('header[class*="homeHeader"]').boundingBox()
     const heroKickerBox = await heroRegion.getByText(/Una promesa para hoy|A promise for today|Uma promessa para hoje/).boundingBox()
     const heroHeadingBox = await heroRegion.getByRole('heading').boundingBox()
     const heroActionBoxes = await Promise.all([
@@ -302,28 +306,19 @@ test.describe('editorial page composition', () => {
     await thematicCard.click()
     await expect(page).toHaveURL(/\/topics$/)
     await expect(page.getByRole('heading', { name: /¿Qué necesitas hoy|What do you need today|Do que você precisa hoje/i })).toBeVisible()
+    await page.getByRole('combobox', { name: /^(Situación|Situation|Situação)$/ }).click()
+    await page.getByRole('option', { name: 'Tengo miedo', exact: true }).click()
     await expect(page.getByRole('heading', { name: 'Tengo miedo', exact: true })).toBeVisible()
-    await expect(page.getByRole('heading', { name: /Salmos? 27/, exact: true })).toHaveCount(0)
-    const fearSituation = page.getByRole('link', { name: /Tengo miedo.*Lectura central: Salmo 27/i })
-    await fearSituation.click()
-    await expect(page).toHaveURL(/\/topics\/temor-ansiedad-y-paz\/tengo-miedo$/)
-    await expect(page.getByRole('heading', { name: /Salmos? 27/, exact: true })).toBeVisible()
-    const centralReading = page.getByRole('link', { name: /Leer en el lector|Read in reader|Ler no leitor/ }).first()
-    await expect(centralReading).toHaveAttribute('href', '/read/19/27')
-    await centralReading.click()
-
-    const backToGuide = page.getByRole('button', { name: /Volver a la guía|Back to the guide|Voltar ao guia/ })
-    await expect(page).toHaveURL(/\/read\/19\/27$/)
-    await expect(backToGuide).toBeVisible()
-    await expect(backToGuide).toHaveText(/^(Volver a la guía|Back to the guide|Voltar ao guia)$/)
-    await expect.poll(() => backToGuide.evaluate((button) => getComputedStyle(button.parentElement).position)).toBe('fixed')
-    await page.evaluate(() => window.scrollTo(0, 700))
-    await expect(backToGuide).toBeInViewport()
-    await backToGuide.click()
-
-    await expect(page).toHaveURL(/\/topics\/temor-ansiedad-y-paz\/tengo-miedo$/)
-    await expect(page.getByRole('heading', { name: 'Tengo miedo', exact: true })).toBeInViewport()
-    await expect(page.getByRole('heading', { name: /Salmos? 27/, exact: true })).toBeVisible()
+    const guideUrl = page.url()
+    const citation = page.getByTestId('topic-readings').getByRole('button', { name: /Salmos? 27/ })
+    await citation.click()
+    const reading = page.getByRole('dialog', { name: /Salmos? 27/ })
+    await expect(reading.getByTestId('passage-preview-text')).toBeVisible()
+    await expect(page).toHaveURL(guideUrl)
+    await reading.getByRole('button', { name: /Cerrar lectura|Close reading|Fechar leitura/ }).click()
+    await expect(reading).toHaveCount(0)
+    await expect(citation).toBeFocused()
+    await expect(page).toHaveURL(guideUrl)
   })
 
   test('keeps interface language inside settings and leaves only theme and settings in the top bar', async ({ page }) => {

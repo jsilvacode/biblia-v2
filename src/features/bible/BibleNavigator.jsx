@@ -1,10 +1,12 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import { useBibleTextSearch } from '../search/useBibleTextSearch'
 import { useSettings } from '../settings/SettingsProvider'
+import { BookChaptersDialog } from './BookChaptersDialog'
 import { getAllLocalizedBookNames } from './bookNames'
+import { bookCollections } from './bookCollections'
 import { bibleBooks, formatReference, getBook, getLocalizedBookName, normalizeText } from './catalog'
 import { parseReference } from './reference'
 import styles from './BibleNavigator.module.css'
@@ -25,17 +27,14 @@ export function BibleNavigator({
   currentBookId = null,
   currentChapter = null,
   initialTestament = 'NT',
-  onSelectReference,
-  startWithBooks = false,
 }) {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
   const currentBook = getBook(currentBookId)
   const [testament, setTestament] = useState(currentBook?.testament ?? initialTestament)
   const [query, setQuery] = useState('')
-  const [selectedBookId, setSelectedBookId] = useState(startWithBooks ? null : currentBookId)
-  const [mobilePanel, setMobilePanel] = useState(startWithBooks || !currentBookId ? 'books' : 'chapters')
-  const [jumpChapter, setJumpChapter] = useState('')
+  const [selectedBook, setSelectedBook] = useState(null)
+  const bookTriggerRef = useRef(null)
   const normalizedQuery = normalizeText(query)
   const parsedReference = useMemo(() => parseReference(query), [query])
   const textSearchEnabled = normalizedQuery.length >= 2 && !parsedReference
@@ -45,7 +44,7 @@ export function BibleNavigator({
     query,
     translationId: settings.bibleVersion,
   })
-  const selectedBook = getBook(selectedBookId)
+  const collections = bookCollections.filter((collection) => collection.testament === testament)
 
   const visibleBooks = useMemo(() => {
     if (!normalizedQuery) return bibleBooks.filter((book) => book.testament === testament)
@@ -55,43 +54,25 @@ export function BibleNavigator({
   function selectTestament(nextTestament) {
     setTestament(nextTestament)
     setQuery('')
-    setSelectedBookId(null)
-    setJumpChapter('')
-    setMobilePanel('books')
-  }
-
-  function selectBook(book) {
-    setQuery('')
-    setSelectedBookId(book.id)
-    setTestament(book.testament)
-    setJumpChapter('')
-    setMobilePanel('chapters')
-  }
-
-  function selectReference(reference) {
-    onSelectReference?.(reference)
-  }
-
-  function submitChapter(event) {
-    event.preventDefault()
-    const chapter = Number(jumpChapter)
-    if (!selectedBook || !Number.isInteger(chapter) || chapter < 1 || chapter > selectedBook.chapters) return
-    selectReference({ book: selectedBook.id, chapter, verse: null })
   }
 
   function renderBookButton(book) {
     return (
       <button
         aria-current={book.id === currentBookId ? 'true' : undefined}
-        aria-pressed={book.id === selectedBookId}
-        className={book.id === selectedBookId ? styles.bookSelected : undefined}
+        aria-haspopup="dialog"
+        aria-expanded={book.id === selectedBook?.id}
         data-book-id={book.id}
         key={book.id}
-        onClick={() => selectBook(book)}
+        onClick={(event) => {
+          bookTriggerRef.current = event.currentTarget
+          setSelectedBook(book)
+        }}
         type="button"
       >
         <span>{getLocalizedBookName(book, locale)}</span>
-        <small>{t('bible.chapterCount', { count: book.chapters })}</small>
+        <small aria-label={t('bible.chapterCount', { count: book.chapters })}>{t('bible.shortChapterCount', { count: book.chapters })}</small>
+        <Icon name="chevronRight" size={16} />
       </button>
     )
   }
@@ -109,25 +90,19 @@ export function BibleNavigator({
     const className = styles.verseResult
     const key = `${result.book}:${result.chapter}:${result.verse}`
 
-    return onSelectReference ? (
-      <button className={className} key={key} onClick={() => selectReference(result)} type="button">{content}</button>
-    ) : (
+    return (
       <Link className={className} key={key} state={{ attentionVerse: true }} to={referencePath(result)}>{content}</Link>
     )
   }
 
   return (
-    <div className={`${styles.navigator} ${mobilePanel === 'chapters' ? styles.mobileChapters : styles.mobileBooks}`}>
+    <div className={styles.navigator}>
       <div className={styles.controls}>
         <label className={styles.searchField}>
           <span className="sr-only">{t('bible.searchLabel')}</span>
           <Icon name="search" size={18} />
           <input
-            data-dialog-initial-focus
-            onChange={(event) => {
-              setQuery(event.target.value)
-              setMobilePanel('books')
-            }}
+            onChange={(event) => setQuery(event.target.value)}
             placeholder={t('bible.searchPlaceholder')}
             type="search"
             value={query}
@@ -152,23 +127,15 @@ export function BibleNavigator({
 
       {parsedReference && (
         <div className={styles.referenceResult}>
-          {onSelectReference ? (
-            <button onClick={() => selectReference(parsedReference)} type="button">
-              <Icon name="bookOpen" size={18} />
-              <span>{t('bible.openReference', { reference: `${getLocalizedBookName(getBook(parsedReference.book), locale)} ${parsedReference.chapter}${parsedReference.verse ? `:${parsedReference.verse}` : ''}` })}</span>
-              <Icon name="arrowRight" size={17} />
-            </button>
-          ) : (
-            <Link to={referencePath(parsedReference)}>
-              <Icon name="bookOpen" size={18} />
-              <span>{t('bible.openReference', { reference: `${getLocalizedBookName(getBook(parsedReference.book), locale)} ${parsedReference.chapter}${parsedReference.verse ? `:${parsedReference.verse}` : ''}` })}</span>
-              <Icon name="arrowRight" size={17} />
-            </Link>
-          )}
+          <Link to={referencePath(parsedReference)}>
+            <Icon name="bookOpen" size={18} />
+            <span>{t('bible.openReference', { reference: formatReference(parsedReference, locale) })}</span>
+            <Icon name="arrowRight" size={17} />
+          </Link>
         </div>
       )}
 
-      {!parsedReference && <div className={`${styles.workspace} ${normalizedQuery ? styles.workspaceSearching : ''}`}>
+      {!parsedReference && <div>
         {normalizedQuery ? (
           <section aria-label={t('bible.searchResults')} className={styles.searchPane}>
             {visibleBooks.length > 0 && (
@@ -212,55 +179,28 @@ export function BibleNavigator({
             </div>
           </section>
         ) : (
-          <>
-            <section aria-label={t('bible.books')} className={styles.booksPane} data-bible-books-scroll>
-              <div className={styles.bookGrid}>{visibleBooks.map(renderBookButton)}</div>
-            </section>
-
-            <section aria-label={t('bible.chapters')} className={styles.chaptersPane} data-bible-chapters>
-          {selectedBook ? (
-            <>
-              <header className={styles.chapterHeading}>
-                <button className={styles.backToBooks} onClick={() => setMobilePanel('books')} type="button">
-                  <Icon name="arrowLeft" size={17} />
-                  <span>{t('bible.allBooks')}</span>
-                </button>
-                <div>
-                  <p>{getLocalizedBookName(selectedBook, locale)}</p>
-                  <h3>{t('bible.chooseChapter')}</h3>
-                </div>
-              </header>
-              <div className={styles.chapterGrid}>
-                {Array.from({ length: selectedBook.chapters }, (_, index) => index + 1).map((chapter) => {
-                  const reference = { book: selectedBook.id, chapter, verse: null }
-                  const isCurrent = selectedBook.id === currentBookId && chapter === currentChapter
-                  return onSelectReference ? (
-                    <button aria-current={isCurrent ? 'page' : undefined} key={chapter} onClick={() => selectReference(reference)} type="button">{chapter}</button>
-                  ) : (
-                    <Link aria-current={isCurrent ? 'page' : undefined} key={chapter} to={referencePath(reference)}>{chapter}</Link>
-                  )
-                })}
-              </div>
-              {selectedBook.chapters > 50 && (
-                <form className={styles.chapterJump} onSubmit={submitChapter}>
-                  <label htmlFor={`chapter-jump-${selectedBook.id}`}>{t('bible.goToChapter')}</label>
-                  <div>
-                    <input id={`chapter-jump-${selectedBook.id}`} inputMode="numeric" max={selectedBook.chapters} min="1" onChange={(event) => setJumpChapter(event.target.value)} type="number" value={jumpChapter} />
-                    <button disabled={!jumpChapter || Number(jumpChapter) < 1 || Number(jumpChapter) > selectedBook.chapters} type="submit">{t('common.open')}</button>
-                  </div>
-                </form>
-              )}
-            </>
-          ) : (
-            <div className={styles.chapterEmpty}>
-              <Icon name="bookOpen" size={24} />
-              <p>{t('bible.selectBookPrompt')}</p>
-            </div>
-          )}
-            </section>
-          </>
+          <div aria-label={t('bible.books')} className={styles.collections} role="region">
+            {collections.map((collection) => (
+              <section aria-labelledby={`collection-${collection.id}`} className={styles.collection} key={collection.id}>
+                <header className={styles.collectionHeading}>
+                  <h2 id={`collection-${collection.id}`}>{t(`bible.collections.${collection.key}`)}</h2>
+                  <span>{t(collection.books.length === 1 ? 'bible.bookCountOne' : 'bible.bookCount', { count: collection.books.length })}</span>
+                </header>
+                <div className={styles.bookGrid}>{collection.books.map(renderBookButton)}</div>
+              </section>
+            ))}
+          </div>
         )}
       </div>}
+      {selectedBook && (
+        <BookChaptersDialog
+          book={selectedBook}
+          currentBookId={currentBookId}
+          currentChapter={currentChapter}
+          onClose={() => setSelectedBook(null)}
+          returnFocusRef={bookTriggerRef}
+        />
+      )}
     </div>
   )
 }

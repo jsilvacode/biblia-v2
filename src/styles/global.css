@@ -174,11 +174,6 @@ svg { display: block; flex: none; }
 .reader-settings .segmented-control--small:last-child { grid-template-columns: repeat(3, 1fr); }
 .result-count { margin: 1rem 0 0.55rem; color: var(--ink-muted); font-size: 0.84rem; }
 .bible-library-list { margin-top: var(--space-4); }
-.bible-library-navigator {
-  height: clamp(28rem, calc(100dvh - 14rem), 46rem);
-  min-height: 0;
-  overflow: hidden;
-}
 
 .search-form { max-width: 44rem; }
 .search-form .button { min-height: 2.75rem; padding-inline: 0.9rem; }

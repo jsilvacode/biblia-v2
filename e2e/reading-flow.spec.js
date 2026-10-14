@@ -469,40 +469,6 @@ test('changing or clearing a search does not leave stale results on the page', a
   await expect(page.locator('.search-results')).toHaveCount(0)
 })
 
-test('the Bible browser starts clean and opens chapters only after a book is chosen', async ({ page }) => {
-  await page.goto('/bible')
-  const chapters = page.getByRole('region', { name: /Capítulos|Chapters/ })
-  await expect(chapters.getByRole('link', { name: '1', exact: true })).toHaveCount(0)
-
-  await page.getByRole('button', { name: /Antiguo Testamento|Old Testament|Antigo Testamento/ }).click()
-  await expect(chapters.getByRole('link', { name: '1', exact: true })).toHaveCount(0)
-
-  await page.getByRole('button', { name: /Génesis|Genesis|Gênesis/ }).click()
-  await expect(chapters).toBeVisible()
-  await expect(chapters.getByRole('link', { name: '1', exact: true })).toBeVisible()
-
-  await page.getByRole('button', { name: /Nuevo Testamento|New Testament|Novo Testamento/ }).click()
-  await page.getByRole('button', { name: /Antiguo Testamento|Old Testament|Antigo Testamento/ }).click()
-  await expect(chapters.getByRole('link', { name: '1', exact: true })).toHaveCount(0)
-})
-
-test('the desktop Bible browser scrolls books without moving the chapter pane', async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== 'desktop', 'Desktop-only independent scrolling coverage')
-  await page.goto('/bible')
-
-  await page.getByRole('button', { name: /^(Juan Capítulos|John Chapters|João Capítulos): 21$/ }).click()
-  const booksPane = page.locator('[data-bible-books-scroll]')
-  const chaptersPane = page.locator('[data-bible-chapters]')
-  await expect(chaptersPane.getByRole('heading', { name: /Elige un capítulo|Choose a chapter|Escolha um capítulo/ })).toBeVisible()
-
-  const pageScrollBefore = await page.evaluate(() => window.scrollY)
-  await booksPane.evaluate((element) => { element.scrollTop = element.scrollHeight })
-  await expect.poll(() => booksPane.evaluate((element) => element.scrollTop)).toBeGreaterThan(0)
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(pageScrollBefore)
-  await expect(chaptersPane.getByRole('link', { name: '1', exact: true })).toBeInViewport()
-})
-
-
 test('the compact reader book list contains both testaments without leaving the mobile screen', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile', 'Mobile-only reader dropdown coverage')
   await page.setViewportSize({ width: 320, height: 568 })

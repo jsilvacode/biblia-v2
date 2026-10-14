@@ -14,12 +14,11 @@ export default function BibleBrowserPage() {
         {t('bible.subtitle')}
       </PageIntro>
 
-      <div className="bible-library-list bible-library-navigator">
+      <div className="bible-library-list">
         <BibleNavigator
           currentBookId={hasHistory ? lastRead.book : null}
           currentChapter={hasHistory ? lastRead.chapter : null}
           initialTestament={hasHistory && lastRead.book <= 39 ? 'OT' : 'NT'}
-          startWithBooks
         />
       </div>
     </div>

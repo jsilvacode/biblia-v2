@@ -1,0 +1,36 @@
+:global(.reader-dialog-backdrop):has(.dialog) {
+  align-items: center;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+
+.dialog {
+  width: min(100%, 30rem);
+  max-height: min(78dvh, 38rem);
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--surface-highlight), transparent 65%), var(--surface-raised);
+  box-shadow: var(--shadow-lg);
+}
+
+.dialog :global(.reader-dialog__handle) { display: none; }
+.dialog :global(.reader-dialog__header h2) { text-align: center; color: var(--accent-deep); }
+.description { flex: none; margin: 8px 0 20px; color: var(--ink-muted); font-size: .875rem; text-align: center; }
+.chapters { padding: 2px 4px 4px; scrollbar-width: thin; }
+.grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.grid a { display: grid; min-height: 44px; place-items: center; border: 1px solid var(--border); border-radius: 12px; background: color-mix(in srgb, var(--surface) 70%, transparent); color: var(--ink); font-size: .9375rem; font-variant-numeric: tabular-nums; transition: background 160ms ease, border-color 160ms ease, color 160ms ease; }
+.grid a:hover, .grid a[aria-current='page'] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-deep); }
+.grid a:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; background: var(--accent-soft); }
+.jump { display: grid; flex: none; grid-template-columns: minmax(0, 1fr) 5rem auto; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.jump label { color: var(--ink-muted); font-size: .8125rem; }
+.jump input { width: 100%; min-width: 0; min-height: 44px; padding: 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 1rem; }
+.jump button { min-height: 44px; padding: 8px 12px; border: 0; border-radius: 999px; background: var(--accent-soft); color: var(--accent-deep); font-size: .8125rem; font-weight: 600; }
+.jump button:disabled { opacity: .5; cursor: default; }
+
+@media (max-width: 399px) {
+  .dialog { padding: 16px 12px; border-radius: 20px; }
+  .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  .jump { grid-template-columns: minmax(0, 1fr) 4.5rem auto; gap: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) { .grid a { transition: none; } }
