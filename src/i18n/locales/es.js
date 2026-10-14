@@ -93,7 +93,7 @@ export default {
   },
   bible: {
     title: 'Biblioteca bíblica',
-    subtitle: 'Libros por colección. Elige uno para abrir sus capítulos.',
+    subtitle: 'Los 66 libros, por testamento o categoría.',
     chooseReading: 'Elegir lectura',
     searchLabel: 'Buscar palabra, frase, libro o referencia',
     searchPlaceholder: 'Libro, palabra o cita',
@@ -106,7 +106,12 @@ export default {
     shortChapterCount: '{{count}} cap.',
     bookCount: '{{count}} libros',
     bookCountOne: '1 libro',
-    collections: { pentateuch: 'Pentateuco', history: 'Históricos', wisdom: 'Poéticos y sapienciales', majorProphets: 'Profetas mayores', minorProphets: 'Profetas menores', gospels: 'Evangelios', paulineLetters: 'Cartas paulinas', generalLetters: 'Cartas generales', prophecy: 'Profecía' },
+
+    exploreCategories: 'Elige cómo explorar',
+    categoriesLabel: 'Filtrar libros',
+    changeCategory: 'Cambiar categoría',
+    filteredBookCount: '{{count}} de 66 libros',
+    collections: { letters: 'Epístolas o cartas', pentateuch: 'Pentateuco o Ley', history: 'Históricos', wisdom: 'Poéticos y sabiduría', majorProphets: 'Profetas mayores', minorProphets: 'Profetas menores', gospels: 'Evangelios', paulineLetters: 'Cartas paulinas', generalLetters: 'Cartas generales', prophecy: 'Profético' },
     searchingAllBooks: 'Resultados en ambos testamentos',
     noBookResults: 'No encontramos un libro con ese nombre.',
     searchResults: 'Resultados de búsqueda',

@@ -18,7 +18,6 @@ export default function BibleBrowserPage() {
         <BibleNavigator
           currentBookId={hasHistory ? lastRead.book : null}
           currentChapter={hasHistory ? lastRead.chapter : null}
-          initialTestament={hasHistory && lastRead.book <= 39 ? 'OT' : 'NT'}
         />
       </div>
     </div>
