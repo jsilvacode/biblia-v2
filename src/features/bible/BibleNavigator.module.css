@@ -4,34 +4,22 @@
 .searchField:focus-within { border-color: var(--accent-blue-deep); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-blue-deep) 12%, transparent); }
 .searchField input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 1rem; }
 .searchField input::placeholder { color: var(--ink-muted); opacity: 1; }
-.discovery { display: grid; gap: 12px; scroll-margin-top: calc(var(--topbar-height) + 1rem); }
-.sectionLabel { margin: 0; color: var(--ink-muted); font: 600 .6875rem/1.5 var(--font-ui); letter-spacing: .12em; text-transform: uppercase; }
-.categoryGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.categoryCard { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: start; align-items: center; min-width: 0; min-height: 86px; gap: 8px 4px; padding: 10px; border: 1px solid var(--border); border-radius: 14px; background: linear-gradient(135deg, var(--surface-highlight), transparent 80%), color-mix(in srgb, var(--surface) 75%, transparent); box-shadow: inset 0 1px 0 var(--surface-highlight); color: var(--ink); text-align: left; transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease; }
-.categoryIcon { display: inline-flex; color: var(--accent-blue-deep); }
-.categoryCard small { color: var(--ink-muted); font: 500 .6875rem/1 var(--font-ui); font-variant-numeric: tabular-nums; }
-.categoryName { grid-column: 1 / -1; min-width: 0; font: 500 .8125rem/1.3 var(--font-ui); overflow-wrap: anywhere; }
-.categoryCard[aria-pressed='true'] { border-color: color-mix(in srgb, var(--accent) 70%, var(--border)); background: linear-gradient(135deg, var(--surface-highlight), transparent 85%), var(--accent-soft); box-shadow: var(--shadow-sm); color: var(--accent-deep); }
-.categoryCard[aria-pressed='true'] .categoryIcon, .categoryCard[aria-pressed='true'] small { color: var(--accent-deep); }
-.categoryCard:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--shadow-sm); }
-.categoryCard:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
 .results { display: grid; gap: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); scroll-margin-top: calc(var(--topbar-height) + .5rem); }
 .results:focus { outline: none; }
 .resultsHeading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; }
 .resultsHeading h2 { margin: 0; color: var(--accent-deep); font: 500 1.75rem/1.25 var(--font-display); letter-spacing: -.025em; }
 .resultsHeading > p { margin: 0; color: var(--ink-muted); font-size: .75rem; }
-.changeCategory { display: none; }
 .bookGroup { min-width: 0; }
 .bookGroup + .bookGroup { margin-top: .75rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
 .groupHeading { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; margin-bottom: .75rem; }
 .groupHeading h3 { margin: 0; color: var(--ink-muted); font: 600 .8125rem/1.4 var(--font-ui); }
 .groupHeading > span { color: var(--ink-muted); font-size: .6875rem; }
 .searchScope { margin: -1rem 0; color: var(--ink-muted); font-size: .75rem; }
-.bookGrid { display: grid; align-content: start; gap: .25rem .875rem; }
-.bookGrid button { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; min-height: 3rem; gap: .5rem; padding: .6rem .5rem; border: 1px solid transparent; border-radius: .75rem; background: transparent; color: var(--ink); font: 500 .9375rem/1.4 var(--font-ui); text-align: left; transition: background 160ms ease, color 160ms ease; }
+.bookGrid { display: grid; align-content: start; gap: .5rem .75rem; }
+.bookGrid button { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; min-height: 3rem; gap: .5rem; padding: .65rem .75rem; border: 1px solid var(--border); border-radius: 14px; background: color-mix(in srgb, var(--surface) 80%, transparent); color: var(--ink); font: 500 .9375rem/1.4 var(--font-ui); text-align: left; transition: background 160ms ease, color 160ms ease, border-color 160ms ease; }
 .bookGrid button > span { overflow-wrap: anywhere; }
 .bookGrid button > svg { color: var(--accent-blue-deep); opacity: .65; transition: transform 160ms ease; }
-.bookGrid button:hover { background: color-mix(in srgb, var(--accent-soft) 40%, transparent); color: var(--accent-deep); }
+.bookGrid button:hover { border-color: var(--accent-blue); background: color-mix(in srgb, var(--accent-soft) 40%, transparent); color: var(--accent-deep); }
 .bookGrid button:hover > svg { transform: translateX(2px); opacity: 1; }
 .bookGrid button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; background: var(--surface); }
 .bookGrid button[aria-current='true'] { background: color-mix(in srgb, var(--accent-soft) 50%, transparent); color: var(--accent-deep); }
@@ -79,17 +67,12 @@
 
 @media (min-width: 600px) {
   .bookGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .categoryGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-  .categoryCard { min-height: 88px; padding: 14px; }
-  .categoryName { font-size: .875rem; }
-  .searchField { max-width: 44rem; }
+}
+@media (min-width: 800px) {
+  .controls { grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem); align-items: start; }
 }
 @media (min-width: 1000px) {
   .bookGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .categoryGrid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-}
-@media (max-width: 699px) {
-  .changeCategory { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 6px 0; border: 0; background: transparent; color: var(--accent-blue-deep); font: 500 .75rem/1.4 var(--font-ui); }
 }
 @media (prefers-reduced-motion: reduce) {
   .navigator button, .navigator svg { transition: none; }

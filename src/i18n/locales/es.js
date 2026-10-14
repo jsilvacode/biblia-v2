@@ -34,6 +34,9 @@ export default {
     version: 'Versión',
   },
   home: {
+    quickSearch: 'Búsqueda rápida',
+    recentReadings: 'Lecturas recientes',
+    resumeReading: 'Reanudar lectura',
     readBible: 'Leer la Biblia',
     chooseBookChapter: 'Elige libro y capítulo.',
     selectBook: 'Seleccionar libro',

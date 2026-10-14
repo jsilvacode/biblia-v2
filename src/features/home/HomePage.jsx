@@ -14,6 +14,7 @@ import { useStudyProgressSummary } from '../studies/useStudyProgressSummary'
 import { formatPromiseReference } from './dailyPromise'
 import { HomeHeader } from './HomeHeader'
 import { HomePassagePicker } from './HomePassagePicker'
+import { HomeQuickSearch } from './HomeQuickSearch'
 import { useDailyPromise } from './useDailyPromise'
 import styles from './HomePage.module.css'
 
@@ -52,7 +53,7 @@ function getReaderPath(reference) {
 
 export default function HomePage() {
   const { locale, t } = useI18n()
-  const { lastRead } = useReadingState()
+  const { lastRead, recentReadings } = useReadingState()
   const { settings } = useSettings()
   const studySummary = useStudyProgressSummary()
   const navigate = useNavigate()
@@ -60,7 +61,6 @@ export default function HomePage() {
   const [promiseFeedback, setPromiseFeedback] = useState('')
   const hasReadingHistory = Boolean(lastRead.updatedAt)
   const version = getVersion(settings.bibleVersion)
-  const lastReference = formatReference(lastRead, locale)
   const dailyPlan = getRpspPlanState(new Date())
   const dailyReference = formatReference(dailyPlan.reading, locale)
   const dailyProgress = dailyPlan.status === 'active'
@@ -72,7 +72,6 @@ export default function HomePage() {
     chapter: promise.reference.chapter,
     verse: promise.reference.verseStart,
   }) : '/bible'
-  const previousReading = hasReadingHistory ? lastRead : null
   const visiblePromiseText = promiseText || (promiseStatus === 'error' ? t('home.promiseUnavailable') : t('home.promiseLoading'))
   const heroQuoteClassName = visiblePromiseText.length > 480
     ? styles.heroQuoteExtended
@@ -200,16 +199,31 @@ export default function HomePage() {
                   <h2 id="home-bible-heading">{t('home.readBible')}</h2>
                   <p>{t('home.chooseBookChapter')}</p>
                 </div>
-                <div>
+                <div className={styles.readingTools}>
                   <HomePassagePicker onGoToChapter={goToReading} />
-                  {previousReading && (
-                    <div className={styles.lastReading}>
-                      <span>{t('home.lastReading')}</span>
-                      <span className={styles.lastReference}>{lastReference}</span>
-                      <Link aria-label={`${t('home.continueReading')}: ${lastReference}`} className={styles.continueLink} to={getReaderPath(previousReading)} {...readingIntentProps(previousReading)}>
-                        <span>{t('common.continue')}</span><Icon name="arrowRight" size={15} />
-                      </Link>
-                    </div>
+                  <HomeQuickSearch currentBookId={hasReadingHistory ? lastRead.book : null} currentChapter={hasReadingHistory ? lastRead.chapter : null} onGoToChapter={goToReading} />
+                  {recentReadings.length > 0 && (
+                    <section aria-labelledby="home-recent-heading" className={styles.recentReadings}>
+                      <h3 id="home-recent-heading">{t('home.recentReadings')}</h3>
+                      <ol className={styles.recentList}>
+                        {recentReadings.map((reading, index) => (
+                          <li key={`${reading.book}:${reading.chapter}`}>
+                            <Link
+                              aria-label={`${t(index === 0 ? 'home.continueReading' : 'home.resumeReading')}: ${formatReference(reading, locale)}`}
+                              className={styles.recentLink}
+                              state={{ attentionVerse: true }}
+                              to={getReaderPath(reading)}
+                              {...readingIntentProps(reading)}
+                            >
+                              <Icon name="bookOpen" size={16} />
+                              <span>{formatReference(reading, locale)}</span>
+                              {index === 0 && <small>{t('common.continue')}</small>}
+                              <Icon name="arrowRight" size={15} />
+                            </Link>
+                          </li>
+                        ))}
+                      </ol>
+                    </section>
                   )}
                 </div>
               </div>

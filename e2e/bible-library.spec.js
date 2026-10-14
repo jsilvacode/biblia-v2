@@ -1,17 +1,26 @@
 import { expect, test } from '@playwright/test'
 
-async function openOldTestament(page) {
-  await page.goto('/bible')
-  await page.getByRole('button', { name: /Antiguo Testamento/ }).click()
-  await expect(page.getByRole('button', { name: /Antiguo Testamento/ })).toHaveAttribute('aria-pressed', 'true')
+async function selectCategory(page, id) {
+  const selector = page.getByRole('combobox', { name: 'Filtrar libros', exact: true })
+  await selector.click()
+  await page.getByRole('listbox').locator(`[data-category-id="${id}"]`).click()
+  await expect(selector).toHaveAttribute('aria-expanded', 'false')
 }
 
-test('opens all 66 books by testament and offers every category at the same level', async ({ page }) => {
+async function openOldTestament(page) {
   await page.goto('/bible')
-  const filters = page.getByRole('group', { name: 'Filtrar libros', exact: true })
-  await expect(filters.locator('[data-category-id]')).toHaveCount(13)
-  await expect(filters.getByRole('button', { pressed: true })).toHaveCount(1)
-  await expect(filters.locator('[data-category-id="all"]')).toHaveAttribute('aria-pressed', 'true')
+  await selectCategory(page, 'OT')
+}
+
+test('opens all 66 books and offers every category in the icon dropdown', async ({ page }) => {
+  await page.goto('/bible')
+  const selector = page.getByRole('combobox', { name: 'Filtrar libros', exact: true })
+  await expect(selector).toHaveText('Todos los libros66')
+  await selector.click()
+  await expect(page.getByRole('option')).toHaveCount(13)
+  await expect(page.getByRole('option', { selected: true })).toHaveCount(1)
+  await expect(page.getByRole('option').locator('svg')).toHaveCount(13)
+  await selector.press('Escape')
   const results = page.locator('#bible-book-results')
   await expect(results.getByRole('region', { name: 'Antiguo Testamento', exact: true }).locator('[data-book-id]')).toHaveCount(39)
   await expect(results.getByRole('region', { name: 'Nuevo Testamento', exact: true }).locator('[data-book-id]')).toHaveCount(27)
@@ -20,47 +29,51 @@ test('opens all 66 books by testament and offers every category at the same leve
 
   // Categories are global peers: no testament selection is needed first.
   for (const [id, first, last] of [['minorProphets', 28, 39], ['NT', 40, 66], ['gospels', 40, 43], ['OT', 1, 39], ['all', 1, 66]]) {
-    await filters.locator(`[data-category-id="${id}"]`).click()
+    await selectCategory(page, id)
     await expect(results.locator('[data-book-id]')).toHaveCount(last - first + 1)
     expect(await results.locator('[data-book-id]').evaluateAll(elements => elements.map(element => Number(element.dataset.bookId))))
       .toEqual(Array.from({ length: last - first + 1 }, (_, index) => index + first))
-    await expect(filters.getByRole('button', { pressed: true })).toHaveCount(1)
-    await expect(filters.locator(`[data-category-id="${id}"]`)).toHaveAttribute('aria-pressed', 'true')
+    await selector.click()
+    await expect(page.locator(`[data-category-id="${id}"]`)).toHaveAttribute('aria-selected', 'true')
+    await selector.press('Escape')
   }
 })
 
 test('historical and letter filters use the requested cross-testament and 14/7 groupings', async ({ page }) => {
   await page.goto('/bible')
-  const filters = page.getByRole('group', { name: 'Filtrar libros', exact: true })
   const results = page.locator('#bible-book-results')
-  await filters.locator('[data-category-id="history"]').click()
+  await selectCategory(page, 'history')
   await expect(results.locator('[data-book-id]')).toHaveCount(13)
   await expect(results.getByRole('region', { name: 'Antiguo Testamento', exact: true }).locator('[data-book-id]')).toHaveCount(12)
   await expect(results.getByRole('region', { name: 'Nuevo Testamento', exact: true }).locator('[data-book-id="44"]')).toHaveCount(1)
-  await filters.locator('[data-category-id="letters"]').click()
+  await selectCategory(page, 'letters')
   await expect(results.locator('[data-book-id]')).toHaveCount(21)
-  await filters.locator('[data-category-id="paulineLetters"]').click()
+  await selectCategory(page, 'paulineLetters')
   await expect(results.locator('[data-book-id]')).toHaveCount(14)
   await expect(results.locator('[data-book-id="58"]')).toHaveCount(1)
   await expect(results.locator('[data-book-id="59"]')).toHaveCount(0)
-  await filters.locator('[data-category-id="generalLetters"]').click()
+  await selectCategory(page, 'generalLetters')
   await expect(results.locator('[data-book-id]')).toHaveCount(7)
   await expect(results.locator('[data-book-id="58"]')).toHaveCount(0)
   await expect(results.locator('[data-book-id="59"]')).toHaveCount(1)
 })
 
-test('mobile category cards reveal the filtered books and offer a direct return to categories', async ({ page }) => {
+test('the category dropdown is bounded on mobile and keeps its selection after closing chapters', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 })
   await page.goto('/bible')
-  const minorProphets = page.locator('[data-category-id="minorProphets"]')
-  await minorProphets.click()
+  const selector = page.getByRole('combobox', { name: 'Filtrar libros', exact: true })
+  await selector.click()
+  const list = page.getByRole('listbox')
+  const box = await list.boundingBox()
+  expect(box.x).toBeGreaterThanOrEqual(0)
+  expect(box.y).toBeGreaterThanOrEqual(0)
+  expect(box.y + box.height).toBeLessThanOrEqual(568)
+  expect(box.height).toBeLessThanOrEqual(289)
+  await selector.press('End')
+  await selector.press('Enter')
+  await expect(page.locator('[data-book-id]')).toHaveCount(1)
+  await selectCategory(page, 'gospels')
   const results = page.locator('#bible-book-results')
-  await expect(results.getByRole('heading', { name: 'Profetas menores', exact: true })).toBeInViewport()
-  await expect(results).toBeFocused()
-  await results.getByRole('button', { name: 'Cambiar categoría', exact: true }).click()
-  await expect(minorProphets).toBeFocused()
-  await expect(minorProphets).toBeInViewport()
-  await page.locator('[data-category-id="gospels"]').click()
   await expect(results.locator('[data-book-id]')).toHaveCount(4)
   const john = results.locator('[data-book-id="43"]')
   await john.click()
@@ -68,12 +81,12 @@ test('mobile category cards reveal the filtered books and offer a direct return 
   await expect(dialog.getByRole('link')).toHaveCount(21)
   await page.keyboard.press('Escape')
   await expect(john).toBeFocused()
-  await expect(results.getByRole('heading', { name: 'Evangelios', exact: true })).toBeInViewport()
+  await expect(selector).toHaveText('Evangelios4')
 })
 
 test('search spans the whole Bible and clearing it restores the selected category', async ({ page }) => {
   await page.goto('/bible')
-  await page.locator('[data-category-id="minorProphets"]').click()
+  await selectCategory(page, 'minorProphets')
   const input = page.getByRole('searchbox')
   await input.fill('juan')
   await expect(page.locator('[data-book-id="43"]')).toBeVisible()
@@ -81,7 +94,7 @@ test('search spans the whole Bible and clearing it restores the selected categor
   await input.fill('')
   await expect(page.locator('#bible-book-results').getByRole('heading', { name: 'Profetas menores', exact: true })).toBeVisible()
   await expect(page.locator('[data-book-id]')).toHaveCount(12)
-  await expect(page.locator('[data-category-id="minorProphets"]')).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.getByRole('combobox', { name: 'Filtrar libros', exact: true })).toHaveText('Profetas menores12')
 })
 
 test('choosing a book opens its chapters in a centred modal and goes directly to reading', async ({ page }) => {

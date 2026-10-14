@@ -40,7 +40,7 @@
   --glass-lip: light-dark(rgb(255 255 255 / .72), rgb(255 255 255 / .22));
   --mantle-bleed: 8px;
   --mantle-width: min(calc(100% + 16px), 1100px);
-  --mantle-mask: linear-gradient(180deg, #000 0%, #000 35%, rgb(0 0 0 / .72) 60%, rgb(0 0 0 / .2) 84%, transparent 100%);
+  --mantle-mask: linear-gradient(180deg, #000 0%, #000 55%, rgb(0 0 0 / .72) 72%, rgb(0 0 0 / .2) 90%, transparent 100%);
   --mantle-rim-mask: linear-gradient(180deg, #000 0%, #000 8%, rgb(0 0 0 / .4) 45%, rgb(0 0 0 / .08) 75%, transparent 100%);
   --mantle-side-mask: linear-gradient(90deg, transparent, #000 var(--mantle-bleed), #000 calc(100% - var(--mantle-bleed)), transparent);
   position: relative;
@@ -70,10 +70,16 @@
 .readingHeading { text-align: center; }
 .readingHeading h2 { margin: 0; font: 400 2.5rem/1.2 var(--font-display); letter-spacing: -.04em; }
 .readingHeading p { margin: 10px 0 0; color: var(--ink-muted); font-size: .875rem; }
-.lastReading { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0 13px; margin-top: 8px; color: var(--ink-muted); font-size: .75rem; line-height: 1.5; }
-.lastReference { display: inline-flex; align-items: center; gap: 13px; font: 400 .8125rem/1.5 var(--font-reading); }
-.lastReference::before { content: '·'; }
-.continueLink { display: inline-flex; align-items: center; min-height: 44px; gap: 6px; color: var(--accent-blue-deep); text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 4px; }
+.readingTools { display: grid; width: 100%; max-width: 560px; min-width: 0; gap: 26px; margin-inline: auto; }
+.recentReadings { display: grid; min-width: 0; gap: 10px; }
+.recentReadings h3 { margin: 0; color: var(--ink-muted); font: 500 .6875rem/1.4 var(--font-ui); letter-spacing: .1em; text-transform: uppercase; }
+.recentList { display: grid; gap: 3px; margin: 0; padding: 0; list-style: none; }
+.recentLink { display: flex; align-items: center; min-width: 0; min-height: 44px; gap: 10px; padding: 7px 9px; border-radius: 10px; color: var(--accent-blue-deep); transition: background 160ms ease; }
+.recentLink > svg { flex: none; }
+.recentLink > span { flex: 1; min-width: 0; color: var(--ink); font: 400 .875rem/1.4 var(--font-reading); overflow-wrap: anywhere; }
+.recentLink > small { color: var(--accent-blue-deep); font: 400 .6875rem/1.4 var(--font-ui); }
+.recentLink:hover { background: light-dark(rgb(255 255 255 / .4), rgb(255 255 255 / .04)); }
+.recentLink:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .eyebrow { margin: 0; color: var(--accent-deep); font: 500 .6875rem/1.4 var(--font-ui); letter-spacing: .12em; text-transform: uppercase; }
 .editorialSection { margin-top: 76px; }
 .editorialSection > .eyebrow { margin-bottom: 20px; }
@@ -147,8 +153,8 @@
   .readingLayout { gap: 24px; }
   .readingHeading h2 { font-size: 2.0625rem; }
   .readingHeading p { font-size: .8125rem; }
-  .lastReading { gap: 0 10px; margin-top: 10px; font-size: .6875rem; }
-  .lastReference { gap: 10px; font-size: .75rem; }
+  .recentReadings { gap: 8px; }
+  .recentLink > span { font-size: .8125rem; }
   .editorialSection { margin-top: 56px; }
   .editorialSection > .eyebrow { margin-bottom: 4px; }
   .eyebrow { font-size: .625rem; }
@@ -177,7 +183,6 @@
   .homeFeed { padding-top: 28px; }
   .readingPanel { padding: 20px 0 18px; }
   .readingLayout { gap: 20px; }
-  .lastReading { margin-top: 6px; }
 }
 @media (max-height: 780px) and (min-width: 801px) {
   .heroInner { padding-top: 64px; }
@@ -198,6 +203,6 @@
   .glassMantle::after { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .entryTitle, .entryAction svg, .entryImage img, .interestCard, .heroPrimaryAction, .heroSecondaryAction { transition: none; }
+  .entryTitle, .entryAction svg, .entryImage img, .interestCard, .heroPrimaryAction, .heroSecondaryAction, .recentLink { transition: none; }
   .editorialEntry:hover .entryTitle, .editorialEntry:hover .entryAction svg, .editorialEntry:hover .entryImage img, .interestCard:hover { transform: none; }
 }

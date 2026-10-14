@@ -10,6 +10,7 @@ async function prepareHomeState(page, { history = false, theme = 'light' } = {})
       bibleVersion: 'nbla', fontFamily: 'serif', locale: 'es',
       readerFontScale: 1, readerLineHeight: 'comfortable', theme: nextTheme,
     }))
+    window.localStorage.removeItem('santa_biblia_v2_recent_readings')
     if (nextHistory) {
       window.localStorage.setItem('santa_biblia_v2_reading', JSON.stringify({
         book: 43, chapter: 3, verse: 16, progress: 42, updatedAt: 1_789_876_543_210,
@@ -178,7 +179,7 @@ test('returning Home keeps the picker neutral and offers the last reading as a s
   await expect(page).toHaveURL(/\/$/)
   await expectNeutralPicker(page)
   const panel = page.getByTestId('home-reading-panel')
-  await expect(panel.getByText('Última lectura', { exact: true })).toBeVisible()
+  await expect(panel.getByRole('heading', { name: 'Lecturas recientes', exact: true })).toBeVisible()
   await expect(panel.getByText(/^Juan 3(?::\d+)?$/, { exact: true })).toBeVisible()
   const continueReading = panel.getByRole('link', { name: continueLabel })
   await expect(continueReading).toHaveAttribute('href', /^\/read\/43\/3(?:\/\d+)?$/)

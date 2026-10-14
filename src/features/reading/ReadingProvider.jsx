@@ -1,65 +1,30 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { getBook } from '../bible/catalog'
+import { advanceReading, readReadingState, READING_KEY, RECENT_READINGS_KEY } from './readingHistory'
 
-const STORAGE_KEY = 'santa_biblia_v2_reading'
-const defaultReading = { book: 43, chapter: 3, verse: null, progress: 0, updatedAt: null }
 const ReadingStateContext = createContext(null)
 const ReadingActionsContext = createContext(null)
 
-function readLastRead() {
-  try {
-    const stored = window.localStorage.getItem(STORAGE_KEY)
-    if (!stored) return { ...defaultReading }
-    const value = JSON.parse(stored)
-    const book = getBook(value?.book)
-    const chapter = Number(value?.chapter)
-    if (!book || !Number.isInteger(chapter) || chapter < 1 || chapter > book.chapters) {
-      return { ...defaultReading }
-    }
-    return {
-      book: book.id,
-      chapter,
-      progress: Number.isFinite(value.progress) ? Math.min(100, Math.max(0, Math.round(value.progress))) : 0,
-      updatedAt: Number.isFinite(value.updatedAt) ? value.updatedAt : null,
-      verse: Number.isInteger(value.verse) && value.verse > 0 ? value.verse : null,
-    }
-  } catch {
-    return { ...defaultReading }
-  }
-}
-
 export function ReadingProvider({ children }) {
-  const [lastRead, setLastReadState] = useState(readLastRead)
+  const [readingState, setReadingState] = useState(readReadingState)
 
   useEffect(() => {
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(lastRead))
+      window.localStorage.setItem(READING_KEY, JSON.stringify(readingState.lastRead))
+      window.localStorage.setItem(RECENT_READINGS_KEY, JSON.stringify(readingState.recentReadings))
     } catch {
       // Reading continues even if private mode or a full quota blocks storage.
     }
-  }, [lastRead])
+  }, [readingState])
 
   const setLastRead = useCallback((reference) => {
-    setLastReadState((current) => {
-      const next = {
-        ...defaultReading,
-        ...current,
-        ...reference,
-        progress: Number.isFinite(reference.progress)
-          ? Math.min(100, Math.max(0, Math.round(reference.progress)))
-          : current.progress ?? 0,
-        updatedAt: Date.now(),
-      }
-      return next
-    })
+    setReadingState((current) => advanceReading(current, reference))
   }, [])
 
-  const stateValue = useMemo(() => ({ lastRead }), [lastRead])
   const actionsValue = useMemo(() => ({ setLastRead }), [setLastRead])
 
   return (
     <ReadingActionsContext.Provider value={actionsValue}>
-      <ReadingStateContext.Provider value={stateValue}>{children}</ReadingStateContext.Provider>
+      <ReadingStateContext.Provider value={readingState}>{children}</ReadingStateContext.Provider>
     </ReadingActionsContext.Provider>
   )
 }

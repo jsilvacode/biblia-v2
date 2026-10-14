@@ -1,21 +1,16 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useMemo, useRef, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import { useBibleTextSearch } from '../search/useBibleTextSearch'
 import { useSettings } from '../settings/SettingsProvider'
+import { BibleCategorySelector } from './BibleCategorySelector'
 import { BookChaptersDialog } from './BookChaptersDialog'
-import { getAllLocalizedBookNames } from './bookNames'
+import { findMatchingBooks } from './bookSearch'
 import { bibleCategories } from './bibleCategories'
-import { bibleBooks, formatReference, getLocalizedBookName, normalizeText } from './catalog'
+import { formatReference, getLocalizedBookName, normalizeText } from './catalog'
 import { parseReference } from './reference'
 import styles from './BibleNavigator.module.css'
-
-function getBookSearchValues(book) {
-  return [...getAllLocalizedBookNames(book), book.abbrev, book.slug]
-    .filter(Boolean)
-    .map(normalizeText)
-}
 
 function referencePath(reference) {
   return `/read/${reference.book}/${reference.chapter}${reference.verse ? `/${reference.verse}` : ''}`
@@ -27,13 +22,11 @@ export function BibleNavigator({
 }) {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
-  const [categorySelection, setCategorySelection] = useState({ id: 'all', revealBooks: false })
-  const categoryId = categorySelection.id
-  const [query, setQuery] = useState('')
+  const [searchParams] = useSearchParams()
+  const [categoryId, setCategoryId] = useState('all')
+  const [query, setQuery] = useState(() => searchParams.get('q') ?? '')
   const [selectedBook, setSelectedBook] = useState(null)
   const bookTriggerRef = useRef(null)
-  const categoriesRef = useRef(null)
-  const resultsRef = useRef(null)
   const normalizedQuery = normalizeText(query)
   const parsedReference = useMemo(() => parseReference(query), [query])
   const textSearchEnabled = normalizedQuery.length >= 2 && !parsedReference
@@ -49,21 +42,7 @@ export function BibleNavigator({
     books: selectedCategory.books.filter((book) => book.testament === testament),
   })).filter((group) => group.books.length)
 
-  const visibleBooks = useMemo(() => {
-    if (!normalizedQuery) return []
-    return bibleBooks.filter((book) => getBookSearchValues(book).some((value) => value.includes(normalizedQuery)))
-  }, [normalizedQuery])
-
-  useLayoutEffect(() => {
-    if (!categorySelection.revealBooks || !window.matchMedia('(max-width: 699px)').matches) return
-    resultsRef.current?.scrollIntoView({ block: 'start', behavior: 'instant' })
-    resultsRef.current?.focus({ preventScroll: true })
-  }, [categorySelection])
-
-  function returnToCategories() {
-    categoriesRef.current?.scrollIntoView({ block: 'start', behavior: 'instant' })
-    categoriesRef.current?.querySelector('button[aria-pressed="true"]')?.focus({ preventScroll: true })
-  }
+  const visibleBooks = useMemo(() => findMatchingBooks(normalizedQuery), [normalizedQuery])
 
   function renderBookButton(book) {
     return (
@@ -118,30 +97,12 @@ export function BibleNavigator({
           />
         </label>
 
+        <BibleCategorySelector
+          categories={bibleCategories}
+          onSelect={(category) => { setCategoryId(category.id); setQuery('') }}
+          selected={normalizedQuery ? bibleCategories[0] : selectedCategory}
+        />
       </div>
-
-      {!normalizedQuery && (
-        <section aria-labelledby="bible-categories-title" className={styles.discovery} ref={categoriesRef}>
-          <h2 className={styles.sectionLabel} id="bible-categories-title">{t('bible.exploreCategories')}</h2>
-          <div aria-label={t('bible.categoriesLabel')} className={styles.categoryGrid} role="group">
-          {bibleCategories.map((category) => (
-            <button
-              aria-controls="bible-book-results"
-              aria-pressed={categoryId === category.id}
-              className={styles.categoryCard}
-              data-category-id={category.id}
-              key={category.id}
-              onClick={() => setCategorySelection({ id: category.id, revealBooks: true })}
-              type="button"
-            >
-              <span aria-hidden="true" className={styles.categoryIcon}><Icon name={category.icon} size={20} /></span>
-              <small aria-label={t(category.books.length === 1 ? 'bible.bookCountOne' : 'bible.bookCount', { count: category.books.length })}>{category.books.length}</small>
-              <span className={styles.categoryName}>{t(category.labelKey)}</span>
-            </button>
-          ))}
-          </div>
-        </section>
-      )}
 
       {normalizedQuery && <p className={styles.searchScope}>{t('bible.searchingAllBooks')}</p>}
 
@@ -199,14 +160,11 @@ export function BibleNavigator({
             </div>
           </section>
         ) : (
-          <section aria-labelledby="bible-results-title" className={styles.results} id="bible-book-results" ref={resultsRef} tabIndex={-1}>
+          <section aria-labelledby="bible-results-title" className={styles.results} id="bible-book-results">
             <header className={styles.resultsHeading}>
               <h2 id="bible-results-title">{t(selectedCategory.labelKey)}</h2>
               <p aria-live="polite" aria-atomic="true">{t('bible.filteredBookCount', { count: selectedCategory.books.length })}</p>
-              <button className={styles.changeCategory} onClick={returnToCategories} type="button">
-                <Icon name="arrowUp" size={15} />
-                {t('bible.changeCategory')}
-              </button>
+
             </header>
             {bookGroups.map((group) => (
               <section
