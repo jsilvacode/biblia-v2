@@ -64,9 +64,9 @@
   mask-image: var(--mantle-rim-mask), var(--mantle-side-mask);
   -webkit-mask-image: var(--mantle-rim-mask), var(--mantle-side-mask);
 }
-.readingPanel { position: relative; padding: 24px 0 22px; }
+.readingPanel { position: relative; padding: 30px 0 28px; }
 .readingPanel:has([aria-expanded='true']) { z-index: 35; }
-.readingLayout { display: grid; max-width: 760px; gap: 22px; margin-inline: auto; }
+.readingLayout { display: grid; max-width: 760px; gap: 26px; margin-inline: auto; }
 .readingHeading { text-align: center; }
 .readingHeading h2 { margin: 0; font: 400 2.5rem/1.2 var(--font-display); letter-spacing: -.04em; }
 .readingHeading p { margin: 10px 0 0; color: var(--ink-muted); font-size: .875rem; }
@@ -143,8 +143,8 @@
   :global(:root[data-theme='dark']) .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, color-mix(in srgb, var(--bg-reader) 3%, transparent) 25%, transparent 35%), color-mix(in srgb, var(--bg-reader) 44%, transparent); }
   .homeFeed { padding-top: 28px; }
   .glassMantle::before, .glassMantle::after { border-radius: 34px 40px 0 0; }
-  .readingPanel { padding: 20px 0 27px; }
-  .readingLayout { gap: 20px; }
+  .readingPanel { padding: 26px 0 31px; }
+  .readingLayout { gap: 24px; }
   .readingHeading h2 { font-size: 2.0625rem; }
   .readingHeading p { font-size: .8125rem; }
   .lastReading { gap: 0 10px; margin-top: 10px; font-size: .6875rem; }
@@ -175,15 +175,15 @@
   .heroInner { padding-top: 68px; }
   .heroCopy { padding: 50px 0 58px; }
   .homeFeed { padding-top: 28px; }
-  .readingPanel { padding: 16px 0 14px; }
-  .readingLayout { gap: 16px; }
+  .readingPanel { padding: 20px 0 18px; }
+  .readingLayout { gap: 20px; }
   .lastReading { margin-top: 6px; }
 }
 @media (max-height: 780px) and (min-width: 801px) {
   .heroInner { padding-top: 64px; }
   .heroCopy { padding: 34px 0 50px; }
-  .readingPanel { padding: 14px 0 12px; }
-  .readingLayout { gap: 14px; }
+  .readingPanel { padding: 18px 0 16px; }
+  .readingLayout { gap: 18px; }
 }
 @media (max-height: 740px) and (min-width: 801px) {
   .heroInner { padding-top: 60px; }

@@ -173,8 +173,6 @@ body,
 }
 
 .card,
-.book-list,
-.chapter-picker,
 .reference-result,
 .saved-item,
 .settings-section {
@@ -183,35 +181,18 @@ body,
   box-shadow: var(--shadow-sm), inset 0 1px 0 var(--surface-highlight);
 }
 
-.book-list__item,
-.chapter-grid a,
 .reader-field select {
   transition: border-color var(--duration-fast) var(--ease-premium), background var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium), transform var(--duration-fast) var(--ease-premium);
 }
 
-.book-list__item:hover,
 .reference-result:hover,
 .saved-item:hover {
   border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
 }
 
-.book-list__item.is-selected {
-  background: color-mix(in srgb, var(--surface-celeste) 72%, var(--surface-raised));
-  color: var(--accent-blue-deep);
-}
-
 .segmented-control button.is-selected {
   background: color-mix(in srgb, var(--accent-soft) 72%, var(--surface-raised));
   color: var(--accent-deep);
-}
-
-.chapter-picker--inline {
-  background: color-mix(in srgb, var(--surface-celeste) 42%, var(--surface-raised));
-}
-
-.chapter-grid a:hover {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent-soft) 56%, var(--surface-raised));
 }
 
 .mobile-navigation {
@@ -230,14 +211,6 @@ body,
     radial-gradient(circle at 6% 2%, color-mix(in srgb, var(--surface-celeste) 16%, transparent), transparent 22rem),
     radial-gradient(circle at 92% -8%, color-mix(in srgb, var(--ambient-glow) 16%, transparent), transparent 26rem),
     var(--bg-reader);
-}
-
-
-.reader-header__reference {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 560;
-  letter-spacing: -0.025em;
 }
 
 .reading-progress {

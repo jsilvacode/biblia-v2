@@ -28,7 +28,8 @@ export function useBibleTextSearch({
   const normalizedQuery = useMemo(() => normalizeSearchText(query), [query])
   const searchKey = `${translationId}:${normalizedQuery}`
 
-  useEffect(() => {
+  const ensureWorker = useCallback(() => {
+    if (workerRef.current) return workerRef.current
     const worker = new Worker(new URL('../../workers/searchWorker.js', import.meta.url), { type: 'module' })
     workerRef.current = worker
     worker.onmessage = (event) => {
@@ -78,10 +79,12 @@ export function useBibleTextSearch({
       })
     }
 
-    return () => {
-      worker.terminate()
-      workerRef.current = null
-    }
+    return worker
+  }, [])
+
+  useEffect(() => () => {
+    workerRef.current?.terminate()
+    workerRef.current = null
   }, [])
 
   useEffect(() => {
@@ -89,9 +92,9 @@ export function useBibleTextSearch({
     requestIdRef.current = id
     loadingMoreRef.current = false
 
-    if (!enabled || !normalizedQuery || !workerRef.current) return undefined
+    if (!enabled || !normalizedQuery) return undefined
 
-    const runSearch = () => workerRef.current?.postMessage({
+    const runSearch = () => ensureWorker().postMessage({
       append: false,
       id,
       key: searchKey,
@@ -106,7 +109,7 @@ export function useBibleTextSearch({
     return () => {
       if (timeout !== null) window.clearTimeout(timeout)
     }
-  }, [debounceMs, enabled, normalizedQuery, pageSize, searchKey, translationId])
+  }, [debounceMs, enabled, ensureWorker, normalizedQuery, pageSize, searchKey, translationId])
 
   const loadMore = useCallback(() => {
     if (

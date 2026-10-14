@@ -1,4 +1,4 @@
-import { getThematicReferencePath, resolveThematicReference } from './topicReference'
+import { formatThematicReference, resolveThematicReference } from './topicReference'
 import library from './data/topics.es.json'
 
 describe('thematic reference links', () => {
@@ -12,19 +12,19 @@ describe('thematic reference links', () => {
     expect(resolveThematicReference(label)).toEqual(expected)
   })
 
-  it('builds a reader path and rejects unknown references', () => {
-    expect(getThematicReferencePath('Juan 14:27')).toBe('/read/43/14/27')
-    expect(getThematicReferencePath('Referencia desconocida')).toBeNull()
+  it('rejects unknown references', () => {
+    expect(resolveThematicReference('Referencia desconocida')).toBeNull()
   })
 
   it('formats localized chapter and verse ranges', () => {
-    expect(resolveThematicReference('Mateo 6:25-34')).toMatchObject({ verseStart: 25, verseEnd: 34 })
+    expect(formatThematicReference('Mateo 6:25-34', 'en')).toBe('Matthew 6:25-34')
+    expect(formatThematicReference('Job 1-2', 'es')).toBe('Job 1-2')
   })
 
   it('resolves every reference in the editorial library', () => {
     const unresolved = library.categories.flatMap((category) => category.situations.flatMap((situation) => (
       [situation.central, ...situation.companions]
-        .filter((label) => !getThematicReferencePath(label))
+        .filter((label) => !resolveThematicReference(label))
         .map((label) => `${situation.title}: ${label}`)
     )))
 

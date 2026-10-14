@@ -4,7 +4,7 @@
   --picker-reflection: light-dark(rgb(255 255 255 / 0.3), rgb(255 255 255 / 0.085));
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 96px auto;
+  grid-template-columns: minmax(0, 1fr) 112px auto;
   align-items: end;
   width: 100%;
   max-width: 560px;
@@ -16,7 +16,7 @@
   position: relative;
   display: grid;
   min-width: 0;
-  gap: 8px;
+  gap: 0;
   color: var(--ink-muted);
   font-size: 12px;
   font-weight: 400;
@@ -44,6 +44,17 @@
 }
 
 .control:has(.menu[data-direction='up']:not([hidden])) { border-radius: 0 0 12px 12px; }
+
+.picker:not(.compact) .control {
+  border: 1px solid color-mix(in srgb, var(--border-strong) 80%, transparent);
+  border-radius: 12px;
+  background: light-dark(rgb(255 255 255 / .25), rgb(255 255 255 / .035));
+}
+.picker:not(.compact) .control:has(.trigger:not(:disabled)):hover,
+.picker:not(.compact) .control:focus-within { border-color: var(--accent-blue); }
+.picker:not(.compact) .control:has([aria-expanded='true']) { border-color: var(--picker-border); border-radius: 12px 12px 0 0; background: var(--picker-fill); }
+.picker:not(.compact) .control:has(.menu[data-direction='up']:not([hidden])) { border-radius: 0 0 12px 12px; }
+.picker:not(.compact) .trigger { padding-left: 12px; }
 
 .trigger {
   position: relative;
@@ -193,13 +204,14 @@
 }
 
 @media (max-width: 620px) {
-  .picker { max-width: 320px; grid-template-columns: minmax(0, 1fr) 84px; gap: 14px; }
+  .picker { max-width: 320px; grid-template-columns: minmax(0, 1fr) 104px; gap: 14px; }
+  .picker:not(.compact) .trigger { font-size: 14px; }
   .trigger { padding-right: 28px; }
   .openChapter { grid-column: 1 / -1; width: 100%; margin-top: 2px; padding: 12px 18px; font-size: 12px; }
 }
 
 @media (max-width: 350px) {
-  .picker { grid-template-columns: minmax(0, 1fr) 74px; gap: 12px; }
+  .picker { grid-template-columns: minmax(0, 1fr) 104px; gap: 12px; }
   .trigger { padding-right: 26px; }
 }
 
@@ -209,10 +221,8 @@
 
 .picker.compact { grid-template-columns: minmax(0, 1fr) 104px auto; align-items: center; gap: 10px; padding: 6px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface-raised); box-shadow: var(--shadow-sm); }
 .picker.compact.withLeadingAction { grid-template-columns: auto minmax(0, 1fr) 104px auto; }
-.compact .field { gap: 0; }
 .compact .field + .field { padding-left: 8px; border-left: 1px solid var(--border); }
 .compact .control { border-bottom: 0; }
-.compact .field > span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .compact .trigger { min-height: 44px; padding: 10px 28px 10px 6px; font-size: 14px; }
 .compact .openChapter { grid-column: auto; width: auto; min-height: 44px; margin-top: 0; padding: 10px 16px; font-size: 12px; }
 

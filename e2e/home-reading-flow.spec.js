@@ -44,7 +44,7 @@ function homePicker(page) {
 async function expectNeutralPicker(page) {
   const picker = homePicker(page)
   await expect(picker.book).toHaveText('Seleccionar libro')
-  await expect(picker.chapter).toHaveText('—')
+  await expect(picker.chapter).toHaveText('Capítulo')
   await expect(picker.chapter).toBeDisabled()
   await expect(picker.open).toBeDisabled()
 }
@@ -85,12 +85,21 @@ function expectConnectedPopup(popupBox, triggerBox) {
 }
 
 test('Home provides one editorial entry for each destination and the four original external links', async ({ page }) => {
+  const startupImages = []
+  page.on('request', (request) => { if (request.resourceType() === 'image') startupImages.push(request.url()) })
   await clearAppStorage(page)
   await expect(page.locator('#boot-splash')).toHaveCount(0)
   const hero = page.getByRole('region', { name: promiseTitle })
   await expect(hero.getByRole('heading')).toBeVisible()
   await expect(hero.getByRole('link', { name: /Leer capítulo/ })).toHaveAttribute('href', /^\/read\/\d+\/\d+\/\d+$/)
   await expect(page.getByRole('heading', { name: 'Leer la Biblia', exact: true })).toBeVisible()
+  expect(startupImages.some((url) => url.includes('/assets/social/verse-card-background.jpg'))).toBe(false)
+  const picker = homePicker(page)
+  for (const control of [picker.book, picker.chapter]) {
+    await expect(control.locator('span').first()).toBeVisible()
+    const label = await control.getAttribute('aria-labelledby')
+    await expect(page.locator(`[id="${label}"]`)).toHaveClass('sr-only')
+  }
 
   for (const [name, path] of [
     [/Reavivados por su Palabra/, '/reavivados'],
@@ -145,7 +154,7 @@ test('a new reader chooses a book and chapter explicitly before opening the read
   const picker = homePicker(page)
   await selectOption(page, picker.book, 'Génesis')
   await expect(picker.chapter).toBeEnabled()
-  await expect(picker.chapter).toHaveText('—')
+  await expect(picker.chapter).toHaveText('Capítulo')
   await expect(picker.open).toBeDisabled()
   await selectOption(page, picker.chapter, '1')
   await expect(picker.open).toBeEnabled()
@@ -186,7 +195,7 @@ test('changing the book clears an incompatible chapter without changing the last
   await selectOption(page, picker.chapter, '150')
   await expect(picker.open).toBeEnabled()
   await selectOption(page, picker.book, 'Judas')
-  await expect(picker.chapter).toHaveText('—')
+  await expect(picker.chapter).toHaveText('Capítulo')
   await expect(picker.open).toBeDisabled()
   await picker.chapter.click()
   await expect(page.getByRole('listbox').getByRole('option')).toHaveCount(1)

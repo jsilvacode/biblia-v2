@@ -1,11 +1,8 @@
-import { useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { AppProviders } from './AppProviders'
 import { AppRoutes } from './routes'
-
-const BOOT_SPLASH_FADE_MS = 180
 
 function redactAnalyticsQuery(event) {
   return {
@@ -15,21 +12,6 @@ function redactAnalyticsQuery(event) {
 }
 
 export default function App() {
-  useEffect(() => {
-    const splash = document.getElementById('boot-splash')
-    if (!splash) return undefined
-
-    let removalTimer = 0
-
-    const removeSplash = () => splash.remove()
-    splash.classList.add('boot-splash--hidden')
-    removalTimer = window.setTimeout(removeSplash, BOOT_SPLASH_FADE_MS)
-
-    return () => {
-      window.clearTimeout(removalTimer)
-    }
-  }, [])
-
   return (
     <>
       <AppProviders>

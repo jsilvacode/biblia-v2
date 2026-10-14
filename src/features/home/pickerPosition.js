@@ -45,7 +45,9 @@ export function positionPickerMenu(list, anchorElement) {
   }
 
   list.dataset.direction = direction
-  list.style.top = direction === 'down' ? `${anchor.height}px` : 'auto'
+  // Absolute offsets use the padding box; counting the border here would
+  // detach a fully outlined trigger from its menu.
+  list.style.top = direction === 'down' ? `${anchorElement.clientHeight}px` : 'auto'
   list.style.bottom = direction === 'up' ? `${anchorElement.clientHeight}px` : 'auto'
   list.style.maxHeight = `${Math.min(MAX_PICKER_HEIGHT, available)}px`
   list.style.visibility = 'visible'

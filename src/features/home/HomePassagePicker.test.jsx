@@ -57,7 +57,7 @@ describe('HomePassagePicker', () => {
     const open = screen.getByRole('button', { name: 'Abrir capítulo', exact: true })
 
     expect(book.textContent).toBe('Seleccionar libro')
-    expect(chapter.textContent).toBe('—')
+    expect(chapter.textContent).toBe('Capítulo')
     expect(chapter.disabled).toBe(true)
     expect(open.disabled).toBe(true)
     expect(screen.queryByRole('listbox')).toBeNull()
@@ -110,7 +110,7 @@ describe('HomePassagePicker', () => {
     expect(open.disabled).toBe(false)
 
     chooseBook('Judas')
-    expect(chapter.textContent).toBe('—')
+    expect(chapter.textContent).toBe('Capítulo')
     expect(open.disabled).toBe(true)
     fireEvent.click(chapter)
     expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual(['1'])

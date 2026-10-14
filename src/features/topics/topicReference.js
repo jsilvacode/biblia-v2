@@ -43,16 +43,6 @@ export function resolveThematicReference(label) {
   }
 }
 
-export function getThematicReferenceLocation(reference) {
-  const resolved = typeof reference === 'string' ? resolveThematicReference(reference) : reference
-  if (!resolved) return null
-  return {
-    book: resolved.book,
-    chapter: resolved.chapterStart,
-    verse: resolved.verseStart,
-  }
-}
-
 export function formatThematicReference(reference, locale = 'es') {
   const resolved = typeof reference === 'string' ? resolveThematicReference(reference) : reference
   if (!resolved) return ''
@@ -66,10 +56,4 @@ export function formatThematicReference(reference, locale = 'es') {
     ? `${resolved.verseStart}`
     : `${resolved.verseStart}-${resolved.verseEnd}`
   return `${bookName} ${resolved.chapterStart}:${verseLabel}`
-}
-
-export function getThematicReferencePath(label) {
-  const reference = getThematicReferenceLocation(label)
-  if (!reference) return null
-  return `/read/${reference.book}/${reference.chapter}${reference.verse ? `/${reference.verse}` : ''}`
 }

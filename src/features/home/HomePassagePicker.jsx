@@ -229,7 +229,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
     const empty = name === 'book' ? !selectedBook : selection.chapter === null
     return (
       <div className={styles.field}>
-        <span id={`${id}-${name}-label`}>{label}</span>
+        <span className="sr-only" id={`${id}-${name}-label`}>{label}</span>
         <div
           className={`${styles.control}${empty ? ` ${styles.emptyControl}` : ''}`}
           data-picker-field={name}
@@ -312,7 +312,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
     >
       {leadingAction}
       {renderPicker('book', bookLabel, selectedBook ? getLocalizedBookName(selectedBook, locale) : selectBookLabel)}
-      {renderPicker('chapter', chapterLabel, selection.chapter ?? (compact ? chapterLabel : '—'), !selectedBook)}
+      {renderPicker('chapter', chapterLabel, selection.chapter ?? chapterLabel, !selectedBook)}
       <button aria-label={compact ? openChapterLabel : undefined} className={styles.openChapter} disabled={!ready} type="submit">
         <span>{openChapterLabel}</span>
         <Icon name="arrowRight" size={17} />

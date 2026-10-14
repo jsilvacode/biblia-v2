@@ -85,6 +85,8 @@ export default defineConfig({
       workbox: {
         importScripts: ['sw-update.js'],
         globPatterns: ['**/*.{js,css,html,png,svg,webp,avif,jpg,jpeg,woff,woff2}'],
+        // Social-card images are read by the server and are not offline UI.
+        globIgnores: ['assets/social/**', 'og-share.jpg'],
         cleanupOutdatedCaches: true,
         runtimeCaching: [
           {
