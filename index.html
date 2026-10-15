@@ -6,7 +6,16 @@
     <meta name="theme-color" content="#241b17" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="preload" as="image" href="/assets/aurora-champagne-landscape.webp" fetchpriority="high" />
+    <script>
+      if (location.pathname === '/') {
+        const heroPreload = document.createElement('link')
+        heroPreload.rel = 'preload'
+        heroPreload.as = 'image'
+        heroPreload.href = '/assets/aurora-champagne-landscape.webp'
+        heroPreload.fetchPriority = 'high'
+        document.head.appendChild(heroPreload)
+      }
+    </script>
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=2" />
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=2" />
     <style>

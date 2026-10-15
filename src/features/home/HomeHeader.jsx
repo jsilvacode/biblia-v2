@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
-import { SettingsPopover } from '../settings/SettingsPopover'
 import { useSettings } from '../settings/SettingsProvider'
 import styles from './HomeHeader.module.css'
+
+const SettingsPopover = lazy(() => import('../settings/SettingsPopover').then((module) => ({ default: module.SettingsPopover })))
 
 const navigation = [
   ['home', '/', 'home'],
@@ -92,12 +93,14 @@ export function HomeHeader({ variant = 'hero', leading, readerMenu }) {
         </div>
       </header>
       {!isReader && isSettingsOpen && (
-        <SettingsPopover
-          anchorRef={settingsTriggerRef}
-          isOpen
-          onClose={() => setIsSettingsOpen(false)}
-          returnFocusRef={settingsReturnFocusRef}
-        />
+        <Suspense fallback={null}>
+          <SettingsPopover
+            anchorRef={settingsTriggerRef}
+            isOpen
+            onClose={() => setIsSettingsOpen(false)}
+            returnFocusRef={settingsReturnFocusRef}
+          />
+        </Suspense>
       )}
     </>
   )

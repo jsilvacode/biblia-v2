@@ -42,6 +42,13 @@ function homePicker(page) {
   }
 }
 
+async function waitForHomeLayout(page) {
+  // Geometry assertions require the final quote and editorial font metrics,
+  // rather than the shorter loading message and fallback font.
+  await expect(page.getByRole('region', { name: promiseTitle })).toHaveAttribute('aria-busy', 'false')
+  await page.evaluate(async () => { await document.fonts.ready })
+}
+
 async function expectNeutralPicker(page) {
   const picker = homePicker(page)
   await expect(picker.book).toHaveText('Seleccionar libro')
@@ -232,6 +239,7 @@ test('the centered Home picker remains readable without horizontal overflow in b
 test('book and chapter lists share a bounded height and open toward the available mobile space', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 640 })
   await clearAppStorage(page)
+  await waitForHomeLayout(page)
   const picker = homePicker(page)
   const directions = new Set()
   for (const triggerY of [110, 500]) {
@@ -256,6 +264,7 @@ test('book and chapter lists share a bounded height and open toward the availabl
 test('keyboard navigation and enlarged text can open the last chapter of a book', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await prepareHomeState(page, { history: true })
+  await waitForHomeLayout(page)
   await page.evaluate(() => { document.documentElement.style.fontSize = '20px' })
   const picker = homePicker(page)
   await picker.book.focus()

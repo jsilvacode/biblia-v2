@@ -57,6 +57,30 @@ describe('bible repository', () => {
     }
   })
 
+  it('opens a downloaded chapter immediately while the network revalidation stalls', async () => {
+    vi.useFakeTimers()
+    const verses = [{ verse: 1, text: 'Texto descargado.' }]
+    vi.stubGlobal('caches', { match: vi.fn(async () => new Response(JSON.stringify(verses))) })
+    vi.stubGlobal('fetch', vi.fn(() => new Promise(() => {})))
+    try {
+      const { loadChapter } = await import('./bibleRepository')
+      await expect(loadChapter({ versionId: 'test-downloaded', bookId: 43, chapter: 3 })).resolves.toEqual(verses)
+      expect(fetch).toHaveBeenCalledTimes(1)
+      // Finish the background timeout without making it a reader error.
+      await vi.advanceTimersByTimeAsync(12_000)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('continues with the network when cache storage is unavailable', async () => {
+    vi.stubGlobal('caches', { match: vi.fn().mockRejectedValue(new Error('Storage denied')) })
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify([{ verse: 1, text: 'Texto.' }]))))
+    const { loadChapter } = await import('./bibleRepository')
+    await expect(loadChapter({ versionId: 'test-cache-denied', bookId: 43, chapter: 3 }))
+      .resolves.toEqual([{ verse: 1, text: 'Texto.' }])
+  })
+
   it('normalizes scripture text and headings at the repository boundary', async () => {
     const verses = [{ verse: 1, text: '¶El Padre queme envió    .', heading: '  El testimonio  ' }]
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(verses), { status: 200 })))

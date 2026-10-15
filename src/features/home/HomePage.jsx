@@ -11,14 +11,13 @@ import { useReadingState } from '../reading/ReadingProvider'
 import { createVerseShareData, createVerseShareUrl, shareVerse } from '../reader/shareVerse'
 import { useSettings } from '../settings/SettingsProvider'
 import { useStudyProgressSummary } from '../studies/useStudyProgressSummary'
+import { preloadReading } from '../reader/preloadReading'
 import { formatPromiseReference } from './dailyPromise'
 import { HomeHeader } from './HomeHeader'
 import { HomePassagePicker } from './HomePassagePicker'
 import { HomeQuickSearch } from './HomeQuickSearch'
 import { useDailyPromise } from './useDailyPromise'
 import styles from './HomePage.module.css'
-
-const warmedReferences = new Set()
 
 const interestLinks = [
   {
@@ -89,33 +88,16 @@ export default function HomePage() {
     return () => window.clearTimeout(timeout)
   }, [promiseFeedback])
 
-  function preloadReading(reference) {
-    const key = `${settings.bibleVersion}:${reference.book}:${reference.chapter}`
-    if (warmedReferences.has(key)) return
-    warmedReferences.add(key)
-
-    void import('../reader/ReaderPage')
-    void import('../bible/bibleRepository')
-      .then(({ loadChapter }) => loadChapter({
-        bookId: reference.book,
-        chapter: reference.chapter,
-        versionId: settings.bibleVersion,
-      }))
-      .catch(() => {
-        warmedReferences.delete(key)
-      })
-  }
-
   function readingIntentProps(reference) {
     return {
-      onFocus: () => preloadReading(reference),
-      onPointerDown: () => preloadReading(reference),
+      onFocus: () => preloadReading(reference, settings.bibleVersion),
+      onPointerDown: () => preloadReading(reference, settings.bibleVersion),
     }
   }
 
   function goToReading(book, chapter, verse = null) {
     const reference = { book, chapter, verse }
-    preloadReading(reference)
+    preloadReading(reference, settings.bibleVersion)
     navigate(getReaderPath(reference), { state: verse ? { attentionVerse: true } : undefined })
   }
 

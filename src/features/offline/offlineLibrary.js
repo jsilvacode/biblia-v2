@@ -174,5 +174,7 @@ export async function requestPersistentStorage() {
 
 export async function fromOfflineCache(url) {
   if (!('caches' in globalThis)) return null
-  return caches.match(url)
+  // A background revalidation may contain a newer correction than an explicit
+  // offline download. Prefer that response while keeping downloads as fallback.
+  return await caches.match(url, { cacheName: 'santa-biblia-v2-data' }) ?? caches.match(url)
 }

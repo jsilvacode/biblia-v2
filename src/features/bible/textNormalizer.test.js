@@ -33,6 +33,13 @@ describe('text normalizer', () => {
       .toBe('¿Qué discusiones son estas? Recibe la vista.')
   })
 
+  it('repairs complete words across punctuation without altering substrings or different cases', () => {
+    expect(normalizeScriptureText('«paraque», paraque; desus. amparaque PARAQUE 1paraque paraque2'))
+      .toBe('«para que», para que; de sus. amparaque PARAQUE 1paraque paraque2')
+    expect(normalizeScriptureText('Élme sonMis Míque Señor'))
+      .toBe('Él me son Mis Mí que Señor')
+  })
+
   it('replaces the corrupted 666 table with readable content', () => {
     const source = 'Times New Roman;Calibri;Georgia;;;*Riched20 5.40.11.2210;V5I1C100A----R----I1V(U=V)5S----F----I1L50I1I1D500E----I1666'
 

@@ -1,22 +1,34 @@
-import { useId, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useI18n } from '../../i18n'
 import { ReaderDialog } from '../reader/ReaderDialog'
 import { getLocalizedBookName } from './catalog'
+import { useSettings } from '../settings/SettingsProvider'
+import { loadReaderPage, preloadReading } from '../reader/preloadReading'
 import styles from './BookChaptersDialog.module.css'
 
 export function BookChaptersDialog({ book, currentBookId, currentChapter, onClose, returnFocusRef }) {
   const { locale, t } = useI18n()
   const navigate = useNavigate()
+  const { settings } = useSettings()
   const descriptionId = useId()
   const chapterInputId = useId()
   const [jumpChapter, setJumpChapter] = useState('')
   const chapterNumber = Number(jumpChapter)
   const isValidChapter = Number.isInteger(chapterNumber) && chapterNumber >= 1 && chapterNumber <= book.chapters
 
+  useEffect(() => { void loadReaderPage().catch(() => undefined) }, [])
+
+  function warmChapter(chapter) {
+    preloadReading({ book: book.id, chapter }, settings.bibleVersion)
+  }
+
   function submitChapter(event) {
     event.preventDefault()
-    if (isValidChapter) navigate(`/read/${book.id}/${chapterNumber}`)
+    if (isValidChapter) {
+      warmChapter(chapterNumber)
+      navigate(`/read/${book.id}/${chapterNumber}`)
+    }
   }
 
   return (
@@ -53,6 +65,8 @@ export function BookChaptersDialog({ book, currentBookId, currentChapter, onClos
             <Link
               aria-current={book.id === currentBookId && chapter === currentChapter ? 'page' : undefined}
               key={chapter}
+              onFocus={() => warmChapter(chapter)}
+              onPointerDown={() => warmChapter(chapter)}
               to={`/read/${book.id}/${chapter}`}
             >
               {chapter}

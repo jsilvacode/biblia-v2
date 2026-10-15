@@ -195,16 +195,9 @@ const scriptureWordRepairs = new Map([
   ['vividoen', 'vivido en'],
 ])
 
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')
-}
-
-// Las reparaciones se aplican a cada versículo. Compilarlas una sola vez evita
-// volver a construir todas estas expresiones durante la lectura y el indexado.
-const compiledScriptureWordRepairs = [...scriptureWordRepairs].map(([source, replacement]) => ({
-  pattern: new RegExp(`(^|[^\\p{L}\\p{N}])${escapeRegExp(source)}(?![\\p{L}\\p{N}])`, 'gu'),
-  replacement,
-}))
+// All repairs are whole words. Scan each verse once instead of running almost
+// two hundred Unicode expressions over it on the browser's main thread.
+const SCRIPTURE_WORD = /[\p{L}\p{N}]+/gu
 
 function normalizeQuoteArtifacts(text) {
   return text
@@ -238,9 +231,7 @@ export function normalizeScriptureText(value) {
   let text = normalizeDisplayText(value)
   if (typeof text !== 'string') return text
 
-  for (const { pattern, replacement } of compiledScriptureWordRepairs) {
-    text = text.replace(pattern, (_, prefix) => `${prefix}${replacement}`)
-  }
+  text = text.replace(SCRIPTURE_WORD, (word) => scriptureWordRepairs.get(word) ?? word)
 
   return text
     .replace(/\bqueme (?=(?:envió|diste)(?!\p{L}))/gu, 'que me ')

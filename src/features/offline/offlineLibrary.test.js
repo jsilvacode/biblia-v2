@@ -2,12 +2,24 @@ import { vi } from 'vitest'
 import {
   bibleChapterUrls,
   commentaryChapterUrls,
+  fromOfflineCache,
   getOfflineDownloadState,
   prepareBibleOffline,
   subscribeOfflineDownload,
 } from './offlineLibrary'
 
 describe('offline library manifests', () => {
+  it('prefers refreshed chapter text over an older full-Bible download', async () => {
+    vi.stubGlobal('caches', { match: vi.fn(async (_, options) => new Response(
+      JSON.stringify(options?.cacheName ? 'refreshed text' : 'old downloaded text'),
+    )) })
+    try {
+      expect(await (await fromOfflineCache('/data/nbla/43_juan/3.json')).json()).toBe('refreshed text')
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
   it('covers every canonical Bible chapter for a version', () => {
     const urls = bibleChapterUrls('nbla')
     expect(urls).toHaveLength(1189)

@@ -1,10 +1,11 @@
 import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AppShell } from '../components/layout/AppShell'
+import { loadReaderPage } from '../features/reader/preloadReading'
 
 const HomePage = lazy(() => import('../features/home/HomePage'))
 const BibleBrowserPage = lazy(() => import('../features/bible/BibleBrowserPage'))
-const ReaderPage = lazy(() => import('../features/reader/ReaderPage'))
+const ReaderPage = lazy(loadReaderPage)
 const SearchPage = lazy(() => import('../features/search/SearchPage'))
 const SavedPage = lazy(() => import('../features/saved/SavedPage'))
 const PlansPage = lazy(() => import('../features/plans/PlansPage'))

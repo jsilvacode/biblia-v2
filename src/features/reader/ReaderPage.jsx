@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
@@ -14,7 +14,6 @@ import { HomeHeader } from '../home/HomeHeader'
 import { HomePassagePicker } from '../home/HomePassagePicker'
 import { useReadingActions } from '../reading/ReadingProvider'
 import { useSaved } from '../saved/SavedProvider'
-import { SettingsPopover } from '../settings/SettingsPopover'
 import { useSettings } from '../settings/SettingsProvider'
 import { CommentarySheet } from './CommentarySheet'
 import { ReaderBottomNavigation } from './ReaderBottomNavigation'
@@ -23,6 +22,8 @@ import { createVerseShareData, createVerseShareUrl, shareVerse } from './shareVe
 import { VerseActionsSheet } from './VerseActionsSheet'
 import { useReaderImmersion } from './useReaderImmersion'
 import { useReadingProgress } from './useReadingProgress'
+
+const SettingsPopover = lazy(() => import('../settings/SettingsPopover').then((module) => ({ default: module.SettingsPopover })))
 
 function getValidHeading(value) {
   const heading = String(value ?? '').replace(/\s+/g, ' ').trim()
@@ -419,12 +420,14 @@ export default function ReaderPage() {
         />
       )}
       {activeDialog === 'settings' && (
-        <SettingsPopover
-          anchorRef={dialogTriggerRef}
-          isOpen
-          onClose={closeDialog}
-          returnFocusRef={dialogReturnFocusRef}
-        />
+        <Suspense fallback={null}>
+          <SettingsPopover
+            anchorRef={dialogTriggerRef}
+            isOpen
+            onClose={closeDialog}
+            returnFocusRef={dialogReturnFocusRef}
+          />
+        </Suspense>
       )}
       {activeDialog === 'sections' && (
         <ReaderSectionMenu

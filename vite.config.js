@@ -38,6 +38,18 @@ function rpspDevelopmentEndpoint() {
 }
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        // Keep the framework stable across content/UI releases. Grouping the
+        // offline lessons also avoids twenty separate installation requests.
+        manualChunks(id) {
+          if (/node_modules\/(react|react-dom|scheduler|react-router|react-router-dom)\//.test(id)) return 'framework'
+          if (/src\/content\/la-fe-de-jesus\/generated\//.test(id)) return 'study-lessons'
+        },
+      },
+    },
+  },
   server: {
     headers: { 'Access-Control-Allow-Origin': '*' },
   },
@@ -88,7 +100,22 @@ export default defineConfig({
         // Social-card images are read by the server and are not offline UI.
         globIgnores: ['assets/social/**', 'og-share.jpg'],
         cleanupOutdatedCaches: true,
+        // Online navigations should see this deployment immediately, rather
+        // than show the previous HTML until the next SW finishes installing.
+        navigateFallback: null,
+        directoryIndex: null,
+        navigationPreload: true,
         runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'santa-biblia-v2-pages',
+              networkTimeoutSeconds: 3,
+              precacheFallback: { fallbackURL: 'index.html' },
+              expiration: { maxEntries: 24 },
+            },
+          },
           {
             urlPattern: /\/data\/.*\.json$/i,
             handler: 'StaleWhileRevalidate',

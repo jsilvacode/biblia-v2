@@ -1,0 +1,556 @@
+{
+  "baselineCommit": "25c265843554235a232fce37103c3da8e45e2157",
+  "before": {
+    "baseURL": "http://127.0.0.1:4178",
+    "measuredAt": "2026-10-14T23:49:15.967Z",
+    "conditions": {
+      "latencyMs": 150,
+      "downloadBytesPerSecond": 250000,
+      "cpuSlowdown": 4,
+      "serviceWorkers": "blocked",
+      "runs": 3
+    },
+    "summary": [
+      {
+        "path": "/read/43/3/16",
+        "cache": "cold",
+        "contentReadyMs": 2249,
+        "lcpMs": 1356,
+        "transferredKB": 298,
+        "chapterRequestStartMs": 1280
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "warm",
+        "contentReadyMs": 746,
+        "lcpMs": 596,
+        "transferredKB": 4,
+        "chapterRequestStartMs": 561
+      },
+      {
+        "path": "/bible",
+        "cache": "cold",
+        "contentReadyMs": 1281,
+        "lcpMs": 992,
+        "transferredKB": 178
+      },
+      {
+        "path": "/bible",
+        "cache": "warm",
+        "contentReadyMs": 740,
+        "lcpMs": 468,
+        "transferredKB": 8
+      },
+      {
+        "path": "/",
+        "cache": "cold",
+        "contentReadyMs": 2067,
+        "lcpMs": 1788,
+        "transferredKB": 226
+      },
+      {
+        "path": "/",
+        "cache": "warm",
+        "contentReadyMs": 1269,
+        "lcpMs": 1144,
+        "transferredKB": 29
+      }
+    ],
+    "samples": [
+      {
+        "path": "/read/43/3/16",
+        "cache": "cold",
+        "run": 0,
+        "ready": 2432.199999988079,
+        "lcp": 1624,
+        "longTasks": [
+          61,
+          145,
+          93,
+          758
+        ],
+        "ttfb": 120.30000001192093,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 1486,
+          "end": 1650.4000000059605,
+          "bytes": 2237
+        }
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "warm",
+        "run": 0,
+        "ready": 745.8000000119209,
+        "lcp": 596,
+        "longTasks": [
+          97
+        ],
+        "ttfb": 3.800000011920929,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 560.8000000119209,
+          "end": 720.9000000059605,
+          "bytes": 300
+        }
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "cold",
+        "run": 1,
+        "ready": 2249.300000011921,
+        "lcp": 1356,
+        "longTasks": [
+          121,
+          787
+        ],
+        "ttfb": 2.100000023841858,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 1279.800000011921,
+          "end": 1443.2000000178814,
+          "bytes": 2237
+        }
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "warm",
+        "run": 1,
+        "ready": 832.1000000238419,
+        "lcp": 692,
+        "longTasks": [],
+        "ttfb": 7.9000000059604645,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 656.4000000059605,
+          "end": 812.1000000238419,
+          "bytes": 300
+        }
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "cold",
+        "run": 2,
+        "ready": 2205.7999999821186,
+        "lcp": 1324,
+        "longTasks": [
+          123,
+          765
+        ],
+        "ttfb": 5.699999988079071,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 1253.5999999940395,
+          "end": 1418.199999988079,
+          "bytes": 2237
+        }
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "warm",
+        "run": 2,
+        "ready": 730.6999999880791,
+        "lcp": 592,
+        "longTasks": [],
+        "ttfb": 3.199999988079071,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 558,
+          "end": 715.9000000059605,
+          "bytes": 300
+        }
+      },
+      {
+        "path": "/bible",
+        "cache": "cold",
+        "run": 0,
+        "ready": 1280.5999999940395,
+        "lcp": 992,
+        "longTasks": [
+          60
+        ],
+        "ttfb": 3.7999999821186066
+      },
+      {
+        "path": "/bible",
+        "cache": "warm",
+        "run": 0,
+        "ready": 753.3000000119209,
+        "lcp": 476,
+        "longTasks": [],
+        "ttfb": 6.4000000059604645
+      },
+      {
+        "path": "/bible",
+        "cache": "cold",
+        "run": 1,
+        "ready": 1277.4000000059605,
+        "lcp": 988,
+        "longTasks": [],
+        "ttfb": 1.800000011920929
+      },
+      {
+        "path": "/bible",
+        "cache": "warm",
+        "run": 1,
+        "ready": 740.3999999761581,
+        "lcp": 456,
+        "longTasks": [],
+        "ttfb": 1.199999988079071
+      },
+      {
+        "path": "/bible",
+        "cache": "cold",
+        "run": 2,
+        "ready": 1299,
+        "lcp": 1008,
+        "longTasks": [
+          51,
+          50
+        ],
+        "ttfb": 5.299999982118607
+      },
+      {
+        "path": "/bible",
+        "cache": "warm",
+        "run": 2,
+        "ready": 735.1000000238419,
+        "lcp": 468,
+        "longTasks": [],
+        "ttfb": 1.9000000059604645
+      },
+      {
+        "path": "/",
+        "cache": "cold",
+        "run": 0,
+        "ready": 3014.699999988079,
+        "lcp": 1800,
+        "longTasks": [
+          50,
+          125,
+          160
+        ],
+        "ttfb": 1.7999999821186066
+      },
+      {
+        "path": "/",
+        "cache": "warm",
+        "run": 0,
+        "ready": 1192.300000011921,
+        "lcp": 908,
+        "longTasks": [],
+        "ttfb": 1.0999999940395355
+      },
+      {
+        "path": "/",
+        "cache": "cold",
+        "run": 1,
+        "ready": 2032.4000000059605,
+        "lcp": 1760,
+        "longTasks": [
+          123,
+          156
+        ],
+        "ttfb": 5
+      },
+      {
+        "path": "/",
+        "cache": "warm",
+        "run": 1,
+        "ready": 1425.7000000178814,
+        "lcp": 1176,
+        "longTasks": [],
+        "ttfb": 194.2000000178814
+      },
+      {
+        "path": "/",
+        "cache": "cold",
+        "run": 2,
+        "ready": 2066.600000023842,
+        "lcp": 1788,
+        "longTasks": [
+          129,
+          162
+        ],
+        "ttfb": 1.9000000059604645
+      },
+      {
+        "path": "/",
+        "cache": "warm",
+        "run": 2,
+        "ready": 1269.1000000238419,
+        "lcp": 1144,
+        "longTasks": [],
+        "ttfb": 174.60000002384186
+      }
+    ]
+  },
+  "after": {
+    "baseURL": "http://127.0.0.1:4177",
+    "measuredAt": "2026-10-14T23:57:52.928Z",
+    "conditions": {
+      "latencyMs": 150,
+      "downloadBytesPerSecond": 250000,
+      "cpuSlowdown": 4,
+      "serviceWorkers": "blocked",
+      "runs": 3
+    },
+    "summary": [
+      {
+        "path": "/read/43/3/16",
+        "cache": "cold",
+        "contentReadyMs": 1192,
+        "lcpMs": 1228,
+        "transferredKB": 139,
+        "chapterRequestStartMs": 956
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "warm",
+        "contentReadyMs": 985,
+        "lcpMs": 1000,
+        "transferredKB": 4,
+        "chapterRequestStartMs": 803
+      },
+      {
+        "path": "/bible",
+        "cache": "cold",
+        "contentReadyMs": 1172,
+        "lcpMs": 1460,
+        "transferredKB": 177
+      },
+      {
+        "path": "/bible",
+        "cache": "warm",
+        "contentReadyMs": 735,
+        "lcpMs": 872,
+        "transferredKB": 7
+      },
+      {
+        "path": "/",
+        "cache": "cold",
+        "contentReadyMs": 1829,
+        "lcpMs": 1712,
+        "transferredKB": 225
+      },
+      {
+        "path": "/",
+        "cache": "warm",
+        "contentReadyMs": 1434,
+        "lcpMs": 1300,
+        "transferredKB": 29
+      }
+    ],
+    "samples": [
+      {
+        "path": "/read/43/3/16",
+        "cache": "cold",
+        "run": 0,
+        "ready": 1324.5999999940395,
+        "lcp": 1380,
+        "longTasks": [
+          71,
+          79
+        ],
+        "ttfb": 10,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 1119.7999999821186,
+          "end": 1291.2999999821186,
+          "bytes": 2237
+        }
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "warm",
+        "run": 0,
+        "ready": 985.2000000178814,
+        "lcp": 1000,
+        "longTasks": [
+          97
+        ],
+        "ttfb": 159.40000000596046,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 803.3000000119209,
+          "end": 969,
+          "bytes": 300
+        }
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "cold",
+        "run": 1,
+        "ready": 1191.5999999940395,
+        "lcp": 1176,
+        "longTasks": [],
+        "ttfb": 1.4000000059604645,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 949.0999999940395,
+          "end": 1136,
+          "bytes": 2237
+        }
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "warm",
+        "run": 1,
+        "ready": 962.3000000119209,
+        "lcp": 976,
+        "longTasks": [
+          99
+        ],
+        "ttfb": 212.7000000178814,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 790.6000000238419,
+          "end": 948.9000000059605,
+          "bytes": 300
+        }
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "cold",
+        "run": 2,
+        "ready": 1182.1000000238419,
+        "lcp": 1228,
+        "longTasks": [],
+        "ttfb": 1.4000000059604645,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 955.7000000178814,
+          "end": 1130.1000000238419,
+          "bytes": 2237
+        }
+      },
+      {
+        "path": "/read/43/3/16",
+        "cache": "warm",
+        "run": 2,
+        "ready": 990,
+        "lcp": 1004,
+        "longTasks": [
+          100
+        ],
+        "ttfb": 237.60000002384186,
+        "chapterRequest": {
+          "path": "/data/nbla/43_juan/3.json",
+          "start": 814.6000000238419,
+          "end": 974.5,
+          "bytes": 300
+        }
+      },
+      {
+        "path": "/bible",
+        "cache": "cold",
+        "run": 0,
+        "ready": 1171.2999999821186,
+        "lcp": 1432,
+        "longTasks": [
+          53
+        ],
+        "ttfb": 1.5
+      },
+      {
+        "path": "/bible",
+        "cache": "warm",
+        "run": 0,
+        "ready": 747.2999999821186,
+        "lcp": 872,
+        "longTasks": [],
+        "ttfb": 1.199999988079071
+      },
+      {
+        "path": "/bible",
+        "cache": "cold",
+        "run": 1,
+        "ready": 1171.9000000059605,
+        "lcp": 1464,
+        "longTasks": [],
+        "ttfb": 2.199999988079071
+      },
+      {
+        "path": "/bible",
+        "cache": "warm",
+        "run": 1,
+        "ready": 727.5,
+        "lcp": 852,
+        "longTasks": [],
+        "ttfb": 1.199999988079071
+      },
+      {
+        "path": "/bible",
+        "cache": "cold",
+        "run": 2,
+        "ready": 1182.4000000059605,
+        "lcp": 1460,
+        "longTasks": [],
+        "ttfb": 1.5
+      },
+      {
+        "path": "/bible",
+        "cache": "warm",
+        "run": 2,
+        "ready": 734.6999999880791,
+        "lcp": 872,
+        "longTasks": [],
+        "ttfb": 5.0999999940395355
+      },
+      {
+        "path": "/",
+        "cache": "cold",
+        "run": 0,
+        "ready": 1829.1000000238419,
+        "lcp": 1724,
+        "longTasks": [],
+        "ttfb": 1.600000023841858
+      },
+      {
+        "path": "/",
+        "cache": "warm",
+        "run": 0,
+        "ready": 1579.7000000178814,
+        "lcp": 1300,
+        "longTasks": [],
+        "ttfb": 355.7000000178814
+      },
+      {
+        "path": "/",
+        "cache": "cold",
+        "run": 1,
+        "ready": 2764.199999988079,
+        "lcp": 1712,
+        "longTasks": [],
+        "ttfb": 5.199999988079071
+      },
+      {
+        "path": "/",
+        "cache": "warm",
+        "run": 1,
+        "ready": 1189.2000000178814,
+        "lcp": 912,
+        "longTasks": [],
+        "ttfb": 1.4000000059604645
+      },
+      {
+        "path": "/",
+        "cache": "cold",
+        "run": 2,
+        "ready": 1816.9000000059605,
+        "lcp": 1712,
+        "longTasks": [],
+        "ttfb": 1.199999988079071
+      },
+      {
+        "path": "/",
+        "cache": "warm",
+        "run": 2,
+        "ready": 1434.0999999940395,
+        "lcp": 1308,
+        "longTasks": [],
+        "ttfb": 366.30000001192093
+      }
+    ]
+  }
+}

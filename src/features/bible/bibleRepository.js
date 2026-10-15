@@ -98,6 +98,15 @@ function fetchWithTimeout(url) {
 }
 
 async function fetchJsonWithOfflineFallback(url) {
+  // Explicit downloads and previously read chapters are immediately usable.
+  // Do not wait twelve seconds for a stalled connection before opening them.
+  const available = 'caches' in globalThis ? await fromOfflineCache(url).catch(() => null) : null
+  if (available?.ok) {
+    // Let HTTP/Workbox revalidate in the background without holding up reading.
+    if (navigator.onLine !== false) void fetchWithTimeout(url).catch(() => undefined)
+    return available.json()
+  }
+
   let response
   try {
     response = await fetchWithTimeout(url)
