@@ -7,7 +7,7 @@
 .primaryReference { border-color: color-mix(in srgb, var(--accent-deep) 35%, var(--border)); background: color-mix(in srgb, var(--accent-soft) 25%, var(--surface-raised)); }
 .referenceButton:hover { border-color: var(--accent-blue-deep); background: color-mix(in srgb, var(--accent-mist) 30%, var(--surface-raised)); }
 .referenceButton:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
-.dialog { min-height: min(45dvh, 22rem); max-height: min(85dvh, 48rem); }
+.dialog { max-height: min(85dvh, 48rem); }
 .context { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 12px 0; color: var(--ink-muted); font: 400 .8125rem/1.5 var(--font-ui); }
 .context > span { margin-left: auto; font-size: .6875rem; }
 .reading { font: 400 calc(1.0625rem * var(--reader-scale, 1))/1.75 var(--font-reading); overflow-wrap: anywhere; }
@@ -18,7 +18,6 @@
 .verses sup { margin-right: .45em; color: var(--accent-deep); font: 500 .65em var(--font-ui); }
 .error { font: 400 .875rem/1.5 var(--font-ui); }
 @media (min-width: 760px) {
-  :global(.reader-dialog-backdrop):has(.dialog) { align-items: center; padding: 24px; }
   .dialog { border-bottom: 1px solid var(--border); border-radius: 20px; padding: 20px 24px; }
   .dialog :global(.reader-dialog__handle) { display: none; }
 }
