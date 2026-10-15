@@ -4,7 +4,7 @@ import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import { useBibleTextSearch } from '../search/useBibleTextSearch'
 import { useSettings } from '../settings/SettingsProvider'
-import { BibleCategorySelector } from './BibleCategorySelector'
+import { BibleCategoryFilters } from './BibleCategoryFilters'
 import { BookChaptersDialog } from './BookChaptersDialog'
 import { findMatchingBooks } from './bookSearch'
 import { bibleCategories } from './bibleCategories'
@@ -58,7 +58,8 @@ export function BibleNavigator({
         }}
         type="button"
       >
-        <span>{getLocalizedBookName(book, locale)}</span>
+        <span aria-hidden="true" className={styles.bookNumber}>{String(book.id).padStart(2, '0')}</span>
+        <span className={styles.bookName}>{getLocalizedBookName(book, locale)}</span>
         <small aria-label={t('bible.chapterCount', { count: book.chapters })}>{t('bible.shortChapterCount', { count: book.chapters })}</small>
         <Icon name="chevronRight" size={16} />
       </button>
@@ -97,7 +98,7 @@ export function BibleNavigator({
           />
         </label>
 
-        <BibleCategorySelector
+        <BibleCategoryFilters
           categories={bibleCategories}
           onSelect={(category) => { setCategoryId(category.id); setQuery('') }}
           selected={normalizedQuery ? bibleCategories[0] : selectedCategory}

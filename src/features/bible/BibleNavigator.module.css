@@ -1,5 +1,5 @@
 .navigator { display: grid; gap: 2rem; }
-.controls { display: grid; gap: 1rem; }
+.controls { display: grid; gap: 1.5rem; }
 .searchField { display: flex; align-items: center; min-height: 3.5rem; gap: .65rem; padding: 0 1rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface-raised); box-shadow: var(--shadow-sm); color: var(--ink-muted); }
 .searchField:focus-within { border-color: var(--accent-blue-deep); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-blue-deep) 12%, transparent); }
 .searchField input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 1rem; }
@@ -15,11 +15,12 @@
 .groupHeading h3 { margin: 0; color: var(--ink-muted); font: 600 .8125rem/1.4 var(--font-ui); }
 .groupHeading > span { color: var(--ink-muted); font-size: .6875rem; }
 .searchScope { margin: -1rem 0; color: var(--ink-muted); font-size: .75rem; }
-.bookGrid { display: grid; align-content: start; gap: .5rem .75rem; }
-.bookGrid button { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; min-height: 3rem; gap: .5rem; padding: .65rem .75rem; border: 1px solid var(--border); border-radius: 14px; background: color-mix(in srgb, var(--surface) 80%, transparent); color: var(--ink); font: 500 .9375rem/1.4 var(--font-ui); text-align: left; transition: background 160ms ease, color 160ms ease, border-color 160ms ease; }
-.bookGrid button > span { overflow-wrap: anywhere; }
+.bookGrid { display: grid; align-content: start; gap: .65rem .85rem; }
+.bookGrid button { display: grid; grid-template-columns: 1.75rem minmax(0, 1fr) auto auto; align-items: center; min-height: 3.6rem; gap: .6rem; padding: .75rem .85rem .75rem .65rem; border: 1px solid var(--border); border-radius: .9rem; background: color-mix(in srgb, var(--surface) 85%, transparent); box-shadow: inset 2px 0 0 color-mix(in srgb, var(--accent) 25%, transparent); color: var(--ink); text-align: left; transition: background 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease; }
+.bookNumber { display: grid; align-self: stretch; align-items: center; border-right: 1px solid var(--border); color: var(--accent-deep); font: 400 .8125rem/1 var(--font-reading); font-variant-numeric: tabular-nums; opacity: .75; }
+.bookName { overflow-wrap: anywhere; font: 400 1rem/1.4 var(--font-reading); }
 .bookGrid button > svg { color: var(--accent-blue-deep); opacity: .65; transition: transform 160ms ease; }
-.bookGrid button:hover { border-color: var(--accent-blue); background: color-mix(in srgb, var(--accent-soft) 40%, transparent); color: var(--accent-deep); }
+.bookGrid button:hover { border-color: var(--accent-blue); background: color-mix(in srgb, var(--accent-soft) 40%, var(--surface)); box-shadow: inset 3px 0 0 var(--accent); color: var(--accent-deep); }
 .bookGrid button:hover > svg { transform: translateX(2px); opacity: 1; }
 .bookGrid button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; background: var(--surface); }
 .bookGrid button[aria-current='true'] { background: color-mix(in srgb, var(--accent-soft) 50%, transparent); color: var(--accent-deep); }
@@ -68,8 +69,9 @@
 @media (min-width: 600px) {
   .bookGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (min-width: 800px) {
-  .controls { grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem); align-items: start; }
+@media (min-width: 768px) {
+  .controls { gap: 1.75rem; }
+  .searchField { width: min(100%, 42rem); }
 }
 @media (min-width: 1000px) {
   .bookGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
