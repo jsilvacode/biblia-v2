@@ -190,6 +190,43 @@ test('Home glass covers the picker width and ends before the editorial section',
   }
 })
 
+test('Home loads one responsive photograph and fades it below the whole reading panel', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('santa_biblia_v2_settings', JSON.stringify({ theme: 'light', locale: 'es', bibleVersion: 'nbla' })))
+  for (const width of [390, 768, 1440]) {
+    // Resize away from Home so its previous picture cannot request a new
+    // candidate while the next navigation is being prepared.
+    await page.goto('/bible')
+    await page.setViewportSize({ width, height: 900 })
+    const requestedImages = []
+    const onRequest = request => {
+      if (request.url().includes('/assets/home-landscape-v2-')) requestedImages.push(request.url())
+    }
+    page.on('request', onRequest)
+    await page.goto('/')
+    const image = page.locator('picture img')
+    await image.evaluate(img => img.decode())
+    const source = await image.evaluate(img => img.currentSrc)
+    expect(source.includes('-mobile-')).toBe(width <= 620)
+    expect(new Set(requestedImages)).toEqual(new Set([source]))
+    expect(requestedImages).toHaveLength(1)
+    const geometry = await image.evaluate(img => {
+      const photograph = img.parentElement.getBoundingClientRect()
+      const panel = document.querySelector('[data-testid="home-reading-panel"]').getBoundingClientRect()
+      const hero = img.closest('section').getBoundingClientRect()
+      return { top: photograph.top, heroTop: hero.top, bottom: photograph.bottom, panelBottom: panel.bottom, mask: getComputedStyle(img.parentElement).maskImage }
+    })
+    expect(geometry.top).toBe(geometry.heroTop)
+    expect(geometry.bottom - geometry.panelBottom).toBeGreaterThanOrEqual(140)
+    expect(geometry.bottom - geometry.panelBottom).toBeLessThanOrEqual(161)
+    expect(geometry.mask).toContain('linear-gradient')
+    expect(geometry.mask).toMatch(/rgba\(0, 0, 0, 0\)|transparent/)
+    await page.getByRole('button', { name: /Activar modo oscuro|Use dark theme|Usar tema escuro/ }).click()
+    expect(await image.evaluate(img => img.currentSrc)).toBe(source)
+    expect(requestedImages).toHaveLength(1)
+    page.off('request', onRequest)
+  }
+})
+
 test('tablet navigation switches once without duplicated menus', async ({ page }) => {
   for (const path of ['/', '/topics', '/studies/la-fe-de-jesus', '/read/43/3']) {
     await page.goto(path)

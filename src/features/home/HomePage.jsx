@@ -14,6 +14,7 @@ import { useStudyProgressSummary } from '../studies/useStudyProgressSummary'
 import { preloadReading } from '../reader/preloadReading'
 import { formatPromiseReference } from './dailyPromise'
 import { HomeHeader } from './HomeHeader'
+import { HomeLandscape } from './HomeLandscape'
 import { HomePassagePicker } from './HomePassagePicker'
 import { HomeQuickSearch } from './HomeQuickSearch'
 import { useDailyPromise } from './useDailyPromise'
@@ -145,6 +146,7 @@ export default function HomePage() {
   return (
     <div className={`home-page ${styles.homePage}`}>
       <section aria-busy={promiseStatus === 'loading'} aria-label={t('home.promiseOfDay')} className={styles.hero}>
+        <HomeLandscape />
         <div className={styles.heroInner}>
           <HomeHeader />
           <div className={styles.heroCopy}>

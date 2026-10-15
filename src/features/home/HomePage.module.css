@@ -1,24 +1,30 @@
 .homePage {
   --home-width: 68.75rem;
   --home-gutter: 40px;
-  --home-tail: 240px;
+  --home-opening-gap: 40px;
+  --home-fade-tail: 160px;
+  --home-lower-veil: linear-gradient(180deg, transparent 40%, color-mix(in srgb, var(--bg-reader) 40%, transparent) 58%, color-mix(in srgb, var(--bg-reader) 75%, transparent) 82%, color-mix(in srgb, var(--bg-reader) 82%, transparent));
+  --home-tail: calc(var(--home-opening-gap) + var(--home-panel-height) + var(--home-fade-tail));
   --home-hero-height: 38rem;
   --home-panel-height: 29rem;
-  --home-mask: linear-gradient(180deg, #000 0%, #000 calc(100% - 310px), rgb(0 0 0 / .98) calc(100% - 260px), rgb(0 0 0 / .88) calc(100% - 210px), rgb(0 0 0 / .65) calc(100% - 155px), rgb(0 0 0 / .35) calc(100% - 100px), rgb(0 0 0 / .12) calc(100% - 50px), transparent 100%);
+  --home-mask: linear-gradient(180deg, #000 0%, #000 calc(100% - 370px), rgb(0 0 0 / .98) calc(100% - 310px), rgb(0 0 0 / .86) calc(100% - 245px), rgb(0 0 0 / .62) calc(100% - 175px), rgb(0 0 0 / .32) calc(100% - 105px), rgb(0 0 0 / .1) calc(100% - 45px), transparent 100%);
   width: 100%;
   margin: 0;
   padding-bottom: 42px;
   background: var(--bg-reader);
 }
 .hero { position: relative; isolation: isolate; width: 100%; background: var(--bg-reader); }
-.hero::before, .hero::after { position: absolute; inset: 0 0 calc(-1 * var(--home-tail)); mask-image: var(--home-mask); -webkit-mask-image: var(--home-mask); pointer-events: none; content: ''; }
-.hero::before { z-index: -2; background: url('/assets/aurora-champagne-landscape.webp') 60% 52% / cover; }
+:global(:root[data-theme='dark']) .homePage { --home-lower-veil: linear-gradient(180deg, transparent 34%, color-mix(in srgb, var(--bg-reader) 68%, transparent) 58%, color-mix(in srgb, var(--bg-reader) 80%, transparent) 82%, color-mix(in srgb, var(--bg-reader) 88%, transparent)); }
+.heroLandscape, .hero::after { position: absolute; inset: 0 0 calc(-1 * var(--home-tail)); mask-image: var(--home-mask); -webkit-mask-image: var(--home-mask); pointer-events: none; }
+.heroLandscape { z-index: -2; display: block; }
+.heroLandscape img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; }
 .hero::after {
   z-index: -1;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 40%, transparent), color-mix(in srgb, var(--bg-reader) 28%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 64%, transparent), color-mix(in srgb, var(--bg-reader) 58%, transparent) 24%, color-mix(in srgb, var(--bg-reader) 36%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 8%, transparent) 56%, transparent 68%);
+  content: '';
+  background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 40%, transparent), color-mix(in srgb, var(--bg-reader) 28%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 64%, transparent), color-mix(in srgb, var(--bg-reader) 58%, transparent) 24%, color-mix(in srgb, var(--bg-reader) 36%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 8%, transparent) 56%, transparent 68%);
 }
 :global(:root[data-theme='dark']) .hero::after {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 78%, transparent), color-mix(in srgb, var(--bg-reader) 74%, transparent) 24%, color-mix(in srgb, var(--bg-reader) 52%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 18%, transparent) 56%, transparent 68%);
+  background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 78%, transparent), color-mix(in srgb, var(--bg-reader) 74%, transparent) 24%, color-mix(in srgb, var(--bg-reader) 52%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 18%, transparent) 56%, transparent 68%);
 }
 .heroInner, .homeFeed { width: min(calc(100% - var(--home-gutter) * 2), var(--home-width)); margin-inline: auto; }
 .heroInner { position: relative; display: grid; height: var(--home-hero-height); min-height: min-content; padding-top: 76px; }
@@ -34,7 +40,7 @@
 .heroPrimaryAction, .heroSecondaryAction { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; gap: 8px; padding: 12px 20px; border: 1px solid transparent; border-radius: 999px; font: 500 .8125rem/1.4 var(--font-ui); transition: background 180ms ease, border-color 180ms ease; }
 .heroPrimaryAction { background: var(--accent-deep); color: var(--bg-reader); }
 .heroSecondaryAction { border-color: var(--border); background: var(--surface-raised); color: var(--ink); }
-.homeFeed { position: relative; z-index: 1; padding-top: 40px; }
+.homeFeed { position: relative; z-index: 1; padding-top: var(--home-opening-gap); }
 .glassMantle {
   --glass-fill: light-dark(rgb(255 255 255 / .12), rgb(255 255 255 / .025));
   --glass-edge: light-dark(rgb(255 255 255 / .90), rgb(255 255 255 / .38));
@@ -140,14 +146,15 @@
   .homePage { --home-hero-height: 33rem; }
   .heroCopy { width: 100%; max-width: 740px; justify-items: center; margin-inline: auto; padding-block: 54px 60px; text-align: center; }
   .heroActions { justify-content: center; }
-  .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 40%, transparent), color-mix(in srgb, var(--bg-reader) 28%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 30%, transparent), color-mix(in srgb, var(--bg-reader) 24%, transparent) 50%, color-mix(in srgb, var(--bg-reader) 6%, transparent)); }
-  :global(:root[data-theme='dark']) .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 36%, transparent), color-mix(in srgb, var(--bg-reader) 30%, transparent) 50%, color-mix(in srgb, var(--bg-reader) 9%, transparent)); }
+  .hero::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 40%, transparent), color-mix(in srgb, var(--bg-reader) 28%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 30%, transparent), color-mix(in srgb, var(--bg-reader) 24%, transparent) 50%, color-mix(in srgb, var(--bg-reader) 6%, transparent)); }
+  :global(:root[data-theme='dark']) .hero::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 36%, transparent), color-mix(in srgb, var(--bg-reader) 30%, transparent) 50%, color-mix(in srgb, var(--bg-reader) 9%, transparent)); }
   .editorialEntry { grid-template-columns: 20px minmax(0, 1fr) 32%; gap: 22px; padding-block: 34px; }
   .entryTitle { font-size: 1.75rem; }
   .entryDetail { font-size: .8125rem; }
 }
 @media (max-width: 620px) {
-  .homePage { --home-gutter: 18px; --home-tail: 180px; --home-mask: linear-gradient(180deg, #000 0%, #000 calc(100% - 260px), rgb(0 0 0 / .98) calc(100% - 220px), rgb(0 0 0 / .88) calc(100% - 180px), rgb(0 0 0 / .65) calc(100% - 135px), rgb(0 0 0 / .35) calc(100% - 90px), rgb(0 0 0 / .12) calc(100% - 45px), transparent 100%); }
+  .homePage { --home-gutter: 18px; --home-opening-gap: 28px; --home-fade-tail: 144px; }
+  .heroLandscape img { object-position: 50% 50%; }
   .heroInner { padding-top: 64px; }
   .homePage { --home-hero-height: 36.5rem; --home-panel-height: 31rem; }
   .heroCopy { padding: 42px 9px 52px; }
@@ -157,9 +164,8 @@
   .promiseReference { margin-top: 16px; font-size: .75rem; }
   .heroActions { gap: 9px; margin-top: 21px; }
   .heroPrimaryAction, .heroSecondaryAction { padding: 12px 16px; font-size: .75rem; }
-  .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 65%, transparent), color-mix(in srgb, var(--bg-reader) 52%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 34%, transparent) 15%, color-mix(in srgb, var(--bg-reader) 13%, transparent) 25%, transparent 35%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 30%, transparent), color-mix(in srgb, var(--bg-reader) 24%, transparent) 50%, color-mix(in srgb, var(--bg-reader) 6%, transparent)); }
-  :global(:root[data-theme='dark']) .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, color-mix(in srgb, var(--bg-reader) 3%, transparent) 25%, transparent 35%), color-mix(in srgb, var(--bg-reader) 44%, transparent); }
-  .homeFeed { padding-top: 28px; }
+  .hero::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 65%, transparent), color-mix(in srgb, var(--bg-reader) 52%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 34%, transparent) 15%, color-mix(in srgb, var(--bg-reader) 13%, transparent) 25%, transparent 35%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 30%, transparent), color-mix(in srgb, var(--bg-reader) 24%, transparent) 50%, color-mix(in srgb, var(--bg-reader) 6%, transparent)); }
+  :global(:root[data-theme='dark']) .hero::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, color-mix(in srgb, var(--bg-reader) 3%, transparent) 25%, transparent 35%), color-mix(in srgb, var(--bg-reader) 44%, transparent); }
   .glassMantle::before, .glassMantle::after { border-radius: 34px 40px 0 0; }
   .readingPanel { padding: 26px 0 31px; }
   .readingLayout { gap: 20px; }
@@ -193,7 +199,7 @@
   .heroCopy { padding: 44px 0; }
   .hero h1.heroQuoteLong { font-size: 1.75rem; }
   .hero h1.heroQuoteExtended { font-size: 1.625rem; }
-  .homeFeed { padding-top: 28px; }
+  .homePage { --home-opening-gap: 28px; }
   .readingPanel { padding: 20px 0 18px; }
   .readingLayout { gap: 20px; }
 }

@@ -8,12 +8,19 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <script>
       if (location.pathname === '/') {
-        const heroPreload = document.createElement('link')
-        heroPreload.rel = 'preload'
-        heroPreload.as = 'image'
-        heroPreload.href = '/assets/aurora-champagne-landscape.webp'
-        heroPreload.fetchPriority = 'high'
-        document.head.appendChild(heroPreload)
+        for (const mobile of [true, false]) {
+          const heroPreload = document.createElement('link')
+          heroPreload.rel = 'preload'
+          heroPreload.as = 'image'
+          heroPreload.type = 'image/avif'
+          heroPreload.media = mobile ? '(max-width: 620px)' : '(min-width: 621px)'
+          heroPreload.imageSizes = mobile ? '800px' : '(max-width: 800px) 1200px, 100vw'
+          heroPreload.imageSrcset = mobile
+            ? '/assets/home-landscape-v2-mobile-800.avif 800w, /assets/home-landscape-v2-mobile-1200.avif 1200w'
+            : '/assets/home-landscape-v2-1600.avif 1600w, /assets/home-landscape-v2-2400.avif 2400w, /assets/home-landscape-v2-2988.avif 2988w'
+          heroPreload.fetchPriority = 'high'
+          document.head.appendChild(heroPreload)
+        }
       }
     </script>
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=2" />

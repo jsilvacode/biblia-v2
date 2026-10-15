@@ -10,7 +10,7 @@ const legacyDirectory = process.argv[2] ? resolve(process.argv[2]) : null
 let activeDirectory = legacyDirectory ?? directory
 let marker = 'initial'
 let stallChapter = false
-const mime = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.webp': 'image/webp', '.png': 'image/png' }
+const mime = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.avif': 'image/avif', '.webp': 'image/webp', '.png': 'image/png' }
 const server = createServer(async (request, response) => {
   try {
     const pathname = new URL(request.url, 'http://localhost').pathname
@@ -75,6 +75,19 @@ try {
   marker = 'new-online-html'
   await page.goto(`${origin}/`)
   assert.equal(await page.evaluate(() => window.auditRelease), marker)
+  await page.locator('picture img').evaluate(image => image.decode())
+  await page.waitForFunction(async () => {
+    const image = document.querySelector('picture img')
+    return Boolean(image && await (await caches.open('santa-biblia-v2-home-landscape')).match(image.currentSrc))
+  })
+  const cachedPhotographs = await page.evaluate(async () => (await (await caches.open('santa-biblia-v2-home-landscape')).keys()).length)
+  assert.equal(cachedPhotographs, 1)
+  await context.setOffline(true)
+  await page.reload({ waitUntil: 'domcontentloaded' })
+  await page.locator('picture img').evaluate(image => image.decode())
+  assert(await page.locator('picture img').evaluate(image => image.naturalWidth > 0))
+  await context.setOffline(false)
+  console.log('PASS: only the selected photograph is cached, and Home keeps its background offline')
   await page.goto(`${origin}/bible`)
   assert.equal(await page.evaluate(() => window.auditRelease), marker)
   console.log('PASS: controlled home and Bible navigations receive current HTML immediately')
