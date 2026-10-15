@@ -6,7 +6,7 @@ import { SettingsControls } from './SettingsControls'
 import { useSettings } from './SettingsProvider'
 import styles from './SettingsPopover.module.css'
 
-export function SettingsPopover({ anchorRef, isOpen, onClose, returnFocusRef }) {
+export function SettingsPopover({ anchorRef, isOpen, onClose, onBack, returnFocusRef }) {
   const { t } = useI18n()
   const { settings } = useSettings()
 
@@ -14,9 +14,10 @@ export function SettingsPopover({ anchorRef, isOpen, onClose, returnFocusRef }) 
     <ReaderDialog
       anchorRef={anchorRef}
       className="reader-dialog--settings"
-      closeLabel={t('common.back')}
+      closeLabel={t('common.close')}
       isOpen={isOpen}
       onClose={onClose}
+      onBack={onBack}
       popover
       returnFocusRef={returnFocusRef}
       title={t('settings.title')}

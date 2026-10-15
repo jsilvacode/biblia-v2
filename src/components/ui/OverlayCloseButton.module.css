@@ -1,0 +1,4 @@
+.close { display: grid; flex: none; width: 44px; height: 44px; padding: 0; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--ink-muted); cursor: pointer; transition: background 160ms ease, color 160ms ease; }
+.close:hover { background: var(--accent-soft); color: var(--accent-deep); }
+.close:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -3px; }
+@media (prefers-reduced-motion: reduce) { .close { transition: none; } }

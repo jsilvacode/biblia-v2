@@ -74,14 +74,15 @@
 .readingHeading p { margin: 10px 0 0; color: var(--ink-muted); font-size: .875rem; }
 .readingTools { --home-picker-width: 100%; --home-control-fill: light-dark(rgb(255 255 255 / .25), rgb(255 255 255 / .035)); --home-control-border: color-mix(in srgb, var(--border-strong) 80%, transparent); display: grid; align-content: start; width: 100%; max-width: 640px; min-width: 0; gap: 18px; margin-inline: auto; }
 .recentReadings { display: grid; align-content: start; min-width: 0; gap: 8px; }
-.recentReadings h3 { margin: 0; color: var(--ink-muted); font: 500 .6875rem/1.4 var(--font-ui); letter-spacing: .1em; text-transform: uppercase; }
+.recentReadings h3 { display: flex; align-items: center; gap: 7px; margin: 0; color: var(--ink-muted); font: 400 .6875rem/1.4 var(--font-ui); letter-spacing: .095em; text-transform: uppercase; }
 .recentList { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
 .recentList > li { min-width: 0; }
-.recentLink { display: flex; align-items: center; min-width: 0; min-height: 40px; gap: 8px; padding: 5px 8px; border: 1px solid transparent; border-radius: 10px; color: var(--accent-blue-deep); transition: background 160ms ease, border-color 160ms ease; }
+.recentLink { display: flex; align-items: center; min-width: 0; min-height: 44px; padding: 10px 4px; border-bottom: 1px solid color-mix(in srgb, var(--border) 65%, transparent); color: var(--ink); transition: background 160ms ease, color 160ms ease; }
 .recentLink > svg { flex: none; }
-.recentLink > span { flex: 1; min-width: 0; color: var(--ink); font: 400 .875rem/1.4 var(--font-reading); overflow-wrap: anywhere; }
+.recentLink > span { flex: 1; min-width: 0; font: 400 .9375rem/1.3 var(--font-reading); overflow-wrap: anywhere; }
+.recentList > li:last-child .recentLink { border-bottom-color: transparent; }
 .recentEmpty { display: flex; align-items: center; min-height: 44px; margin: 0; color: var(--ink-muted); font-size: .8125rem; }
-.recentLink:hover { background: light-dark(rgb(255 255 255 / .4), rgb(255 255 255 / .04)); }
+.recentLink:hover { background: var(--accent-soft); color: var(--accent-deep); }
 .recentLink:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .eyebrow { margin: 0; color: var(--accent-deep); font: 500 .6875rem/1.4 var(--font-ui); letter-spacing: .12em; text-transform: uppercase; }
 .editorialSection { margin-top: 76px; }
@@ -109,7 +110,8 @@
 @media (min-width: 768px) {
   .homePage { --home-panel-height: 24rem; }
   .recentList { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  .recentLink { height: 100%; min-height: 44px; padding: 8px; border-color: color-mix(in srgb, var(--border) 70%, transparent); background: light-dark(rgb(255 255 255 / .22), rgb(255 255 255 / .025)); }
+  .recentLink { height: 100%; min-height: 44px; padding: 9px 6px; border: 1px solid color-mix(in srgb, var(--border) 70%, transparent); border-radius: 10px; background: light-dark(rgb(255 255 255 / .22), rgb(255 255 255 / .025)); text-align: center; }
+  .recentList > li:last-child .recentLink { border-bottom-color: color-mix(in srgb, var(--border) 70%, transparent); }
   .recentLink:hover { border-color: var(--accent-blue); }
 }
 @media (min-width: 801px) {

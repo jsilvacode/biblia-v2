@@ -3,7 +3,7 @@ import { useI18n } from '../../i18n'
 import { loadCommentary } from '../bible/bibleRepository'
 import { ReaderDialog } from './ReaderDialog'
 
-export function CommentarySheet({ bookId, chapter, isOpen, onClose, reference, returnFocusRef, verse }) {
+export function CommentarySheet({ bookId, chapter, isOpen, onClose, onBack, reference, returnFocusRef, verse }) {
   const { t } = useI18n()
   const [state, setState] = useState({ blocks: [], status: 'loading' })
   const [retry, setRetry] = useState(0)
@@ -27,9 +27,10 @@ export function CommentarySheet({ bookId, chapter, isOpen, onClose, reference, r
   return (
     <ReaderDialog
       className="reader-dialog--commentary"
-      closeLabel={t('common.back')}
+      closeLabel={t('common.close')}
       isOpen={isOpen}
       onClose={onClose}
+      onBack={onBack}
       returnFocusRef={returnFocusRef}
       title={t('reader.commentary')}
     >

@@ -1,5 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Icon } from '../../components/ui/Icon'
+import { OverlayCloseButton } from '../../components/ui/OverlayCloseButton'
 import { useI18n } from '../../i18n'
 import { normalizeText } from '../bible/catalog'
 import { MAX_PICKER_HEIGHT, positionPickerMenu, revealPickerOption } from '../home/pickerPosition'
@@ -98,7 +99,7 @@ export function SituationSelector({ situations, selected, onSelect }) {
     <div className={styles.selectorBar}>
       <Icon name="bookOpen" size={20} />
       <span className="sr-only" id={`${id}-label`}>{t('topics.situationLabel')}</span>
-      <div className={`${pickerStyles.control} ${styles.selectControl}`} ref={anchorRef}>
+      <div className={`${pickerStyles.control} ${styles.selectControl}`} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) close() }} onKeyDown={(event) => { if (event.key === 'Escape') { close(); triggerRef.current?.focus({ preventScroll: true }) } }} ref={anchorRef}>
         <button
           aria-activedescendant={isOpen ? `${id}-option-${activeIndex}` : undefined}
           aria-controls={`${id}-list`}
@@ -106,7 +107,6 @@ export function SituationSelector({ situations, selected, onSelect }) {
           aria-haspopup="listbox"
           aria-labelledby={`${id}-label`}
           className={`${pickerStyles.trigger} ${styles.selectTrigger}`}
-          onBlur={() => close()}
           onClick={() => isOpen ? close() : open()}
           onKeyDown={handleKeyDown}
           onKeyUp={(event) => { if (event.key === ' ') event.preventDefault() }}
@@ -119,15 +119,14 @@ export function SituationSelector({ situations, selected, onSelect }) {
         </button>
         {isOpen && (
           <div
-            aria-labelledby={`${id}-label`}
             className={pickerStyles.menu}
             data-height-limit={MAX_PICKER_HEIGHT}
-            id={`${id}-list`}
             onPointerDown={(event) => { event.preventDefault(); revealActive.current = false }}
             onWheel={() => { revealActive.current = false }}
             ref={menuRef}
-            role="listbox"
           >
+            <header className={pickerStyles.menuHeader}><span>{t('topics.situationLabel')}</span><OverlayCloseButton onClose={() => { close(); triggerRef.current?.focus({ preventScroll: true }) }} /></header>
+            <div aria-labelledby={`${id}-label`} id={`${id}-list`} role="listbox">
             {groups.map((group) => (
               <div aria-labelledby={`${id}-${group}`} key={group} role="group">
                 <span className={pickerStyles.groupLabel} id={`${id}-${group}`}>{situations.find((situation) => situation.categoryId === group).categoryTitle}</span>
@@ -147,6 +146,7 @@ export function SituationSelector({ situations, selected, onSelect }) {
                 ))}
               </div>
             ))}
+            </div>
           </div>
         )}
       </div>

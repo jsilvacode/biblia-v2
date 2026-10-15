@@ -1,326 +1,236 @@
-import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Icon } from '../../components/ui/Icon'
+import { OverlayCloseButton } from '../../components/ui/OverlayCloseButton'
 import { useI18n } from '../../i18n'
-import { bibleBooks, getBook, getLocalizedBookName, getVersion, normalizeText } from '../bible/catalog'
+import { bibleBooks, getLocalizedBookName, normalizeText } from '../bible/catalog'
+import { preloadReading } from '../reader/preloadReading'
 import { useSettings } from '../settings/SettingsProvider'
-import { MAX_PICKER_HEIGHT, positionPickerMenu, revealPickerOption } from './pickerPosition'
+import { positionPickerMenu, revealPickerAnchor } from './pickerPosition'
 import styles from './HomePassagePicker.module.css'
 
+const MENU_HEIGHT = 324
 const TYPEAHEAD_TIMEOUT = 700
-const labelFallbacks = {
-  es: { selectBook: 'Seleccionar libro', openChapter: 'Abrir capítulo' },
-  en: { selectBook: 'Select a book', openChapter: 'Open chapter' },
-  'pt-BR': { selectBook: 'Selecionar livro', openChapter: 'Abrir capítulo' },
+
+function BookAccordion({ book, expanded, id, locale, t, onToggle, onBookKeyDown, onKeyUp, onChapterKeyDown, onRead, onWarmChapter }) {
+  const name = getLocalizedBookName(book, locale)
+  return (
+    <div className={`${styles.book}${expanded ? ` ${styles.expandedBook}` : ''}`}>
+      <div className={styles.bookBar}>
+        <button aria-controls={`${id}-chapters-${book.id}`} aria-expanded={expanded} className={styles.bookToggle} data-book-id={book.id} onClick={() => onToggle(book.id)} onKeyDown={(event) => onBookKeyDown(event, book.id)} onKeyUp={onKeyUp} type="button">
+          <span>{name}</span>{' '}<small>{t('bible.shortChapterCount', { count: book.chapters })}</small>
+        </button>
+        {expanded && <OverlayCloseButton label={`${t('common.close')}: ${name}`} onClose={() => onToggle(book.id)} />}
+      </div>
+      <div aria-label={`${name} · ${t('bible.chapters')}`} className={styles.chapterGrid} hidden={!expanded} id={`${id}-chapters-${book.id}`} onKeyDown={onChapterKeyDown}>
+        {expanded && Array.from({ length: book.chapters }, (_, index) => index + 1).map((chapter) => (
+          <button aria-label={t('bible.openReference', { reference: `${name} ${chapter}` })} data-chapter={chapter} key={chapter} onClick={() => onRead(book.id, chapter)} onFocus={() => onWarmChapter(book.id, chapter)} onPointerDown={() => onWarmChapter(book.id, chapter)} type="button">{chapter}</button>
+        ))}
+      </div>
+    </div>
+  )
 }
 
-export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerRef, onOpenChange, leadingAction }) {
+// Books and chapters share a non-modal disclosure. A listbox cannot contain
+// an accordion of interactive chapter buttons; keep every action native.
+export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerRef, onOpenChange }) {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
   const id = useId()
-  const [selection, setSelection] = useState({ bookId: null, chapter: null })
-  const [popup, setPopup] = useState(null)
-  const popupRef = useRef(null)
-  const triggersRef = useRef({ book: null, chapter: null })
-  const menusRef = useRef({ book: null, chapter: null })
-  const anchorsRef = useRef({ book: null, chapter: null })
-  const keepActiveVisibleRef = useRef(true)
-  const typeaheadRef = useRef({ text: '', at: 0 })
+  const [isOpen, setIsOpen] = useState(false)
+  const [expandedBook, setExpandedBook] = useState(null)
+  const rootRef = useRef(null)
+  const anchorRef = useRef(null)
+  const triggerRef = useRef(null)
+  const menuRef = useRef(null)
+  const openRef = useRef(false)
   const openChangeRef = useRef(onOpenChange)
-  const selectedBook = getBook(selection.bookId)
-  const version = getVersion(settings.bibleVersion)
-  const ready = Boolean(selectedBook && Number.isInteger(selection.chapter)
-    && selection.chapter >= 1 && selection.chapter <= selectedBook.chapters)
-  const bookLabel = t('reader.book')
-  const chapterLabel = t('common.chapter')
-  const localLabel = (name) => {
-    const key = `home.${name}`
-    const value = t(key)
-    return value === key ? (labelFallbacks[locale] ?? labelFallbacks.es)[name] : value
-  }
-  const selectBookLabel = localLabel('selectBook')
-  const openChapterLabel = localLabel('openChapter')
-  const optionLists = useMemo(() => ({
-    book: bibleBooks.map((book) => ({
-      value: book.id,
-      label: getLocalizedBookName(book, locale),
-      testament: book.testament,
-    })),
-    chapter: Array.from({ length: getBook(selection.bookId)?.chapters ?? 0 }, (_, index) => ({
-      value: index + 1,
-      label: String(index + 1),
-    })),
-  }), [locale, selection.bookId])
+  const revealBookRef = useRef(false)
+  const focusBookRef = useRef(null)
+  const typeahead = useRef({ text: '', at: 0 })
+  const pointerInsideRef = useRef(false)
 
   useEffect(() => { openChangeRef.current = onOpenChange }, [onOpenChange])
   useEffect(() => () => {
-    if (popupRef.current) openChangeRef.current?.(false)
+    if (openRef.current) openChangeRef.current?.(false)
   }, [])
 
-  const closePicker = useCallback((restoreFocus = false) => {
-    const name = popupRef.current?.name
-    if (!name) return
-    popupRef.current = null
-    typeaheadRef.current = { text: '', at: 0 }
-    setPopup(null)
+  const close = useCallback((restoreFocus = false) => {
+    if (!openRef.current) return
+    openRef.current = false
+    setIsOpen(false)
+    typeahead.current = { text: '', at: 0 }
     openChangeRef.current?.(false)
-    if (restoreFocus) triggersRef.current[name]?.focus({ preventScroll: true })
+    if (restoreFocus) triggerRef.current?.focus({ preventScroll: true })
   }, [])
 
-  const positionPicker = useCallback((name) => {
-    const list = menusRef.current[name]
-    const trigger = triggersRef.current[name]
-    const anchorElement = anchorsRef.current[name]
-    if (!list || !trigger || !anchorElement || trigger.disabled) return false
-
-    return positionPickerMenu(list, anchorElement)
-  }, [])
-
-  const revealActiveOption = useCallback((name, index) => {
-    const list = menusRef.current[name]
-    revealPickerOption(list, index)
-  }, [])
-
-  const updateActiveOption = (name, index) => {
-    const boundedIndex = Math.max(0, Math.min(optionLists[name].length - 1, index))
-    const next = { name, index: boundedIndex }
-    const wasOpen = Boolean(popupRef.current)
-    popupRef.current = next
-    keepActiveVisibleRef.current = true
-    setPopup(next)
-    if (!wasOpen) openChangeRef.current?.(true)
+  function open(focusBook = null) {
+    revealPickerAnchor(anchorRef.current)
+    focusBookRef.current = focusBook
+    revealBookRef.current = true
+    openRef.current = true
+    setIsOpen(true)
+    typeahead.current = { text: '', at: 0 }
+    openChangeRef.current?.(true)
   }
 
-  const openPicker = (name, firstIndex = null) => {
-    if (triggersRef.current[name]?.disabled || !optionLists[name].length) return
-    const currentValue = name === 'book' ? selection.bookId : selection.chapter
-    const selectedIndex = optionLists[name].findIndex((option) => option.value === currentValue)
-    typeaheadRef.current = { text: '', at: 0 }
-    updateActiveOption(name, firstIndex ?? Math.max(0, selectedIndex))
-  }
-
-  const chooseOption = (name, index) => {
-    const option = optionLists[name][index]
-    if (!option) return
-    if (name === 'book') {
-      if (option.value !== selection.bookId) setSelection({ bookId: option.value, chapter: null })
-    } else {
-      setSelection((current) => ({ ...current, chapter: option.value }))
-    }
-    closePicker(true)
+  function revealBook(bookId) {
+    const menu = menuRef.current
+    const button = menu?.querySelector(`[data-book-id="${bookId}"]`)
+    if (!menu || !button) return
+    const headerHeight = menu.querySelector('header')?.offsetHeight ?? 44
+    const precedingRow = menu.clientHeight > 250 ? 46 : 0
+    menu.scrollTop += button.getBoundingClientRect().top - menu.getBoundingClientRect().top - headerHeight - precedingRow
   }
 
   useLayoutEffect(() => {
-    if (!popup) return undefined
-    if (!positionPicker(popup.name)) {
-      const frame = requestAnimationFrame(() => closePicker())
+    if (!isOpen) return undefined
+    if (!positionPickerMenu(menuRef.current, anchorRef.current, MENU_HEIGHT)) {
+      const frame = requestAnimationFrame(() => close())
       return () => cancelAnimationFrame(frame)
     }
-    if (keepActiveVisibleRef.current) revealActiveOption(popup.name, popup.index)
+    const focusBook = focusBookRef.current
+    if (revealBookRef.current) revealBook(focusBook ?? expandedBook ?? 1)
+    if (focusBook) menuRef.current?.querySelector(`[data-book-id="${focusBook}"]`)?.focus({ preventScroll: true })
+    revealBookRef.current = false
+    focusBookRef.current = null
     return undefined
-  }, [popup, optionLists, closePicker, positionPicker, revealActiveOption])
+  }, [isOpen, expandedBook, close])
 
-  const openedName = popup?.name ?? null
   useEffect(() => {
-    if (!openedName) return undefined
-    function refreshPosition() {
-      const current = popupRef.current
-      if (!current) return
-      if (!positionPicker(current.name)) closePicker()
-      else if (keepActiveVisibleRef.current) revealActiveOption(current.name, current.index)
+    if (!isOpen) return undefined
+    const reposition = () => {
+      if (!positionPickerMenu(menuRef.current, anchorRef.current, MENU_HEIGHT)) close()
     }
-    function handleOutsidePointer(event) {
-      const name = popupRef.current?.name
-      if (!name) return
-      if (!triggersRef.current[name]?.contains(event.target) && !menusRef.current[name]?.contains(event.target)) {
-        closePicker()
-      }
+    const dismiss = (event) => {
+      if (!rootRef.current?.contains(event.target)) close()
     }
     const viewport = window.visualViewport
-    document.addEventListener('pointerdown', handleOutsidePointer)
-    window.addEventListener('resize', refreshPosition, { passive: true })
-    window.addEventListener('scroll', refreshPosition, { passive: true })
-    viewport?.addEventListener('resize', refreshPosition, { passive: true })
-    viewport?.addEventListener('scroll', refreshPosition, { passive: true })
+    document.addEventListener('pointerdown', dismiss)
+    window.addEventListener('resize', reposition, { passive: true })
+    window.addEventListener('scroll', reposition, { passive: true })
+    viewport?.addEventListener('resize', reposition)
+    viewport?.addEventListener('scroll', reposition)
     return () => {
-      document.removeEventListener('pointerdown', handleOutsidePointer)
-      window.removeEventListener('resize', refreshPosition)
-      window.removeEventListener('scroll', refreshPosition)
-      viewport?.removeEventListener('resize', refreshPosition)
-      viewport?.removeEventListener('scroll', refreshPosition)
+      document.removeEventListener('pointerdown', dismiss)
+      window.removeEventListener('resize', reposition)
+      window.removeEventListener('scroll', reposition)
+      viewport?.removeEventListener('resize', reposition)
+      viewport?.removeEventListener('scroll', reposition)
     }
-  }, [openedName, closePicker, positionPicker, revealActiveOption])
+  }, [isOpen, close])
 
-  function handleKeyDown(event, name) {
-    const key = event.key
-    const current = popupRef.current?.name === name ? popupRef.current : null
-    const entries = optionLists[name]
-    keepActiveVisibleRef.current = true
+  function toggleBook(bookId) {
+    revealBookRef.current = true
+    focusBookRef.current = bookId
+    setExpandedBook((current) => current === bookId ? null : bookId)
+  }
+
+  function focusBook(bookId) {
+    revealBook(bookId)
+    menuRef.current?.querySelector(`[data-book-id="${bookId}"]`)?.focus({ preventScroll: true })
+  }
+
+  function handleBookNavigation(event, bookId = null) {
+    const { key } = event
     if (['ArrowDown', 'ArrowUp', 'Home', 'End', 'PageDown', 'PageUp'].includes(key)) {
       event.preventDefault()
-      typeaheadRef.current = { text: '', at: 0 }
-      if (key === 'Home' || key === 'End') updateActiveOption(name, key === 'Home' ? 0 : entries.length - 1)
-      else if (key === 'PageDown' || key === 'PageUp') {
-        updateActiveOption(name, (current?.index ?? 0) + (key === 'PageDown' ? 6 : -6))
-      } else if (current) updateActiveOption(name, current.index + (key === 'ArrowDown' ? 1 : -1))
-      else {
-        const selected = name === 'book' ? selection.bookId : selection.chapter
-        openPicker(name, !selected && key === 'ArrowUp' ? entries.length - 1 : null)
-      }
-    } else if (key === 'Enter' || (key === ' ' && (!current || name === 'chapter'
-      || !typeaheadRef.current.text || event.timeStamp - typeaheadRef.current.at >= TYPEAHEAD_TIMEOUT))) {
+      typeahead.current = { text: '', at: 0 }
+      const current = bookId ?? expandedBook ?? 1
+      const next = key === 'Home' ? 1 : key === 'End' ? 66
+        : current + (key === 'ArrowDown' ? 1 : key === 'ArrowUp' ? -1 : key === 'PageDown' ? 6 : -6)
+      if (!isOpen) open(key === 'ArrowUp' || key === 'End' ? 66 : 1)
+      else focusBook(Math.max(1, Math.min(66, next)))
+    } else if (key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey
+      && (key !== ' ' || typeahead.current.text && event.timeStamp - typeahead.current.at < TYPEAHEAD_TIMEOUT)) {
       event.preventDefault()
-      if (current) chooseOption(name, current.index)
-      else openPicker(name)
-    } else if (key === 'Escape' && current) {
-      event.preventDefault()
-      closePicker(true)
-    } else if (key === 'Tab') closePicker()
-    else if (key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
-      event.preventDefault()
-      if (!current) openPicker(name)
-      const now = event.timeStamp
-      const previous = typeaheadRef.current
-      const text = (now - previous.at < TYPEAHEAD_TIMEOUT ? previous.text : '') + key
-      typeaheadRef.current = { text, at: now }
+      const text = (event.timeStamp - typeahead.current.at < TYPEAHEAD_TIMEOUT ? typeahead.current.text : '') + key
+      if (!isOpen) open()
+      typeahead.current = { text, at: event.timeStamp }
       const query = normalizeText(text)
-      if (name === 'chapter') {
-        const exact = entries.findIndex((option) => option.label === query)
-        const index = exact >= 0 ? exact : entries.findIndex((option) => option.label.startsWith(query))
-        if (index >= 0) updateActiveOption(name, index)
-      } else {
-        const repeated = [...query].every((character) => character === query[0])
-        const prefix = repeated ? query[0] : query
-        const start = prefix?.length === 1 ? (popupRef.current?.index ?? 0) + 1 : 0
-        for (let offset = 0; offset < entries.length; offset += 1) {
-          const index = (start + offset) % entries.length
-          if (normalizeText(entries[index].label).startsWith(prefix)) {
-            updateActiveOption(name, index)
-            break
-          }
-        }
+      const found = bibleBooks.find((book) => normalizeText(getLocalizedBookName(book, locale)).startsWith(query))
+      if (found) {
+        if (!isOpen) focusBookRef.current = found.id
+        else focusBook(found.id)
       }
     }
   }
 
-  function renderOption(name, option, index) {
-    const isActive = popup?.name === name && popup.index === index
-    const currentValue = name === 'book' ? selection.bookId : selection.chapter
-    return (
-      <div
-        aria-selected={option.value === currentValue}
-        className={`${styles.option}${isActive ? ` ${styles.activeOption}` : ''}`}
-        data-picker-index={index}
-        id={`${id}-${name}-${option.value}`}
-        key={option.value}
-        onClick={() => chooseOption(name, index)}
-        onPointerMove={(event) => {
-          if (event.pointerType !== 'touch' && !isActive) updateActiveOption(name, index)
-        }}
-        role="option"
-      >
-        {option.label}
-      </div>
-    )
+  function warmChapter(book, chapter) {
+    preloadReading({ book, chapter }, settings.bibleVersion)
   }
 
-  function renderPicker(name, label, value, disabled = false) {
-    const expanded = popup?.name === name
-    const activeValue = expanded ? optionLists[name][popup.index]?.value : null
-    const empty = name === 'book' ? !selectedBook : selection.chapter === null
-    return (
-      <div className={styles.field}>
-        <span className="sr-only" id={`${id}-${name}-label`}>{label}</span>
-        <div
-          className={`${styles.control}${empty ? ` ${styles.emptyControl}` : ''}`}
-          data-picker-field={name}
-          ref={(node) => { anchorsRef.current[name] = node }}
-        >
-          <button
-            aria-activedescendant={activeValue ? `${id}-${name}-${activeValue}` : undefined}
-            aria-controls={`${id}-${name}-list`}
-            aria-expanded={expanded}
-            aria-haspopup="listbox"
-            aria-labelledby={`${id}-${name}-label`}
-            className={styles.trigger}
-            data-picker-trigger={name}
-            disabled={disabled}
-            onBlur={(event) => {
-              if (!menusRef.current[name]?.contains(event.relatedTarget)) closePicker()
-            }}
-            onClick={() => {
-              triggersRef.current[name]?.focus({ preventScroll: true })
-              if (popupRef.current?.name === name) closePicker()
-              else openPicker(name)
-            }}
-            onKeyDown={(event) => handleKeyDown(event, name)}
-            onKeyUp={(event) => {
-              // Space belongs to the combobox/typeahead; the native button's
-              // keyup click would toggle the list a second time.
-              if (event.key === ' ') event.preventDefault()
-            }}
-            ref={(node) => {
-              triggersRef.current[name] = node
-              if (name === 'book' && bookTriggerRef) bookTriggerRef.current = node
-            }}
-            role="combobox"
-            type="button"
-          >
-            <span className={styles.value}>{value}</span>
-            <span aria-hidden="true" className={styles.arrow}><Icon name="chevronDown" size={16} /></span>
-          </button>
-          <div
-            aria-labelledby={`${id}-${name}-label`}
-            className={`${styles.menu}${name === 'chapter' ? ` ${styles.chapterMenu}` : ''}`}
-            data-height-limit={MAX_PICKER_HEIGHT}
-            data-picker-menu={name}
-            hidden={!expanded}
-            id={`${id}-${name}-list`}
-            onPointerDown={(event) => {
-              keepActiveVisibleRef.current = false
-              event.preventDefault()
-            }}
-            onWheel={() => { keepActiveVisibleRef.current = false }}
-            ref={(node) => { menusRef.current[name] = node }}
-            role="listbox"
-          >
-            {name === 'book' ? ['OT', 'NT'].map((testament) => (
-              <div aria-labelledby={`${id}-${testament}-label`} key={testament} role="group">
-                <span className={styles.groupLabel} id={`${id}-${testament}-label`}>
-                  {t(testament === 'OT' ? 'bible.oldTestament' : 'bible.newTestament')}
-                </span>
-                {optionLists.book.map((option, index) => option.testament === testament ? renderOption(name, option, index) : null)}
-              </div>
-            )) : optionLists.chapter.map((option, index) => renderOption(name, option, index))}
-          </div>
-        </div>
-      </div>
-    )
+  function readChapter(book, chapter) {
+    close()
+    onGoToChapter(book, chapter)
+  }
+
+  function handleKeyUp(event) {
+    if (event.key === ' ' && typeahead.current.text && event.timeStamp - typeahead.current.at < TYPEAHEAD_TIMEOUT) event.preventDefault()
+  }
+
+  function handleChapterNavigation(event) {
+    const grid = event.currentTarget
+    const buttons = [...grid.querySelectorAll('button')]
+    const current = buttons.indexOf(event.target)
+    if (current < 0) return
+    const columns = getComputedStyle(grid).gridTemplateColumns.split(' ').length
+    const offset = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: columns, ArrowUp: -columns }[event.key]
+    if (offset || event.key === 'Home' || event.key === 'End') {
+      event.preventDefault()
+      const index = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1
+        : Math.max(0, Math.min(buttons.length - 1, current + offset))
+      buttons[index]?.focus({ preventScroll: true })
+      buttons[index]?.scrollIntoView({ block: 'nearest' })
+    }
   }
 
   return (
-    <form
-      aria-label={`${t('home.chooseReading')} · ${version.short}`}
-      className={`${styles.picker}${compact ? ` ${styles.compact}` : ''}${leadingAction ? ` ${styles.withLeadingAction}` : ''}`}
+    <div
+      aria-label={t('home.chooseReading')}
+      className={`${styles.picker}${compact ? ` ${styles.compact}` : ''}`}
       data-testid={compact ? 'reader-passage-picker' : 'home-reading-actions'}
-      onSubmit={(event) => {
-        event.preventDefault()
-        if (ready) {
-          closePicker()
-          onGoToChapter(selection.bookId, selection.chapter)
-        }
+      onBlur={(event) => {
+        // Safari focuses the nearest focusable ancestor instead of a tapped
+        // button. Keep the popup alive until its own pointer click completes.
+        if (!pointerInsideRef.current && event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) close()
       }}
+      onPointerDownCapture={() => { pointerInsideRef.current = true }}
+      onPointerCancel={() => { pointerInsideRef.current = false }}
+      onClickCapture={() => { pointerInsideRef.current = false }}
+      onKeyDown={(event) => {
+        pointerInsideRef.current = false
+        if (event.key === 'Escape' && isOpen) { event.preventDefault(); event.stopPropagation(); close(true) }
+      }}
+      ref={rootRef}
     >
-      {leadingAction}
-      {renderPicker('book', bookLabel, selectedBook ? getLocalizedBookName(selectedBook, locale) : selectBookLabel)}
-      {renderPicker('chapter', chapterLabel, selection.chapter ?? chapterLabel, !selectedBook)}
-      <button aria-label={compact ? openChapterLabel : undefined} className={styles.openChapter} disabled={!ready} type="submit">
-        <span>{openChapterLabel}</span>
-        <Icon name="arrowRight" size={17} />
-      </button>
-      <span aria-live="polite" className={styles.status} role="status">
-        {ready ? t('bible.openReference', { reference: `${getLocalizedBookName(selectedBook, locale)} ${selection.chapter}` })
-          : selectedBook ? t('bible.chooseChapter') : ''}
-      </span>
-    </form>
+      <div className={`${styles.control} ${styles.bookControl}`} data-picker-field="book" ref={anchorRef}>
+        <button
+          aria-controls={`${id}-books`} aria-expanded={isOpen} aria-haspopup="dialog"
+          className={`${styles.trigger} ${styles.bookTrigger}`} data-picker-trigger="book"
+          onClick={() => isOpen ? close() : open()}
+          onKeyDown={(event) => handleBookNavigation(event)}
+          onKeyUp={handleKeyUp}
+          ref={(node) => { triggerRef.current = node; if (bookTriggerRef) bookTriggerRef.current = node }}
+          type="button"
+        >
+          <Icon name="bookOpen" size={18} />
+          <span className={styles.value}>{t('home.selectBook')}</span>
+          <Icon name="chevronDown" size={17} />
+        </button>
+        {isOpen && (
+          <div aria-label={t('home.chooseReading')} className={`${styles.menu} ${styles.bookMenu}`} data-height-limit={MENU_HEIGHT} data-picker-menu="book" id={`${id}-books`} ref={menuRef} role="dialog">
+            <header className={styles.menuHeader}><span>{t('home.chooseReading')}</span><OverlayCloseButton onClose={() => close(true)} /></header>
+            {['OT', 'NT'].map((testament) => (
+              <section aria-labelledby={`${id}-${testament}`} key={testament}>
+                <h3 className={styles.groupLabel} id={`${id}-${testament}`}>{t(testament === 'OT' ? 'bible.oldTestament' : 'bible.newTestament')}</h3>
+                {bibleBooks.filter((book) => book.testament === testament).map((book) => (
+                  <BookAccordion book={book} expanded={expandedBook === book.id} id={id} key={book.id} locale={locale} onBookKeyDown={handleBookNavigation} onChapterKeyDown={handleChapterNavigation} onKeyUp={handleKeyUp} onRead={readChapter} onToggle={toggleBook} onWarmChapter={warmChapter} t={t} />
+                ))}
+              </section>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   )
 }

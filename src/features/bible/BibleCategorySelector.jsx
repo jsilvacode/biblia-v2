@@ -1,5 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Icon } from '../../components/ui/Icon'
+import { OverlayCloseButton } from '../../components/ui/OverlayCloseButton'
 import { useI18n } from '../../i18n'
 import { MAX_PICKER_HEIGHT, positionPickerMenu, revealPickerOption } from '../home/pickerPosition'
 import pickerStyles from '../home/HomePassagePicker.module.css'
@@ -90,7 +91,7 @@ export function BibleCategorySelector({ categories, selected, onSelect }) {
   }
 
   return (
-    <div className={`${pickerStyles.control} ${styles.selector}`} ref={anchorRef}>
+    <div className={`${pickerStyles.control} ${styles.selector}`} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setActiveIndex(null) }} onKeyDown={(event) => { if (event.key === 'Escape') { setActiveIndex(null); triggerRef.current?.focus({ preventScroll: true }) } }} ref={anchorRef}>
       <span className="sr-only" id={`${id}-label`}>{t('bible.categoriesLabel')}</span>
       <button
         aria-activedescendant={isOpen ? `${id}-option-${activeIndex}` : undefined}
@@ -99,7 +100,6 @@ export function BibleCategorySelector({ categories, selected, onSelect }) {
         aria-haspopup="listbox"
         aria-labelledby={`${id}-label`}
         className={`${pickerStyles.trigger} ${styles.trigger}`}
-        onBlur={() => setActiveIndex(null)}
         onClick={() => isOpen ? setActiveIndex(null) : open()}
         onKeyDown={handleKeyDown}
         onKeyUp={(event) => { if (event.key === ' ') event.preventDefault() }}
@@ -114,15 +114,14 @@ export function BibleCategorySelector({ categories, selected, onSelect }) {
       </button>
       {isOpen && (
         <div
-          aria-labelledby={`${id}-label`}
           className={`${pickerStyles.menu} ${styles.menu}`}
           data-height-limit={MAX_PICKER_HEIGHT}
-          id={`${id}-list`}
           onPointerDown={(event) => { event.preventDefault(); revealActive.current = false }}
           onWheel={() => { revealActive.current = false }}
           ref={menuRef}
-          role="listbox"
         >
+          <header className={pickerStyles.menuHeader}><span>{t('bible.categoriesLabel')}</span><OverlayCloseButton onClose={() => { setActiveIndex(null); triggerRef.current?.focus({ preventScroll: true }) }} /></header>
+          <div aria-labelledby={`${id}-label`} id={`${id}-list`} role="listbox">
           {categories.map((category, index) => (
             <div
               aria-selected={category.id === selected.id}
@@ -142,6 +141,7 @@ export function BibleCategorySelector({ categories, selected, onSelect }) {
               <small>{category.books.length}</small>
             </div>
           ))}
+          </div>
         </div>
       )}
     </div>

@@ -1,6 +1,8 @@
 import { useEffect, useId, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { Icon } from '../../components/ui/Icon'
+import { OverlayCloseButton } from '../../components/ui/OverlayCloseButton'
+import { useI18n } from '../../i18n'
 import {
   cancelScheduled,
   focusWithoutScrolling,
@@ -37,8 +39,8 @@ function resolveDialogPopoverPosition({ anchor, panel }) {
 export function ReaderDialog({
   children,
   className = '',
-  closeIcon = 'arrowLeft',
-  closeLabel = 'Close',
+  closeLabel,
+  onBack,
   descriptionId,
   isOpen,
   onClose,
@@ -47,6 +49,7 @@ export function ReaderDialog({
   returnFocusRef,
   title,
 }) {
+  const { t } = useI18n()
   const dialogRef = useRef(null)
   const closeRef = useRef(onClose)
   const titleId = useId()
@@ -159,11 +162,10 @@ export function ReaderDialog({
     >
       <div aria-hidden="true" className="reader-dialog__handle" />
       <header className="reader-dialog__header">
-        <button aria-label={closeLabel} className="reader-dialog__back" onClick={onClose} type="button">
-          <Icon name={closeIcon} size="sm" />
-        </button>
+        {onBack ? <button aria-label={t('common.back')} className="reader-dialog__back" onClick={onBack} type="button"><Icon name="arrowLeft" size="sm" /></button>
+          : <span aria-hidden="true" className="reader-dialog__header-spacer" />}
         <h2 id={titleId}>{title}</h2>
-        <span aria-hidden="true" className="reader-dialog__header-spacer" />
+        <OverlayCloseButton label={closeLabel} onClose={onClose} />
       </header>
       {children}
     </section>

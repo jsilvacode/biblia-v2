@@ -12,6 +12,7 @@ import {
 import { loadChapter } from '../bible/bibleRepository'
 import { HomeHeader } from '../home/HomeHeader'
 import { HomePassagePicker } from '../home/HomePassagePicker'
+import { HomeQuickSearch } from '../home/HomeQuickSearch'
 import { useReadingActions } from '../reading/ReadingProvider'
 import { useSaved } from '../saved/SavedProvider'
 import { useSettings } from '../settings/SettingsProvider'
@@ -48,6 +49,7 @@ export default function ReaderPage() {
   const [chapterRetry, setChapterRetry] = useState(0)
   const [activeDialog, setActiveDialog] = useState(null)
   const [isPassagePickerOpen, setIsPassagePickerOpen] = useState(false)
+  const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false)
   const [actionFeedback, setActionFeedback] = useState('')
   const [attentionVerseKey, setAttentionVerseKey] = useState(null)
   const [selectedVerseOverride, setSelectedVerseOverride] = useState(null)
@@ -106,10 +108,17 @@ export default function ReaderPage() {
     onPointerDown,
     onPointerUp,
     revealChrome,
-  } = useReaderImmersion({ chapterKey: requestKey, enabled: status === 'ready', isOverlayOpen: Boolean(activeDialog) || isPassagePickerOpen })
+  } = useReaderImmersion({ chapterKey: requestKey, enabled: status === 'ready', isOverlayOpen: Boolean(activeDialog) || isPassagePickerOpen || isQuickSearchOpen })
 
   const handlePassagePickerOpenChange = useCallback((isOpen) => {
+    if (isOpen) window.scrollTo({ top: window.scrollY, behavior: 'instant' })
     setIsPassagePickerOpen(isOpen)
+    revealChrome(!isOpen)
+  }, [revealChrome])
+
+  const handleQuickSearchOpenChange = useCallback((isOpen) => {
+    if (isOpen) window.scrollTo({ top: window.scrollY, behavior: 'instant' })
+    setIsQuickSearchOpen(isOpen)
     revealChrome(!isOpen)
   }, [revealChrome])
 
@@ -157,6 +166,9 @@ export default function ReaderPage() {
   useEffect(() => {
     if (status !== 'ready' || !rawVerse) return undefined
     const frame = window.requestAnimationFrame(() => {
+      // A reader choosing another passage has already taken over navigation.
+      // Do not move their active picker to the incoming deep-linked verse.
+      if (document.activeElement?.closest('[data-reader-chrome]')) return
       const target = document.getElementById(`verse-${rawVerse}`)
       if (!target) return
       const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -215,6 +227,7 @@ export default function ReaderPage() {
   function openPassagePicker() {
     revealChrome(false)
     const trigger = passageBookTriggerRef.current
+    trigger?.scrollIntoView({ block: 'center', behavior: 'instant' })
     trigger?.focus({ preventScroll: true })
     if (trigger && trigger.getAttribute('aria-expanded') !== 'true') trigger.click()
   }
@@ -320,21 +333,21 @@ export default function ReaderPage() {
             }}
           />
         </div>
-        <div className="reader-header__passage-band">
-          <div className="reader-header__passage" data-testid="reader-passage-row">
+      </div>
+      <div className="reader-header__passage-band" data-reader-chrome>
+        <div className="reader-header__passage" data-testid="reader-passage-row">
+          <button aria-label={t('common.back')} className="reader-header__back" onClick={handleBack} type="button">
+            <Icon name="arrowLeft" size={17} /><span>{t('common.back')}</span>
+          </button>
+          <div className="reader-header__reading-tools">
             <HomePassagePicker
               compact
               key={`${reference.book}:${reference.chapter}`}
               bookTriggerRef={passageBookTriggerRef}
-              leadingAction={(
-                <button aria-label={t('common.back')} className="reader-header__back" onClick={handleBack} type="button">
-                  <Icon name="arrowLeft" size={17} />
-                  <span>{t('common.back')}</span>
-                </button>
-              )}
               onGoToChapter={goToChapter}
               onOpenChange={handlePassagePickerOpenChange}
             />
+            <HomeQuickSearch key={`search:${routeKey}`} currentBookId={reference.book} currentChapter={reference.chapter} onGoToChapter={goToChapter} onOpenChange={handleQuickSearchOpenChange} />
           </div>
         </div>
       </div>
@@ -349,7 +362,11 @@ export default function ReaderPage() {
         </div>
       )}
       <article className="reader-content" aria-busy={status === 'loading'}>
-        <h1 ref={chapterHeadingRef} tabIndex={-1}>{getLocalizedBookName(book, locale)} {reference.chapter}</h1>
+        <header className="reader-chapter-heading">
+          <p className="reader-chapter-version">Santa Biblia · {version.short}</p>
+          <h1 ref={chapterHeadingRef} tabIndex={-1}>{getLocalizedBookName(book, locale)}</h1>
+          <p className="reader-chapter-number">{t('common.chapter')} {reference.chapter}</p>
+        </header>
         {chapterSubtitle && <p className="reader-chapter-subtitle">{chapterSubtitle}</p>}
         {status === 'loading' && <div className="reader-skeleton"><i /><i /><i /><i /><i /></div>}
         {status === 'error' && (
@@ -432,6 +449,7 @@ export default function ReaderPage() {
           chapter={reference.chapter}
           isOpen
           onClose={closeDialog}
+          onBack={() => setActiveDialog('actions')}
           reference={selectedReferenceLabel}
           returnFocusRef={dialogReturnFocusRef}
           verse={selectedReference.verse}
@@ -443,6 +461,7 @@ export default function ReaderPage() {
             anchorRef={dialogTriggerRef}
             isOpen
             onClose={closeDialog}
+            onBack={() => setActiveDialog('sections')}
             returnFocusRef={dialogReturnFocusRef}
           />
         </Suspense>

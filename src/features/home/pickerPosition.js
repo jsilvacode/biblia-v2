@@ -30,7 +30,7 @@ export function revealPickerAnchor(anchorElement) {
   }
 }
 
-export function positionPickerMenu(list, anchorElement) {
+export function positionPickerMenu(list, anchorElement, maxHeight = MAX_PICKER_HEIGHT) {
   if (!list || !anchorElement) return false
   const anchor = anchorElement.getBoundingClientRect()
   const bounds = viewportBounds()
@@ -45,7 +45,7 @@ export function positionPickerMenu(list, anchorElement) {
   list.style.left = `${left - anchor.left}px`
   const style = getComputedStyle(list)
   const borderHeight = (parseFloat(style.borderTopWidth) || 0) + (parseFloat(style.borderBottomWidth) || 0)
-  const desired = Math.min(MAX_PICKER_HEIGHT, list.scrollHeight + borderHeight)
+  const desired = Math.min(maxHeight, list.scrollHeight + borderHeight)
   const below = Math.max(0, bounds.bottom - anchor.bottom)
   const above = Math.max(0, anchor.top - bounds.top)
   const direction = below >= desired ? 'down' : above >= desired ? 'up' : above > below ? 'up' : 'down'
@@ -60,12 +60,14 @@ export function positionPickerMenu(list, anchorElement) {
   // detach a fully outlined trigger from its menu.
   list.style.top = direction === 'down' ? `${anchorElement.clientHeight}px` : 'auto'
   list.style.bottom = direction === 'up' ? `${anchorElement.clientHeight}px` : 'auto'
-  list.style.maxHeight = `${Math.min(MAX_PICKER_HEIGHT, available)}px`
+  list.style.maxHeight = `${Math.min(maxHeight, available)}px`
+  list.style.setProperty('--picker-menu-height', `${Math.min(maxHeight, available)}px`)
   list.style.visibility = 'visible'
   return true
 }
 
 export function revealPickerOption(list, index) {
+  list = list?.querySelector('[role="listbox"]') ?? list
   const option = list?.querySelector(`[data-picker-index="${index}"]`)
   if (!list || !option) return
   const listRect = list.getBoundingClientRect()

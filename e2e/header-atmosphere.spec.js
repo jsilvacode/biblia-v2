@@ -95,7 +95,7 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
   }
 })
 
-test('the reader puts Back and its neutral picker below the glass bar on the reading surface', async ({ page }) => {
+test('the reader separates Back from its neutral selector and search below the glass bar', async ({ page }) => {
   for (const [width, fontSize] of [[1440, '16px'], [320, '16px'], [320, '32px']]) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/read/43/3')
@@ -105,38 +105,20 @@ test('the reader puts Back and its neutral picker below the glass bar on the rea
     const row = page.getByTestId('reader-passage-row')
     const picker = page.getByTestId('reader-passage-picker')
     const back = row.getByRole('button', { name: /^(Volver|Back|Voltar)$/ })
+    const book = picker.locator('[data-picker-trigger="book"]')
     await expect(bar.getByRole('button', { name: /^(Volver|Back|Voltar)$/ })).toHaveCount(0)
     await expect(back).toContainText(/Volver|Back|Voltar/)
-    await expect(picker.getByRole('combobox', { name: /^(Libro|Book|Livro)$/ })).toHaveText(/Seleccionar libro|Select a book|Selecionar livro/)
-    await expect(picker.getByRole('combobox', { name: /^(Capítulo|Chapter)$/ })).toBeDisabled()
-    await expect(picker.getByRole('combobox', { name: /^(Capítulo|Chapter)$/ })).toHaveText(/^(Capítulo|Chapter)$/)
-    await expect(picker.getByRole('button', { name: /^(Abrir capítulo|Open chapter)$/ })).toBeDisabled()
-    const readingColor = await page.locator('.reader-page').evaluate((element) => getComputedStyle(element).backgroundColor)
-    await expect(band).toHaveCSS('background-color', readingColor)
-    await expect(band).toHaveCSS('backdrop-filter', 'none')
-    const [barBox, bandBox, rowBox, backBox, bookBox, chapterBox, openBox] = await Promise.all([
-      bar.boundingBox(), band.boundingBox(), row.boundingBox(), back.boundingBox(),
-      picker.getByRole('combobox', { name: /^(Libro|Book|Livro)$/ }).boundingBox(),
-      picker.getByRole('combobox', { name: /^(Capítulo|Chapter)$/ }).boundingBox(),
-      picker.getByRole('button', { name: /^(Abrir capítulo|Open chapter)$/ }).boundingBox(),
+    await expect(book).toHaveText(/Seleccionar libro|Select a book|Selecionar livro/)
+    await expect(picker.getByRole('button')).toHaveCount(1)
+    const [barBox, bandBox, rowBox, backBox, bookBox, searchBox] = await Promise.all([
+      bar.boundingBox(), band.boundingBox(), row.boundingBox(), back.boundingBox(), book.boundingBox(), row.getByRole('search').boundingBox(),
     ])
     expect(bandBox.y).toBeGreaterThanOrEqual(barBox.y + barBox.height)
     expect(rowBox.x).toBeGreaterThanOrEqual(0)
     expect(rowBox.x + rowBox.width).toBeLessThanOrEqual(width)
-    expect(backBox.x + backBox.width).toBeLessThanOrEqual(bookBox.x)
-    if (width <= 365) {
-      expect(Math.abs(bookBox.x - chapterBox.x)).toBeLessThanOrEqual(1)
-      expect(bookBox.y + bookBox.height).toBeLessThanOrEqual(chapterBox.y)
-    } else {
-      expect(bookBox.x + bookBox.width).toBeLessThanOrEqual(chapterBox.x)
-      expect(Math.abs(backBox.y + backBox.height / 2 - bookBox.y - bookBox.height / 2)).toBeLessThanOrEqual(1)
-    }
-    expect(chapterBox.x + chapterBox.width).toBeLessThanOrEqual(openBox.x)
-    for (const label of await picker.getByRole('combobox').all()) {
-      expect(await label.locator('span').first().evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true)
-    }
-    expect(Math.abs(backBox.x - rowBox.x - 7)).toBeLessThanOrEqual(1)
-    expect(Math.abs(openBox.x + openBox.width - rowBox.x - rowBox.width + 7)).toBeLessThanOrEqual(1)
+    expect(backBox.y + backBox.height).toBeLessThanOrEqual(bookBox.y)
+    if (width <= 620) expect(bookBox.y + bookBox.height).toBeLessThanOrEqual(searchBox.y)
+    else expect(bookBox.x + bookBox.width).toBeLessThanOrEqual(searchBox.x)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
   }
 })

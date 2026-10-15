@@ -33,7 +33,7 @@ export function VerseActionsSheet({
   return (
     <ReaderDialog
       className="reader-dialog--actions"
-      closeLabel={t('common.back')}
+      closeLabel={t('common.close')}
       isOpen={isOpen}
       onClose={onClose}
       returnFocusRef={returnFocusRef}

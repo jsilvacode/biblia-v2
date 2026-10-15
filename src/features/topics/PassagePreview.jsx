@@ -25,7 +25,6 @@ export function PassagePreviewProvider({ children }) {
       {children}
       <ReaderDialog
         className={styles.dialog}
-        closeIcon="close"
         closeLabel={t('topics.closeReading')}
         isOpen={Boolean(selection)}
         onClose={() => setSelection(null)}

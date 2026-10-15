@@ -2,173 +2,120 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { HomePassagePicker } from './HomePassagePicker'
 
-vi.mock('../../i18n', () => ({
-  useI18n: () => ({
-    locale: 'es',
-    t: (key, values = {}) => ({
-      'reader.book': 'Libro',
-      'common.chapter': 'Capítulo',
-      'home.chooseReading': 'Elegir una lectura',
-      'bible.oldTestament': 'Antiguo Testamento',
-      'bible.newTestament': 'Nuevo Testamento',
-      'bible.chooseChapter': 'Elige un capítulo',
-      'bible.openReference': `Abrir ${values.reference}`,
-    }[key] ?? key),
-  }),
-}))
+vi.mock('../../i18n', () => ({ useI18n: () => ({ locale: 'es', t: (key, values = {}) => ({
+  'home.selectBook': 'Seleccionar libro', 'home.chooseReading': 'Elegir una lectura',
+  'common.close': 'Cerrar', 'bible.oldTestament': 'Antiguo Testamento', 'bible.newTestament': 'Nuevo Testamento',
+  'bible.chapters': 'Capítulos', 'bible.shortChapterCount': `${values.count} cap.`, 'bible.openReference': `Abrir ${values.reference}`,
+}[key] ?? key) }) }))
+vi.mock('../settings/SettingsProvider', () => ({ useSettings: () => ({ settings: { bibleVersion: 'nbla' } }) }))
+vi.mock('../reader/preloadReading', () => ({ preloadReading: vi.fn() }))
 
-vi.mock('../settings/SettingsProvider', () => ({
-  useSettings: () => ({ settings: { bibleVersion: 'nbla' } }),
-}))
+const trigger = () => screen.getByRole('button', { name: 'Seleccionar libro', exact: true })
+const book = (name) => screen.getByRole('button', { name: new RegExp(`^${name} \\d+ cap\\.$`) })
 
-function rectangle(top = 180, height = 49, width = 280) {
-  return { x: 40, y: top, left: 40, top, right: 40 + width, bottom: top + height, width, height }
-}
-
-function chooseBook(name) {
-  fireEvent.click(screen.getByRole('combobox', { name: 'Libro', exact: true }))
-  fireEvent.click(screen.getByRole('option', { name, exact: true }))
-}
-
-function chooseChapter(chapter) {
-  fireEvent.click(screen.getByRole('combobox', { name: 'Capítulo', exact: true }))
-  fireEvent.click(screen.getByRole('option', { name: String(chapter), exact: true }))
-}
-
-describe('HomePassagePicker', () => {
+describe('accordion passage picker', () => {
   beforeEach(() => {
-    // JSDOM has no layout; interaction tests need a visible anchor so the
-    // viewport guard does not close an otherwise valid dropdown immediately.
-    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function () {
-      return rectangle(180, this.getAttribute('role') === 'option' ? 36 : 49)
-    })
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({ x: 40, y: 180, left: 40, top: 180, right: 320, bottom: 234, width: 280, height: 54 })
+  })
+  afterEach(() => { cleanup(); vi.restoreAllMocks() })
+
+  it('starts clean with one selector and no chapter selector or submit button', () => {
+    render(<HomePassagePicker onGoToChapter={vi.fn()} />)
+    expect(trigger().getAttribute('aria-expanded')).toBe('false')
+    expect(screen.getAllByRole('button')).toHaveLength(1)
+    expect(screen.queryByRole('dialog')).toBeNull()
+    fireEvent.click(trigger())
+    expect(screen.getAllByRole('button').filter(node => node.hasAttribute('data-book-id'))).toHaveLength(66)
   })
 
-  afterEach(() => {
-    cleanup()
-    vi.restoreAllMocks()
+  it('opens chapters inside the list and closes them with either the book name or its X', () => {
+    render(<HomePassagePicker onGoToChapter={vi.fn()} />)
+    fireEvent.click(trigger())
+    fireEvent.click(book('Juan'))
+    expect(screen.getAllByRole('button', { name: /^Abrir Juan / })).toHaveLength(21)
+    fireEvent.click(book('Juan'))
+    expect(screen.queryByRole('button', { name: 'Abrir Juan 1', exact: true })).toBeNull()
+    fireEvent.click(book('Juan'))
+    fireEvent.click(screen.getByRole('button', { name: 'Cerrar: Juan' }))
+    expect(book('Juan').getAttribute('aria-expanded')).toBe('false')
+    expect(document.activeElement).toBe(book('Juan'))
+    expect(screen.getByRole('dialog')).toBeTruthy()
   })
 
-  it('starts neutral and rejects a submission without a complete passage', () => {
-    const onGoToChapter = vi.fn()
-    render(<HomePassagePicker onGoToChapter={onGoToChapter} />)
-    const book = screen.getByRole('combobox', { name: 'Libro', exact: true })
-    const chapter = screen.getByRole('combobox', { name: 'Capítulo', exact: true })
-    const open = screen.getByRole('button', { name: 'Abrir capítulo', exact: true })
-
-    expect(book.textContent).toBe('Seleccionar libro')
-    expect(chapter.textContent).toBe('Capítulo')
-    expect(chapter.disabled).toBe(true)
-    expect(open.disabled).toBe(true)
-    expect(screen.queryByRole('listbox')).toBeNull()
-    fireEvent.submit(screen.getByTestId('home-reading-actions'))
-    expect(onGoToChapter).not.toHaveBeenCalled()
+  it('expands only one book and immediately navigates from its chapter, including 150 and 1', () => {
+    const navigate = vi.fn()
+    render(<HomePassagePicker onGoToChapter={navigate} />)
+    fireEvent.click(trigger())
+    fireEvent.click(book('Salmos'))
+    expect(screen.getAllByRole('button', { name: /^Abrir Salmos / })).toHaveLength(150)
+    fireEvent.click(screen.getByRole('button', { name: 'Abrir Salmos 150', exact: true }))
+    expect(navigate).toHaveBeenLastCalledWith(19, 150)
+    expect(screen.queryByRole('dialog')).toBeNull()
+    fireEvent.click(trigger())
+    fireEvent.click(book('Judas'))
+    expect(screen.queryByRole('button', { name: /^Abrir Salmos / })).toBeNull()
+    expect(screen.getAllByRole('button', { name: /^Abrir Judas / })).toHaveLength(1)
+    fireEvent.click(screen.getByRole('button', { name: 'Abrir Judas 1' }))
+    expect(navigate).toHaveBeenLastCalledWith(65, 1)
   })
 
-  it('starts the compact reader neutral and requires an explicit passage while exposing its book trigger', () => {
-    const onGoToChapter = vi.fn()
+  it('uses the same neutral selector in the reader and notifies immersion on open, close and unmount', () => {
     const onOpenChange = vi.fn()
     const bookTriggerRef = { current: null }
-    render(<HomePassagePicker compact bookTriggerRef={bookTriggerRef} onGoToChapter={onGoToChapter} onOpenChange={onOpenChange} />)
-    const book = screen.getByRole('combobox', { name: 'Libro', exact: true })
-    const chapter = screen.getByRole('combobox', { name: 'Capítulo', exact: true })
-    const open = screen.getByRole('button', { name: 'Abrir capítulo', exact: true })
-
+    const view = render(<HomePassagePicker compact bookTriggerRef={bookTriggerRef} onOpenChange={onOpenChange} onGoToChapter={vi.fn()} />)
     expect(screen.getByTestId('reader-passage-picker')).toBeTruthy()
-    expect(bookTriggerRef.current).toBe(book)
-    expect(book.textContent).toBe('Seleccionar libro')
-    expect(chapter.textContent).toBe('Capítulo')
-    expect(chapter.disabled).toBe(true)
-    expect(open.disabled).toBe(true)
-    expect(open.getAttribute('aria-label')).toBe('Abrir capítulo')
-    fireEvent.submit(screen.getByTestId('reader-passage-picker'))
-    expect(onGoToChapter).not.toHaveBeenCalled()
-    fireEvent.click(book)
+    expect(bookTriggerRef.current).toBe(trigger())
+    fireEvent.click(trigger())
     expect(onOpenChange).toHaveBeenLastCalledWith(true)
-    fireEvent.keyDown(book, { key: 'Escape' })
+    fireEvent.keyDown(trigger(), { key: 'Escape' })
     expect(onOpenChange).toHaveBeenLastCalledWith(false)
-    chooseBook('Juan')
-    expect(chapter.disabled).toBe(false)
-    expect(open.disabled).toBe(true)
-    chooseChapter(3)
-    fireEvent.click(open)
-    expect(onGoToChapter).toHaveBeenCalledExactlyOnceWith(43, 3)
+    expect(document.activeElement).toBe(trigger())
+    fireEvent.click(trigger())
+    view.unmount()
+    expect(onOpenChange).toHaveBeenLastCalledWith(false)
   })
 
-  it('keeps the chapter for the same book and clears it when the book changes', () => {
-    const onGoToChapter = vi.fn()
-    render(<HomePassagePicker onGoToChapter={onGoToChapter} />)
-    const chapter = screen.getByRole('combobox', { name: 'Capítulo', exact: true })
-    const open = screen.getByRole('button', { name: 'Abrir capítulo', exact: true })
-
-    chooseBook('Salmos')
-    expect(chapter.disabled).toBe(false)
-    expect(open.disabled).toBe(true)
-    chooseChapter(150)
-    chooseBook('Salmos')
-    expect(chapter.textContent).toBe('150')
-    expect(open.disabled).toBe(false)
-
-    chooseBook('Judas')
-    expect(chapter.textContent).toBe('Capítulo')
-    expect(open.disabled).toBe(true)
-    fireEvent.click(chapter)
-    expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual(['1'])
-    fireEvent.click(screen.getByRole('option', { name: '1', exact: true }))
-    fireEvent.click(open)
-    expect(onGoToChapter).toHaveBeenCalledExactlyOnceWith(65, 1)
-  })
-
-  it('supports book typeahead with spaces and chapters 11 and 150 without losing focus', () => {
-    const onGoToChapter = vi.fn()
-    render(<HomePassagePicker onGoToChapter={onGoToChapter} />)
-    const book = screen.getByRole('combobox', { name: 'Libro', exact: true })
-    const chapter = screen.getByRole('combobox', { name: 'Capítulo', exact: true })
-
-    act(() => book.focus())
+  it('supports keyboard book navigation and typeahead with spaces without selecting a chapter', () => {
+    const navigate = vi.fn()
+    render(<HomePassagePicker onGoToChapter={navigate} />)
+    act(() => trigger().focus())
+    fireEvent.keyDown(trigger(), { key: 'ArrowDown' })
+    expect(document.activeElement).toBe(book('Génesis'))
+    fireEvent.keyDown(document.activeElement, { key: 'End' })
+    expect(document.activeElement).toBe(book('Apocalipsis'))
     for (const key of '1 Corintios') {
-      fireEvent.keyDown(book, { key })
-      if (key === ' ') expect(fireEvent.keyUp(book, { key })).toBe(false)
+      fireEvent.keyDown(document.activeElement, { key })
+      if (key === ' ') expect(fireEvent.keyUp(document.activeElement, { key })).toBe(false)
     }
-    fireEvent.keyDown(book, { key: 'Enter' })
-    expect(book.textContent).toBe('1 Corintios')
-    expect(document.activeElement).toBe(book)
-
-    chooseBook('Salmos')
-    act(() => chapter.focus())
-    for (const key of '11') fireEvent.keyDown(chapter, { key })
-    fireEvent.keyDown(chapter, { key: 'Enter' })
-    expect(chapter.textContent).toBe('11')
-
-    for (const key of '150') fireEvent.keyDown(chapter, { key })
-    fireEvent.keyDown(chapter, { key: 'Enter' })
-    expect(chapter.textContent).toBe('150')
-    expect(document.activeElement).toBe(chapter)
-    fireEvent.click(screen.getByRole('button', { name: 'Abrir capítulo', exact: true }))
-    expect(onGoToChapter).toHaveBeenCalledExactlyOnceWith(19, 150)
+    expect(document.activeElement).toBe(book('1 Corintios'))
+    expect(navigate).not.toHaveBeenCalled()
+    fireEvent.click(document.activeElement)
+    expect(screen.getAllByRole('button', { name: /^Abrir 1 Corintios / })).toHaveLength(16)
   })
 
-  it('lets pending keyboard navigation be cancelled and closes on Tab or an outside pointer', () => {
+  it('dismisses the menu with its X, an outside pointer or focus leaving the whole control', () => {
     render(<HomePassagePicker onGoToChapter={vi.fn()} />)
-    const book = screen.getByRole('combobox', { name: 'Libro', exact: true })
-    act(() => book.focus())
-    fireEvent.keyDown(book, { key: 'ArrowDown' })
-    fireEvent.keyDown(book, { key: 'End' })
-    const activeId = book.getAttribute('aria-activedescendant')
-    expect(document.getElementById(activeId).textContent).toBe('Apocalipsis')
-    fireEvent.keyDown(book, { key: 'Escape' })
-    expect(book.textContent).toBe('Seleccionar libro')
-    expect(book.getAttribute('aria-expanded')).toBe('false')
-    expect(document.activeElement).toBe(book)
-
-    fireEvent.keyDown(book, { key: 'ArrowDown' })
-    expect(fireEvent.keyDown(book, { key: 'Tab' })).toBe(true)
-    expect(screen.queryByRole('listbox')).toBeNull()
-
-    fireEvent.click(book)
-    expect(screen.getByRole('listbox', { name: 'Libro', exact: true })).toBeTruthy()
+    fireEvent.click(trigger())
+    fireEvent.click(screen.getByRole('button', { name: 'Cerrar', exact: true }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(document.activeElement).toBe(trigger())
+    fireEvent.click(trigger())
     fireEvent.pointerDown(document.body)
-    expect(screen.queryByRole('listbox')).toBeNull()
-    expect(book.hasAttribute('aria-activedescendant')).toBe(false)
+    expect(screen.queryByRole('dialog')).toBeNull()
+    fireEvent.click(trigger())
+    fireEvent.blur(trigger(), { relatedTarget: document.body })
+    expect(screen.queryByRole('dialog')).toBeNull()
+  })
+
+  it('keeps Safari button taps alive when focus moves to an ancestor of the popup', () => {
+    const navigate = vi.fn()
+    render(<HomePassagePicker onGoToChapter={navigate} />)
+    fireEvent.click(trigger())
+    fireEvent.click(book('Juan'))
+    const chapter = screen.getByRole('button', { name: 'Abrir Juan 3', exact: true })
+    fireEvent.pointerDown(chapter)
+    fireEvent.blur(book('Juan'), { relatedTarget: document.body })
+    fireEvent.click(chapter)
+    expect(navigate).toHaveBeenCalledExactlyOnceWith(43, 3)
   })
 })

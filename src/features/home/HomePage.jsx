@@ -178,7 +178,7 @@ export default function HomePage() {
                   <HomePassagePicker onGoToChapter={goToReading} />
                   <HomeQuickSearch currentBookId={hasReadingHistory ? lastRead.book : null} currentChapter={hasReadingHistory ? lastRead.chapter : null} onGoToChapter={goToReading} />
                   <section aria-labelledby="home-recent-heading" className={styles.recentReadings}>
-                    <h3 id="home-recent-heading">{t('home.recentReadings')}</h3>
+                    <h3 id="home-recent-heading"><Icon name="history" size={14} />{t('home.recentReadings')}</h3>
                     {recentReadings.length > 0 ? (
                       <ol className={styles.recentList}>
                         {recentReadings.map((reading, index) => (
@@ -190,9 +190,7 @@ export default function HomePage() {
                               to={getReaderPath(reading)}
                               {...readingIntentProps(reading)}
                             >
-                              <Icon name="bookOpen" size={16} />
                               <span>{formatReference(reading, locale)}</span>
-                              <Icon name="arrowRight" size={15} />
                             </Link>
                           </li>
                         ))}

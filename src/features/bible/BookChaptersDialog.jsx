@@ -7,7 +7,7 @@ import { useSettings } from '../settings/SettingsProvider'
 import { loadReaderPage, preloadReading } from '../reader/preloadReading'
 import styles from './BookChaptersDialog.module.css'
 
-export function BookChaptersDialog({ book, currentBookId, currentChapter, onClose, returnFocusRef }) {
+export function BookChaptersDialog({ book, currentBookId, currentChapter, onClose, onGoToChapter, returnFocusRef }) {
   const { locale, t } = useI18n()
   const navigate = useNavigate()
   const { settings } = useSettings()
@@ -27,14 +27,14 @@ export function BookChaptersDialog({ book, currentBookId, currentChapter, onClos
     event.preventDefault()
     if (isValidChapter) {
       warmChapter(chapterNumber)
-      navigate(`/read/${book.id}/${chapterNumber}`)
+      if (onGoToChapter) { onClose(); onGoToChapter(book.id, chapterNumber) }
+      else navigate(`/read/${book.id}/${chapterNumber}`)
     }
   }
 
   return (
     <ReaderDialog
       className={styles.dialog}
-      closeIcon="close"
       closeLabel={t('common.close')}
       descriptionId={descriptionId}
       isOpen
@@ -65,6 +65,13 @@ export function BookChaptersDialog({ book, currentBookId, currentChapter, onClos
             <Link
               aria-current={book.id === currentBookId && chapter === currentChapter ? 'page' : undefined}
               key={chapter}
+              onClick={(event) => {
+                if (onGoToChapter && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && event.button === 0) {
+                  event.preventDefault()
+                  onClose()
+                  onGoToChapter(book.id, chapter)
+                }
+              }}
               onFocus={() => warmChapter(chapter)}
               onPointerDown={() => warmChapter(chapter)}
               to={`/read/${book.id}/${chapter}`}

@@ -34,12 +34,7 @@ async function clearAppStorage(page) {
 
 function homePicker(page) {
   const form = page.getByTestId('home-reading-actions')
-  return {
-    form,
-    book: form.getByRole('combobox', { name: 'Libro', exact: true }),
-    chapter: form.getByRole('combobox', { name: 'Capítulo', exact: true }),
-    open: form.getByRole('button', { name: 'Abrir capítulo', exact: true }),
-  }
+  return { form, book: form.locator('[data-picker-trigger="book"]') }
 }
 
 async function waitForHomeLayout(page) {
@@ -52,33 +47,28 @@ async function waitForHomeLayout(page) {
 async function expectNeutralPicker(page) {
   const picker = homePicker(page)
   await expect(picker.book).toHaveText('Seleccionar libro')
-  await expect(picker.chapter).toHaveText('Capítulo')
-  await expect(picker.chapter).toBeDisabled()
-  await expect(picker.open).toBeDisabled()
+  await expect(picker.book).toHaveAttribute('aria-expanded', 'false')
+  await expect(picker.form.getByRole('button')).toHaveCount(1)
 }
 
-async function selectOption(page, trigger, name) {
-  await trigger.click()
-  await page.getByRole('listbox').getByRole('option', { name, exact: true }).click()
-  await expect(page.getByRole('listbox')).toHaveCount(0)
+async function chooseBook(page, bookId) {
+  const picker = homePicker(page)
+  if (await picker.book.getAttribute('aria-expanded') !== 'true') await picker.book.click()
+  await picker.form.locator(`[data-book-id="${bookId}"]`).click()
 }
 
 async function expectPopupWithinScreen(page) {
-  const popup = page.getByRole('listbox')
+  const popup = homePicker(page).form.getByRole('dialog')
   await expect(popup).toBeVisible()
   const box = await popup.boundingBox()
   const viewport = page.viewportSize()
-  expect(box).not.toBeNull()
-  expect(box.height).toBeLessThanOrEqual(289)
+  expect(box.height).toBeLessThanOrEqual(325)
   expect(box.x).toBeGreaterThanOrEqual(0)
   expect(box.x + box.width).toBeLessThanOrEqual(viewport.width)
   expect(box.y).toBeGreaterThanOrEqual(0)
   expect(box.y + box.height).toBeLessThanOrEqual(viewport.height)
   const navigation = page.locator('.mobile-navigation')
-  if (await navigation.isVisible()) {
-    const navigationBox = await navigation.boundingBox()
-    expect(box.y + box.height).toBeLessThanOrEqual(navigationBox.y)
-  }
+  if (await navigation.isVisible()) expect(box.y + box.height).toBeLessThanOrEqual((await navigation.boundingBox()).y)
   return box
 }
 
@@ -103,11 +93,8 @@ test('Home provides one editorial entry for each destination and the four origin
   await expect(page.getByRole('heading', { name: 'Leer la Biblia', exact: true })).toBeVisible()
   expect(startupImages.some((url) => url.includes('/assets/social/verse-card-background.jpg'))).toBe(false)
   const picker = homePicker(page)
-  for (const control of [picker.book, picker.chapter]) {
-    await expect(control.locator('span').first()).toBeVisible()
-    const label = await control.getAttribute('aria-labelledby')
-    await expect(page.locator(`[id="${label}"]`)).toHaveClass('sr-only')
-  }
+  await expect(picker.book).toHaveAccessibleName('Seleccionar libro')
+  await expect(picker.form.getByRole('button')).toHaveCount(1)
 
   for (const [name, path] of [
     [/Reavivados por su Palabra/, '/reavivados'],
@@ -154,19 +141,14 @@ test('the unavailable Christian library has no route until a redistributable edi
   await expect(page.getByText(/Lecturas para seguir creciendo|Readings to keep growing|Leituras para continuar crescendo/)).toHaveCount(0)
 })
 
-test('a new reader chooses a book and chapter explicitly before opening the reader', async ({ page }) => {
+test('a new reader chooses a chapter inside its book and enters the reader directly', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 })
   await clearAppStorage(page)
-  await expect(page.getByRole('link', { name: continueLabel })).toHaveCount(0)
   await expectNeutralPicker(page)
+  await chooseBook(page, 1)
   const picker = homePicker(page)
-  await selectOption(page, picker.book, 'Génesis')
-  await expect(picker.chapter).toBeEnabled()
-  await expect(picker.chapter).toHaveText('Capítulo')
-  await expect(picker.open).toBeDisabled()
-  await selectOption(page, picker.chapter, '1')
-  await expect(picker.open).toBeEnabled()
-  await picker.open.click()
+  await expect(picker.form.locator('[data-chapter]')).toHaveCount(50)
+  await picker.form.getByRole('button', { name: 'Abrir Génesis 1', exact: true }).click()
   await expect(page).toHaveURL(/\/read\/1\/1$/)
   await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0)
 })
@@ -174,9 +156,8 @@ test('a new reader chooses a book and chapter explicitly before opening the read
 test('returning Home keeps the picker neutral and offers the last reading as a separate link', async ({ page }) => {
   await clearAppStorage(page)
   const picker = homePicker(page)
-  await selectOption(page, picker.book, 'Juan')
-  await selectOption(page, picker.chapter, '3')
-  await picker.open.click()
+  await chooseBook(page, 43)
+  await picker.form.locator('[data-chapter="3"]').click()
   await expect(page).toHaveURL(/\/read\/43\/3$/)
   await expect.poll(() => page.evaluate(() => {
     const value = window.localStorage.getItem('santa_biblia_v2_reading')
@@ -194,22 +175,21 @@ test('returning Home keeps the picker neutral and offers the last reading as a s
   await expect(page).toHaveURL(/\/read\/43\/3(?:\/\d+)?$/)
 })
 
-test('changing the book clears an incompatible chapter without changing the last reading', async ({ page }) => {
+test('changing and closing a book leaves reading history intact until a chapter is chosen', async ({ page }) => {
   await prepareHomeState(page, { history: true })
   const picker = homePicker(page)
-  const continueReading = page.getByTestId('home-reading-panel').getByRole('link', { name: continueLabel })
-  const previousHref = await continueReading.getAttribute('href')
-  await selectOption(page, picker.book, 'Salmos')
-  await selectOption(page, picker.chapter, '150')
-  await expect(picker.open).toBeEnabled()
-  await selectOption(page, picker.book, 'Judas')
-  await expect(picker.chapter).toHaveText('Capítulo')
-  await expect(picker.open).toBeDisabled()
-  await picker.chapter.click()
-  await expect(page.getByRole('listbox').getByRole('option')).toHaveCount(1)
-  await page.getByRole('option', { name: '1', exact: true }).click()
-  await expect(picker.open).toBeEnabled()
-  await expect(continueReading).toHaveAttribute('href', previousHref)
+  const recent = page.getByTestId('home-reading-panel').getByRole('link', { name: continueLabel })
+  const previousHref = await recent.getAttribute('href')
+  await chooseBook(page, 19)
+  await expect(picker.form.locator('[data-chapter]')).toHaveCount(150)
+  await chooseBook(page, 65)
+  await expect(picker.form.locator('[data-chapter]')).toHaveCount(1)
+  await picker.form.getByRole('button', { name: 'Cerrar: Judas' }).click()
+  await expect(picker.form.locator('[data-chapter]')).toHaveCount(0)
+  await expect(recent).toHaveAttribute('href', previousHref)
+  await expect(page).toHaveURL(/\/$/)
+  await picker.form.getByRole('button', { name: 'Cerrar', exact: true }).click()
+  await expectNeutralPicker(page)
 })
 
 test('the centered Home picker remains readable without horizontal overflow in both themes', async ({ page }) => {
@@ -227,7 +207,7 @@ test('the centered Home picker remains readable without horizontal overflow in b
       const [formBox, panelBox] = await Promise.all([picker.form.boundingBox(), panel.boundingBox()])
       expect(Math.abs((formBox.x + formBox.width / 2) - (panelBox.x + panelBox.width / 2))).toBeLessThanOrEqual(1)
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
-      for (const control of [picker.book, picker.chapter, picker.open]) {
+      for (const control of [picker.book]) {
         await expect(control).toBeVisible()
         expect(await control.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true)
       }
@@ -236,7 +216,7 @@ test('the centered Home picker remains readable without horizontal overflow in b
   }
 })
 
-test('book and chapter lists share a bounded height and open toward the available mobile space', async ({ page }) => {
+test('the book accordion opens toward available space and contains even all 150 Psalms', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 640 })
   await clearAppStorage(page)
   await waitForHomeLayout(page)
@@ -245,18 +225,17 @@ test('book and chapter lists share a bounded height and open toward the availabl
   for (const triggerY of [110, 500]) {
     await picker.book.evaluate((element, y) => window.scrollTo(0, window.scrollY + element.getBoundingClientRect().top - y), triggerY)
     await picker.book.click()
-    const bookBox = await expectPopupWithinScreen(page)
-    const triggerBox = await picker.book.boundingBox()
-    const direction = expectConnectedPopup(bookBox, triggerBox)
-    directions.add(direction)
-    await expect(page.getByRole('listbox').getByRole('option')).toHaveCount(66)
-    await page.getByRole('option', { name: 'Génesis', exact: true }).click()
-    await picker.chapter.click()
-    const chapterBox = await expectPopupWithinScreen(page)
-    expectConnectedPopup(chapterBox, await picker.chapter.boundingBox())
-    expect(Math.abs(chapterBox.height - bookBox.height)).toBeLessThanOrEqual(1)
-    await picker.chapter.press('Escape')
-    await expect(page.getByRole('listbox')).toHaveCount(0)
+    const box = await expectPopupWithinScreen(page)
+    directions.add(expectConnectedPopup(box, await picker.book.boundingBox()))
+    await expect(picker.form.locator('[data-book-id]')).toHaveCount(66)
+    const psalms = picker.form.locator('[data-book-id="19"]')
+    if (await psalms.getAttribute('aria-expanded') !== 'true') await psalms.click()
+    await expect(picker.form.locator('[data-chapter]')).toHaveCount(150)
+    await expectPopupWithinScreen(page)
+    await picker.form.locator('[data-chapter="150"]').scrollIntoViewIfNeeded()
+    await expect(picker.form.locator('[data-chapter="150"]')).toBeInViewport()
+    await page.keyboard.press('Escape')
+    await expect(picker.form.getByRole('dialog')).toHaveCount(0)
   }
   expect([...directions].sort()).toEqual(['down', 'up'])
 })
@@ -268,19 +247,16 @@ test('keyboard navigation and enlarged text can open the last chapter of a book'
   await page.evaluate(() => { document.documentElement.style.fontSize = '20px' })
   const picker = homePicker(page)
   await picker.book.focus()
-  await picker.book.press('ArrowDown')
-  await picker.book.press('End')
-  await picker.book.press('Enter')
-  await expect(picker.book).toHaveText('Apocalipsis')
-  await picker.chapter.focus()
-  await picker.chapter.press('ArrowDown')
-  await picker.chapter.press('End')
+  await page.keyboard.press('ArrowDown')
+  await page.keyboard.press('End')
+  await page.keyboard.press('Enter')
+  await expect(picker.form.locator('[data-book-id="66"]')).toHaveAttribute('aria-expanded', 'true')
+  await picker.form.locator('[data-chapter="1"]').focus()
+  await page.keyboard.press('End')
+  await expect(picker.form.locator('[data-chapter="22"]')).toBeFocused()
   await expectPopupWithinScreen(page)
-  await picker.chapter.press('Enter')
-  await expect(picker.chapter).toHaveText('22')
-  await expect(picker.open).toBeEnabled()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
-  await picker.open.click()
+  await page.keyboard.press('Enter')
   await expect(page).toHaveURL(/\/read\/66\/22$/)
 })
 

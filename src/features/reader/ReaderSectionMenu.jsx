@@ -1,5 +1,6 @@
 import { useId, useRef } from 'react'
 import { Icon } from '../../components/ui/Icon'
+import { OverlayCloseButton } from '../../components/ui/OverlayCloseButton'
 import { useI18n } from '../../i18n'
 import {
   adjustReaderFontScale,
@@ -54,9 +55,9 @@ export function ReaderSectionMenu({ anchorRef, isOpen, onClose, onOpenSettings, 
   return (
     <section aria-labelledby={titleId} className="reader-section-menu-popover" ref={menuRef} role="dialog" style={{ left: position?.left ?? 8, top: position?.top ?? 8 }}>
       <header className="reader-section-menu-popover__header">
-        <button aria-label={t('common.back')} className="reader-dialog__back" onClick={onClose} type="button"><Icon name="arrowLeft" size="sm" /></button>
-        <h2 id={titleId}>{t('reader.quickOptions')}</h2>
         <span aria-hidden="true" className="reader-dialog__header-spacer" />
+        <h2 id={titleId}>{t('reader.quickOptions')}</h2>
+        <OverlayCloseButton onClose={onClose} />
       </header>
       <div className="reader-section-menu-popover__body">
         <button aria-label={nextThemeLabel} className="reader-section-menu-popover__option" data-dialog-initial-focus onClick={() => updateSetting('theme', nextTheme)} type="button">

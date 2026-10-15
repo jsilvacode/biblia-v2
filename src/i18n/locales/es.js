@@ -39,7 +39,7 @@ export default {
     noRecentReadings: 'Tus últimas lecturas aparecerán aquí.',
     resumeReading: 'Reanudar lectura',
     readBible: 'Leer la Biblia',
-    chooseBookChapter: 'Elige libro y capítulo.',
+    chooseBookChapter: 'Elige un libro y capítulo',
     selectBook: 'Seleccionar libro',
     openChapter: 'Abrir capítulo',
     lastReading: 'Última lectura',
