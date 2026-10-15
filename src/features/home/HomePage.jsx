@@ -72,15 +72,8 @@ export default function HomePage() {
     verse: promise.reference.verseStart,
   }) : '/bible'
   const visiblePromiseText = promiseText || (promiseStatus === 'error' ? t('home.promiseUnavailable') : t('home.promiseLoading'))
-  const heroQuoteClassName = visiblePromiseText.length > 480
-    ? styles.heroQuoteExtended
-    : visiblePromiseText.length > 260
-      ? styles.heroQuoteVeryLong
-      : visiblePromiseText.length > 150
-        ? styles.heroQuoteLong
-        : visiblePromiseText.length > 92
-          ? styles.heroQuoteMedium
-          : undefined
+  const heroQuoteClassName = visiblePromiseText.length > 220 ? styles.heroQuoteExtended
+    : visiblePromiseText.length > 170 ? styles.heroQuoteLong : undefined
 
   useEffect(() => {
     if (!promiseFeedback) return undefined
@@ -156,12 +149,12 @@ export default function HomePage() {
           <HomeHeader />
           <div className={styles.heroCopy}>
             <p className={styles.heroKicker}>{t('home.promiseKicker')}</p>
-            <h1 className={heroQuoteClassName}>{visiblePromiseText}</h1>
+            <div className={styles.heroQuote}><h1 className={heroQuoteClassName}>{visiblePromiseText}</h1></div>
             <p className={styles.promiseReference}>{promiseReference}{promiseReference && ` · ${version.short}`}</p>
             <div className={styles.heroActions}>
               <Link aria-label={`${t('home.readInContext')}: ${promiseReference}`} className={styles.heroPrimaryAction} state={{ attentionVerse: true }} to={promisePath} {...(promise ? readingIntentProps(promise.reference) : {})}>
                 <Icon name="bookOpen" size={18} />
-                <span>{promise ? t('home.readPassage', { reference: formatReference({ book: promise.reference.book, chapter: promise.reference.chapter }, locale) }) : t('home.readInContext')}</span>
+                <span>{t('home.readInContext')}</span>
               </Link>
               <button aria-label={t('home.sharePromise')} className={styles.heroSecondaryAction} disabled={!promise || promiseStatus !== 'ready' || !promiseText} onClick={handlePromiseShare} type="button">
                 <Icon name="share" size={18} />
@@ -184,9 +177,9 @@ export default function HomePage() {
                 <div className={styles.readingTools}>
                   <HomePassagePicker onGoToChapter={goToReading} />
                   <HomeQuickSearch currentBookId={hasReadingHistory ? lastRead.book : null} currentChapter={hasReadingHistory ? lastRead.chapter : null} onGoToChapter={goToReading} />
-                  {recentReadings.length > 0 && (
-                    <section aria-labelledby="home-recent-heading" className={styles.recentReadings}>
-                      <h3 id="home-recent-heading">{t('home.recentReadings')}</h3>
+                  <section aria-labelledby="home-recent-heading" className={styles.recentReadings}>
+                    <h3 id="home-recent-heading">{t('home.recentReadings')}</h3>
+                    {recentReadings.length > 0 ? (
                       <ol className={styles.recentList}>
                         {recentReadings.map((reading, index) => (
                           <li key={`${reading.book}:${reading.chapter}`}>
@@ -199,14 +192,13 @@ export default function HomePage() {
                             >
                               <Icon name="bookOpen" size={16} />
                               <span>{formatReference(reading, locale)}</span>
-                              {index === 0 && <small>{t('common.continue')}</small>}
                               <Icon name="arrowRight" size={15} />
                             </Link>
                           </li>
                         ))}
                       </ol>
-                    </section>
-                  )}
+                    ) : <p className={styles.recentEmpty}>{t('home.noRecentReadings')}</p>}
+                  </section>
                 </div>
               </div>
             </article>

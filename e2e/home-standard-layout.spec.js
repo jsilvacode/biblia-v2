@@ -1,0 +1,93 @@
+import { expect, test } from '@playwright/test'
+
+const promiseRegion = (page) => page.getByRole('region', { name: 'Promesa del día', exact: true })
+
+async function settledHome(page, date) {
+  await page.clock.setFixedTime(new Date(`${date}T12:00:00-03:00`))
+  await page.goto('/')
+  await expect(promiseRegion(page)).toHaveAttribute('aria-busy', 'false')
+  await page.evaluate(async () => {
+    await document.fonts.load('400 24px "Playfair Display"')
+    await document.fonts.load('400 14px "Lora"')
+    await document.fonts.ready
+  })
+}
+
+test('the hero and glass keep the same height across short, medium and long promises', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  for (const viewport of [{ width: 320, height: 568 }, { width: 390, height: 844 }, { width: 768, height: 1024 }, { width: 1440, height: 720 }, { width: 1440, height: 900 }]) {
+    await page.setViewportSize(viewport)
+    let initial
+    for (const date of ['2026-02-23', '2026-08-06', '2026-10-14']) {
+      await settledHome(page, date)
+      const geometry = await promiseRegion(page).evaluate((hero) => {
+        const quote = hero.querySelector('h1').getBoundingClientRect()
+        const slot = hero.querySelector('h1').parentElement.getBoundingClientRect()
+        const panel = document.querySelector('[data-testid="home-reading-panel"]')
+        const picker = panel.querySelector('[data-testid="home-reading-actions"]')
+        const search = panel.querySelector('[role="search"]')
+        return {
+          heroHeight: hero.getBoundingClientRect().height,
+          panelHeight: panel.getBoundingClientRect().height,
+          panelTop: panel.getBoundingClientRect().top,
+          quoteFits: quote.top >= slot.top - 1 && quote.bottom <= slot.bottom + 1,
+          quoteHeight: quote.height,
+          quoteSpace: slot.height,
+          controlAlignment: Math.abs(picker.getBoundingClientRect().left - search.getBoundingClientRect().left) + Math.abs(picker.getBoundingClientRect().width - search.getBoundingClientRect().width),
+        }
+      })
+      expect(geometry.quoteFits, `${viewport.width}×${viewport.height}, ${date}: ${JSON.stringify(geometry)}`).toBe(true)
+      expect(geometry.controlAlignment).toBeLessThanOrEqual(1)
+      if (!initial) initial = geometry
+      expect(geometry.heroHeight).toBe(initial.heroHeight)
+      expect(geometry.panelHeight).toBe(initial.panelHeight)
+      expect(geometry.panelTop).toBe(initial.panelTop)
+    }
+  }
+})
+
+test('loading the promise and adding reading history do not move the glass or the next section', async ({ page }) => {
+  let releaseChapter
+  const chapterGate = new Promise(resolve => { releaseChapter = resolve })
+  await page.route('**/data/nbla/**', async route => { await chapterGate; await route.continue() })
+  await page.clock.setFixedTime(new Date('2026-10-14T12:00:00-03:00'))
+  await page.goto('/')
+  await expect(promiseRegion(page)).toHaveAttribute('aria-busy', 'true')
+  const geometry = () => page.getByTestId('home-reading-panel').evaluate(panel => ({
+    height: panel.getBoundingClientRect().height,
+    top: panel.getBoundingClientRect().top,
+    editorialTop: document.getElementById('home-editorial-heading').getBoundingClientRect().top,
+  }))
+  const loading = await geometry()
+  releaseChapter()
+  await expect(promiseRegion(page)).toHaveAttribute('aria-busy', 'false')
+  expect(await geometry()).toEqual(loading)
+  await page.evaluate(() => {
+    const readings = [43, 19, 1].map((book, index) => ({ book, chapter: 1, verse: 1, progress: 10, updatedAt: 300 - index }))
+    localStorage.setItem('santa_biblia_v2_recent_readings', JSON.stringify(readings))
+    localStorage.setItem('santa_biblia_v2_reading', JSON.stringify(readings[0]))
+  })
+  await page.reload()
+  await expect(promiseRegion(page)).toHaveAttribute('aria-busy', 'false')
+  await expect(page.getByRole('region', { name: 'Lecturas recientes', exact: true }).getByRole('link')).toHaveCount(3)
+  expect(await geometry()).toEqual(loading)
+})
+
+test('enlarged text keeps the longest translated promise complete and its actions reachable', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 })
+  await page.addInitScript(() => localStorage.setItem('santa_biblia_v2_settings', JSON.stringify({ bibleVersion: 'rva2015', locale: 'es' })))
+  await settledHome(page, '2026-11-03')
+  await page.evaluate(() => { document.documentElement.style.fontSize = '20px' })
+  const geometry = await promiseRegion(page).evaluate(hero => {
+    const quote = hero.querySelector('h1').getBoundingClientRect()
+    const actions = hero.querySelector('a[aria-label^="Leer capítulo"]')
+    return { quoteBottom: quote.bottom, heroBottom: hero.getBoundingClientRect().bottom, root: getComputedStyle(document.documentElement).fontSize, actionsTop: actions.getBoundingClientRect().top }
+  })
+  expect(geometry.root).toBe('20px')
+  expect(geometry.quoteBottom).toBeLessThan(geometry.heroBottom)
+  expect(geometry.actionsTop).toBeGreaterThanOrEqual(geometry.quoteBottom)
+  const read = promiseRegion(page).getByRole('link', { name: /Leer capítulo/ })
+  await read.click()
+  await expect(page).toHaveURL(/\/read\/50\/4\/12$/)
+  await expect(page.locator('#verse-12')).toBeVisible()
+})

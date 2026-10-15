@@ -45,19 +45,20 @@ export function getPromiseVerses(chapter, promise) {
 }
 
 export function getPromiseText(chapter, promise) {
-  const excerpt = getPromiseVerses(chapter, promise).map((item) => item.text).join(' ').trim()
+  const excerpt = getPromiseVerses(chapter, promise).map((item) => item.text.replace(/^»+\s*/u, '')).join(' ').trim()
   // Some source editions split direct speech across verses. The hero is a
   // standalone excerpt, so boundary guillemets are kept only when they form a
   // balanced pair inside the selected range.
-  let text = excerpt.replace(/^»+\s*/u, '')
-  const count = (mark) => [...text.matchAll(new RegExp(mark, 'gu'))].length
-
-  while (count('»') > count('«') && /»(?=[.?!…]*$)/u.test(text)) {
-    text = text.replace(/»(?=[.?!…]*$)/u, '')
+  const openings = []
+  const orphanMarks = new Set()
+  for (let index = 0; index < excerpt.length; index++) {
+    if (excerpt[index] === '«') openings.push(index)
+    else if (excerpt[index] === '»') {
+      if (openings.length) openings.pop()
+      else orphanMarks.add(index)
+    }
   }
-  while (count('«') > count('»') && /^«/u.test(text)) {
-    text = text.replace(/^«+\s*/u, '')
-  }
+  for (const index of openings) orphanMarks.add(index)
 
-  return text.trim()
+  return excerpt.split('').filter((_, index) => !orphanMarks.has(index)).join('').trim()
 }

@@ -204,6 +204,7 @@ test.describe('editorial page composition', () => {
     const homeHeaderBox = await page.locator('header[class*="homeHeader"]').boundingBox()
     const heroKickerBox = await heroRegion.getByText(/Una promesa para hoy|A promise for today|Uma promessa para hoje/).boundingBox()
     const heroHeadingBox = await heroRegion.getByRole('heading').boundingBox()
+    const heroQuoteBox = await heroRegion.getByRole('heading').locator('..').boundingBox()
     const heroActionBoxes = await Promise.all([
       heroRegion.getByRole('link', { name: /Leer capítulo|Read chapter|Ler capítulo/ }).boundingBox(),
       heroRegion.getByRole('button', { name: /Compartir promesa|Share promise|Compartilhar promessa/ }).boundingBox(),
@@ -223,8 +224,9 @@ test.describe('editorial page composition', () => {
     // The editorial kicker is the first content beat below the header; the
     // main promise follows it with measured breathing room.
     expect(heroKickerBox.y - (homeHeaderBox.y + homeHeaderBox.height)).toBeLessThanOrEqual(70)
-    expect(heroHeadingBox.y - (heroKickerBox.y + heroKickerBox.height)).toBeLessThanOrEqual(32)
-    // The hero adapts to the promise length and viewport height. Its complete
+    expect(heroQuoteBox.y - (heroKickerBox.y + heroKickerBox.height)).toBeLessThanOrEqual(32)
+    expect(heroHeadingBox.y).toBeGreaterThanOrEqual(heroQuoteBox.y - 1)
+    // The hero reserves a stable quote area for every day. Its complete
     // content must fit before the reading panel, including both actions.
     for (const actionBox of heroActionBoxes) {
       expect(actionBox).not.toBeNull()

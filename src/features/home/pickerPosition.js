@@ -19,6 +19,17 @@ function viewportBounds() {
   return { top: top + VIEWPORT_MARGIN, bottom, left: left + VIEWPORT_MARGIN, right: left + width - VIEWPORT_MARGIN }
 }
 
+// Native focus can leave a field underneath the fixed mobile navigation or
+// keyboard. Reveal it before opening a preview, without reacting to user scroll.
+export function revealPickerAnchor(anchorElement) {
+  if (!anchorElement) return
+  const anchor = anchorElement.getBoundingClientRect()
+  const bounds = viewportBounds()
+  if (anchor.top < bounds.top || anchor.bottom > bounds.bottom) {
+    window.scrollBy({ top: (anchor.top + anchor.bottom - bounds.top - bounds.bottom) / 2, behavior: 'instant' })
+  }
+}
+
 export function positionPickerMenu(list, anchorElement) {
   if (!list || !anchorElement) return false
   const anchor = anchorElement.getBoundingClientRect()

@@ -5,6 +5,7 @@ export default {
   home: {
     quickSearch: 'Quick search',
     recentReadings: 'Recent readings',
+    noRecentReadings: 'Your latest readings will appear here.',
     resumeReading: 'Resume reading',
     readBible: 'Read the Bible',
     chooseBookChapter: 'Choose a book and chapter.',

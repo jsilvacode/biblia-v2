@@ -9,7 +9,13 @@ test('Home searches books without starting the full-text worker and opens chapte
   await page.goto('/')
   await expect(panel(page).getByRole('searchbox')).toBeVisible()
   expect(workers).toEqual([])
+  const initialPanelHeight = (await panel(page).boundingBox()).height
   await panel(page).getByRole('searchbox').fill('Juan')
+  await expect(searchResults(page)).toBeVisible()
+  expect((await panel(page).boundingBox()).height).toBe(initialPanelHeight)
+  const preview = await searchResults(page).boundingBox()
+  expect(preview.y).toBeGreaterThanOrEqual(0)
+  expect(preview.y + preview.height).toBeLessThanOrEqual(page.viewportSize().height)
   await searchResults(page).getByRole('button', { name: 'Juan Capítulos: 21', exact: true }).click()
   const dialog = page.getByRole('dialog', { name: 'Juan', exact: true })
   await expect(dialog.getByRole('link')).toHaveCount(21)
@@ -59,6 +65,16 @@ test('Home preserves three recent chapters across reload and opens each exact re
   await page.goto('/')
   const history = panel(page).getByRole('region', { name: 'Lecturas recientes', exact: true })
   await expect(history.getByRole('link')).toHaveCount(3)
+  const links = await history.getByRole('link').all()
+  const boxes = await Promise.all(links.map(link => link.boundingBox()))
+  if (page.viewportSize().width >= 768) {
+    expect(Math.max(...boxes.map(box => box.y)) - Math.min(...boxes.map(box => box.y))).toBeLessThan(1)
+  } else {
+    for (let index = 1; index < boxes.length; index++) {
+      expect(boxes[index].y).toBeGreaterThanOrEqual(boxes[index - 1].y + boxes[index - 1].height)
+      expect(boxes[index].height).toBeLessThanOrEqual(44)
+    }
+  }
   expect(await history.getByRole('link').evaluateAll(links => links.map(link => link.getAttribute('href'))))
     .toEqual(['/read/43/3/16', '/read/19/23/4', '/read/1/1/5'])
   await page.reload()
@@ -70,6 +86,22 @@ test('Home preserves three recent chapters across reload and opens each exact re
   await page.goto('/')
   await expect(history.getByRole('link')).toHaveCount(3)
   await expect(history.getByRole('link').first()).toHaveAttribute('href', /^\/read\/19\/23\/\d+$/)
+})
+
+test('search preview closes with Escape and restores its book trigger after a chapter modal', async ({ page }) => {
+  await page.goto('/')
+  const input = panel(page).getByRole('searchbox')
+  await input.fill('Juan')
+  const book = searchResults(page).getByRole('button', { name: 'Juan Capítulos: 21', exact: true })
+  await book.click()
+  const dialog = page.getByRole('dialog', { name: 'Juan', exact: true })
+  await expect(dialog).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(book).toBeFocused()
+  await page.keyboard.press('Escape')
+  await expect(searchResults(page)).toHaveCount(0)
+  await expect(input).toBeFocused()
+  await expect(input).toHaveValue('Juan')
 })
 
 test('Home sends partial book-name searches to the Bible catalogue with the query preserved', async ({ page }) => {

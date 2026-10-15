@@ -7,7 +7,7 @@
   grid-template-columns: minmax(0, 1fr) 112px auto;
   align-items: end;
   width: 100%;
-  max-width: 560px;
+  max-width: var(--home-picker-width, 560px);
   gap: 16px;
   margin-inline: auto;
 }
@@ -204,7 +204,7 @@
 }
 
 @media (max-width: 620px) {
-  .picker { max-width: 320px; grid-template-columns: minmax(0, 1fr) 104px; gap: 14px; }
+  .picker { max-width: var(--home-picker-width, 320px); grid-template-columns: minmax(0, 1fr) 104px; gap: 14px; }
   .picker:not(.compact) .trigger { font-size: 14px; }
   .trigger { padding-right: 28px; }
   .openChapter { grid-column: 1 / -1; width: 100%; margin-top: 2px; padding: 12px 18px; font-size: 12px; }
