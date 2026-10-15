@@ -25,5 +25,10 @@ describe('isNeutralReaderTap', () => {
       { clientX: 20, clientY: 30, timeStamp: 180 },
       target('button'),
     )).toBe(false)
+    expect(isNeutralReaderTap(
+      { clientX: 20, clientY: 30, timeStamp: 100 },
+      { clientX: 20, clientY: 30, timeStamp: 180 },
+      target('[role="button"]'),
+    )).toBe(false)
   })
 })

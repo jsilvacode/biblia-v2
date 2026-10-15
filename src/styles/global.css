@@ -248,6 +248,12 @@ svg { display: block; flex: none; }
 .reader-page--spacious .verse { line-height: 2.05; }
 .verse-block h2 { margin: var(--space-6) 0 var(--space-2); color: var(--ink); font-family: var(--font-display); font-size: 1.4rem; font-weight: 500; }
 .verse { width: 100%; padding: 0.08rem 0.18rem; border: 0; border-radius: 0.32rem; background: transparent; color: var(--ink); font-size: calc(1.1rem * var(--reader-scale)); text-align: left; transition: background 140ms ease; }
+.reader-content, .reader-content .verse, .reader-dialog--commentary .reader-dialog__scroll-area, [data-testid='passage-preview-text'] { -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
+.reader-content .verse { cursor: text; }
+@media (hover: none) and (pointer: coarse) {
+  .reader-content, .reader-content .verse { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  .reader-content .verse { cursor: pointer; }
+}
 .verse.is-selected { background: var(--accent-soft); }
 .verse.is-attention-pulsing { animation: verse-attention-pulse 1.05s ease-in-out 2 280ms; }
 .verse sup { padding-right: 0.34rem; color: var(--accent); font-family: var(--font-ui); font-size: 0.6em; font-weight: 760; vertical-align: 0.45em; }
@@ -304,8 +310,8 @@ svg { display: block; flex: none; }
 .settings-controls { display: grid; gap: 0.9rem; padding: 0.55rem 0 0.7rem; }
 .chapter-pager button { min-height: 2.75rem; }
 
-.reader-dialog-backdrop { --dialog-gutter: clamp(16px, 2.5vw, 24px); --dialog-inset-top: max(var(--dialog-gutter), env(safe-area-inset-top)); --dialog-inset-bottom: max(var(--dialog-gutter), env(safe-area-inset-bottom)); position: fixed; z-index: 100; inset: 0; display: flex; align-items: center; justify-content: center; padding: var(--dialog-inset-top) max(var(--dialog-gutter), env(safe-area-inset-right)) var(--dialog-inset-bottom) max(var(--dialog-gutter), env(safe-area-inset-left)); background: rgb(24 20 15 / 48%); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); overscroll-behavior: contain; touch-action: none; }
-.reader-dialog { display: flex; flex-direction: column; width: min(100%, 44rem); min-height: 0; max-height: calc(100dvh - var(--dialog-inset-top, 1rem) - var(--dialog-inset-bottom, 1rem)); padding: 1rem; border: 1px solid var(--border); border-radius: 1.35rem; background: var(--surface-raised); box-shadow: 0 16px 38px rgb(33 25 16 / 20%); color: var(--ink); touch-action: pan-y; }
+.reader-dialog-backdrop { --dialog-gutter: clamp(16px, 2.5vw, 24px); --dialog-inset-top: max(var(--dialog-gutter), env(safe-area-inset-top)); --dialog-inset-bottom: max(var(--dialog-gutter), env(safe-area-inset-bottom)); position: fixed; z-index: 100; inset: 0; display: flex; align-items: center; justify-content: center; padding: var(--dialog-inset-top) max(var(--dialog-gutter), env(safe-area-inset-right)) var(--dialog-inset-bottom) max(var(--dialog-gutter), env(safe-area-inset-left)); background: rgb(24 20 15 / 48%); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); overscroll-behavior: contain; }
+.reader-dialog { display: flex; flex-direction: column; width: min(100%, 44rem); min-height: 0; max-height: calc(100dvh - var(--dialog-inset-top, 1rem) - var(--dialog-inset-bottom, 1rem)); padding: 1rem; border: 1px solid var(--border); border-radius: 1.35rem; background: var(--surface-raised); box-shadow: 0 16px 38px rgb(33 25 16 / 20%); color: var(--ink); }
 .reader-dialog__handle { display: none; }
 .reader-dialog__header { display: grid; flex: none; grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem; align-items: center; gap: 0.35rem; min-height: 2.75rem; }
 .reader-dialog__header h2 { min-width: 0; margin: 0; font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; overflow-wrap: anywhere; }

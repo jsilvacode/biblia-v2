@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   createAppShareData,
+  copyVerse,
   createVerseShareData,
   createVerseShareUrl,
   shareVerse,
@@ -19,6 +20,23 @@ afterEach(() => {
 })
 
 describe('shareVerse', () => {
+  it('copies readable verse text and its reference without invoking sharing or adding a URL', async () => {
+    const share = vi.fn()
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    restoreNavigatorProperty('share', share)
+    restoreNavigatorProperty('clipboard', { writeText })
+    await expect(copyVerse({ reference: 'Juan 3:16', text: 'Porque de tal manera…', version: 'NBLA' })).resolves.toBe('copied')
+    expect(writeText).toHaveBeenCalledWith('Juan 3:16 · NBLA\n\nPorque de tal manera…')
+    expect(share).not.toHaveBeenCalled()
+  })
+
+  it('reports unavailable copying when clipboard access is rejected or unsupported', async () => {
+    restoreNavigatorProperty('clipboard', { writeText: vi.fn().mockRejectedValue(new Error('Denied')) })
+    await expect(copyVerse({ reference: 'Juan 3:16', text: 'Texto' })).resolves.toBe('unavailable')
+    restoreNavigatorProperty('clipboard', undefined)
+    await expect(copyVerse({ reference: 'Juan 3:16', text: 'Texto' })).resolves.toBe('unavailable')
+  })
+
   it('builds a human reader URL that preserves version, locale and a verse range', () => {
     expect(createVerseShareUrl({
       book: 1,

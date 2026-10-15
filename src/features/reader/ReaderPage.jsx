@@ -18,10 +18,11 @@ import { useSettings } from '../settings/SettingsProvider'
 import { CommentarySheet } from './CommentarySheet'
 import { ReaderBottomNavigation } from './ReaderBottomNavigation'
 import { ReaderSectionMenu } from './ReaderSectionMenu'
-import { createVerseShareData, createVerseShareUrl, shareVerse } from './shareVerse'
+import { copyVerse, createVerseShareData, createVerseShareUrl, shareVerse } from './shareVerse'
 import { VerseActionsSheet } from './VerseActionsSheet'
 import { useReaderImmersion } from './useReaderImmersion'
 import { useReadingProgress } from './useReadingProgress'
+import { useVerseActivation } from './useVerseActivation'
 
 const SettingsPopover = lazy(() => import('../settings/SettingsPopover').then((module) => ({ default: module.SettingsPopover })))
 
@@ -111,6 +112,8 @@ export default function ReaderPage() {
     setIsPassagePickerOpen(isOpen)
     revealChrome(!isOpen)
   }, [revealChrome])
+
+  const verseActivation = useVerseActivation({ activationKey: routeKey, onActivate: openVerseActions })
 
   useEffect(() => {
     if (!sharedVersion) {
@@ -291,6 +294,16 @@ export default function ReaderPage() {
     return result
   }
 
+  async function handleCopy() {
+    const result = await copyVerse({
+      reference: selectedReferenceLabel,
+      text: selectedItem?.text ?? '',
+      version: version.short,
+    })
+    setActionFeedback(t(result === 'copied' ? 'reader.copied' : 'reader.copyUnavailable'))
+    return result
+  }
+
   function openCommentary() {
     setActiveDialog('commentary')
   }
@@ -356,16 +369,20 @@ export default function ReaderPage() {
           return (
             <section className="verse-block" key={item.verse}>
               {heading && item.verse !== chapterSubtitleVerse && <h2>{heading}</h2>}
-              <button
+              <div
+                {...verseActivation}
+                aria-haspopup="dialog"
                 aria-pressed={isActionSelection}
                 className={`verse${isActionSelection ? ' is-selected' : ''}${isAttentionPulsing ? ' is-attention-pulsing' : ''}${isVerseHighlighted ? ' is-highlighted' : ''}`}
                 data-verse-number={item.verse}
                 id={`verse-${item.verse}`}
-                onClick={(event) => openVerseActions(event, item.verse)}
-                type="button"
+                onClick={(event) => verseActivation.onClick(event, item.verse)}
+                onKeyDown={(event) => verseActivation.onKeyDown(event, item.verse)}
+                role="button"
+                tabIndex={0}
               >
                 <sup>{item.verse}</sup><span>{item.text}</span>
-              </button>
+              </div>
             </section>
           )
         })}
@@ -400,6 +417,7 @@ export default function ReaderPage() {
           isHighlighted={isHighlighted(selectedReference)}
           isOpen
           onClose={closeDialog}
+          onCopy={handleCopy}
           onOpenCommentary={openCommentary}
           onShare={handleShare}
           onToggleBookmark={handleToggleBookmark}

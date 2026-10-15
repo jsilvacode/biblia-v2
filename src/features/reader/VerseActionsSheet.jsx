@@ -8,6 +8,7 @@ export function VerseActionsSheet({
   isHighlighted,
   isOpen,
   onClose,
+  onCopy,
   onOpenCommentary,
   onShare,
   onToggleBookmark,
@@ -49,6 +50,15 @@ export function VerseActionsSheet({
         >
           <span className="reader-sheet-action__icon"><Icon name="commentary" size={21} /></span>
           <span>{t('reader.viewCommentary')}</span>
+        </button>
+        <button
+          className="reader-sheet-action"
+          disabled={Boolean(pendingAction)}
+          onClick={() => runAction('copy', onCopy)}
+          type="button"
+        >
+          <span className="reader-sheet-action__icon"><Icon name="copy" size={21} /></span>
+          <span>{pendingAction === 'copy' ? t('reader.copying') : t('reader.copy')}</span>
         </button>
         <button
           aria-pressed={isBookmarked}

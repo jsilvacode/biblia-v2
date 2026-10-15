@@ -101,9 +101,13 @@ export async function shareVerse(data) {
     }
   }
 
+  return copyText(`${data.text}\n\n${data.url}`)
+}
+
+async function copyText(text) {
   if (navigator.clipboard?.writeText) {
     try {
-      await navigator.clipboard.writeText(`${data.text}\n\n${data.url}`)
+      await navigator.clipboard.writeText(text)
       return 'copied'
     } catch {
       return 'unavailable'
@@ -111,4 +115,8 @@ export async function shareVerse(data) {
   }
 
   return 'unavailable'
+}
+
+export function copyVerse({ reference, text, version }) {
+  return copyText(createVerseShareData({ reference, text, version }).text)
 }

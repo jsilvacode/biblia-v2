@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-const INTERACTIVE_SELECTOR = 'button, a, input, select, textarea, [role="dialog"], [contenteditable="true"]'
+const INTERACTIVE_SELECTOR = 'button, a, input, select, textarea, [role="button"], [role="dialog"], [contenteditable="true"]'
 
 export function isNeutralReaderTap(start, end, target) {
   if (!start || !end || !target) return false
