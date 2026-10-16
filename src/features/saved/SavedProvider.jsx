@@ -1,78 +1,74 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { bookmarkId, savedStorage } from './savedStorage'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { bookmarkId, savedStorage, SavedStorageError } from './savedStorage'
 
 const SavedContext = createContext(null)
 
-function enqueueWrite(queueRef, write) {
-  const pending = queueRef.current.then(write, write)
-  queueRef.current = pending.catch(() => undefined)
-  return pending
-}
-
 export function SavedProvider({ children }) {
-  const [bookmarks, setBookmarks] = useState([])
-  const [highlights, setHighlights] = useState([])
-  const [isReady, setIsReady] = useState(false)
-  const bookmarksRef = useRef([])
-  const highlightsRef = useRef([])
-  const bookmarkWritesRef = useRef(Promise.resolve())
-  const highlightWritesRef = useRef(Promise.resolve())
-  const loadRef = useRef(Promise.resolve())
+  const [state, setState] = useState({ bookmarks: [], highlights: [], status: 'loading', loadError: null })
+  const stateRef = useRef(state)
+  const mountedRef = useRef(false)
+  const queueRef = useRef(Promise.resolve())
+  const loadRef = useRef(null)
 
-  useEffect(() => {
-    let active = true
-    const load = savedStorage.read()
-      .then(({ bookmarks: storedBookmarks, highlights: storedHighlights }) => {
-        if (!active) return
-        bookmarksRef.current = storedBookmarks
-        highlightsRef.current = storedHighlights
-        setBookmarks(storedBookmarks)
-        setHighlights(storedHighlights)
-      })
-      .finally(() => {
-        if (active) setIsReady(true)
-      })
-    loadRef.current = load.catch(() => undefined)
-    return () => { active = false }
+  const publish = useCallback((changes) => {
+    stateRef.current = { ...stateRef.current, ...changes }
+    if (mountedRef.current) setState(stateRef.current)
   }, [])
 
-  const bookmarkIds = useMemo(() => new Set(bookmarks.map(({ id }) => id)), [bookmarks])
-  const highlightIds = useMemo(() => new Set(highlights.map(({ id }) => id)), [highlights])
+  const enqueue = useCallback((action) => {
+    const pending = queueRef.current.then(action, action)
+    queueRef.current = pending.catch(() => undefined)
+    return pending
+  }, [])
+
+  const retry = useCallback(() => {
+    if (loadRef.current) return loadRef.current
+    const load = enqueue(async () => {
+      publish({ status: 'loading', loadError: null })
+      try {
+        const saved = await savedStorage.read()
+        publish({ ...saved, status: 'ready', loadError: null })
+      } catch (loadError) {
+        publish({ status: 'error', loadError })
+        throw loadError
+      }
+    })
+    loadRef.current = load
+    const clearLoad = () => { if (loadRef.current === load) loadRef.current = null }
+    void load.then(clearLoad, clearLoad)
+    return load
+  }, [enqueue, publish])
+
+  useEffect(() => {
+    mountedRef.current = true
+    void retry().catch(() => undefined)
+    return () => { mountedRef.current = false }
+  }, [retry])
+
+  const toggle = useCallback((kind, reference) => enqueue(async () => {
+    // An unread collection is not empty. A successful retry must precede
+    // any mutation, and state is published only after its transaction commits.
+    if (stateRef.current.status !== 'ready') throw stateRef.current.loadError ?? new SavedStorageError('read')
+    const method = kind === 'bookmarks' ? 'toggleBookmark' : 'toggleHighlight'
+    const result = await savedStorage[method](reference)
+    publish({ [kind]: result.entries })
+    return result.active
+  }), [enqueue, publish])
+
+  const bookmarkIds = useMemo(() => new Set(state.bookmarks.map(({ id }) => id)), [state.bookmarks])
+  const highlightIds = useMemo(() => new Set(state.highlights.map(({ id }) => id)), [state.highlights])
   const value = useMemo(() => ({
-    bookmarks,
-    highlights,
-    isReady,
-    isBookmarked(reference) {
-      return bookmarkIds.has(bookmarkId(reference))
-    },
-    async toggleBookmark(reference) {
-      await loadRef.current
-      const id = bookmarkId(reference)
-      const current = bookmarksRef.current
-      const alreadySaved = current.some((bookmark) => bookmark.id === id)
-      const next = alreadySaved
-        ? current.filter((bookmark) => bookmark.id !== id)
-        : [{ ...reference, id, createdAt: Date.now() }, ...current]
-      bookmarksRef.current = next
-      setBookmarks(next)
-      await enqueueWrite(bookmarkWritesRef, () => savedStorage.writeBookmarks(next))
-    },
-    isHighlighted(reference) {
-      return highlightIds.has(bookmarkId(reference))
-    },
-    async toggleHighlight(reference) {
-      await loadRef.current
-      const id = bookmarkId(reference)
-      const current = highlightsRef.current
-      const alreadyHighlighted = current.some((highlight) => highlight.id === id)
-      const next = alreadyHighlighted
-        ? current.filter((highlight) => highlight.id !== id)
-        : [{ ...reference, id, createdAt: Date.now() }, ...current]
-      highlightsRef.current = next
-      setHighlights(next)
-      await enqueueWrite(highlightWritesRef, () => savedStorage.writeHighlights(next))
-    },
-  }), [bookmarkIds, bookmarks, highlightIds, highlights, isReady])
+    bookmarks: state.bookmarks,
+    highlights: state.highlights,
+    isReady: state.status === 'ready',
+    isLoading: state.status === 'loading',
+    loadError: state.loadError,
+    retry,
+    isBookmarked: (reference) => bookmarkIds.has(bookmarkId(reference)),
+    isHighlighted: (reference) => highlightIds.has(bookmarkId(reference)),
+    toggleBookmark: (reference) => toggle('bookmarks', reference),
+    toggleHighlight: (reference) => toggle('highlights', reference),
+  }), [bookmarkIds, highlightIds, retry, state, toggle])
 
   return <SavedContext.Provider value={value}>{children}</SavedContext.Provider>
 }

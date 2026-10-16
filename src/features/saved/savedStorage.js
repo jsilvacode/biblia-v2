@@ -1,4 +1,4 @@
-import { createStore, get, set } from 'idb-keyval'
+import { createStore, getMany, set } from 'idb-keyval'
 import { bibleVersions, getBook } from '../bible/catalog'
 
 export const SAVED_DATABASE_NAME = 'santa_biblia_saved_data'
@@ -6,6 +6,14 @@ export const SAVED_DATABASE_NAME = 'santa_biblia_saved_data'
 const STORE_NAME = 'saved'
 const BOOKMARKS_KEY = 'bookmarks'
 const HIGHLIGHTS_KEY = 'highlights'
+
+export class SavedStorageError extends Error {
+  constructor(operation, cause) {
+    super(`Saved verses ${operation} failed`, { cause })
+    this.name = 'SavedStorageError'
+    this.code = operation === 'read' ? 'saved-read-failed' : 'saved-write-failed'
+  }
+}
 
 export function bookmarkId(reference) {
   return [reference.version, reference.book, reference.chapter, reference.verse].join(':')
@@ -35,29 +43,61 @@ function normalizeSavedEntries(value) {
 }
 
 export function createSavedStorage(databaseName = SAVED_DATABASE_NAME) {
-  const store = createStore(databaseName, STORE_NAME)
+  let store
+
+  async function withStore(operation, action) {
+    let currentStore
+    try {
+      currentStore = store ??= createStore(databaseName, STORE_NAME)
+      return await action(currentStore)
+    } catch (cause) {
+      // createStore retains its opening promise. Discard a failed connection
+      // so a later retry can open the database again.
+      if (store === currentStore) store = undefined
+      throw new SavedStorageError(operation, cause)
+    }
+  }
+
+  function toggle(key, reference) {
+    return withStore('write', (currentStore) => currentStore('readwrite', (objectStore) => new Promise((resolve, reject) => {
+      const transaction = objectStore.transaction
+      let entries
+      let active
+      transaction.oncomplete = () => resolve({ entries, active })
+      transaction.onerror = transaction.onabort = () => reject(transaction.error ?? new Error('Saved transaction aborted'))
+      const request = objectStore.get(key)
+      request.onerror = () => reject(request.error)
+      request.onsuccess = () => {
+        try {
+          const entry = normalizeSavedEntries([{ ...reference, createdAt: Date.now() }])[0]
+          if (!entry) throw new Error('Invalid saved reference')
+          const current = normalizeSavedEntries(request.result)
+          active = !current.some(({ id }) => id === entry.id)
+          entries = active ? [entry, ...current] : current.filter(({ id }) => id !== entry.id)
+          objectStore.put(entries, key)
+        } catch (error) {
+          reject(error)
+          transaction.abort()
+        }
+      }
+    })))
+  }
 
   return {
-    async read() {
-      const [bookmarksResult, highlightsResult] = await Promise.allSettled([
-        get(BOOKMARKS_KEY, store),
-        get(HIGHLIGHTS_KEY, store),
-      ])
-      const bookmarks = bookmarksResult.status === 'fulfilled'
-        ? normalizeSavedEntries(bookmarksResult.value)
-        : []
-      const highlights = highlightsResult.status === 'fulfilled'
-        ? normalizeSavedEntries(highlightsResult.value)
-        : []
-
-      return { bookmarks, highlights }
+    read() {
+      return withStore('read', async (currentStore) => {
+        const [bookmarks, highlights] = await getMany([BOOKMARKS_KEY, HIGHLIGHTS_KEY], currentStore)
+        return { bookmarks: normalizeSavedEntries(bookmarks), highlights: normalizeSavedEntries(highlights) }
+      })
     },
     writeBookmarks(bookmarks) {
-      return set(BOOKMARKS_KEY, bookmarks, store)
+      return withStore('write', (currentStore) => set(BOOKMARKS_KEY, bookmarks, currentStore))
     },
     writeHighlights(highlights) {
-      return set(HIGHLIGHTS_KEY, highlights, store)
+      return withStore('write', (currentStore) => set(HIGHLIGHTS_KEY, highlights, currentStore))
     },
+    toggleBookmark: (reference) => toggle(BOOKMARKS_KEY, reference),
+    toggleHighlight: (reference) => toggle(HIGHLIGHTS_KEY, reference),
   }
 }
 

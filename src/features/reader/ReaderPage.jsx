@@ -44,7 +44,7 @@ export default function ReaderPage() {
   const { locale, t } = useI18n()
   const { settings, updateSetting } = useSettings()
   const { setLastRead } = useReadingActions()
-  const { isBookmarked, isHighlighted, toggleBookmark, toggleHighlight } = useSaved()
+  const { isBookmarked, isHighlighted, retry: retrySaved, toggleBookmark, toggleHighlight } = useSaved()
   const [chapterResult, setChapterResult] = useState({ key: null, status: 'loading', data: [] })
   const [chapterRetry, setChapterRetry] = useState(0)
   const [activeDialog, setActiveDialog] = useState(null)
@@ -275,15 +275,13 @@ export default function ReaderPage() {
   }
 
   async function handleToggleBookmark() {
-    const willSave = !isBookmarked(selectedReference)
-    await toggleBookmark(selectedReference)
-    setActionFeedback(t(willSave ? 'reader.bookmarkAdded' : 'reader.bookmarkRemoved'))
+    const saved = await toggleBookmark(selectedReference)
+    setActionFeedback(t(saved ? 'reader.bookmarkAdded' : 'reader.bookmarkRemoved'))
   }
 
   async function handleToggleHighlight() {
-    const willHighlight = !isHighlighted(selectedReference)
-    await toggleHighlight(selectedReference)
-    setActionFeedback(t(willHighlight ? 'reader.highlightAdded' : 'reader.highlightRemoved'))
+    const highlighted = await toggleHighlight(selectedReference)
+    setActionFeedback(t(highlighted ? 'reader.highlightAdded' : 'reader.highlightRemoved'))
   }
 
   async function handleShare() {
@@ -434,6 +432,7 @@ export default function ReaderPage() {
           onClose={closeDialog}
           onCopy={handleCopy}
           onOpenCommentary={openCommentary}
+          onRetrySaved={retrySaved}
           onShare={handleShare}
           onToggleBookmark={handleToggleBookmark}
           onToggleHighlight={handleToggleHighlight}

@@ -13,7 +13,7 @@ Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos
 | Etapa | Mejora concreta | Criterio de cierre | Estado |
 | --- | --- | --- | --- |
 | 1 | Guardados conserva la traducción del versículo | Guardar y destacar en una versión, cambiar la preferencia y abrir ambos desde Guardados conserva el texto y la marca originales | Completado |
-| 2 | Guardar y destacar confirman persistencia real | Un fallo de almacenamiento muestra un mensaje, permite reintentar y no presenta un éxito falso ni sobrescribe datos no cargados | Pendiente |
+| 2 | Guardar y destacar confirman persistencia real | Un fallo de almacenamiento muestra un mensaje, permite reintentar y no presenta un éxito falso ni sobrescribe datos no cargados | Completado |
 | 3 | Recuperación de carga y actualizaciones | Las rutas fallidas ofrecen reintento; las actualizaciones se consultan oportunamente y no fuerzan bucles ni interrumpen una acción abierta | Pendiente |
 | 4 | Lenguaje visual y navegación compartidos | Controles, foco, tamaños táctiles y acciones equivalentes usan un patrón coherente en las páginas principales | Pendiente |
 | 5 | Flujos de lectura más evidentes | Retomar es fácil de encontrar; las acciones del versículo se descubren y priorizan copiar/guardar; «Inicio del capítulo» no se confunde con Inicio del sitio; los modales conservan contexto | Pendiente |
@@ -31,4 +31,5 @@ Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos
 
 ## Registro de publicaciones
 
-1. Guardados conserva la traducción: pruebas E2E en móvil y escritorio, lint y build aprobados. Publicación en el commit que incorpora este plan.
+1. `a3a277c` — Guardados conserva la traducción: pruebas E2E en móvil y escritorio, lint y build aprobados. Verificado el mismo artefacto en el dominio público.
+2. Persistencia confirmada y recuperación: 22 pruebas unitarias, recorridos E2E de error/reintento y traducciones, lint y build aprobados. Publicación en el commit que incorpora esta fila.

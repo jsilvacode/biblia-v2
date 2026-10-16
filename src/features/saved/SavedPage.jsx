@@ -13,7 +13,7 @@ const tabs = ['bookmarks', 'highlights']
 
 export default function SavedPage() {
   const { locale, t } = useI18n()
-  const { bookmarks, highlights, isReady } = useSaved()
+  const { bookmarks, highlights, isReady, isLoading, loadError, retry } = useSaved()
   const [activeTab, setActiveTab] = useState('bookmarks')
 
   function changeTab(tab) {
@@ -34,7 +34,15 @@ export default function SavedPage() {
   }
 
   function renderReferences(items, icon, emptyMessage) {
-    if (!isReady || !items.length) {
+    if (isLoading) return <p role="status">{t('saved.loading')}</p>
+    if (loadError) return (
+      <div className="reader-error" role="alert">
+        <p>{t('saved.loadError')}</p>
+        <button className="button button--compact" onClick={() => { void retry().catch(() => undefined) }} type="button">{t('saved.retry')}</button>
+      </div>
+    )
+    if (!isReady) return null
+    if (!items.length) {
       return <div className="empty-state"><Icon name={icon} size={25} /><p>{emptyMessage}</p></div>
     }
 

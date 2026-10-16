@@ -194,6 +194,10 @@ export default {
   },
   saved: {
     title: 'Guardados',
+    loading: 'Cargando tus guardados…',
+    loadError: 'No pudimos cargar tus guardados. Tus datos no se han modificado.',
+    writeError: 'No se pudo guardar el cambio. Intenta de nuevo.',
+    retry: 'Intentar de nuevo',
     subtitle: 'Versículos que quieres volver a encontrar.',
     bookmarks: 'Favoritos',
     highlights: 'Resaltados',

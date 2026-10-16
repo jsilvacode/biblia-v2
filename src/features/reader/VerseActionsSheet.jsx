@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import { ReaderDialog } from './ReaderDialog'
@@ -10,6 +10,7 @@ export function VerseActionsSheet({
   onClose,
   onCopy,
   onOpenCommentary,
+  onRetrySaved,
   onShare,
   onToggleBookmark,
   onToggleHighlight,
@@ -18,17 +19,40 @@ export function VerseActionsSheet({
 }) {
   const { t } = useI18n()
   const [pendingAction, setPendingAction] = useState(null)
+  const pendingRef = useRef(false)
+  const mountedRef = useRef(false)
+  const [actionError, setActionError] = useState(null)
+
+  useEffect(() => {
+    mountedRef.current = true
+    return () => { mountedRef.current = false }
+  }, [])
 
   async function runAction(name, action, closeAfter = true) {
-    if (pendingAction) return
+    if (pendingRef.current) return
+    pendingRef.current = true
     setPendingAction(name)
+    setActionError(null)
     try {
       const result = await action()
-      if (closeAfter && result !== 'cancelled') onClose()
+      if (mountedRef.current && closeAfter && result !== 'cancelled') onClose()
+    } catch (error) {
+      if (mountedRef.current) setActionError({ name, readFailed: name === 'retrySaved' || error?.code === 'saved-read-failed' })
     } finally {
-      setPendingAction(null)
+      pendingRef.current = false
+      if (mountedRef.current) setPendingAction(null)
     }
   }
+
+  function retryAction() {
+    if (actionError.readFailed) return runAction('retrySaved', onRetrySaved, false)
+    const action = actionError.name === 'bookmark' ? onToggleBookmark : onToggleHighlight
+    return runAction(actionError.name, action)
+  }
+
+  const errorKey = actionError?.readFailed ? 'saved.loadError'
+    : actionError?.name === 'copy' ? 'reader.copyUnavailable'
+      : actionError?.name === 'share' ? 'reader.shareUnavailable' : 'saved.writeError'
 
   return (
     <ReaderDialog
@@ -40,6 +64,14 @@ export function VerseActionsSheet({
       title={t('reader.verseActions')}
     >
       <p className="reader-dialog__reference">{reference}</p>
+      {actionError && (
+        <div className="reader-error" role="alert">
+          <p>{t(errorKey)}</p>
+          {(actionError.readFailed || ['bookmark', 'highlight'].includes(actionError.name)) && (
+            <button className="button button--compact" disabled={Boolean(pendingAction)} onClick={retryAction} type="button">{t('saved.retry')}</button>
+          )}
+        </div>
+      )}
       <div className="reader-action-list">
         <button
           className="reader-sheet-action"
