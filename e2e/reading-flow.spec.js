@@ -238,7 +238,7 @@ test('a verse opened from saved bookmarks or highlights receives a temporary att
 
   await page.goto('/saved')
   await page.locator('.saved-list').getByRole('link', { name: /Juan 3:16|John 3:16|João 3:16/ }).click()
-  await expect(page).toHaveURL(/\/read\/43\/3\/16$/)
+  await expect(page).toHaveURL(/\/read\/43\/3\/16\?v=nbla$/)
   await expect(verseSixteen).toBeVisible()
   await expect(verseSixteen).toHaveClass(/is-attention-pulsing/)
   await expect(verseSixteen).not.toHaveClass(/is-attention-pulsing/, { timeout: 4000 })
@@ -247,7 +247,7 @@ test('a verse opened from saved bookmarks or highlights receives a temporary att
   await page.goto('/saved')
   await page.getByRole('tab', { name: /Resaltados|Highlights|Destaques/ }).click()
   await page.locator('.saved-list').getByRole('link', { name: /Juan 3:1|John 3:1|João 3:1/ }).click()
-  await expect(page).toHaveURL(/\/read\/43\/3\/1$/)
+  await expect(page).toHaveURL(/\/read\/43\/3\/1\?v=nbla$/)
   await expect(verseOne).toBeVisible()
   await expect(verseOne).toHaveClass(/is-attention-pulsing/)
   await expect(verseOne).not.toHaveClass(/is-attention-pulsing/, { timeout: 4000 })

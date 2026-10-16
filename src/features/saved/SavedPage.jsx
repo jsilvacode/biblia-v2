@@ -45,7 +45,7 @@ export default function SavedPage() {
             className="saved-item"
             key={item.id}
             state={{ attentionVerse: true }}
-            to={`/read/${item.book}/${item.chapter}/${item.verse}`}
+            to={`/read/${item.book}/${item.chapter}/${item.verse}?v=${encodeURIComponent(item.version)}`}
           >
             <span className="card-icon"><Icon name={icon} size={18} /></span>
             <span><strong>{formatReference(item, locale)}</strong><small>{String(item.version).toUpperCase()}</small></span>
