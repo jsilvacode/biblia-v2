@@ -277,7 +277,7 @@ test('Home loads one responsive photograph and fades it below the whole reading 
     await page.setViewportSize({ width, height: 900 })
     const requestedImages = []
     const onRequest = request => {
-      if (request.url().includes('/assets/home-landscape-v3-')) requestedImages.push(request.url())
+      if (request.url().includes('/assets/home-landscape-v4-')) requestedImages.push(request.url())
     }
     page.on('request', onRequest)
     await page.goto('/')

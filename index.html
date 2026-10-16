@@ -14,10 +14,10 @@
           heroPreload.as = 'image'
           heroPreload.type = 'image/avif'
           heroPreload.media = mobile ? '(max-width: 620px)' : '(min-width: 621px)'
-          heroPreload.imageSizes = mobile ? '600px' : '(min-width: 2400px) 100vw, 2400px'
+          heroPreload.imageSizes = mobile ? '600px' : '(min-width: 2000px) 100vw, 2000px'
           heroPreload.imageSrcset = mobile
-            ? '/assets/home-landscape-v3-mobile-800.avif 800w, /assets/home-landscape-v3-mobile-1200.avif 1200w'
-            : '/assets/home-landscape-v3-1600.avif 1600w, /assets/home-landscape-v3-2400.avif 2400w, /assets/home-landscape-v3-3200.avif 3200w'
+            ? '/assets/home-landscape-v4-mobile-480.avif 480w, /assets/home-landscape-v4-mobile-850.avif 850w'
+            : '/assets/home-landscape-v4-960.avif 960w, /assets/home-landscape-v4-1280.avif 1280w, /assets/home-landscape-v4-1672.avif 1672w'
           heroPreload.fetchPriority = 'high'
           document.head.appendChild(heroPreload)
         }

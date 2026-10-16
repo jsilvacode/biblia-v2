@@ -98,3 +98,50 @@ test('enlarged text keeps the longest translated promise complete and its action
   await expect(page).toHaveURL(/\/read\/50\/4\/12$/)
   await expect(page.locator('#verse-12')).toBeVisible()
 })
+
+test('editorial cards align on tablet and desktop and stack without clipping translated content on mobile', async ({ page }, testInfo) => {
+  const widths = testInfo.project.name === 'desktop' ? [768, 1024, 1440] : [320, 390, 767]
+  await page.goto('/')
+  for (const locale of ['es', 'en', 'pt-BR']) {
+    await page.evaluate((nextLocale) => localStorage.setItem('santa_biblia_v2_settings', JSON.stringify({ locale: nextLocale, bibleVersion: 'nbla' })), locale)
+    for (const width of widths) {
+      await page.setViewportSize({ width, height: 900 })
+      await page.goto('/')
+      const editorial = page.getByRole('region', { name: /También en Santa Biblia|Also in Santa Biblia|Também em Santa Biblia/ })
+      const cards = editorial.getByRole('link')
+      await expect(cards).toHaveCount(3)
+      await page.evaluate(() => document.fonts.ready)
+      expect(await cards.evaluateAll((links) => links.map((link) => link.getAttribute('href')))).toEqual(['/reavivados', '/topics', '/studies/la-fe-de-jesus'])
+      const geometry = await cards.evaluateAll((links) => links.map((link) => {
+        const rect = link.getBoundingClientRect()
+        const title = link.querySelector('h3')
+        const image = link.querySelector('img').getBoundingClientRect()
+        const action = link.querySelector('[class*="entryAction"]').getBoundingClientRect()
+        return {
+          x: rect.x, top: rect.top, bottom: rect.bottom, height: rect.height,
+          actionBottom: action.bottom, titleFits: title.scrollWidth <= title.clientWidth,
+          imageRatio: image.width / image.height, imageBeforeTitle: image.bottom <= title.getBoundingClientRect().top,
+        }
+      }))
+      for (const card of geometry) {
+        expect(card.titleFits).toBe(true)
+        expect(card.imageBeforeTitle).toBe(true)
+        expect(card.imageRatio).toBeCloseTo(2, 1)
+        expect(card.actionBottom).toBeLessThan(card.bottom)
+      }
+      if (width >= 768) {
+        for (const card of geometry.slice(1)) {
+          expect(Math.abs(card.top - geometry[0].top)).toBeLessThanOrEqual(1)
+          expect(Math.abs(card.height - geometry[0].height)).toBeLessThanOrEqual(1)
+          expect(Math.abs(card.actionBottom - geometry[0].actionBottom)).toBeLessThanOrEqual(1)
+        }
+      } else {
+        for (let index = 1; index < geometry.length; index += 1) {
+          expect(geometry[index].top).toBeGreaterThan(geometry[index - 1].bottom)
+          expect(geometry[index].x).toBe(geometry[0].x)
+        }
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+    }
+  }
+})

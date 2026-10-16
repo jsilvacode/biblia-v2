@@ -213,15 +213,17 @@ export default function HomePage() {
           <div className={styles.editorialList}>
             {entries.map((entry, index) => (
               <Link className={styles.editorialEntry} key={entry.href} to={entry.href}>
-                <span aria-hidden="true" className={styles.entryNumber}>{String(index + 1).padStart(2, '0')}</span>
-                <span className={styles.entryCopy}>
-                  <h3 className={styles.entryTitle}>{entry.title}</h3>
-                  <span className={styles.entryDetail}>{entry.detail}</span>
-                  <span className={styles.entryAction}>{entry.action}<Icon name="arrowRight" size={17} /></span>
-                </span>
                 <span aria-hidden="true" className={styles.entryImage}>
                   <img alt="" decoding="async" height="720" loading="lazy" src={entry.image} width="1440" />
                 </span>
+                <div className={styles.entryCopy}>
+                  <div className={styles.entryHeading}>
+                    <span aria-hidden="true" className={styles.entryNumber}>{String(index + 1).padStart(2, '0')}</span>
+                    <h3 className={styles.entryTitle}>{entry.title}</h3>
+                  </div>
+                  <p className={styles.entryDetail}>{entry.detail}</p>
+                  <span className={styles.entryAction}>{entry.action}<Icon name="arrowRight" size={17} /></span>
+                </div>
               </Link>
             ))}
           </div>
