@@ -1,4 +1,5 @@
-import { PROJECT_CONTACT_EMAIL, PROJECT_DONATION_LINKS } from '../../content/projectMeta'
+import { Link } from 'react-router-dom'
+import { PROJECT_AUTHOR, PROJECT_CONTACT_EMAIL, PROJECT_DONATION_LINKS, PROJECT_PUBLIC_VERSION } from '../../content/projectMeta'
 import { useI18n } from '../../i18n'
 import { Icon } from '../ui/Icon'
 import styles from './AppFooter.module.css'
@@ -9,6 +10,16 @@ export function AppFooter({ showSupport = false, editorial = false }) {
   return (
     <footer className={`${styles.footer}${editorial ? ` ${styles.editorial}` : ''}`}>
       <div className={styles.inner}>
+        <div className={styles.identity}>
+          <p className={styles.name}><Icon name="bookOpen" size={18} /><strong>{t('about.appName', { version: PROJECT_PUBLIC_VERSION })}</strong></p>
+          <p className={styles.purpose}>{t('about.footerPurpose')}</p>
+          <p className={styles.author}>{t('about.developer', { author: PROJECT_AUTHOR })}</p>
+        </div>
+        <nav aria-label={t('about.footerNavigation')} className={styles.navigation}>
+          <Link to="/about">{t('nav.about')}</Link>
+          <Link to="/about#ayuda">{t('about.help')}</Link>
+          <a href={`mailto:${PROJECT_CONTACT_EMAIL}`}>{t('about.contact')}</a>
+        </nav>
         {showSupport && (
           <section aria-labelledby="support-project-title" className={styles.support}>
             <div className={styles.supportCopy}>
@@ -25,13 +36,6 @@ export function AppFooter({ showSupport = false, editorial = false }) {
             </nav>
           </section>
         )}
-        <div className={styles.signature}>
-          <span>{t('about.appName')}</span>
-          <span aria-hidden="true">·</span>
-          <span>{t('about.developer')}</span>
-          <span aria-hidden="true">·</span>
-          <a href={`mailto:${PROJECT_CONTACT_EMAIL}`}>{PROJECT_CONTACT_EMAIL}</a>
-        </div>
       </div>
     </footer>
   )

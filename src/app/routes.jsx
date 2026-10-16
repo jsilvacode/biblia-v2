@@ -9,6 +9,7 @@ const BibleBrowserPage = lazy(() => import('../features/bible/BibleBrowserPage')
 const ReaderPage = lazy(loadReaderPage)
 const SearchPage = lazy(() => import('../features/search/SearchPage'))
 const SavedPage = lazy(() => import('../features/saved/SavedPage'))
+const AboutPage = lazy(() => import('../features/about/AboutPage'))
 const PlansPage = lazy(() => import('../features/plans/PlansPage'))
 const DailyReadingPage = lazy(() => import('../features/plans/DailyReadingPage'))
 const TopicsPage = lazy(() => import('../features/topics/TopicsPage'))
@@ -35,7 +36,7 @@ export function AppRoutes() {
         <Route path="studies/la-fe-de-jesus" element={<DeferredRoute><StudyIndexPage /></DeferredRoute>} />
         <Route path="studies/la-fe-de-jesus/:lessonSlug" element={<DeferredRoute><StudyLessonPage /></DeferredRoute>} />
         <Route path="settings" element={<Navigate replace state={{ openSettings: true }} to="/" />} />
-        <Route path="about" element={<Navigate replace state={{ openSettings: true }} to="/" />} />
+        <Route path="about" element={<DeferredRoute><AboutPage /></DeferredRoute>} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

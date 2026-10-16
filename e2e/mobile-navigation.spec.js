@@ -39,7 +39,7 @@ test.describe('mobile navigation shell', () => {
     await expect(footer.getByRole('link', { name: /PayPal/ })).toHaveCount(0)
     await expect(footer.getByText('Santa Biblia v3.0', { exact: true })).toBeVisible()
     await expect(footer.getByText(/Julio Silva/)).toBeVisible()
-    await expect(footer.getByRole('link', { name: 'jsilvacode@gmail.com' })).toBeVisible()
+    await expect(footer.getByRole('link', { name: /Contacto|Contact|Contato/, exact: true })).toHaveAttribute('href', 'mailto:jsilvacode@gmail.com')
     await expect(page.getByRole('dialog')).toHaveCount(1)
     await expect(page).toHaveURL(/\/bible$/)
   })
@@ -332,7 +332,7 @@ test.describe('editorial page composition', () => {
   })
 
   test('centers the shared content body on every primary section', async ({ page }) => {
-    for (const path of ['/bible', '/search', '/saved', '/plans', '/topics', '/studies/la-fe-de-jesus', '/studies/la-fe-de-jesus/quien-es-dios']) {
+    for (const path of ['/bible', '/search', '/saved', '/plans', '/topics', '/studies/la-fe-de-jesus', '/studies/la-fe-de-jesus/quien-es-dios', '/about']) {
       await page.goto(path)
       const pageBox = await page.locator('.page').boundingBox()
       const viewport = page.viewportSize()
@@ -343,7 +343,7 @@ test.describe('editorial page composition', () => {
       expect(Math.abs(pageBox.x - ((viewport.width - pageBox.width) / 2))).toBeLessThanOrEqual(1)
     }
 
-    for (const legacyPath of ['/settings', '/about']) {
+    for (const legacyPath of ['/settings']) {
       await page.goto(legacyPath)
       await expect(page).toHaveURL(/\/$/)
       await expect(page.getByRole('dialog', { name: /Ajustes|Settings|Configurações/ })).toBeVisible()
