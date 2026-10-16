@@ -91,7 +91,7 @@ export default function ReaderPage() {
   const selectedItem = chapterData.find((item) => item.verse === selectedVerse) ?? null
   const chapterSubtitle = getChapterSubtitle(chapterData)
   const chapterSubtitleVerse = chapterData.find((item) => getValidHeading(item.heading) === chapterSubtitle)?.verse
-  const { progress } = useReadingProgress({
+  useReadingProgress({
     chapterData,
     chapterKey: requestKey,
     enabled: status === 'ready',
@@ -339,18 +339,19 @@ export default function ReaderPage() {
           <button aria-label={t('common.back')} className="reader-header__back" onClick={handleBack} type="button">
             <Icon name="arrowLeft" size={20} /><span>{t('common.back')}</span>
           </button>
-          <HomePassagePicker
-            compact
-            key={`${reference.book}:${reference.chapter}`}
-            bookTriggerRef={passageBookTriggerRef}
-            onGoToChapter={goToChapter}
-            onOpenChange={handlePassagePickerOpenChange}
-          />
-          <ReaderQuickSearch key={`search:${routeKey}`} currentBookId={reference.book} currentChapter={reference.chapter} onGoToChapter={goToChapter} onOpenChange={handleQuickSearchOpenChange} />
+          <div className="reader-header__reading-tools">
+            <HomePassagePicker
+              compact
+              key={`${reference.book}:${reference.chapter}`}
+              bookTriggerRef={passageBookTriggerRef}
+              onGoToChapter={goToChapter}
+              onOpenChange={handlePassagePickerOpenChange}
+            />
+            <ReaderQuickSearch key={`search:${routeKey}`} currentBookId={reference.book} currentChapter={reference.chapter} onGoToChapter={goToChapter} onOpenChange={handleQuickSearchOpenChange} />
+          </div>
         </div>
       </div>
 
-      <div aria-hidden="true" className="reading-progress" data-reader-chrome><span style={{ width: `${progress}%` }} /></div>
       {returnTo && (
         <div className="reader-return-context">
           <button onClick={handleBack} type="button">
@@ -361,7 +362,6 @@ export default function ReaderPage() {
       )}
       <article className="reader-content" aria-busy={status === 'loading'}>
         <header className="reader-chapter-heading">
-          <p className="reader-chapter-version">Santa Biblia · {version.short}</p>
           <h1 ref={chapterHeadingRef} tabIndex={-1}>{getLocalizedBookName(book, locale)}</h1>
           <p className="reader-chapter-number">{t('common.chapter')} {reference.chapter}</p>
         </header>

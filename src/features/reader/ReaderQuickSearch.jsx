@@ -81,7 +81,7 @@ export function ReaderQuickSearch({ currentBookId, currentChapter, onGoToChapter
           role={isCompact ? 'dialog' : undefined}
         >
           <div className="reader-header__search-heading"><span>{t('home.quickSearch')}</span><OverlayCloseButton onClose={close} /></div>
-          <HomeQuickSearch currentBookId={currentBookId} currentChapter={currentChapter} inputRef={inputRef} onGoToChapter={onGoToChapter} onOpenChange={setHasSearchOverlay} />
+          <HomeQuickSearch compact currentBookId={currentBookId} currentChapter={currentChapter} inputRef={inputRef} onGoToChapter={onGoToChapter} onOpenChange={setHasSearchOverlay} />
         </div>
       )}
     </>

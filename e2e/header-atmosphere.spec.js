@@ -96,7 +96,7 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
 })
 
 test('the reader aligns Back, its neutral selector and quick search below the glass bar', async ({ page }) => {
-  for (const [width, fontSize] of [[1440, '16px'], [768, '16px'], [390, '16px'], [320, '16px'], [320, '32px']]) {
+  for (const [width, fontSize] of [[1440, '16px'], [1024, '16px'], [768, '16px'], [390, '16px'], [320, '16px'], [320, '32px']]) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/read/43/3')
     await page.evaluate((size) => { document.documentElement.style.fontSize = size }, fontSize)
@@ -136,6 +136,18 @@ test('the reader aligns Back, its neutral selector and quick search below the gl
       expect(Math.abs(rowBox.x - headerBox.x)).toBeLessThanOrEqual(1)
       expect(Math.abs(rowBox.width - headerBox.width)).toBeLessThanOrEqual(1)
       expect(rowBox.width).toBeLessThanOrEqual(1100)
+      const toolsBox = await row.locator('.reader-header__reading-tools').boundingBox()
+      const textBounds = await page.locator('.reader-content').evaluate(element => {
+        const rect = element.getBoundingClientRect()
+        const style = getComputedStyle(element)
+        return { left: rect.left + parseFloat(style.paddingLeft), right: rect.right - parseFloat(style.paddingRight) }
+      })
+      expect(toolsBox.x).toBeGreaterThanOrEqual(textBounds.left - 1)
+      expect(toolsBox.x + toolsBox.width).toBeLessThanOrEqual(textBounds.right + 1)
+      if (width === 1440) {
+        expect(Math.abs(toolsBox.x - textBounds.left)).toBeLessThanOrEqual(1)
+        expect(Math.abs(toolsBox.x + toolsBox.width - textBounds.right)).toBeLessThanOrEqual(1)
+      }
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
   }

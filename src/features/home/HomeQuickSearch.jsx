@@ -16,7 +16,7 @@ function readerPath(reference) {
   return `/read/${reference.book}/${reference.chapter}${reference.verse ? `/${reference.verse}` : ''}`
 }
 
-export function HomeQuickSearch({ currentBookId, currentChapter, inputRef: forwardedInputRef, onGoToChapter, onOpenChange }) {
+export function HomeQuickSearch({ compact = false, currentBookId, currentChapter, inputRef: forwardedInputRef, onGoToChapter, onOpenChange }) {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
   const navigate = useNavigate()
@@ -116,7 +116,7 @@ export function HomeQuickSearch({ currentBookId, currentChapter, inputRef: forwa
   return (
     <section
       aria-label={t('home.quickSearch')}
-      className={styles.search}
+      className={`${styles.search}${compact ? ` ${styles.compact}` : ''}`}
       onBlur={(event) => {
         if (!pointerInsideRef.current && !selectedBook && event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) setResultsOpen(false)
       }}

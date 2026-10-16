@@ -307,7 +307,6 @@ test('the compact reader hides only its bottom navigation and restores it on scr
   await page.goto('/read/43/3')
   const reader = page.locator('.reader-page')
   const header = page.locator('.reader-header')
-  const progress = page.locator('.reading-progress')
   const bottomNavigation = page.locator('.reader-bottom-navigation')
 
   await expect(reader).not.toHaveClass(/reader-page--immersive/)
@@ -315,7 +314,7 @@ test('the compact reader hides only its bottom navigation and restores it on scr
   const hideTransition = await bottomNavigation.evaluate((element) => getComputedStyle(element).transition)
   expect(hideTransition).toContain('0.56s')
   await expect(header).toHaveCSS('visibility', 'visible')
-  await expect(progress).toHaveCSS('visibility', 'visible')
+  await expect(page.locator('.reading-progress')).toHaveCount(0)
   await expect(bottomNavigation).toHaveCSS('visibility', 'hidden')
 
   await page.evaluate(() => window.scrollBy(0, 160))
@@ -327,6 +326,28 @@ test('the compact reader hides only its bottom navigation and restores it on scr
   expect(midRevealOpacity).toBeGreaterThan(0.08)
   expect(midRevealOpacity).toBeLessThan(0.8)
   await expect(bottomNavigation).toHaveCSS('opacity', '1')
+})
+
+test('scrolling saves reading progress without a visible meter and Home resumes that verse', async ({ page }) => {
+  await page.goto('/read/43/3')
+  await expect(page.locator('#verse-25')).toBeVisible()
+  await page.evaluate(() => document.fonts.ready)
+  await expect(page.locator('.reading-progress')).toHaveCount(0)
+  const storedReading = () => page.evaluate(() => JSON.parse(localStorage.getItem('santa_biblia_v2_reading')))
+  await expect.poll(async () => (await storedReading())?.verse ?? 0).toBeGreaterThan(0)
+  const initialReading = await storedReading()
+  await page.locator('#verse-25').evaluate(element => element.scrollIntoView({ block: 'start', behavior: 'instant' }))
+  await expect.poll(async () => (await storedReading())?.verse ?? 0).toBeGreaterThan(10)
+  const reading = await storedReading()
+  expect(reading.book).toBe(43)
+  expect(reading.chapter).toBe(3)
+  expect(reading.progress).toBeGreaterThan(initialReading.progress)
+  await page.goto('/')
+  const resume = page.getByTestId('home-reading-panel').getByRole('link', { name: /^Continuar(?:\b|:)/ })
+  await expect(resume).toHaveAttribute('href', `/read/43/3/${reading.verse}`)
+  await resume.click()
+  await expect(page).toHaveURL(new RegExp(`/read/43/3/${reading.verse}$`))
+  await expect(page.locator(`#verse-${reading.verse}`)).toBeInViewport()
 })
 
 test('the compact reader keeps its bottom navigation visible at the end of the chapter', async ({ page }, testInfo) => {

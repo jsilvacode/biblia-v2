@@ -213,8 +213,6 @@ svg { display: block; flex: none; }
 .reader-page { display: flex; min-height: 100dvh; flex-direction: column; padding-bottom: calc(6.1rem + env(safe-area-inset-bottom)); }
 .reader-header { position: sticky; z-index: 15; top: 0; min-height: 4.5rem; border-bottom: 1px solid color-mix(in srgb, var(--border) 72%, transparent); background: var(--bg-reader); }
 .reader-header__inner { position: relative; display: flex; align-items: center; width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), var(--content-max-width)); min-height: inherit; margin: 0 auto; }
-.reading-progress { height: 2px; background: var(--border); }
-.reading-progress span { display: block; width: 12%; height: 100%; background: var(--accent); }
 .reader-return-context {
   position: fixed;
   z-index: 14;
@@ -235,7 +233,7 @@ svg { display: block; flex: none; }
   font-size: 0.78rem;
   font-weight: 720;
 }
-.reader-content { width: min(100% - 2.5rem, var(--reader-width)); margin: 0 auto; padding: var(--space-7) 0 var(--space-5); flex: 1 0 auto; overflow-wrap: anywhere; }
+.reader-content { width: min(100% - 2.5rem, var(--reader-width)); margin: 0 auto; padding: var(--space-5) 0 var(--space-5); flex: 1 0 auto; overflow-wrap: anywhere; }
 .reader-content h1 { margin-bottom: 0; font-size: clamp(2.5rem, 11vw, 4.1rem); line-height: 0.98; }
 .reader-content h1 + .verse-block,
 .reader-content h1 + .reader-skeleton,

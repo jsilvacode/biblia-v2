@@ -13,5 +13,5 @@
 }
 
 @media (min-width: 1440px) {
-  .reader-content { --reader-width: 47rem; }
+  .reader-page { --reader-width: 47rem; }
 }

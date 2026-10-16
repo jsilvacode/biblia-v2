@@ -8,6 +8,13 @@
 .form button { flex: none; min-height: 44px; padding: 9px 12px; border: 0; border-radius: 10px; background: transparent; color: var(--accent-blue-deep); font: 500 .8125rem/1.4 var(--font-ui); }
 .form button:hover:not(:disabled) { background: var(--accent-soft); color: var(--accent-deep); }
 .form button:disabled { background: transparent; color: var(--ink-muted); opacity: .5; }
+.compact .form { min-height: 48px; gap: 4px; padding: 1px 4px; border-radius: 12px; }
+.compact .form > svg, .compact .submitLabel { display: none; }
+.compact .submitIcon { display: block; }
+.compact .form input { font-size: .875rem; }
+.compact .form input::placeholder { font-size: .8125rem; }
+.compact .form button { display: grid; order: -1; width: 44px; padding: 0; place-items: center; color: var(--ink-muted); }
+.compact .form button:disabled { opacity: 1; }
 .results { position: absolute; z-index: 40; display: grid; width: 100%; max-height: 288px; gap: 6px; overflow-y: auto; overscroll-behavior: contain; padding: 8px; border: 1px solid var(--border-strong); border-radius: 12px; background: light-dark(rgb(255 255 255 / .9), color-mix(in srgb, var(--surface-raised) 94%, transparent)); box-shadow: var(--shadow-md); backdrop-filter: blur(16px) saturate(112%); -webkit-backdrop-filter: blur(16px) saturate(112%); }
 .results > p { margin: 8px; color: var(--ink-muted); font-size: .8125rem; }
 .resultsHeader { position: sticky; z-index: 1; top: -8px; display: flex; align-items: center; justify-content: space-between; min-height: 44px; margin: -8px -8px 0; padding-left: 18px; background: var(--surface-raised); color: var(--ink-muted); font-size: .75rem; }

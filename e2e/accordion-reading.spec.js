@@ -46,7 +46,7 @@ test('reader shows the approved book heading and searches books and exact citati
   const workers = []
   page.on('worker', worker => workers.push(worker.url()))
   await page.goto('/read/43/3')
-  await expect(page.locator('.reader-chapter-version')).toHaveText('Santa Biblia · NBLA')
+  await expect(page.locator('.reader-chapter-version')).toHaveCount(0)
   await expect(page.getByRole('heading', { name: 'Juan', exact: true })).toBeVisible()
   await expect(page.locator('.reader-chapter-number')).toHaveText('Capítulo 3')
   const row = page.getByTestId('reader-passage-row')
