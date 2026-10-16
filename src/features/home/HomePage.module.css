@@ -42,13 +42,14 @@
 .heroSecondaryAction { border-color: var(--border); background: var(--surface-raised); color: var(--ink); }
 .homeFeed { position: relative; z-index: 1; padding-top: var(--home-opening-gap); }
 .glassMantle {
-  --glass-fill: light-dark(rgb(255 255 255 / .12), rgb(255 255 255 / .025));
+  --glass-fill: light-dark(rgb(255 255 255 / .16), rgb(255 255 255 / .035));
+  --glass-base: light-dark(rgb(255 255 255 / .34), color-mix(in srgb, var(--bg-reader) 30%, transparent));
   --glass-edge: light-dark(rgb(255 255 255 / .90), rgb(255 255 255 / .38));
   --glass-reflection: light-dark(rgb(255 255 255 / .38), rgb(255 255 255 / .095));
   --glass-lip: light-dark(rgb(255 255 255 / .72), rgb(255 255 255 / .22));
   --mantle-bleed: 8px;
   --mantle-width: min(calc(100% + 16px), 1100px);
-  --mantle-mask: linear-gradient(180deg, #000 0%, #000 55%, rgb(0 0 0 / .72) 72%, rgb(0 0 0 / .2) 90%, transparent 100%);
+  --mantle-mask: linear-gradient(180deg, #000 0%, #000 68%, rgb(0 0 0 / .85) 82%, rgb(0 0 0 / .35) 94%, transparent 100%);
   --mantle-rim-mask: linear-gradient(180deg, #000 0%, #000 8%, rgb(0 0 0 / .4) 45%, rgb(0 0 0 / .08) 75%, transparent 100%);
   --mantle-side-mask: linear-gradient(90deg, transparent, #000 var(--mantle-bleed), #000 calc(100% - var(--mantle-bleed)), transparent);
   position: relative;
@@ -59,7 +60,7 @@
    or painting coloured glows made the material read as a stain on the page. */
 .glassMantle::before {
   z-index: -2;
-  background: var(--glass-fill);
+  background: linear-gradient(180deg, var(--glass-fill), var(--glass-base) 82%);
   backdrop-filter: blur(10px) saturate(112%);
   -webkit-backdrop-filter: blur(10px) saturate(112%);
 }
