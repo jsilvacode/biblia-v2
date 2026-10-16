@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AppShell } from '../components/layout/AppShell'
 import { loadReaderPage } from '../features/reader/preloadReading'
+import { RouteErrorBoundary, RouteLoading } from './RouteErrorBoundary'
 
 const HomePage = lazy(() => import('../features/home/HomePage'))
 const BibleBrowserPage = lazy(() => import('../features/bible/BibleBrowserPage'))
@@ -14,12 +15,8 @@ const TopicsPage = lazy(() => import('../features/topics/TopicsPage'))
 const StudyIndexPage = lazy(() => import('../features/studies/StudyIndexPage'))
 const StudyLessonPage = lazy(() => import('../features/studies/StudyLessonPage'))
 
-function RouteLoading() {
-  return <div className="route-loading" aria-live="polite" />
-}
-
 function DeferredRoute({ children }) {
-  return <Suspense fallback={<RouteLoading />}>{children}</Suspense>
+  return <RouteErrorBoundary><Suspense fallback={<RouteLoading />}>{children}</Suspense></RouteErrorBoundary>
 }
 
 export function AppRoutes() {

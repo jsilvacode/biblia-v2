@@ -1,4 +1,16 @@
 export default {
+  appRecovery: {
+    loading: 'Carregando…',
+    loadErrorTitle: 'Não foi possível abrir esta página',
+    loadErrorBody: 'Verifique sua conexão e tente novamente.',
+    reload: 'Recarregar página',
+    goHome: 'Ir ao início',
+    updateReady: 'Há uma nova versão disponível.',
+    update: 'Atualizar',
+    later: 'Mais tarde',
+    updating: 'Atualizando…',
+    updateError: 'Não foi possível atualizar. Tente novamente.',
+  },
   app: { name: 'Santa Bíblia', tagline: 'Leia, reflita e volte ao essencial.' },
   nav: { home: 'Início', bible: 'Bíblia', search: 'Buscar', saved: 'Salvos', plans: 'Planos', about: 'Sobre', settings: 'Configurações' },
   common: { all: 'Todos', back: 'Voltar', chapter: 'Capítulo', close: 'Fechar', continue: 'Continuar', explore: 'Explorar', next: 'Próximo', open: 'Abrir', previous: 'Anterior', read: 'Ler', save: 'Salvar', saving: 'Salvando', saved: 'Salvo', search: 'Buscar', share: 'Compartilhar', skipToContent: 'Pular para o conteúdo', start: 'Começar', today: 'Hoje', version: 'Versão' },

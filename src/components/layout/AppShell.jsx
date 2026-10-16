@@ -4,6 +4,7 @@ import { useI18n } from '../../i18n'
 import { Icon } from '../ui/Icon'
 import { HomeHeader } from '../../features/home/HomeHeader'
 import { AppFooter } from './AppFooter'
+import { AppUpdateNotice } from '../../features/offline/AppUpdateNotice'
 
 const mobileLinks = [
   ['home', '/', 'home'],
@@ -97,6 +98,7 @@ export function AppShell() {
       <RouteTransition />
       <a className="skip-link" href="#main-content">{t('common.skipToContent')}</a>
       {!isReader && !isHome && <div className="site-header"><HomeHeader variant="site" /></div>}
+      <AppUpdateNotice />
       <main id="main-content" className="app-main" tabIndex={-1}>
         <Outlet />
       </main>

@@ -1,0 +1,38 @@
+.failure {
+  width: min(100% - 2.5rem, 42rem);
+  margin: 3rem auto;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.failure h1 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 5vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.failure p {
+  margin: 1rem 0 1.5rem;
+  color: var(--ink-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
+}
+
+.homeLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--accent-blue-deep);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}

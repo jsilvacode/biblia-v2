@@ -6,10 +6,15 @@ import { describe, expect, it, vi } from 'vitest'
 const script = await readFile(resolve('public/sw-update.js'), 'utf8')
 
 describe('service worker activation', () => {
-  it('claims tabs before reloading them without blocking activation on navigation', async () => {
-    const navigate = vi.fn(() => new Promise(() => {}))
+  it('notifies existing tabs without navigating them or taking over their focus', async () => {
+    const navigate = vi.fn()
+    const postMessage = vi.fn()
+    const foreignPost = vi.fn()
     const claim = vi.fn(async () => undefined)
-    const matchAll = vi.fn(async () => [{ url: 'https://bible.test/read/43/3', navigate }])
+    const matchAll = vi.fn(async () => [
+      { url: 'https://bible.test/read/43/3', navigate, postMessage },
+      { url: 'https://bible.test.evil/read/43/3', postMessage: foreignPost },
+    ])
     let activate
     runInNewContext(script, { self: {
       registration: { active: {} },
@@ -20,8 +25,10 @@ describe('service worker activation', () => {
     let activation
     activate({ waitUntil: (promise) => { activation = promise } })
     await activation
-    expect(claim.mock.invocationCallOrder[0]).toBeLessThan(matchAll.mock.invocationCallOrder[0])
-    expect(navigate).toHaveBeenCalledWith('https://bible.test/read/43/3')
+    expect(postMessage).toHaveBeenCalledExactlyOnceWith({ type: 'SANTA_BIBLIA_UPDATE_AVAILABLE' })
+    expect(navigate).not.toHaveBeenCalled()
+    expect(claim).not.toHaveBeenCalled()
+    expect(foreignPost).not.toHaveBeenCalled()
   })
 
   it('does not reload a first-time visitor', () => {

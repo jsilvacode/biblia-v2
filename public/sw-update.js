@@ -4,16 +4,13 @@ self.addEventListener('activate', (event) => {
   if (!replacesPreviousVersion) return
 
   event.waitUntil(
-    // Control the navigation before asking existing tabs to reload; otherwise
-    // the retiring worker can answer that reload with the previous HTML.
-    self.clients.claim()
-      .then(() => self.clients.matchAll({ includeUncontrolled: true, type: 'window' }))
+    self.clients.matchAll({ includeUncontrolled: true, type: 'window' })
       .then((clients) => {
-        // The new navigation can wait for activation. Do not make activation
-        // wait for that navigation in return (a circular wait).
+        // Each tab decides when to reload. Activation must never close a
+        // reader's dialog, selection, search, or unfinished study answer.
         clients
-          .filter((client) => client.url.startsWith(self.location.origin))
-          .forEach((client) => { void client.navigate(client.url).catch(() => undefined) })
+          .filter((client) => client.url.startsWith(`${self.location.origin}/`))
+          .forEach((client) => { client.postMessage({ type: 'SANTA_BIBLIA_UPDATE_AVAILABLE' }) })
       }),
   )
 })

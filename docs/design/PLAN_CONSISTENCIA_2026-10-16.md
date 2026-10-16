@@ -14,7 +14,7 @@ Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos
 | --- | --- | --- | --- |
 | 1 | Guardados conserva la traducción del versículo | Guardar y destacar en una versión, cambiar la preferencia y abrir ambos desde Guardados conserva el texto y la marca originales | Completado |
 | 2 | Guardar y destacar confirman persistencia real | Un fallo de almacenamiento muestra un mensaje, permite reintentar y no presenta un éxito falso ni sobrescribe datos no cargados | Completado |
-| 3 | Recuperación de carga y actualizaciones | Las rutas fallidas ofrecen reintento; las actualizaciones se consultan oportunamente y no fuerzan bucles ni interrumpen una acción abierta | Pendiente |
+| 3 | Recuperación de carga y actualizaciones | Las rutas fallidas ofrecen reintento; las actualizaciones se consultan oportunamente y no fuerzan bucles ni interrumpen una acción abierta | Completado |
 | 4 | Lenguaje visual y navegación compartidos | Controles, foco, tamaños táctiles y acciones equivalentes usan un patrón coherente en las páginas principales | Pendiente |
 | 5 | Flujos de lectura más evidentes | Retomar es fácil de encontrar; las acciones del versículo se descubren y priorizan copiar/guardar; «Inicio del capítulo» no se confunde con Inicio del sitio; los modales conservan contexto | Pendiente |
 | 6 | Footer útil y cierre editorial | Identidad, ayuda sobre el proyecto, contacto y apoyo tienen una jerarquía clara; enlaces táctiles cómodos y una página informativa real | Pendiente |
@@ -32,4 +32,5 @@ Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos
 ## Registro de publicaciones
 
 1. `a3a277c` — Guardados conserva la traducción: pruebas E2E en móvil y escritorio, lint y build aprobados. Verificado el mismo artefacto en el dominio público.
-2. Persistencia confirmada y recuperación: 22 pruebas unitarias, recorridos E2E de error/reintento y traducciones, lint y build aprobados. Publicación en el commit que incorpora esta fila.
+2. `805df30` — Persistencia confirmada y recuperación: 22 pruebas unitarias, recorridos E2E de error/reintento y traducciones, lint y build aprobados. Verificado el mismo artefacto en producción.
+3. Recuperación de rutas y actualización explícita: 225 pruebas unitarias, seis E2E, lint y build aprobados. Prueba con dos pestañas y SW real: la versión anterior recargaba ambas y cerraba el modal; la nueva recarga una vez solo la pestaña que lo solicita y conserva modal, foco y posición en la otra. Publicación en el commit que incorpora esta fila.

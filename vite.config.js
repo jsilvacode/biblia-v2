@@ -61,7 +61,8 @@ export default defineConfig({
     rpspDevelopmentEndpoint(),
     VitePWA({
       includeManifestIcons: false,
-      registerType: 'autoUpdate',
+      injectRegister: false,
+      registerType: 'prompt',
       manifest: {
         id: '/',
         name: 'Santa Biblia',
@@ -95,6 +96,8 @@ export default defineConfig({
         ],
       },
       workbox: {
+        skipWaiting: false,
+        clientsClaim: true,
         importScripts: ['sw-update.js'],
         globPatterns: ['**/*.{js,css,html,png,svg,webp,avif,jpg,jpeg,woff,woff2}'],
         // Social-card images are read by the server and are not offline UI.

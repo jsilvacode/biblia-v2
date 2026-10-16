@@ -1,4 +1,16 @@
 export default {
+  appRecovery: {
+    loading: 'Loading…',
+    loadErrorTitle: 'We couldn’t open this page',
+    loadErrorBody: 'Check your connection and try again.',
+    reload: 'Reload page',
+    goHome: 'Go home',
+    updateReady: 'A new version is available.',
+    update: 'Update',
+    later: 'Later',
+    updating: 'Updating…',
+    updateError: 'We couldn’t update. Try again.',
+  },
   app: { name: 'Santa Biblia', tagline: 'Read, reflect, and return to what matters.' },
   nav: { home: 'Home', bible: 'Bible', search: 'Search', saved: 'Saved', plans: 'Plans', about: 'About', settings: 'Settings' },
   common: { all: 'All', back: 'Back', chapter: 'Chapter', close: 'Close', continue: 'Continue', explore: 'Explore', next: 'Next', open: 'Open', previous: 'Previous', read: 'Read', save: 'Save', saving: 'Saving', saved: 'Saved', search: 'Search', share: 'Share', skipToContent: 'Skip to content', start: 'Start', today: 'Today', version: 'Version' },

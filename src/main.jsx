@@ -10,7 +10,7 @@ import './styles/global.css'
 import './styles/responsive.css'
 import './styles/aurora.css'
 
-enableAutomaticAppUpdates()
+if (import.meta.env.PROD) void enableAutomaticAppUpdates()
 preloadInitialReading(window.location, readSettings().bibleVersion)
 
 createRoot(document.getElementById('root')).render(

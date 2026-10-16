@@ -344,6 +344,18 @@ export default {
     macSafariInstructions: 'En Safari, abre Archivo y elige “Añadir al Dock”.',
     unavailable: 'La opción aparecerá aquí cuando el navegador permita instalar la aplicación.',
   },
+  appRecovery: {
+    loading: 'Cargando…',
+    loadErrorTitle: 'No pudimos abrir esta página',
+    loadErrorBody: 'Comprueba tu conexión y vuelve a intentarlo.',
+    reload: 'Recargar página',
+    goHome: 'Ir al inicio',
+    updateReady: 'Hay una nueva versión disponible.',
+    update: 'Actualizar',
+    later: 'Más tarde',
+    updating: 'Actualizando…',
+    updateError: 'No pudimos actualizar. Inténtalo de nuevo.',
+  },
   settings: {
     title: 'Ajustes',
     appearance: 'Apariencia',
