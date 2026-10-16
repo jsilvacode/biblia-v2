@@ -10,6 +10,9 @@ async function settledHome(page, date) {
     await document.fonts.load('400 24px "Playfair Display"')
     await document.fonts.load('400 14px "Lora"')
     await document.fonts.ready
+    // A viewport change can queue a style update after fonts are ready.
+    // Measure the responsive layout after that update has been painted.
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))
   })
 }
 

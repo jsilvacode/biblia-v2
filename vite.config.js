@@ -98,7 +98,7 @@ export default defineConfig({
         importScripts: ['sw-update.js'],
         globPatterns: ['**/*.{js,css,html,png,svg,webp,avif,jpg,jpeg,woff,woff2}'],
         // Social-card images are read by the server and are not offline UI.
-        globIgnores: ['assets/social/**', 'og-share.jpg', 'assets/home-landscape-v2-*.{avif,webp}'],
+        globIgnores: ['assets/social/**', 'og-share.jpg', 'assets/home-landscape-v3-*.{avif,webp}'],
         cleanupOutdatedCaches: true,
         // Online navigations should see this deployment immediately, rather
         // than show the previous HTML until the next SW finishes installing.
@@ -109,7 +109,7 @@ export default defineConfig({
           {
             // Cache the chosen crop/format, without downloading all ten
             // responsive alternatives during service-worker installation.
-            urlPattern: /\/assets\/home-landscape-v2-.*\.(avif|webp)$/i,
+            urlPattern: /\/assets\/home-landscape-v3-.*\.(avif|webp)$/i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'santa-biblia-v2-home-landscape',

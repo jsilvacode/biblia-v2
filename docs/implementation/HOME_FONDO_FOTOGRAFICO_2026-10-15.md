@@ -1,19 +1,21 @@
 # Fondo fotográfico del Inicio — 15 de octubre de 2026
 
-Se usa la fotografía central proporcionada por el usuario, `lionel-abrial-gUPIPcGCg28-unsplash.jpg`, después de comparar sus encuadres con la primera fotografía. El cielo despejado deja espacio al texto diario y el paisaje continúa bajo el panel de lectura.
+La revisión móvil mostró que la fotografía central tenía demasiado cielo y dejaba el paisaje bajo el selector. Se sustituye por la primera fotografía proporcionada por el usuario, `kalen-emsley-Bkci_8qcdvQ-unsplash.jpg`: montañas, valle y bosque visibles desde el hero.
 
 ## Imagen y composición
 
-- Maestro: JPEG de 2988 × 2988 px, proporcionado por el usuario. Los originales de Descargas no se modifican.
-- Copias cuadradas de 1600, 2400 y 2988 px para escritorio y tablet; recorte vertical de la misma foto en 800 × 1360 y 1200 × 2040 px para móvil.
-- AVIF a calidad 52 y crominancia 4:2:0, con alternativa WebP a calidad 79. Conversión mediante Sharp, sin ampliar la resolución original ni vectorizar la fotografía.
-- El navegador elige una sola variante con `picture`, `srcset`, `sizes` y precarga de alta prioridad coherente con el encuadre. La versión AVIF pesa aproximadamente 65–135 KiB en móvil y 151–480 KiB en escritorio, según resolución y densidad.
-- La fotografía ocupa el hero, la separación y el panel completos. Su capa termina 144 px después del panel en móvil y 160 px después en escritorio; una máscara gradual la desvanece hacia el contenido editorial.
-- Un velo suave se adapta al tema para mantener la legibilidad del texto y de los controles. El vidrio mantiene su propio reflejo y termina antes de la sección editorial.
-- Las alturas y posiciones del hero y del panel permanecen independientes de la carga de la imagen.
+- Maestro: JPEG de 5760 × 3840 px. Los originales de Descargas no se modifican.
+- Se eliminan los primeros 900 px de cielo. Escritorio y tablet usan un recorte de 5760 × 2940 px, exportado a anchos de 1600, 2400 y 3200 px.
+- Móvil usa un recorte centrado en el valle: origen (2280, 900), tamaño 1200 × 2940 px, exportado a 800 y 1200 px de ancho. Mantiene las montañas detrás de la promesa, en lugar de mostrar una pantalla de cielo.
+- AVIF a calidad 51 y crominancia 4:2:0; alternativa WebP a calidad 79. Sharp convierte y redimensiona sin ampliar los originales ni vectorizar la fotografía.
+- `picture`, `srcset`, `sizes` y precarga coinciden para descargar una sola variante. En escritorio se cuenta el ancho real que necesita `object-fit: cover` al cubrir hero y panel, evitando ampliar una imagen pequeña. AVIF: aproximadamente 113–215 KiB en móvil y 128–417 KiB en escritorio.
+- Las URL `home-landscape-v3-*` permiten actualizar las imágenes pese a la caché inmutable. Se retiran las variantes anteriores sin referencias.
+- Se reduce el velo inferior respecto a la composición anterior. El texto conserva su contraste con velos por tema y el selector conserva su vidrio independiente, con reflejo definido y fondo desenfocado.
+- Móvil pasa a un hero de 35rem y un panel de 29rem para reducir espacio vacío; el perfil de pantallas muy estrechas conserva la altura necesaria para promesas largas. Las alturas siguen independientes de la promesa, el historial y la carga de imágenes, y pueden crecer cuando el texto ampliado lo necesita.
+- La fotografía cubre hero y panel completos, con una cola difuminada de 144 px en móvil y 160 px en escritorio. El vidrio termina antes de la sección editorial.
 
 ## Rendimiento y comprobación
 
-Las variantes se excluyen de la descarga inicial del service worker. Solo se guarda la imagen elegida, mediante una caché de uso con un máximo de seis entradas. La auditoría de la PWA confirma que el fondo se conserva sin conexión y que no se descargan todas las alternativas.
+Las variantes se excluyen de la descarga inicial del service worker. Solo se guarda la imagen elegida, mediante una caché de uso con un máximo de seis entradas; el fondo sigue disponible sin conexión.
 
-Se revisan los encuadres y ambos temas en Chromium y WebKit, en móvil y escritorio. Las pruebas cubren la elección de una única imagen, la continuidad por debajo del panel, las alturas estables del Inicio, los desplegables y el lector. Compilación, contratos públicos y corpus correctos.
+La comprobación visual incluye la promesa larga del 15/10/2026 en RVA2015 y ambos temas, en Chromium y WebKit. Las pruebas del Inicio cubren alturas estables, texto ampliado, una única imagen por carga, continuidad bajo el panel y funcionamiento del selector y del lector. También se revisan compilación, contratos públicos, corpus y funcionamiento sin conexión.
