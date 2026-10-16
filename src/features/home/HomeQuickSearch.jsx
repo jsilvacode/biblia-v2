@@ -16,14 +16,15 @@ function readerPath(reference) {
   return `/read/${reference.book}/${reference.chapter}${reference.verse ? `/${reference.verse}` : ''}`
 }
 
-export function HomeQuickSearch({ currentBookId, currentChapter, onGoToChapter, onOpenChange }) {
+export function HomeQuickSearch({ currentBookId, currentChapter, inputRef: forwardedInputRef, onGoToChapter, onOpenChange }) {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [selectedBook, setSelectedBook] = useState(null)
   const [resultsOpen, setResultsOpen] = useState(false)
-  const inputRef = useRef(null)
+  const localInputRef = useRef(null)
+  const inputRef = forwardedInputRef ?? localInputRef
   const bookTriggerRef = useRef(null)
   const searchRef = useRef(null)
   const formRef = useRef(null)
@@ -60,7 +61,7 @@ export function HomeQuickSearch({ currentBookId, currentChapter, onGoToChapter, 
       if (document.activeElement === inputRef.current) revealPickerAnchor(formRef.current)
       positionPickerMenu(resultsRef.current, formRef.current)
     }
-  }, [activeQuery, showResults, search.status, search.results])
+  }, [activeQuery, inputRef, showResults, search.status, search.results])
 
   useEffect(() => {
     if (!showResults || selectedBook) return undefined
@@ -85,7 +86,7 @@ export function HomeQuickSearch({ currentBookId, currentChapter, onGoToChapter, 
       viewport?.removeEventListener('resize', resize)
       viewport?.removeEventListener('scroll', reposition)
     }
-  }, [showResults, selectedBook])
+  }, [inputRef, showResults, selectedBook])
 
   function submit(event) {
     event.preventDefault()

@@ -374,21 +374,31 @@ body,
 .reader-header { min-height: 0; border: 0; background: var(--bg-reader); box-shadow: none; }
 .reader-header__bar { position: relative; }
 .reader-header__leading { display: flex; min-width: 0; align-items: center; gap: 6px; }
-.reader-header__back { display: inline-flex; align-items: center; justify-content: center; justify-self: start; min-height: 44px; gap: 8px; margin: 0; padding: 10px 0; border: 0; border-radius: 10px; background: transparent; color: var(--accent-blue-deep); font: 400 .875rem/1.4 var(--font-ui); cursor: pointer; }
+.reader-header__back { display: inline-flex; align-items: center; justify-content: center; justify-self: start; min-height: 54px; gap: 8px; margin: 0; padding: 10px 0; border: 0; border-radius: 10px; background: transparent; color: var(--accent-blue-deep); font: 400 .875rem/1.4 var(--font-ui); cursor: pointer; }
 .reader-header__back:hover { background: var(--accent-soft); color: var(--accent-deep); }
 .reader-header__brand { display: inline-flex; min-width: 0; align-items: center; min-height: 44px; gap: 8px; color: var(--ink); font: 400 1.3125rem/1.15 var(--font-display); letter-spacing: -.025em; }
 .reader-header__brand svg { color: var(--accent-deep); }
 .reader-header__brand > span { min-width: 0; overflow-wrap: anywhere; }
 .reader-header__desktop-navigation { gap: 18px; }
-.reader-header__passage-band { position: relative; z-index: 30; padding: 22px 0 12px; background: var(--bg-reader); }
-.reader-header__passage { position: relative; display: grid; width: min(calc(100% - var(--chrome-gutter) * 2), var(--reader-width)); gap: 16px; margin-inline: auto; }
-.reader-header__reading-tools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: start; min-width: 0; gap: 14px; }
+.reader-header__passage-band { position: relative; z-index: 1; isolation: isolate; padding: 22px 0 12px; background: var(--bg-reader); }
+.reader-header__passage { position: relative; display: grid; grid-template-columns: auto minmax(0, .85fr) minmax(0, 1.4fr); align-items: center; width: min(calc(100% - var(--chrome-gutter) * 2), 1100px); gap: 14px; margin-inline: auto; }
+.reader-header__search-panel { --quick-search-placeholder-size: .9375rem; min-width: 0; }
+.reader-header__search-toggle, .reader-header__search-heading { display: none; }
+.reader-header__back:focus-visible, .reader-header__search-toggle:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
 .reader-chapter-heading { margin-bottom: 32px; text-align: center; }
 .reader-chapter-version { margin: 0 0 14px; color: var(--accent-deep); font: 400 .6875rem/1.5 var(--font-ui); letter-spacing: .12em; text-transform: uppercase; }
 .reader-content .reader-chapter-heading h1 { margin: 0; color: var(--ink); font: 400 clamp(1.8125rem, 5.8vw, 2.5rem)/1.15 var(--font-display); letter-spacing: -.025em; }
 .reader-chapter-number { margin: 14px 0 0; color: var(--ink-muted); font: 400 .9375rem/1.45 var(--font-reading); }
 .reader-content > .reader-chapter-subtitle { margin-top: 0; text-align: center; }
-@media (max-width: 620px) { .reader-header__reading-tools { grid-template-columns: minmax(0, 1fr); gap: 14px; } }
+@media (max-width: 767px) {
+  .reader-header__passage-band { padding-top: 16px; }
+  .reader-header__passage { grid-template-columns: 44px minmax(0, 1fr) 44px; gap: 8px; }
+  .reader-header__back, .reader-header__search-toggle { display: grid; width: 44px; height: 44px; min-height: 44px; padding: 0; place-items: center; border: 1px solid var(--border); border-radius: 50%; background: var(--surface-raised); color: var(--ink); cursor: pointer; }
+  .reader-header__back > span { display: none; }
+  .reader-header__search-toggle:hover, .reader-header__search-toggle[aria-expanded='true'] { background: var(--accent-soft); color: var(--accent-deep); }
+  .reader-header__search-panel { position: absolute; z-index: 5; top: -8px; right: -8px; left: -8px; padding: 4px 8px 8px; border: 1px solid var(--border-strong); border-radius: 16px; background: var(--surface-raised); box-shadow: var(--shadow-md); }
+  .reader-header__search-heading { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding-left: 8px; color: var(--ink-muted); font: 400 .75rem/1.4 var(--font-ui); }
+}
 @media (max-width: 620px) { .reader-header__brand { font-size: 1.25rem; } }
 .mobile-navigation, .reader-bottom-navigation {
   background: light-dark(rgb(255 255 255 / .88), rgb(38 31 36 / .88));

@@ -95,8 +95,8 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
   }
 })
 
-test('the reader separates Back from its neutral selector and search below the glass bar', async ({ page }) => {
-  for (const [width, fontSize] of [[1440, '16px'], [320, '16px'], [320, '32px']]) {
+test('the reader aligns Back, its neutral selector and quick search below the glass bar', async ({ page }) => {
+  for (const [width, fontSize] of [[1440, '16px'], [768, '16px'], [390, '16px'], [320, '16px'], [320, '32px']]) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/read/43/3')
     await page.evaluate((size) => { document.documentElement.style.fontSize = size }, fontSize)
@@ -107,19 +107,78 @@ test('the reader separates Back from its neutral selector and search below the g
     const back = row.getByRole('button', { name: /^(Volver|Back|Voltar)$/ })
     const book = picker.locator('[data-picker-trigger="book"]')
     await expect(bar.getByRole('button', { name: /^(Volver|Back|Voltar)$/ })).toHaveCount(0)
-    await expect(back).toContainText(/Volver|Back|Voltar/)
     await expect(book).toHaveText(/Seleccionar libro|Select a book|Selecionar livro/)
     await expect(picker.getByRole('button')).toHaveCount(1)
+    const search = width < 768
+      ? row.getByRole('button', { name: 'Búsqueda rápida', exact: true })
+      : row.getByRole('search')
+    await expect(search).toBeVisible()
     const [barBox, bandBox, rowBox, backBox, bookBox, searchBox] = await Promise.all([
-      bar.boundingBox(), band.boundingBox(), row.boundingBox(), back.boundingBox(), book.boundingBox(), row.getByRole('search').boundingBox(),
+      bar.boundingBox(), band.boundingBox(), row.boundingBox(), back.boundingBox(), book.boundingBox(), search.boundingBox(),
     ])
     expect(bandBox.y).toBeGreaterThanOrEqual(barBox.y + barBox.height)
     expect(rowBox.x).toBeGreaterThanOrEqual(0)
     expect(rowBox.x + rowBox.width).toBeLessThanOrEqual(width)
-    expect(backBox.y + backBox.height).toBeLessThanOrEqual(bookBox.y)
-    if (width <= 620) expect(bookBox.y + bookBox.height).toBeLessThanOrEqual(searchBox.y)
-    else expect(bookBox.x + bookBox.width).toBeLessThanOrEqual(searchBox.x)
+    expect(backBox.x + backBox.width).toBeLessThanOrEqual(bookBox.x)
+    expect(bookBox.x + bookBox.width).toBeLessThanOrEqual(searchBox.x)
+    const centers = [backBox, bookBox, searchBox].map(box => box.y + box.height / 2)
+    expect(Math.max(...centers) - Math.min(...centers)).toBeLessThanOrEqual(1)
+    if (width < 768) {
+      await expect(row.getByRole('searchbox')).toBeHidden()
+      for (const [control, box] of [[back, backBox], [search, searchBox]]) {
+        expect(box.width).toBeGreaterThanOrEqual(44)
+        expect(Math.abs(box.width - box.height)).toBeLessThanOrEqual(1)
+        expect(await control.evaluate(element => parseFloat(getComputedStyle(element).borderTopLeftRadius))).toBeGreaterThanOrEqual(box.width / 2)
+      }
+    } else {
+      await expect(back).toContainText(/Volver|Back|Voltar/)
+      const headerBox = await bar.locator('header').boundingBox()
+      expect(Math.abs(rowBox.x - headerBox.x)).toBeLessThanOrEqual(1)
+      expect(Math.abs(rowBox.width - headerBox.width)).toBeLessThanOrEqual(1)
+      expect(rowBox.width).toBeLessThanOrEqual(1100)
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+  }
+})
+
+test('reader dropdowns and search results scroll behind the sticky header', async ({ page }) => {
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 })
+    for (const kind of ['picker', 'search']) {
+      await page.goto('/read/43/3')
+      const row = page.getByTestId('reader-passage-row')
+      await expect(page.getByRole('heading', { name: 'Juan', exact: true })).toBeVisible()
+      await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
+      let overlay
+      if (kind === 'picker') {
+        const picker = page.getByTestId('reader-passage-picker')
+        await picker.locator('[data-picker-trigger="book"]').click()
+        overlay = picker.getByRole('dialog')
+      } else {
+        if (width < 768) await row.getByRole('button', { name: 'Búsqueda rápida', exact: true }).click()
+        await row.getByRole('searchbox').fill('Juan')
+        overlay = row.getByRole('region', { name: 'Resultados de búsqueda', exact: true })
+      }
+      await expect(overlay).toBeVisible()
+      const rowTop = (await row.boundingBox()).y
+      await overlay.evaluate(element => {
+        const bar = document.querySelector('.reader-header__bar').getBoundingClientRect()
+        const top = element.getBoundingClientRect().top
+        window.scrollBy({ top: top - bar.bottom + 20, behavior: 'instant' })
+      })
+      await expect.poll(() => overlay.evaluate(element => {
+        const overlayRect = element.getBoundingClientRect()
+        const bar = document.querySelector('.reader-header__bar').getBoundingClientRect()
+        const left = Math.max(overlayRect.left, bar.left)
+        const right = Math.min(overlayRect.right, bar.right)
+        const top = Math.max(overlayRect.top, bar.top)
+        const bottom = Math.min(overlayRect.bottom, bar.bottom)
+        if (right <= left || bottom <= top || getComputedStyle(element).visibility === 'hidden') return false
+        const hit = document.elementFromPoint((left + right) / 2, (top + bottom) / 2)
+        return Boolean(hit?.closest('.reader-header'))
+      }), { message: `${kind} must remain behind the header at ${width}px` }).toBe(true)
+      expect((await row.boundingBox()).y).toBeLessThan(rowTop)
+    }
   }
 })
 

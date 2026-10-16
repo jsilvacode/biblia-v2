@@ -12,13 +12,13 @@ import {
 import { loadChapter } from '../bible/bibleRepository'
 import { HomeHeader } from '../home/HomeHeader'
 import { HomePassagePicker } from '../home/HomePassagePicker'
-import { HomeQuickSearch } from '../home/HomeQuickSearch'
 import { useReadingActions } from '../reading/ReadingProvider'
 import { useSaved } from '../saved/SavedProvider'
 import { useSettings } from '../settings/SettingsProvider'
 import { CommentarySheet } from './CommentarySheet'
 import { ReaderBottomNavigation } from './ReaderBottomNavigation'
 import { ReaderSectionMenu } from './ReaderSectionMenu'
+import { ReaderQuickSearch } from './ReaderQuickSearch'
 import { copyVerse, createVerseShareData, createVerseShareUrl, shareVerse } from './shareVerse'
 import { VerseActionsSheet } from './VerseActionsSheet'
 import { useReaderImmersion } from './useReaderImmersion'
@@ -337,18 +337,16 @@ export default function ReaderPage() {
       <div className="reader-header__passage-band" data-reader-chrome>
         <div className="reader-header__passage" data-testid="reader-passage-row">
           <button aria-label={t('common.back')} className="reader-header__back" onClick={handleBack} type="button">
-            <Icon name="arrowLeft" size={17} /><span>{t('common.back')}</span>
+            <Icon name="arrowLeft" size={20} /><span>{t('common.back')}</span>
           </button>
-          <div className="reader-header__reading-tools">
-            <HomePassagePicker
-              compact
-              key={`${reference.book}:${reference.chapter}`}
-              bookTriggerRef={passageBookTriggerRef}
-              onGoToChapter={goToChapter}
-              onOpenChange={handlePassagePickerOpenChange}
-            />
-            <HomeQuickSearch key={`search:${routeKey}`} currentBookId={reference.book} currentChapter={reference.chapter} onGoToChapter={goToChapter} onOpenChange={handleQuickSearchOpenChange} />
-          </div>
+          <HomePassagePicker
+            compact
+            key={`${reference.book}:${reference.chapter}`}
+            bookTriggerRef={passageBookTriggerRef}
+            onGoToChapter={goToChapter}
+            onOpenChange={handlePassagePickerOpenChange}
+          />
+          <ReaderQuickSearch key={`search:${routeKey}`} currentBookId={reference.book} currentChapter={reference.chapter} onGoToChapter={goToChapter} onOpenChange={handleQuickSearchOpenChange} />
         </div>
       </div>
 

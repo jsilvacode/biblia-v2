@@ -44,6 +44,8 @@
 .chapterGrid > button { min-width: 0; min-height: 44px; padding: 8px 0; border: 1px solid color-mix(in srgb, var(--border-strong) 75%, transparent); border-radius: 9px; background: color-mix(in srgb, var(--surface-raised) 90%, transparent); color: var(--ink); font: 400 .9375rem/1.4 var(--font-ui); cursor: pointer; transition: background 150ms ease, color 150ms ease, transform 150ms ease; }
 .chapterGrid > button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 .compact { max-width: none; }
+.compact .value { white-space: normal; overflow-wrap: anywhere; }
+@media (max-width: 767px) { .compact .bookTrigger { gap: 8px; padding-inline: 10px; font-size: clamp(.8125rem, 3.75vw, 1rem); } }
 @media (hover: hover) {
   .bookToggle:hover { background: var(--accent-soft); }
   .chapterGrid > button:hover { border-color: var(--accent-deep); background: var(--accent-deep); color: var(--bg-reader); transform: translateY(-1px); }

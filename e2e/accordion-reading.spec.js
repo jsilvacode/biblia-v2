@@ -51,7 +51,16 @@ test('reader shows the approved book heading and searches books and exact citati
   await expect(page.locator('.reader-chapter-number')).toHaveText('Capítulo 3')
   const row = page.getByTestId('reader-passage-row')
   const input = row.getByRole('searchbox')
-  await expect(row.getByRole('button', { name: 'Volver', exact: true })).toContainText('Volver')
+  const openSearch = async () => {
+    if (page.viewportSize().width < 768) {
+      const trigger = row.getByRole('button', { name: 'Búsqueda rápida', exact: true })
+      await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+      await trigger.click()
+      await expect(input).toBeFocused()
+    }
+  }
+  await expect(row.getByRole('button', { name: 'Volver', exact: true })).toBeVisible()
+  await openSearch()
   await input.fill('Juan')
   const results = row.getByRole('region', { name: 'Resultados de búsqueda', exact: true })
   await expectCloseAtRight(results)
@@ -63,6 +72,7 @@ test('reader shows the approved book heading and searches books and exact citati
   await input.press('Enter')
   await expect(page).toHaveURL(/\/read\/43\/3\/16$/)
   await expect(page.locator('#verse-16')).toBeVisible()
+  await openSearch()
   await expect(input).toHaveValue('')
   await input.fill('Salmos')
   await row.getByRole('button', { name: 'Buscar', exact: true }).click()
