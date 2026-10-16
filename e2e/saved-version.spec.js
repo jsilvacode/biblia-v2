@@ -12,7 +12,7 @@ test('bookmarks and highlights reopen their original translation after a prefere
   await actions.getByRole('button', { name: 'Destacar versículo', exact: true }).click()
   await expect(actions).toBeHidden()
 
-  for (const tab of ['Favoritos', 'Resaltados']) {
+  for (const tab of ['Versículos guardados', 'Resaltados']) {
     await page.goto('/settings')
     await page.locator('#settings-version').selectOption('nbla')
     await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('santa_biblia_v2_settings')).bibleVersion)).toBe('nbla')

@@ -75,7 +75,14 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
         await expect(headerBible).toBeVisible()
         await expect(headerBible.locator('svg.lucide-book-open')).toHaveCount(1)
         await expect(headerBible.locator('svg')).toHaveAttribute('width', '17')
-        appearance.navigation = await typography(headerBible)
+        const { family, size, weight } = await typography(headerBible)
+        appearance.navigation = { family, size }
+        expect(size).toBe('14px')
+        expect(weight).toBe(path === '/bible' ? '600' : '500')
+        if (path === '/bible') {
+          await expect(headerBible).toHaveAttribute('aria-current', 'page')
+          await expect(headerBible.locator('span')).toHaveCSS('text-decoration-line', 'underline')
+        }
       } else {
         await expect(bottomBible).toBeVisible()
         await expect(bottomBible.locator('svg.lucide-book-open')).toHaveCount(1)

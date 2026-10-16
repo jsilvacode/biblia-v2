@@ -5,27 +5,21 @@ import { Icon } from '../ui/Icon'
 import { HomeHeader } from '../../features/home/HomeHeader'
 import { AppFooter } from './AppFooter'
 import { AppUpdateNotice } from '../../features/offline/AppUpdateNotice'
+import { primaryNavigation } from './primaryNavigation'
 
-const mobileLinks = [
-  ['home', '/', 'home'],
-  ['bible', '/bible', 'book'],
-  ['search', '/search', 'search'],
-  ['saved', '/saved', 'bookmark'],
-]
-
-function Navigation({ links, className }) {
+function Navigation({ className }) {
   const { t } = useI18n()
   return (
     <nav className={className} aria-label={t('app.name')}>
-      {links.map(([label, path, icon]) => (
+      {primaryNavigation.map(({ id, to, icon, labelKey }) => (
         <NavLink
           className={({ isActive }) => `navigation-link ${isActive ? 'is-active' : ''}`}
-          end={path === '/'}
-          key={path}
-          to={path}
+          end={id === 'home'}
+          key={id}
+          to={to}
         >
           <Icon name={icon} size={20} />
-          <span>{t(`nav.${label}`)}</span>
+          <span>{t(labelKey)}</span>
         </NavLink>
       ))}
     </nav>
@@ -103,7 +97,7 @@ export function AppShell() {
         <Outlet />
       </main>
       {!isReader && <AppFooter editorial={isHome} showSupport={isHome} />}
-      {!isReader && <Navigation className="mobile-navigation" links={mobileLinks} />}
+      {!isReader && <Navigation className="mobile-navigation" />}
     </div>
   )
 }

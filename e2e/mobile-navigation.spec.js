@@ -206,6 +206,18 @@ test.describe('mobile navigation shell', () => {
     await expect(sections).toBeVisible()
     await sections.click()
     const sectionDialog = page.getByRole('dialog', { name: /Opciones rápidas|Quick options|Opções rápidas/ })
+    for (const control of [
+      sectionDialog.getByRole('button', { name: /Reducir texto|Decrease text|Diminuir texto/ }),
+      sectionDialog.getByRole('button', { name: /Aumentar texto|Increase text|Aumentar texto/ }),
+      sectionDialog.getByRole('button', { name: /Cerrar|Close|Fechar/, exact: true }),
+    ]) {
+      const box = await control.boundingBox()
+      const dialogBox = await sectionDialog.boundingBox()
+      expect(box.width).toBeGreaterThanOrEqual(44)
+      expect(box.height).toBeGreaterThanOrEqual(44)
+      expect(box.x).toBeGreaterThanOrEqual(dialogBox.x)
+      expect(box.x + box.width).toBeLessThanOrEqual(dialogBox.x + dialogBox.width)
+    }
     const settings = sectionDialog.getByRole('button', { name: /Todos los ajustes|All settings|Todos os ajustes/ })
     await expect(settings).toBeVisible()
     await settings.click()
@@ -300,8 +312,8 @@ test.describe('editorial page composition', () => {
         await expect(control).toBeVisible()
         const box = await control.boundingBox()
         expect(box).not.toBeNull()
-        expect(box.width).toBeGreaterThanOrEqual(40)
-        expect(box.height).toBeGreaterThanOrEqual(40)
+        expect(box.width).toBeGreaterThanOrEqual(44)
+        expect(box.height).toBeGreaterThanOrEqual(44)
         expect(box.x).toBeGreaterThanOrEqual(headerBox.x)
         expect(box.y).toBeGreaterThanOrEqual(headerBox.y)
         expect(box.x + box.width).toBeLessThanOrEqual(headerBox.x + headerBox.width)

@@ -1,18 +1,17 @@
 .selector {
   --picker-fill: light-dark(rgb(255 255 255 / .94), color-mix(in srgb, var(--surface-raised) 94%, transparent));
-  --picker-border: var(--border-strong);
+  --picker-border: var(--control-border);
   --picker-reflection: light-dark(rgb(255 255 255 / .4), rgb(255 255 255 / .07));
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: color-mix(in srgb, var(--surface-raised) 80%, transparent);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  background: var(--control-surface);
 }
 .selector:has([aria-expanded='true']) { z-index: 35; }
-.trigger { gap: 10px; min-height: 54px; padding: 12px 14px; border-radius: inherit; font-size: .875rem; }
+.trigger { gap: 10px; min-height: calc(var(--control-height) - 2px); padding: 12px 14px; border-radius: inherit; font-size: .875rem; }
 .trigger > svg { flex: none; color: var(--accent-blue-deep); }
 .value { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .trigger small { margin-left: auto; color: var(--ink-muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
-.option { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 44px; }
+.option { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: var(--control-hit-size); }
 .option > svg { color: var(--accent-blue-deep); }
 .option small { font-size: .6875rem; font-variant-numeric: tabular-nums; }
 .menu { border-color: var(--picker-border); }

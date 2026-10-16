@@ -20,8 +20,8 @@
     min-height: 5rem;
     gap: .65rem;
     padding: .85rem .75rem;
-    border: 1px solid var(--border);
-    border-radius: 1rem;
+    border: 1px solid var(--control-border);
+    border-radius: var(--control-radius);
     background: linear-gradient(135deg, var(--surface-raised), color-mix(in srgb, var(--surface) 75%, transparent));
     color: var(--ink);
     text-align: left;
@@ -40,14 +40,14 @@
   .label { padding-top: .35rem; font-size: .8125rem; font-weight: 500; line-height: 1.4; }
   .count { position: absolute; top: .55rem; right: .75rem; color: var(--ink-muted); font-size: .625rem; font-variant-numeric: tabular-nums; line-height: 1; }
   .card[aria-pressed='true'] {
-    border-color: color-mix(in srgb, var(--accent) 70%, var(--border));
+    border-color: var(--control-focus-border);
     background: linear-gradient(135deg, color-mix(in srgb, var(--accent-soft) 58%, var(--surface-raised)), var(--surface));
     box-shadow: inset 0 -2px 0 var(--accent);
     color: var(--accent-deep);
   }
   .card[aria-pressed='true'] .icon { border-color: color-mix(in srgb, var(--accent) 25%, transparent); background: var(--accent-soft); color: var(--accent-deep); }
   .card[aria-pressed='true'] .count { color: var(--accent-deep); }
-  .card:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+  .card:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; border-color: var(--control-focus-border); box-shadow: var(--control-focus-shadow); }
 }
 
 @media (min-width: 1100px) {
@@ -55,7 +55,7 @@
 }
 
 @media (hover: hover) and (min-width: 768px) {
-  .card:hover { transform: translateY(-2px); border-color: var(--accent-blue); box-shadow: var(--shadow-sm); }
+  .card:hover { transform: translateY(-2px); border-color: var(--control-focus-border); box-shadow: var(--shadow-sm); }
   .card[aria-pressed='true']:hover { border-color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent), var(--shadow-sm); }
 }
 

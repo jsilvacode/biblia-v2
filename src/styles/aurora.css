@@ -405,7 +405,9 @@ body,
   -webkit-backdrop-filter: blur(12px) saturate(118%);
   box-shadow: none;
 }
-.mobile-navigation .navigation-link, .reader-bottom-navigation__link { font-weight: 400; }
+.mobile-navigation .navigation-link, .reader-bottom-navigation__link { font-weight: 500; }
+.mobile-navigation .navigation-link.is-active, .reader-bottom-navigation__link--active { color: var(--accent-deep); font-weight: 600; }
+.mobile-navigation .navigation-link.is-active > span, .reader-bottom-navigation__link--active > span { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
 @media (prefers-reduced-transparency: reduce) {
   .mobile-navigation, .reader-bottom-navigation { background: var(--surface-raised); backdrop-filter: none; -webkit-backdrop-filter: none; }
 }

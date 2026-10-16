@@ -173,7 +173,7 @@ test('a reader advances sequentially, retries answers and keeps progress while r
   await completeButton.click()
   await expect(page.getByText(/Lección completada|Lesson completed|Lição concluída/)).toBeVisible()
   await expect(page.getByRole('link', { name: /Siguiente lección.*La Santa Biblia|Next lesson.*La Santa Biblia|Próxima lição.*La Santa Biblia/ })).toBeVisible()
-  await page.getByRole('link', { name: /Volver al estudio|Back to the study|Voltar ao estudo/ }).first().click()
+  await page.getByRole('link', { name: /Volver al curso|Back to course|Voltar ao curso/ }).first().click()
 
   await expect(page.getByText(/1 de 20 lecciones|1 of 20 lessons|1 de 20 lições/).first()).toBeVisible()
   await expect(page.getByRole('link', { name: /La Santa Biblia/ })).toBeVisible()

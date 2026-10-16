@@ -1,18 +1,12 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
+import { primaryNavigation } from '../../components/layout/primaryNavigation'
 import { useI18n } from '../../i18n'
 import { useSettings } from '../settings/SettingsProvider'
 import styles from './HomeHeader.module.css'
 
 const SettingsPopover = lazy(() => import('../settings/SettingsPopover').then((module) => ({ default: module.SettingsPopover })))
-
-const navigation = [
-  ['home', '/', 'home'],
-  ['bible', '/bible', 'book'],
-  ['search', '/search', 'search'],
-  ['saved', '/saved', 'bookmark'],
-]
 
 export function HomeHeader({ variant = 'hero', leading, readerMenu }) {
   const location = useLocation()
@@ -56,20 +50,20 @@ export function HomeHeader({ variant = 'hero', leading, readerMenu }) {
       <header className={`${styles.homeHeader} ${variantClassName ?? ''}${isReader ? ' reader-header__inner' : ''}`}>
         {isReader ? <div className="reader-header__leading">{leading}{brand}</div> : leading ?? brand}
         <nav aria-label={t('app.name')} className={`${styles.homeDesktopNavigation}${isReader ? ' reader-header__desktop-navigation' : ''}`}>
-          {navigation.map(([label, path, icon]) => {
-            const content = <><Icon name={icon} size={17} /><span>{t(`nav.${label}`)}</span></>
+          {primaryNavigation.map(({ id, to, icon, labelKey }) => {
+            const content = <><Icon name={icon} size={17} /><span>{t(labelKey)}</span></>
             return isReader ? (
               <Link
-                aria-current={label === 'bible' ? 'page' : undefined}
-                aria-label={t(`nav.${label}`)}
-                className={`${styles.homeNavigationLink} reader-header__navigation-link${label === 'bible' ? ` ${styles.isActive}` : ''}`}
-                key={path}
-                to={path}
+                aria-current={id === 'bible' ? 'page' : undefined}
+                aria-label={t(labelKey)}
+                className={`${styles.homeNavigationLink} reader-header__navigation-link${id === 'bible' ? ` ${styles.isActive}` : ''}`}
+                key={id}
+                to={to}
               >
                 {content}
               </Link>
             ) : (
-              <NavLink className={({ isActive }) => `${styles.homeNavigationLink}${isActive ? ` ${styles.isActive}` : ''}`} end={path === '/'} key={path} to={path}>
+              <NavLink className={({ isActive }) => `${styles.homeNavigationLink}${isActive ? ` ${styles.isActive}` : ''}`} end={id === 'home'} key={id} to={to}>
                 {content}
               </NavLink>
             )

@@ -19,8 +19,8 @@
   --accent-blue: #7699b2;
   --accent-blue-deep: #496f88;
   --accent-mist: #edf4f6;
-  --action-reading-bg: var(--accent-blue-deep);
-  --action-reading-ink: #f9f2e9;
+  --action-reading-bg: var(--accent-coral-deep);
+  --action-reading-ink: var(--bg-reader);
   --badge-warm-bg: #f3e2d3;
   --badge-warm-ink: #3e627a;
   --feedback-error: #9a463e;
@@ -59,6 +59,15 @@
   --duration-fast: 160ms;
   --duration-base: 240ms;
   --duration-slow: 420ms;
+
+  --control-hit-size: 44px;
+  --control-height-compact: 48px;
+  --control-height: 54px;
+  --control-radius: 14px;
+  --control-surface: color-mix(in srgb, var(--surface-raised) 65%, transparent);
+  --control-border: var(--border-strong);
+  --control-focus-border: var(--accent-deep);
+  --control-focus-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-deep) 22%, transparent);
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -102,8 +111,6 @@
   --accent-blue: #8fbfc7;
   --accent-blue-deep: #b8dfe2;
   --accent-mist: #293334;
-  --action-reading-bg: var(--accent-blue-deep);
-  --action-reading-ink: #142336;
   --badge-warm-bg: #44342e;
   --badge-warm-ink: #f0c2a2;
   --feedback-error: #f0aaa2;

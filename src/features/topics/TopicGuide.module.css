@@ -1,9 +1,11 @@
 .guide { display: grid; align-content: start; gap: 32px; max-width: 52rem; min-height: 55dvh; }
 .guide > :global(.page-intro) { margin: 0; }
-.selectorBar { position: relative; z-index: 2; display: flex; align-items: center; min-width: 0; gap: 14px; padding: 6px 16px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface-raised); box-shadow: var(--shadow-sm); color: var(--accent-blue-deep); }
+.selectorBar { position: relative; z-index: 2; display: flex; align-items: center; min-width: 0; min-height: var(--control-height); gap: 14px; padding: 0 16px; border: 1px solid var(--control-border); border-radius: var(--control-radius); background: var(--control-surface); color: var(--accent-blue-deep); }
+.selectorBar:focus-within { border-color: var(--control-focus-border); box-shadow: var(--control-focus-shadow); }
 .selectorBar > svg { flex: 0 0 auto; }
 .selectControl { flex: 1; min-width: 0; border-bottom: 0; }
-.selectTrigger { font-size: .9375rem; }
+.selectControl:focus-within { box-shadow: none; }
+.selectTrigger { min-height: calc(var(--control-height) - 2px); font-size: .9375rem; }
 .readings { display: grid; gap: 24px; min-width: 0; }
 .readings > header p { margin: 0 0 8px; color: var(--accent-deep); font-size: .75rem; }
 .readings h2 { margin: 0; color: var(--accent-deep); font: 400 clamp(1.75rem, 4vw, 2.25rem)/1.2 var(--font-display); letter-spacing: -.025em; text-wrap: balance; overflow-wrap: anywhere; }

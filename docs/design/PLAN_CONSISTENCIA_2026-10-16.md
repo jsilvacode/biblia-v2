@@ -15,11 +15,12 @@ Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos
 | 1 | Guardados conserva la traducción del versículo | Guardar y destacar en una versión, cambiar la preferencia y abrir ambos desde Guardados conserva el texto y la marca originales | Completado |
 | 2 | Guardar y destacar confirman persistencia real | Un fallo de almacenamiento muestra un mensaje, permite reintentar y no presenta un éxito falso ni sobrescribe datos no cargados | Completado |
 | 3 | Recuperación de carga y actualizaciones | Las rutas fallidas ofrecen reintento; las actualizaciones se consultan oportunamente y no fuerzan bucles ni interrumpen una acción abierta | Completado |
-| 4 | Lenguaje visual y navegación compartidos | Controles, foco, tamaños táctiles y acciones equivalentes usan un patrón coherente en las páginas principales | Pendiente |
+| 4 | Lenguaje visual y navegación compartidos | Controles, foco, tamaños táctiles y acciones equivalentes usan un patrón coherente en las páginas principales | Completado |
 | 5 | Flujos de lectura más evidentes | Retomar es fácil de encontrar; las acciones del versículo se descubren y priorizan copiar/guardar; «Inicio del capítulo» no se confunde con Inicio del sitio; los modales conservan contexto | Pendiente |
-| 6 | Footer útil y cierre editorial | Identidad, ayuda sobre el proyecto, contacto y apoyo tienen una jerarquía clara; enlaces táctiles cómodos y una página informativa real | Pendiente |
-| 7 | Primera búsqueda y trabajo repetido | Se reutiliza preparación del índice entre instancias sin mezclar consultas/versiones; carga diferida y recuperación se mantienen; se compara el trabajo antes/después | Pendiente |
-| 8 | Verificación de la experiencia completa | Recorridos principales en móvil/tablet/escritorio, teclado, dos temas y errores relevantes; correcciones puntuales y limpieza de lo sustituido | Pendiente |
+| 6 | Home editorial y paisaje | Tarjetas alineadas bajo hero/selector, enlaces de interés compactos, superficie más sólida día/noche; paisaje propio optimizado con luz y recorte que permitan leer sin perder el paisaje; conservar posiciones y flujos actuales | Pendiente |
+| 7 | Footer útil y cierre editorial | Identidad, ayuda sobre el proyecto, contacto y apoyo tienen una jerarquía clara; enlaces táctiles cómodos y una página informativa real | Pendiente |
+| 8 | Primera búsqueda y trabajo repetido | Se reutiliza preparación del índice entre instancias sin mezclar consultas/versiones; carga diferida y recuperación se mantienen; se compara el trabajo antes/después | Pendiente |
+| 9 | Verificación de la experiencia completa | Recorridos principales en móvil/tablet/escritorio, teclado, dos temas y errores relevantes; correcciones puntuales y limpieza de lo sustituido | Pendiente |
 
 ## Comprobaciones comunes
 
@@ -33,4 +34,9 @@ Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos
 
 1. `a3a277c` — Guardados conserva la traducción: pruebas E2E en móvil y escritorio, lint y build aprobados. Verificado el mismo artefacto en el dominio público.
 2. `805df30` — Persistencia confirmada y recuperación: 22 pruebas unitarias, recorridos E2E de error/reintento y traducciones, lint y build aprobados. Verificado el mismo artefacto en producción.
-3. Recuperación de rutas y actualización explícita: 225 pruebas unitarias, seis E2E, lint y build aprobados. Prueba con dos pestañas y SW real: la versión anterior recargaba ambas y cerraba el modal; la nueva recarga una vez solo la pestaña que lo solicita y conserva modal, foco y posición en la otra. Publicación en el commit que incorpora esta fila.
+3. `3d3a8a7` — Recuperación de rutas y actualización explícita: 225 pruebas unitarias, seis E2E, lint y build aprobados. Prueba con dos pestañas y SW real: la versión anterior recargaba ambas y cerraba el modal; la nueva recarga una vez solo la pestaña que lo solicita y conserva modal, foco y posición en la otra. Verificado el mismo artefacto en producción.
+4. Navegación y controles compartidos — configuración única de destinos, foco visible, superficies y acentos coherentes, objetivos táctiles de 44 px y etiquetas precisas en tres idiomas. Pruebas de navegación, lectura, traducción y responsive aprobadas; revisión visual a 320/768/1440 px; lint y build aprobados.
+
+## Directriz editorial incorporada
+
+Las referencias del 16 de octubre orientan la jerarquía, no son una maqueta literal: mantener hero y selector en su posición y conservar sus elementos. Dar a las tres entradas editoriales una fila común en desktop y un apilado cómodo en móvil, compactar los enlaces externos y evaluar una textura más sólida en ambos temas. Crear un paisaje inspirador con zonas de calma para el texto y encuadre útil en móvil; servir variantes comprimidas responsivas y aplicar el difuminado final en CSS. Evitar convertir fotografías a SVG o incrustar texto en la imagen.
