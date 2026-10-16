@@ -56,6 +56,7 @@ test('loading the promise and adding reading history do not move the glass or th
   await page.clock.setFixedTime(new Date('2026-10-14T12:00:00-03:00'))
   await page.goto('/')
   await expect(promiseRegion(page)).toHaveAttribute('aria-busy', 'true')
+  await expect(page.getByRole('region', { name: /^(?:Última lectura|Lecturas recientes)$/ })).toHaveCount(0)
   const geometry = () => page.getByTestId('home-reading-panel').evaluate(panel => ({
     height: panel.getBoundingClientRect().height,
     top: panel.getBoundingClientRect().top,

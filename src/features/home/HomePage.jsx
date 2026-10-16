@@ -177,11 +177,9 @@ export default function HomePage() {
                   <p>{t('home.chooseBookChapter')}</p>
                 </div>
                 <div className={styles.readingTools}>
-                  <HomePassagePicker onGoToChapter={goToReading} />
-                  <HomeQuickSearch currentBookId={hasReadingHistory ? lastRead.book : null} currentChapter={hasReadingHistory ? lastRead.chapter : null} onGoToChapter={goToReading} />
-                  <section aria-labelledby="home-recent-heading" className={styles.recentReadings}>
-                    <h3 id="home-recent-heading"><Icon name="history" size={14} /><span className={styles.recentDesktopLabel}>{t('home.recentReadings')}</span><span className={styles.recentMobileLabel}>{t('home.lastReading')}</span></h3>
-                    {recentReadings.length > 0 ? (
+                  {recentReadings.length > 0 && (
+                    <section aria-labelledby="home-recent-heading" className={styles.recentReadings}>
+                      <h3 id="home-recent-heading"><Icon name="history" size={14} /><span className={styles.recentDesktopLabel}>{t('home.recentReadings')}</span><span className={styles.recentMobileLabel}>{t('home.lastReading')}</span></h3>
                       <ol className={styles.recentList}>
                         {recentReadings.map((reading, index) => (
                           <li key={`${reading.book}:${reading.chapter}`}>
@@ -192,13 +190,16 @@ export default function HomePage() {
                               to={getReaderPath(reading)}
                               {...readingIntentProps(reading)}
                             >
-                              <span>{formatReference(reading, locale)}</span>
+                              <span className={styles.recentReference}>{formatReference(reading, locale)}</span>
+                              {index === 0 && <span className={styles.recentContinue}>{t('common.continue')}</span>}
                             </Link>
                           </li>
                         ))}
                       </ol>
-                    ) : <p className={styles.recentEmpty}>{t('home.noRecentReadings')}</p>}
-                  </section>
+                    </section>
+                  )}
+                  <HomePassagePicker onGoToChapter={goToReading} />
+                  <HomeQuickSearch currentBookId={hasReadingHistory ? lastRead.book : null} currentChapter={hasReadingHistory ? lastRead.chapter : null} onGoToChapter={goToReading} />
                 </div>
               </div>
             </article>

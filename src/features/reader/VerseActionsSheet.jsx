@@ -75,17 +75,8 @@ export function VerseActionsSheet({
       <div className="reader-action-list">
         <button
           className="reader-sheet-action"
+          disabled={Boolean(pendingAction)}
           data-dialog-initial-focus
-          disabled={Boolean(pendingAction)}
-          onClick={onOpenCommentary}
-          type="button"
-        >
-          <span className="reader-sheet-action__icon"><Icon name="commentary" size={21} /></span>
-          <span>{t('reader.viewCommentary')}</span>
-        </button>
-        <button
-          className="reader-sheet-action"
-          disabled={Boolean(pendingAction)}
           onClick={() => runAction('copy', onCopy)}
           type="button"
         >
@@ -120,6 +111,15 @@ export function VerseActionsSheet({
         >
           <span className="reader-sheet-action__icon"><Icon name="share" size={21} /></span>
           <span>{pendingAction === 'share' ? t('reader.sharing') : t('reader.share')}</span>
+        </button>
+        <button
+          className="reader-sheet-action"
+          disabled={Boolean(pendingAction)}
+          onClick={onOpenCommentary}
+          type="button"
+        >
+          <span className="reader-sheet-action__icon"><Icon name="commentary" size={21} /></span>
+          <span>{t('reader.viewCommentary')}</span>
         </button>
       </div>
     </ReaderDialog>

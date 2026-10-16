@@ -91,6 +91,7 @@ test('Home provides one editorial entry for each destination and the four origin
   await expect(hero.getByRole('heading')).toBeVisible()
   await expect(hero.getByRole('link', { name: /Leer capítulo/ })).toHaveAttribute('href', /^\/read\/\d+\/\d+\/\d+$/)
   await expect(page.getByRole('heading', { name: 'Leer la Biblia', exact: true })).toBeVisible()
+  await expect(page.getByRole('region', { name: /^(?:Última lectura|Lecturas recientes)$/ })).toHaveCount(0)
   expect(startupImages.some((url) => url.includes('/assets/social/verse-card-background.jpg'))).toBe(false)
   const picker = homePicker(page)
   await expect(picker.book).toHaveAccessibleName('Seleccionar libro')

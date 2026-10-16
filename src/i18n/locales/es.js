@@ -129,6 +129,9 @@ export default {
     selectBookPrompt: 'Selecciona un libro para ver sus capítulos.',
   },
   reader: {
+    verseHintMouse: 'Haz clic en un versículo para copiarlo, guardarlo o ver su comentario.',
+    verseHintTouch: 'Toca un versículo para copiarlo, guardarlo o ver su comentario.',
+    dismissVerseHint: 'Ocultar ayuda de los versículos',
     reading: 'Lectura',
     language: 'Idioma',
     backToTopics: 'Volver a la guía',

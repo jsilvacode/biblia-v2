@@ -69,6 +69,10 @@ test('Home preserves recent readings across reload and shows only the latest on 
   await expect(history).toHaveAccessibleName(isMobile ? 'Última lectura' : 'Lecturas recientes')
   await expect(history.getByRole('link')).toHaveCount(isMobile ? 1 : 3)
   await expect(history.locator('a')).toHaveCount(3)
+  await expect(history.getByRole('link').first().getByText('Continuar', { exact: true })).toBeVisible()
+  await expect(history.getByText('Continuar', { exact: true })).toHaveCount(1)
+  const [historyBox, pickerBox] = await Promise.all([history.boundingBox(), panel(page).getByTestId('home-reading-actions').boundingBox()])
+  expect(historyBox.y + historyBox.height).toBeLessThanOrEqual(pickerBox.y)
   const links = await history.getByRole('link').all()
   const boxes = await Promise.all(links.map(link => link.boundingBox()))
   if (page.viewportSize().width >= 768) {
@@ -82,6 +86,7 @@ test('Home preserves recent readings across reload and shows only the latest on 
   await expect(history).toHaveAccessibleName('Última lectura')
   await expect(history.getByRole('link')).toHaveCount(1)
   await expect(history.getByRole('link')).toHaveAttribute('href', '/read/43/3/16')
+  await expect(history.getByRole('link').getByText('Continuar', { exact: true })).toBeVisible()
   await page.setViewportSize({ width: 1024, height: 844 })
   await expect(history).toHaveAccessibleName('Lecturas recientes')
   await expect(history.getByRole('link')).toHaveCount(3)

@@ -24,6 +24,7 @@ import { VerseActionsSheet } from './VerseActionsSheet'
 import { useReaderImmersion } from './useReaderImmersion'
 import { useReadingProgress } from './useReadingProgress'
 import { useVerseActivation } from './useVerseActivation'
+import { useVerseActionDiscovery } from './useVerseActionDiscovery'
 
 const SettingsPopover = lazy(() => import('../settings/SettingsPopover').then((module) => ({ default: module.SettingsPopover })))
 
@@ -53,6 +54,7 @@ export default function ReaderPage() {
   const [actionFeedback, setActionFeedback] = useState('')
   const [attentionVerseKey, setAttentionVerseKey] = useState(null)
   const [selectedVerseOverride, setSelectedVerseOverride] = useState(null)
+  const { isDiscovered: verseActionsDiscovered, dismissHint: dismissVerseHint } = useVerseActionDiscovery()
   const dialogTriggerRef = useRef(null)
   const dialogReturnFocusRef = useRef(null)
   const synchronizedSharedVersionRef = useRef(null)
@@ -233,6 +235,7 @@ export default function ReaderPage() {
   }
 
   function openVerseActions(event, verse) {
+    dismissVerseHint()
     dialogTriggerRef.current = event.currentTarget
     dialogReturnFocusRef.current = event.detail === 0 ? event.currentTarget : null
     revealChrome(false)
@@ -334,7 +337,7 @@ export default function ReaderPage() {
       </div>
       <div className="reader-header__passage-band" data-reader-chrome>
         <div className="reader-header__passage" data-testid="reader-passage-row">
-          <button aria-label={t('common.back')} className="reader-header__back" onClick={handleBack} type="button">
+          <button aria-label={t(returnTo ? (returnSource === 'study' ? 'reader.backToStudy' : 'reader.backToTopics') : 'common.back')} className="reader-header__back" onClick={handleBack} title={returnTo ? t(returnSource === 'study' ? 'reader.backToStudy' : 'reader.backToTopics') : undefined} type="button">
             <Icon name="arrowLeft" size={20} /><span>{t('common.back')}</span>
           </button>
           <div className="reader-header__reading-tools">
@@ -350,20 +353,18 @@ export default function ReaderPage() {
         </div>
       </div>
 
-      {returnTo && (
-        <div className="reader-return-context">
-          <button onClick={handleBack} type="button">
-            <Icon name="arrowLeft" size={17} />
-            <span>{t(returnSource === 'study' ? 'reader.backToStudy' : 'reader.backToTopics')}</span>
-          </button>
-        </div>
-      )}
       <article className="reader-content" aria-busy={status === 'loading'}>
         <header className="reader-chapter-heading">
           <h1 ref={chapterHeadingRef} tabIndex={-1}>{getLocalizedBookName(book, locale)}</h1>
           <p className="reader-chapter-number">{t('common.chapter')} {reference.chapter}</p>
         </header>
         {chapterSubtitle && <p className="reader-chapter-subtitle">{chapterSubtitle}</p>}
+        {status === 'ready' && !verseActionsDiscovered && (
+          <aside className="reader-action-hint" data-testid="reader-action-hint">
+            <p><span className="reader-action-hint__mouse">{t('reader.verseHintMouse')}</span><span className="reader-action-hint__touch">{t('reader.verseHintTouch')}</span></p>
+            <button aria-label={t('reader.dismissVerseHint')} onClick={dismissVerseHint} type="button"><Icon name="close" size={16} /></button>
+          </aside>
+        )}
         {status === 'loading' && <div className="reader-skeleton"><i /><i /><i /><i /><i /></div>}
         {status === 'error' && (
           <div className="reader-error">
