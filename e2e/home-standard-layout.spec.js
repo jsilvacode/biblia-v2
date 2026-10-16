@@ -72,7 +72,10 @@ test('loading the promise and adding reading history do not move the glass or th
   })
   await page.reload()
   await expect(promiseRegion(page)).toHaveAttribute('aria-busy', 'false')
-  await expect(page.getByRole('region', { name: 'Lecturas recientes', exact: true }).getByRole('link')).toHaveCount(3)
+  const isMobile = page.viewportSize().width <= 620
+  const history = page.getByRole('region', { name: isMobile ? 'Última lectura' : 'Lecturas recientes', exact: true })
+  await expect(history.getByRole('link')).toHaveCount(isMobile ? 1 : 3)
+  await expect(history.locator('a')).toHaveCount(3)
   expect(await geometry()).toEqual(loading)
 })
 

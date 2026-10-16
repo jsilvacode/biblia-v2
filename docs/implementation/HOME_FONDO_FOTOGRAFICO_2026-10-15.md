@@ -11,7 +11,7 @@ La revisión móvil mostró que la fotografía central tenía demasiado cielo y 
 - `picture`, `srcset`, `sizes` y precarga coinciden para descargar una sola variante. En escritorio se cuenta el ancho real que necesita `object-fit: cover` al cubrir hero y panel, evitando ampliar una imagen pequeña. AVIF: aproximadamente 113–215 KiB en móvil y 128–417 KiB en escritorio.
 - Las URL `home-landscape-v3-*` permiten actualizar las imágenes pese a la caché inmutable. Se retiran las variantes anteriores sin referencias.
 - Se reduce el velo inferior respecto a la composición anterior. El texto conserva su contraste con velos por tema y el selector conserva su vidrio independiente, con reflejo definido y fondo desenfocado.
-- Móvil pasa a un hero de 35rem y un panel de 29rem para reducir espacio vacío; el perfil de pantallas muy estrechas conserva la altura necesaria para promesas largas. Las alturas siguen independientes de la promesa, el historial y la carga de imágenes, y pueden crecer cuando el texto ampliado lo necesita.
+- Móvil conserva un hero de 35rem y usa un panel de 24rem con mayor margen interior, una última lectura centrada y tres lecturas en escritorio; el perfil de pantallas muy estrechas conserva la altura necesaria para promesas largas. Las alturas siguen independientes de la promesa, el historial y la carga de imágenes, y pueden crecer cuando el texto ampliado lo necesita.
 - La fotografía cubre hero y panel completos, con una cola difuminada de 144 px en móvil y 160 px en escritorio. El vidrio termina antes de la sección editorial.
 
 ## Rendimiento y comprobación

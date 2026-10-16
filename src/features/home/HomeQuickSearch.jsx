@@ -134,8 +134,8 @@ export function HomeQuickSearch({ currentBookId, currentChapter, onGoToChapter, 
     >
       <form className={styles.form} onSubmit={submit} ref={formRef} role="search">
         <Icon name="search" size={20} />
-        <input aria-label={t('bible.searchLabel')} onChange={(event) => { setQuery(event.target.value); setResultsOpen(true) }} onFocus={() => setResultsOpen(true)} placeholder={t('bible.searchPlaceholder')} ref={inputRef} type="search" value={query} />
-        <button disabled={!activeQuery} type="submit">{t('common.search')}</button>
+        <input aria-label={t('bible.searchLabel')} onChange={(event) => { setQuery(event.target.value); setResultsOpen(true) }} onFocus={() => setResultsOpen(true)} placeholder={t('home.searchPlaceholder')} ref={inputRef} type="search" value={query} />
+        <button aria-label={t('common.search')} disabled={!activeQuery} type="submit"><Icon className={styles.submitIcon} name="search" size={20} /><span className={styles.submitLabel}>{t('common.search')}</span></button>
       </form>
       {showResults && (
         <div aria-label={t('bible.searchResults')} className={styles.results} ref={resultsRef} role="region">

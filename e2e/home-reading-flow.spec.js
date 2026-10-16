@@ -167,7 +167,7 @@ test('returning Home keeps the picker neutral and offers the last reading as a s
   await expect(page).toHaveURL(/\/$/)
   await expectNeutralPicker(page)
   const panel = page.getByTestId('home-reading-panel')
-  await expect(panel.getByRole('heading', { name: 'Lecturas recientes', exact: true })).toBeVisible()
+  await expect(panel.getByRole('heading', { name: page.viewportSize().width <= 620 ? 'Última lectura' : 'Lecturas recientes', exact: true })).toBeVisible()
   await expect(panel.getByText(/^Juan 3(?::\d+)?$/, { exact: true })).toBeVisible()
   const continueReading = panel.getByRole('link', { name: continueLabel })
   await expect(continueReading).toHaveAttribute('href', /^\/read\/43\/3(?:\/\d+)?$/)

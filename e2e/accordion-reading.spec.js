@@ -19,9 +19,11 @@ test('Home matches the approved simple picker and recent readings without repeat
   await page.goto('/')
   const panel = page.getByTestId('home-reading-panel')
   await expect(panel.getByText('Elige un libro y capítulo', { exact: true })).toBeVisible()
-  const recent = panel.getByRole('region', { name: 'Lecturas recientes', exact: true })
-  await expect(recent.getByRole('link')).toHaveCount(3)
-  await expect(recent.getByRole('link').locator('svg')).toHaveCount(0)
+  const isMobile = page.viewportSize().width <= 620
+  const recent = panel.getByRole('region', { name: isMobile ? 'Última lectura' : 'Lecturas recientes', exact: true })
+  await expect(recent.getByRole('link')).toHaveCount(isMobile ? 1 : 3)
+  await expect(recent.locator('a')).toHaveCount(3)
+  await expect(recent.locator('a svg')).toHaveCount(0)
   const picker = panel.getByTestId('home-reading-actions')
   await expect(picker.getByRole('button')).toHaveCount(1)
   await picker.getByRole('button', { name: 'Seleccionar libro', exact: true }).click()
@@ -36,8 +38,8 @@ test('Home matches the approved simple picker and recent readings without repeat
   await expect(menu.locator('[data-chapter]')).toHaveCount(0)
   await close(menu).click()
   await expect(menu).toHaveCount(0)
-  await recent.getByRole('link', { name: /Reanudar lectura: Job 14:1/ }).click()
-  await expect(page).toHaveURL(/\/read\/18\/14\/1$/)
+  await recent.getByRole('link', { name: /Continuar(?:\b|:)/ }).click()
+  await expect(page).toHaveURL(/\/read\/3\/5\/1$/)
 })
 
 test('reader shows the approved book heading and searches books and exact citations in place', async ({ page }) => {

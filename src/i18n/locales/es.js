@@ -72,7 +72,7 @@ export default {
     startReading: 'Comenzar a leer',
     chooseReading: 'Elegir una lectura',
     chooseAnotherReading: 'Elegir una lectura',
-    searchPlaceholder: 'Busca una palabra o referencia',
+    searchPlaceholder: 'Buscar cita, palabra o referencia',
     thematicGuide: 'Guía de consulta bíblica',
     thematicTitle: 'Qué leer cuando…',
     thematicDescription: 'Encuentra fortaleza y orientación bíblica para lo que estás viviendo.',

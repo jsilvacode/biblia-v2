@@ -8,6 +8,7 @@ test('Home searches books without starting the full-text worker and opens chapte
   page.on('worker', worker => workers.push(worker.url()))
   await page.goto('/')
   await expect(panel(page).getByRole('searchbox')).toBeVisible()
+  await expect(panel(page).getByRole('searchbox')).toHaveAttribute('placeholder', 'Buscar cita, palabra o referencia')
   expect(workers).toEqual([])
   const initialPanelHeight = (await panel(page).boundingBox()).height
   await panel(page).getByRole('searchbox').fill('Juan')
@@ -50,7 +51,7 @@ test('Home returns a short word-search preview and links to the complete results
   await expect(page.getByText(/50 de [1-9]\d{2} resultados/, { exact: true })).toBeVisible()
 })
 
-test('Home preserves three recent chapters across reload and opens each exact reference', async ({ page }) => {
+test('Home preserves recent readings across reload and shows only the latest on mobile', async ({ page }) => {
   await page.addInitScript(() => {
     if (localStorage.getItem('recent-readings-fixture')) return
     const readings = [
@@ -63,21 +64,26 @@ test('Home preserves three recent chapters across reload and opens each exact re
     localStorage.setItem('recent-readings-fixture', 'ready')
   })
   await page.goto('/')
-  const history = panel(page).getByRole('region', { name: 'Lecturas recientes', exact: true })
-  await expect(history.getByRole('link')).toHaveCount(3)
+  const isMobile = page.viewportSize().width <= 620
+  const history = panel(page).getByRole('region', { name: /^(?:Última lectura|Lecturas recientes)$/ })
+  await expect(history).toHaveAccessibleName(isMobile ? 'Última lectura' : 'Lecturas recientes')
+  await expect(history.getByRole('link')).toHaveCount(isMobile ? 1 : 3)
+  await expect(history.locator('a')).toHaveCount(3)
   const links = await history.getByRole('link').all()
   const boxes = await Promise.all(links.map(link => link.boundingBox()))
   if (page.viewportSize().width >= 768) {
     expect(Math.max(...boxes.map(box => box.y)) - Math.min(...boxes.map(box => box.y))).toBeLessThan(1)
-  } else {
-    for (let index = 1; index < boxes.length; index++) {
-      expect(boxes[index].y).toBeGreaterThanOrEqual(boxes[index - 1].y + boxes[index - 1].height)
-      expect(boxes[index].height).toBeLessThanOrEqual(44)
-    }
   }
-  expect(await history.getByRole('link').evaluateAll(links => links.map(link => link.getAttribute('href'))))
+  expect(await history.locator('a').evaluateAll(links => links.map(link => link.getAttribute('href'))))
     .toEqual(['/read/43/3/16', '/read/19/23/4', '/read/1/1/5'])
   await page.reload()
+  await expect(history.getByRole('link')).toHaveCount(isMobile ? 1 : 3)
+  await page.setViewportSize({ width: 390, height: 844 })
+  await expect(history).toHaveAccessibleName('Última lectura')
+  await expect(history.getByRole('link')).toHaveCount(1)
+  await expect(history.getByRole('link')).toHaveAttribute('href', '/read/43/3/16')
+  await page.setViewportSize({ width: 1024, height: 844 })
+  await expect(history).toHaveAccessibleName('Lecturas recientes')
   await expect(history.getByRole('link')).toHaveCount(3)
   await history.getByRole('link', { name: /Reanudar lectura: Salmos 23:4/ }).click()
   await expect(page).toHaveURL(/\/read\/19\/23\/4$/)

@@ -3,7 +3,8 @@
 .form > svg { flex: none; color: var(--ink-muted); }
 .form:focus-within { border-color: var(--accent-blue); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-blue) 12%, transparent); }
 .form input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font: 400 1rem/1.4 var(--font-ui); }
-.form input::placeholder { color: var(--ink-muted); opacity: 1; }
+.form input::placeholder { color: var(--ink-muted); font-style: italic; opacity: 1; }
+.submitIcon { display: none; }
 .form button { flex: none; min-height: 44px; padding: 9px 12px; border: 0; border-radius: 10px; background: transparent; color: var(--accent-blue-deep); font: 500 .8125rem/1.4 var(--font-ui); }
 .form button:hover:not(:disabled) { background: var(--accent-soft); color: var(--accent-deep); }
 .form button:disabled { background: transparent; color: var(--ink-muted); opacity: .5; }
@@ -19,6 +20,10 @@
 .result:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 .more { display: inline-flex; align-items: center; justify-self: start; min-height: 44px; gap: 8px; padding: 6px 10px; color: var(--accent-blue-deep); font-size: .75rem; }
 @media (max-width: 620px) {
-  .form { gap: 9px; padding-left: 12px; }
-  .form button { padding-inline: 8px; font-size: .75rem; }
+  .form { gap: 4px; padding: 4px 6px 4px 4px; }
+  .form > svg, .submitLabel { display: none; }
+  .submitIcon { display: block; }
+  .form input::placeholder { font-size: .8125rem; }
+  .form button { display: grid; order: -1; width: 44px; padding: 0; place-items: center; color: var(--ink-muted); }
+  .form button:disabled { opacity: 1; }
 }
