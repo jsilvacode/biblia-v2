@@ -320,7 +320,7 @@ test('Home loads one responsive photograph and cuts it at the opening base in bo
     await page.setViewportSize({ width, height: 900 })
     const requestedImages = []
     const onRequest = request => {
-      if (request.url().includes('/assets/home-landscape-v4-')) requestedImages.push(request.url())
+      if (/\/assets\/home-landscape-v\d+-/.test(request.url())) requestedImages.push(request.url())
     }
     page.on('request', onRequest)
     await page.goto('/')

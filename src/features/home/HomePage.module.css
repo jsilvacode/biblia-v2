@@ -2,7 +2,7 @@
   --home-width: 68.75rem;
   --home-gutter: 40px;
   --home-opening-gap: 24px;
-  --home-lower-veil: linear-gradient(180deg, transparent 40%, color-mix(in srgb, var(--bg-reader) 35%, transparent) 58%, color-mix(in srgb, var(--bg-reader) 58%, transparent) 82%, color-mix(in srgb, var(--bg-reader) 72%, transparent));
+  --home-lower-veil: linear-gradient(180deg, transparent 40%, color-mix(in srgb, var(--bg-reader) 18%, transparent) 58%, color-mix(in srgb, var(--bg-reader) 32%, transparent) 82%, color-mix(in srgb, var(--bg-reader) 45%, transparent));
   --home-quote-height: 27rem;
   width: 100%;
   margin: 0;
@@ -18,7 +18,7 @@
 .opening::after {
   z-index: -1;
   content: '';
-  background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 40%, transparent), color-mix(in srgb, var(--bg-reader) 28%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 64%, transparent), color-mix(in srgb, var(--bg-reader) 58%, transparent) 24%, color-mix(in srgb, var(--bg-reader) 36%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 8%, transparent) 56%, transparent 68%);
+  background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 40%, transparent), color-mix(in srgb, var(--bg-reader) 28%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 46%, transparent), color-mix(in srgb, var(--bg-reader) 40%, transparent) 24%, color-mix(in srgb, var(--bg-reader) 20%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 5%, transparent) 56%, transparent 68%);
 }
 :global(:root[data-theme='dark']) .opening::after {
   background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 78%, transparent), color-mix(in srgb, var(--bg-reader) 74%, transparent) 24%, color-mix(in srgb, var(--bg-reader) 52%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 18%, transparent) 56%, transparent 68%);
@@ -164,7 +164,7 @@
   .promiseReference { margin-top: 16px; font-size: .75rem; }
   .heroActions { gap: 9px; margin-top: 21px; }
   .heroPrimaryAction, .heroSecondaryAction { padding: 12px 16px; font-size: .75rem; }
-  .opening::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 58%, transparent), color-mix(in srgb, var(--bg-reader) 68%, transparent) 14%, color-mix(in srgb, var(--bg-reader) 68%, transparent) 40%, color-mix(in srgb, var(--bg-reader) 32%, transparent) 60%, transparent); }
+  .opening::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 42%, transparent), color-mix(in srgb, var(--bg-reader) 52%, transparent) 14%, color-mix(in srgb, var(--bg-reader) 48%, transparent) 40%, color-mix(in srgb, var(--bg-reader) 22%, transparent) 60%, transparent); }
   :global(:root[data-theme='dark']) .opening::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 58%, transparent), color-mix(in srgb, var(--bg-reader) 68%, transparent) 14%, color-mix(in srgb, var(--bg-reader) 68%, transparent) 40%, color-mix(in srgb, var(--bg-reader) 45%, transparent) 60%, color-mix(in srgb, var(--bg-reader) 30%, transparent)); }
   .glassMantle::before, .glassMantle::after { border-radius: 20px; }
   .readingPanel { padding: 26px clamp(14px, 4vw, 22px) 31px; }
