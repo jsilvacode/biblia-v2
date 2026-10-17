@@ -129,15 +129,6 @@ body,
   color: var(--accent-deep);
 }
 
-.icon-button {
-  transition: background var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium), transform var(--duration-fast) var(--ease-premium);
-}
-
-.icon-button:hover {
-  background: color-mix(in srgb, var(--accent-soft) 60%, var(--surface-raised));
-  color: var(--accent-deep);
-}
-
 .page {
   position: relative;
 }
@@ -284,6 +275,14 @@ body,
 
 .reader-dialog__header h2 {
   font-size: 1.7rem;
+}
+
+/* Container rem units follow enlarged root text, unlike media-query rems. */
+@container reader-dialog (max-width: 12rem) {
+  .reader-dialog__header { row-gap: 8px; }
+  .reader-dialog__header > button { grid-row: 1; }
+  .reader-dialog__header > button:last-child { grid-column: -2 / -1; }
+  .reader-dialog__header h2 { grid-column: 1 / -1; grid-row: 2; font-size: 1.5rem; }
 }
 
 .reader-sheet-action {

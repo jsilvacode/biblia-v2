@@ -28,11 +28,11 @@
 }
 .heroInner, .homeFeed { width: min(calc(100% - var(--home-gutter) * 2), var(--home-width)); margin-inline: auto; }
 .heroInner { position: relative; display: grid; height: var(--home-hero-height); min-height: min-content; padding-top: 76px; }
-.heroCopy { display: grid; grid-template-rows: auto minmax(min-content, 1fr) auto auto; justify-items: start; width: min(72%, 620px); padding: 64px 0 72px; }
+.heroCopy { display: grid; grid-template-rows: auto minmax(min-content, 1fr) auto auto; justify-items: start; width: min(72%, 620px); min-width: 0; padding: 64px 0 72px; }
 .heroKicker { margin: 0 0 16px; color: var(--ink); font: 500 .6875rem/1.4 var(--font-ui); letter-spacing: .16em; text-transform: uppercase; }
 :global(:root[data-theme='dark']) .heroKicker { color: var(--accent-deep); }
 .heroQuote { display: flex; align-items: center; min-height: min-content; width: 100%; }
-.hero h1 { width: 100%; margin: 0; color: var(--ink); font: 400 clamp(1.875rem, 3vw, 2.5rem)/1.18 var(--font-display); letter-spacing: -.035em; text-wrap: balance; }
+.hero h1 { width: 100%; margin: 0; color: var(--ink); font: 400 clamp(1.875rem, 3vw, 2.5rem)/1.18 var(--font-display); letter-spacing: -.035em; text-wrap: balance; overflow-wrap: anywhere; }
 .hero h1.heroQuoteLong { font-size: clamp(1.625rem, 2.4vw, 2rem); line-height: 1.22; }
 .hero h1.heroQuoteExtended { font-size: clamp(1.625rem, 2.2vw, 1.875rem); line-height: 1.22; }
 .promiseReference { margin: 19px 0 0; color: var(--ink); font: 400 .875rem/1.5 var(--font-reading); }
@@ -86,7 +86,6 @@
 .recentList { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
 .recentList > li { min-width: 0; }
 .recentLink { display: flex; align-items: center; min-width: 0; min-height: 44px; gap: 8px; padding: 10px 4px; border-bottom: 1px solid color-mix(in srgb, var(--border) 65%, transparent); color: var(--ink); transition: background 160ms ease, color 160ms ease; }
-.recentLink > svg { flex: none; }
 .recentReference { flex: 1; min-width: 0; font: 400 .9375rem/1.3 var(--font-reading); overflow-wrap: anywhere; }
 .recentContinue { flex: none; color: var(--accent-deep); font: 500 .75rem/1.4 var(--font-ui); text-decoration: underline; text-underline-offset: 3px; }
 .recentList > li + li .recentLink { color: var(--ink-muted); }

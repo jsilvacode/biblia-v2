@@ -36,7 +36,6 @@ export default {
   home: {
     quickSearch: 'Búsqueda rápida',
     recentReadings: 'Lecturas recientes',
-    noRecentReadings: 'Tus últimas lecturas aparecerán aquí.',
     resumeReading: 'Reanudar lectura',
     readBible: 'Leer la Biblia',
     chooseBookChapter: 'Elige un libro y capítulo',
