@@ -43,7 +43,17 @@
 
 .headerIconButton[aria-expanded='true'] { background: color-mix(in srgb, var(--accent-soft) 50%, transparent); color: var(--accent-deep); }
 .siteHeader, .readerHeader { position: relative; inset: auto; width: min(calc(100% - var(--chrome-gutter) * 2), 1100px); margin-inline: auto; }
-.heroHeader { position: absolute; }
+.heroHeader { --home-header-fill: color-mix(in srgb, var(--surface-raised) 92%, transparent); position: absolute; isolation: isolate; }
+.heroHeader::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: var(--home-header-fill);
+  box-shadow: 0 0 0 100vmax var(--home-header-fill);
+  clip-path: inset(0 -100vmax);
+  content: '';
+  pointer-events: none;
+}
 
 @media (min-width: 1024px) {
   .homeHeader:is(.heroHeader, .siteHeader, .readerHeader) { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
@@ -78,4 +88,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .headerIconButton, .homeNavigationLink { transition: none; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .heroHeader { --home-header-fill: var(--surface-raised); }
 }

@@ -24,7 +24,7 @@
   background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 78%, transparent), color-mix(in srgb, var(--bg-reader) 74%, transparent) 24%, color-mix(in srgb, var(--bg-reader) 52%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 18%, transparent) 56%, transparent 68%);
 }
 .openingInner, .homeFeed { width: min(calc(100% - var(--home-gutter) * 2), var(--home-width)); margin-inline: auto; }
-.openingInner { position: relative; container: home-opening / inline-size; padding-top: calc(var(--topbar-height) + 28px); padding-bottom: 40px; }
+.openingInner { position: relative; container: home-opening / inline-size; padding-top: calc(var(--topbar-height) + 40px); padding-bottom: 56px; }
 .openingGrid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: var(--home-opening-gap); }
 .heroCopy { display: grid; grid-template-rows: auto minmax(min-content, 1fr) auto auto; justify-items: center; width: 100%; max-width: 740px; min-width: 0; min-height: min-content; margin-inline: auto; padding: 28px 0 32px; text-align: center; }
 .heroKicker { margin: 0 0 16px; color: var(--ink); font: 500 .6875rem/1.4 var(--font-ui); letter-spacing: .16em; text-transform: uppercase; }
@@ -156,7 +156,7 @@
 @media (max-width: 620px) {
   .homePage { --home-gutter: 18px; --home-opening-gap: 16px; }
   .heroLandscape img { object-position: 50% 50%; }
-  .openingInner { --topbar-height: 64px; padding-top: calc(var(--topbar-height) + 16px); padding-bottom: 24px; }
+  .openingInner { --topbar-height: 64px; padding-top: calc(var(--topbar-height) + 24px); padding-bottom: 40px; }
   .heroCopy { padding: 24px 9px 28px; }
   .hero h1 { font-size: 1.875rem; line-height: 1.16; }
   .hero h1.heroQuoteLong, .hero h1.heroQuoteExtended { font-size: 1.5rem; line-height: 1.25; }

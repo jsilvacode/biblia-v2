@@ -75,7 +75,7 @@ test('the Home opening and reading panel stay stable with complete short, medium
       expect(lowerBreathingRoom).toBeGreaterThanOrEqual(viewport.width <= 620 ? 24 : 40)
       if (viewport.width >= 1100) {
         expect(geometry.panelLeft).toBeGreaterThan(geometry.heroRight)
-        expect(geometry.openingHeight).toBeLessThanOrEqual(560)
+        expect(geometry.openingHeight).toBeLessThanOrEqual(600)
       } else expect(geometry.panelTop).toBeGreaterThanOrEqual(geometry.heroBottom)
       if (!initial) initial = geometry
       expect(geometry.openingHeight).toBe(initial.openingHeight)
