@@ -2,6 +2,7 @@ import { PageIntro } from '../../components/ui/PageIntro'
 import { useI18n } from '../../i18n'
 import { useReadingState } from '../reading/ReadingProvider'
 import { BibleNavigator } from './BibleNavigator'
+import styles from './BibleBrowserPage.module.css'
 
 export default function BibleBrowserPage() {
   const { t } = useI18n()
@@ -9,7 +10,7 @@ export default function BibleBrowserPage() {
   const hasHistory = Boolean(lastRead.updatedAt)
 
   return (
-    <div className="page bible-page">
+    <div className={`page bible-page ${styles.library}`}>
       <PageIntro title={t('bible.title')}>
         {t('bible.subtitle')}
       </PageIntro>
