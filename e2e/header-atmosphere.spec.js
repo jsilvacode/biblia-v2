@@ -238,7 +238,7 @@ test('reducing transparency keeps a visible Home mantle surface in both themes',
   }
 })
 
-test('the solid Home panel covers the picker width without faded edges in either theme', async ({ page }) => {
+test('the matte opal Home panel keeps its shape, soft light and texture in either theme', async ({ page }) => {
   for (const width of [320, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/')
@@ -251,6 +251,12 @@ test('the solid Home panel covers the picker width without faded edges in either
         const surface = panel.closest('[class*="glassMantle"]')
         const rect = surface.getBoundingClientRect()
         const style = getComputedStyle(surface, '::before')
+        const texture = getComputedStyle(surface, '::after')
+        const canvas = document.createElement('canvas')
+        canvas.width = canvas.height = 1
+        const context = canvas.getContext('2d')
+        context.fillStyle = style.backgroundColor
+        context.fillRect(0, 0, 1, 1)
         const transform = new DOMMatrixReadOnly(style.transform)
         const left = rect.left + parseFloat(style.left) + transform.m41
         return {
@@ -266,13 +272,15 @@ test('the solid Home panel covers the picker width without faded edges in either
           blur: style.backdropFilter,
           background: style.backgroundColor,
           bodyBackground: getComputedStyle(document.body).backgroundColor,
-          reflection: style.backgroundImage,
+          opacity: context.getImageData(0, 0, 1, 1).data[3] / 255 * Number(style.opacity),
+          lighting: style.backgroundImage,
           border: style.borderTopStyle,
           borderWidth: style.borderTopWidth,
-          bottomLeftRadius: style.borderBottomLeftRadius,
-          bottomRightRadius: style.borderBottomRightRadius,
+          radii: [style.borderTopLeftRadius, style.borderTopRightRadius, style.borderBottomRightRadius, style.borderBottomLeftRadius],
           shadow: style.boxShadow,
-          rim: getComputedStyle(surface, '::after').content,
+          texture: { content: texture.content, image: texture.backgroundImage, opacity: Number(texture.opacity), mask: texture.maskImage, blur: texture.backdropFilter, filter: texture.filter, animation: texture.animationName },
+          filter: style.filter,
+          animation: style.animationName,
         }
       })
       expect(geometry.containsEditorial).toBe(false)
@@ -282,15 +290,23 @@ test('the solid Home panel covers the picker width without faded edges in either
       expect(geometry.mask).toBe('none')
       expect(geometry.webkitMask).toBe('none')
       expect(geometry.blur).toBe('none')
-      expect(geometry.background).toMatch(/^rgb\(/)
-      expect(geometry.reflection).toBe('none')
-      expect(geometry.background).toBe(geometry.bodyBackground)
+      expect(geometry.opacity).toBeGreaterThanOrEqual(.95)
+      expect(geometry.lighting).not.toBe('none')
+      expect(geometry.background).not.toBe(geometry.bodyBackground)
       expect(geometry.border).toBe('none')
       expect(geometry.borderWidth).toBe('0px')
-      expect(geometry.bottomLeftRadius).toBe('0px')
-      expect(geometry.bottomRightRadius).toBe('0px')
-      expect(geometry.shadow).toBe('none')
-      expect(geometry.rim).toBe('none')
+      for (const radius of geometry.radii) expect(parseFloat(radius)).toBeGreaterThan(0)
+      expect(new Set(geometry.radii).size).toBe(1)
+      expect(geometry.shadow).not.toBe('none')
+      expect(geometry.filter).not.toContain('blur(')
+      expect(geometry.animation).toBe('none')
+      expect(geometry.texture.content).not.toBe('none')
+      expect(geometry.texture.image).not.toBe('none')
+      expect(geometry.texture.opacity).toBeGreaterThan(0)
+      expect(geometry.texture.mask).toBe('none')
+      expect(geometry.texture.blur).toBe('none')
+      expect(geometry.texture.filter).not.toContain('blur(')
+      expect(geometry.texture.animation).toBe('none')
     }
   }
 })
