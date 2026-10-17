@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { PROJECT_AUTHOR, PROJECT_PUBLIC_VERSION } from '../../content/projectMeta'
+import { PROJECT_PUBLIC_VERSION } from '../../content/projectMeta'
 import { useI18n } from '../../i18n'
 import { ProjectContact, ProjectDetails, ProjectHelp, ProjectSupport } from '../../features/about/ProjectInformation'
 import { ReaderDialog } from '../../features/reader/ReaderDialog'
@@ -23,7 +23,6 @@ export function AppFooter({ editorial = false }) {
         <div className={styles.identity}>
           <p className={styles.name}><Icon name="bookOpen" size={18} /><strong>{t('about.appName', { version: PROJECT_PUBLIC_VERSION })}</strong></p>
           <p className={styles.purpose}>{t('about.footerPurpose')}</p>
-          <p className={styles.author}>{t('about.developer', { author: PROJECT_AUTHOR })}</p>
         </div>
         <nav aria-label={t('about.footerNavigation')} className={styles.navigation}>
           {actions.map(({ id, label }) => (

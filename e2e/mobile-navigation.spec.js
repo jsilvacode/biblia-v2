@@ -38,7 +38,7 @@ test.describe('mobile navigation shell', () => {
     await expect(footer.getByRole('link', { name: /Mercado Pago/ })).toHaveCount(0)
     await expect(footer.getByRole('link', { name: /PayPal/ })).toHaveCount(0)
     await expect(footer.getByText('Santa Biblia v3.0', { exact: true })).toBeVisible()
-    await expect(footer.getByText(/Julio Silva/)).toBeVisible()
+    await expect(footer.getByText(/Julio Silva/)).toHaveCount(0)
     await expect(footer.locator('a[href^="mailto:"]')).toHaveCount(0)
     await expect(page.getByRole('dialog')).toHaveCount(1)
     await expect(page).toHaveURL(/\/bible$/)

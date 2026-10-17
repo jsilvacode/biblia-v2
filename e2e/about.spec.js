@@ -108,8 +108,9 @@ test('footer controls and project content fit all languages, themes and supporte
         const controls = navigation.getByRole('button')
         await expect(controls).toHaveCount(3)
         await expect(navigation.getByRole('link')).toHaveCount(0)
-        const [navigationBox, authorBox] = await Promise.all([navigation.boundingBox(), footer(page).getByText(/Julio Silva/).boundingBox()])
-        expect(navigationBox.y).toBeGreaterThanOrEqual(authorBox.y + authorBox.height)
+        await expect(footer(page).getByText(/Julio Silva/)).toHaveCount(0)
+        const [navigationBox, purposeBox] = await Promise.all([navigation.boundingBox(), footer(page).locator('p').last().boundingBox()])
+        expect(navigationBox.y).toBeGreaterThanOrEqual(purposeBox.y + purposeBox.height)
         expect(Math.abs(navigationBox.x + navigationBox.width / 2 - width / 2)).toBeLessThanOrEqual(1)
         for (const control of await controls.all()) {
           const box = await control.boundingBox()
