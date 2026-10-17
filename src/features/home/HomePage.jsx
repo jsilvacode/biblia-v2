@@ -139,6 +139,7 @@ export default function HomePage() {
         : t('home.courseSummary'),
       action: t('home.viewCourse'),
       image: '/assets/home-study-invitation-v1.webp',
+      imagePosition: 'center 15%',
       href: '/studies/la-fe-de-jesus',
     },
   ]
@@ -209,12 +210,12 @@ export default function HomePage() {
         {hasReadingHistory && <InstallInvitation />}
 
         <section aria-labelledby="home-editorial-heading" className={styles.editorialSection}>
-          <h2 className={styles.eyebrow} id="home-editorial-heading">{t('home.alsoIn')}</h2>
+          <h2 className={styles.sectionTitle} id="home-editorial-heading">{t('home.alsoIn')}</h2>
           <div className={styles.editorialList}>
             {entries.map((entry, index) => (
               <Link className={styles.editorialEntry} key={entry.href} to={entry.href}>
                 <span aria-hidden="true" className={styles.entryImage}>
-                  <img alt="" decoding="async" height="720" loading="lazy" src={entry.image} width="1440" />
+                  <img alt="" decoding="async" height="720" loading="lazy" src={entry.image} style={entry.imagePosition ? { objectPosition: entry.imagePosition } : undefined} width="1440" />
                 </span>
                 <div className={styles.entryCopy}>
                   <div className={styles.entryHeading}>

@@ -22,7 +22,7 @@
   .footer { padding-block: 1rem; }
 }
 .editorial { margin-top: 0; }
-.editorial .inner { width: min(calc(100% - 80px), 68.75rem); }
+.editorial .inner { width: min(calc(100% - 80px), 75rem); }
 @media (max-width: 800px) { .editorial .inner { width: calc(100% - 48px); } }
 @media (max-width: 620px) { .editorial .inner { width: calc(100% - 36px); } }
 @media (max-width: 350px) { .editorial .inner { width: calc(100% - 30px); } }

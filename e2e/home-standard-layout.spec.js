@@ -111,6 +111,28 @@ test('editorial cards align on tablet and desktop and stack without clipping tra
       const cards = editorial.getByRole('link')
       await expect(cards).toHaveCount(3)
       await page.evaluate(() => document.fonts.ready)
+      const heading = await editorial.getByRole('heading', { level: 2 }).evaluate(element => {
+        const style = getComputedStyle(element)
+        const rect = element.getBoundingClientRect()
+        const section = element.closest('section').getBoundingClientRect()
+        return {
+          align: style.textAlign,
+          family: style.fontFamily,
+          displayFont: getComputedStyle(document.documentElement).getPropertyValue('--font-display').split(',')[0].replace(/["']/g, '').trim(),
+          center: rect.left + rect.width / 2,
+          sectionCenter: section.left + section.width / 2,
+          sectionWidth: section.width,
+          fits: element.scrollWidth <= element.clientWidth,
+        }
+      })
+      expect(heading.align).toBe('center')
+      expect(heading.family).toContain(heading.displayFont)
+      expect(Math.abs(heading.center - heading.sectionCenter)).toBeLessThanOrEqual(1)
+      expect(heading.fits).toBe(true)
+      if (width === 1440) {
+        expect(heading.sectionWidth).toBeGreaterThanOrEqual(1180)
+        expect(heading.sectionWidth).toBeLessThanOrEqual(1220)
+      }
       expect(await cards.evaluateAll((links) => links.map((link) => link.getAttribute('href')))).toEqual(['/reavivados', '/topics', '/studies/la-fe-de-jesus'])
       const geometry = await cards.evaluateAll((links) => links.map((link) => {
         const rect = link.getBoundingClientRect()
@@ -118,15 +140,17 @@ test('editorial cards align on tablet and desktop and stack without clipping tra
         const image = link.querySelector('img').getBoundingClientRect()
         const action = link.querySelector('[class*="entryAction"]').getBoundingClientRect()
         return {
-          x: rect.x, top: rect.top, bottom: rect.bottom, height: rect.height,
+          x: rect.x, right: rect.right, top: rect.top, bottom: rect.bottom, height: rect.height,
           actionBottom: action.bottom, titleFits: title.scrollWidth <= title.clientWidth,
           imageRatio: image.width / image.height, imageBeforeTitle: image.bottom <= title.getBoundingClientRect().top,
         }
       }))
       for (const card of geometry) {
+        expect(card.x).toBeGreaterThanOrEqual(0)
+        expect(card.right).toBeLessThanOrEqual(width)
         expect(card.titleFits).toBe(true)
         expect(card.imageBeforeTitle).toBe(true)
-        expect(card.imageRatio).toBeCloseTo(2, 1)
+        expect(card.imageRatio).toBeCloseTo(2.4, 1)
         expect(card.actionBottom).toBeLessThan(card.bottom)
       }
       if (width >= 768) {

@@ -38,7 +38,7 @@
 .heroPrimaryAction, .heroSecondaryAction { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; gap: 8px; padding: 12px 20px; border: 1px solid transparent; border-radius: 999px; font: 500 .8125rem/1.4 var(--font-ui); transition: background 180ms ease, border-color 180ms ease; }
 .heroPrimaryAction { background: var(--accent-deep); color: var(--bg-reader); }
 .heroSecondaryAction { border-color: var(--border); background: var(--surface-raised); color: var(--ink); }
-.homeFeed { position: relative; z-index: 1; padding-top: var(--home-opening-gap); }
+.homeFeed { position: relative; z-index: 1; width: min(calc(100% - var(--home-gutter) * 2), 75rem); padding-top: var(--home-opening-gap); }
 .glassMantle {
   --mantle-width: min(calc(100% + 16px), 1100px);
   --mantle-fill: light-dark(#efefed, #28272b);
@@ -95,18 +95,18 @@
 .recentList > li + li .recentLink:hover, .recentList > li + li .recentLink:focus-visible { color: var(--accent-deep); }
 .recentLink:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .eyebrow { margin: 0; color: var(--accent-deep); font: 600 .875rem/1.5 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; }
-.editorialSection { margin-top: 76px; }
-.editorialSection > .eyebrow { margin-bottom: 20px; }
+.editorialSection { margin-top: 56px; }
+.sectionTitle { margin: 0 0 20px; color: var(--ink); font: 400 2rem/1.25 var(--font-display); letter-spacing: -.03em; text-align: center; text-wrap: balance; }
 .editorialList { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
 .editorialEntry { display: grid; grid-template-rows: auto 1fr; min-width: 0; border: 1px solid var(--border); border-radius: 14px; background: color-mix(in srgb, var(--surface-1) 92%, transparent); }
 .entryNumber { padding-top: 5px; color: var(--accent-deep); font: 400 .6875rem/1.4 var(--font-reading); }
-.entryCopy { display: flex; flex-direction: column; min-width: 0; padding: 22px; }
+.entryCopy { display: flex; flex-direction: column; min-width: 0; padding: 16px 18px; }
 .entryHeading { display: grid; grid-template-columns: 18px minmax(0, 1fr); align-items: start; gap: 8px; }
 .entryTitle { margin: 0; color: var(--accent-deep); font: 400 1.5rem/1.22 var(--font-display); letter-spacing: -.02em; text-wrap: balance; overflow-wrap: anywhere; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 1px; text-underline-offset: 6px; transition: transform 200ms ease, text-decoration-color 200ms ease; }
-.entryDetail { margin: 12px 0 0; color: var(--ink-muted); font-size: .875rem; line-height: 1.6; }
-.entryAction { display: inline-flex; align-items: center; align-self: flex-start; min-height: 44px; gap: 8px; margin-top: auto; padding-top: 18px; color: var(--accent-blue-deep); font-size: .8125rem; }
+.entryDetail { margin: 8px 0 0; color: var(--ink-muted); font-size: .875rem; line-height: 1.6; }
+.entryAction { display: inline-flex; align-items: center; align-self: flex-start; min-height: 44px; gap: 8px; margin-top: auto; padding-top: 10px; color: var(--accent-blue-deep); font-size: .8125rem; }
 .entryAction svg { transition: transform 200ms ease; }
-.entryImage { display: block; width: 100%; aspect-ratio: 2/1; overflow: hidden; border-radius: 13px 13px 0 0; }
+.entryImage { display: block; width: 100%; aspect-ratio: 2.4/1; overflow: hidden; border-radius: 13px 13px 0 0; }
 .entryImage img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 240ms ease, filter 240ms ease; }
 .interestSection { margin-top: 56px; }
 .interestSection > .eyebrow { margin-bottom: 16px; }
@@ -184,16 +184,16 @@
   .recentMobileLabel { display: inline; }
   .recentLink { justify-content: center; padding-inline: 12px; border: 0; border-radius: 8px; text-align: center; }
   .recentReference { flex: 0 1 auto; }
-  .editorialSection { margin-top: 56px; }
-  .editorialSection > .eyebrow { margin-bottom: 14px; }
+  .editorialSection { margin-top: 44px; }
+  .sectionTitle { margin-bottom: 18px; font-size: 1.75rem; }
   .eyebrow { font-size: .8125rem; }
   .editorialList { gap: 24px; }
   .entryNumber { display: none; }
-  .entryCopy { padding: 22px; }
+  .entryCopy { padding: 18px; }
   .entryHeading { display: block; }
   .entryTitle { font-size: 1.5rem; text-wrap: pretty; }
-  .entryDetail { margin-top: 10px; }
-  .entryAction { padding-top: 14px; }
+  .entryDetail { margin-top: 8px; }
+  .entryAction { padding-top: 10px; }
   .interestSection { margin-top: 44px; }
 }
 @media (max-width: 480px) {
