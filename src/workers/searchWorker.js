@@ -1,48 +1,30 @@
-import { prepareSearchEntries, searchEntries } from '../features/search/searchEngine'
+import { searchEntries } from '../features/search/searchEngine.js'
+import { createSearchIndexRepository } from './searchIndexRepository.js'
 
-let cachedIndex = null
-let cachedTranslationId = null
-let activeLoad = null
-
-async function loadIndex(translationId) {
-  if (cachedTranslationId === translationId && cachedIndex) return cachedIndex
-  if (activeLoad?.translationId === translationId) return activeLoad.promise
-
-  const promise = fetch(`/data/search/${translationId}.json`)
-    .then((response) => {
-      if (!response.ok) throw new Error(`Unable to load search index (${response.status})`)
-      return response.json()
-    })
-    .then((index) => {
-      cachedTranslationId = translationId
-      cachedIndex = prepareSearchEntries(index.entries)
-      return cachedIndex
-    })
-
-  activeLoad = { promise, translationId }
-
-  try {
-    return await promise
-  } finally {
-    if (activeLoad?.promise === promise) activeLoad = null
+export function createSearchWorkerHandler({
+  repository = createSearchIndexRepository(),
+  postMessage,
+}) {
+  return async (event) => {
+    const {
+      append = false,
+      id,
+      key,
+      offset,
+      pageSize,
+      query,
+      translationId,
+    } = event.data
+    try {
+      const entries = await repository.load(translationId)
+      const page = searchEntries(entries, query, { limit: pageSize, offset })
+      postMessage({ append, id, key, translationId, ...page, status: 'ready' })
+    } catch (error) {
+      postMessage({ append, id, key, translationId, message: error.message, results: [], status: 'error' })
+    }
   }
 }
 
-self.onmessage = async (event) => {
-  const {
-    append = false,
-    id,
-    key,
-    offset,
-    pageSize,
-    query,
-    translationId,
-  } = event.data
-  try {
-    const entries = await loadIndex(translationId)
-    const page = searchEntries(entries, query, { limit: pageSize, offset })
-    self.postMessage({ append, id, key, ...page, status: 'ready' })
-  } catch (error) {
-    self.postMessage({ append, id, key, message: error.message, results: [], status: 'error' })
-  }
+if (typeof self !== 'undefined' && typeof document === 'undefined') {
+  self.onmessage = createSearchWorkerHandler({ postMessage: (message) => self.postMessage(message) })
 }

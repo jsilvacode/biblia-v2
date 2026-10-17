@@ -136,7 +136,7 @@ export function BibleNavigator({
               ) : textSearch.status === 'loading' ? (
                 <p className={styles.searchMessage}>{t('search.loading')}</p>
               ) : textSearch.status === 'error' ? (
-                <p className={styles.searchMessage}>{t('search.error')}</p>
+                <><p className={styles.searchMessage} role="alert">{t('search.error')}</p><button className="button button--compact" onClick={textSearch.retry} type="button">{t('reader.retry')}</button></>
               ) : textSearch.results.length ? (
                 <>
                   <p className={styles.verseResultCount}>

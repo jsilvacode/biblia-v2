@@ -146,7 +146,7 @@ export function HomeQuickSearch({ compact = false, currentBookId, currentChapter
               <span><strong>{getLocalizedBookName(book, locale)}</strong><small>{t('bible.chapterCount', { count: book.chapters })}</small></span>
             </button>
           )) : search.status === 'loading' ? <p role="status">{t('search.loading')}</p>
-            : search.status === 'error' ? <p role="alert">{t('search.error')}</p>
+            : search.status === 'error' ? <><p role="alert">{t('search.error')}</p><button className="button button--compact" onClick={search.retry} type="button">{t('reader.retry')}</button></>
               : search.results.length ? search.results.map((result) => renderReference(result, result.text))
                 : <p role="status">{t('search.noResults')}</p>}
           {!reference && (books.length > 3 || !books.length && search.results.length > 0) && (

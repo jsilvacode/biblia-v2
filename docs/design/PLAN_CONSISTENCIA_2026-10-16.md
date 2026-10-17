@@ -19,7 +19,7 @@ Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos
 | 5 | Flujos de lectura más evidentes | Retomar es fácil de encontrar; las acciones del versículo se descubren y priorizan copiar/guardar; «Inicio del capítulo» no se confunde con Inicio del sitio; los modales conservan contexto | Completado |
 | 6 | Home editorial y paisaje | Tarjetas alineadas bajo hero/selector, enlaces de interés compactos, superficie más sólida día/noche; paisaje propio optimizado con luz y recorte que permitan leer sin perder el paisaje; conservar posiciones y flujos actuales | Completado |
 | 7 | Footer útil y cierre editorial | Identidad, ayuda sobre el proyecto, contacto y apoyo tienen una jerarquía clara; enlaces táctiles cómodos y una página informativa real | Completado |
-| 8 | Primera búsqueda y trabajo repetido | Se reutiliza preparación del índice entre instancias sin mezclar consultas/versiones; carga diferida y recuperación se mantienen; se compara el trabajo antes/después | Pendiente |
+| 8 | Primera búsqueda y trabajo repetido | Se reutiliza preparación del índice entre instancias sin mezclar consultas/versiones; carga diferida y recuperación se mantienen; se compara el trabajo antes/después | Completado |
 | 9 | Verificación de la experiencia completa | Recorridos principales en móvil/tablet/escritorio, teclado, dos temas y errores relevantes; correcciones puntuales y limpieza de lo sustituido | Pendiente |
 
 ## Comprobaciones comunes
@@ -45,4 +45,6 @@ Las referencias del 16 de octubre orientan la jerarquía, no son una maqueta lit
 
 6. `b8a9017` + `893714d` — Home editorial — tarjetas alineadas y enlaces compactos; panel cálido más sólido en día/noche; paisaje propio con encuadre panorámico y vertical, variantes AVIF/WebP sin ampliación artificial y velo localizado para el texto. Doce E2E de composición/idiomas y dos de descarga única, revisión visual en ambos temas a 390/768/1440 px, lint y build aprobados. Prompts y tamaños en `HOME_LANDSCAPE_2026-10-16.md`.
 
-7. Footer y ayuda — identidad editorial, navegación informativa y contacto; apoyo secundario con objetivos de 44 px. `/about` ahora tiene contenido real y ancla de ayuda con foco/scroll correctos; explica traducciones, copiar/guardar, preparación offline y datos locales. Diez E2E de footer/rutas/ayuda/idiomas y dos unitarias de catálogos, lint y build aprobados.
+7. `01ab6ba` — Footer y ayuda — identidad editorial, navegación informativa y contacto; apoyo secundario con objetivos de 44 px. `/about` ahora tiene contenido real y ancla de ayuda con foco/scroll correctos; explica traducciones, copiar/guardar, preparación offline y datos locales. Diez E2E de footer/rutas/ayuda/idiomas y dos unitarias de catálogos, lint y build aprobados.
+
+8. Búsqueda reutilizable — un worker por pestaña, cancelación independiente, caché preparada acotada y reintento en las tres superficies. El recorrido medido pasa de tres workers/fetch/parseos/preparaciones a uno de cada; no es una medición de latencia. 260 unitarias, treinta E2E de búsqueda/reintento, contador real, lint y build aprobados. Reproducción en `SEARCH_REUSE_2026-10-16.md`.

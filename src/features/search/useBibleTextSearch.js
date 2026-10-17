@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { normalizeSearchText, SEARCH_PAGE_SIZE } from './searchEngine'
+import { searchWorkerClient } from './searchWorkerClient'
 
 function idleState() {
   return {
     hasMore: false,
     isLoadingMore: false,
     key: null,
+    requestKey: null,
     loadMoreError: null,
     message: null,
     results: [],
@@ -21,127 +23,92 @@ export function useBibleTextSearch({
   query,
   translationId,
 }) {
-  const workerRef = useRef(null)
-  const requestIdRef = useRef(0)
+  const generationRef = useRef(0)
+  const abortRef = useRef(null)
   const loadingMoreRef = useRef(false)
   const [state, setState] = useState(idleState)
+  const [attempt, setAttempt] = useState(0)
   const normalizedQuery = useMemo(() => normalizeSearchText(query), [query])
   const searchKey = `${translationId}:${normalizedQuery}`
+  const requestKey = `${searchKey}:${pageSize}:${attempt}`
 
-  const ensureWorker = useCallback(() => {
-    if (workerRef.current) return workerRef.current
-    const worker = new Worker(new URL('../../workers/searchWorker.js', import.meta.url), { type: 'module' })
-    workerRef.current = worker
-    worker.onmessage = (event) => {
-      const response = event.data
-      if (response.id !== requestIdRef.current) return
-
+  const runSearch = useCallback(({ append = false, offset = 0, signal, generation }) => {
+    searchWorkerClient.request({
+      append, key: searchKey, offset, pageSize, query: normalizedQuery, translationId,
+    }, { signal }).then((response) => {
+      if (signal.aborted || generation !== generationRef.current) return
       loadingMoreRef.current = false
       setState((previous) => {
-        if (response.status === 'error') {
-          if (response.append && previous.key === response.key && previous.results.length) {
-            return { ...previous, isLoadingMore: false, loadMoreError: response.message }
-          }
-
-          return {
-            ...idleState(),
-            key: response.key,
-            message: response.message,
-            status: 'error',
-          }
-        }
-
-        if (response.append) {
-          if (previous.key !== response.key) return previous
-
-          return {
-            hasMore: response.hasMore,
-            isLoadingMore: false,
-            key: response.key,
-            loadMoreError: null,
-            message: null,
-            results: [...previous.results, ...response.results],
-            status: 'ready',
-            total: response.total,
-          }
-        }
-
+        if (append && previous.requestKey !== requestKey) return previous
         return {
           hasMore: response.hasMore,
           isLoadingMore: false,
-          key: response.key,
+          key: searchKey,
+          requestKey,
           loadMoreError: null,
           message: null,
-          results: response.results,
+          results: append ? [...previous.results, ...response.results] : response.results,
           status: 'ready',
           total: response.total,
         }
       })
-    }
-
-    return worker
-  }, [])
-
-  useEffect(() => () => {
-    workerRef.current?.terminate()
-    workerRef.current = null
-  }, [])
+    }).catch((error) => {
+      if (signal.aborted || error.name === 'AbortError' || generation !== generationRef.current) return
+      loadingMoreRef.current = false
+      setState((previous) => append && previous.requestKey === requestKey && previous.results.length
+        ? { ...previous, isLoadingMore: false, loadMoreError: error.message }
+        : { ...idleState(), key: searchKey, requestKey, message: error.message, status: 'error' })
+    })
+  }, [normalizedQuery, pageSize, requestKey, searchKey, translationId])
 
   useEffect(() => {
-    const id = requestIdRef.current + 1
-    requestIdRef.current = id
+    const generation = ++generationRef.current
+    abortRef.current?.abort()
+    abortRef.current = null
     loadingMoreRef.current = false
 
     if (!enabled || !normalizedQuery) return undefined
 
-    const runSearch = () => ensureWorker().postMessage({
-      append: false,
-      id,
-      key: searchKey,
-      offset: 0,
-      pageSize,
-      query: normalizedQuery,
-      translationId,
-    })
-    const timeout = debounceMs ? window.setTimeout(runSearch, debounceMs) : null
-    if (!debounceMs) runSearch()
+    const controller = new AbortController()
+    abortRef.current = controller
+    const search = () => runSearch({ signal: controller.signal, generation })
+    const timeout = debounceMs ? window.setTimeout(search, debounceMs) : null
+    if (!debounceMs) search()
 
     return () => {
       if (timeout !== null) window.clearTimeout(timeout)
+      abortRef.current?.abort()
+      abortRef.current = null
+      generationRef.current += 1
     }
-  }, [debounceMs, enabled, ensureWorker, normalizedQuery, pageSize, searchKey, translationId])
+  }, [debounceMs, enabled, normalizedQuery, runSearch])
 
   const loadMore = useCallback(() => {
     if (
       loadingMoreRef.current
       || !enabled
       || !normalizedQuery
-      || !workerRef.current
-      || state.key !== searchKey
+      || state.requestKey !== requestKey
       || state.status !== 'ready'
       || !state.hasMore
     ) return
 
-    const id = requestIdRef.current + 1
-    requestIdRef.current = id
+    const generation = ++generationRef.current
+    abortRef.current?.abort()
+    const controller = new AbortController()
+    abortRef.current = controller
     loadingMoreRef.current = true
     setState((previous) => (
-      previous.key === searchKey
+      previous.requestKey === requestKey
         ? { ...previous, isLoadingMore: true, loadMoreError: null }
         : previous
     ))
-    workerRef.current.postMessage({
-      append: true,
-      id,
-      key: searchKey,
-      offset: state.results.length,
-      pageSize,
-      query: normalizedQuery,
-      translationId,
-    })
-  }, [enabled, normalizedQuery, pageSize, searchKey, state.hasMore, state.key, state.results.length, state.status, translationId])
+    runSearch({ append: true, offset: state.results.length, signal: controller.signal, generation })
+  }, [enabled, normalizedQuery, requestKey, runSearch, state.hasMore, state.requestKey, state.results.length, state.status])
 
-  if (!enabled || !normalizedQuery) return { ...idleState(), loadMore }
-  if (state.key !== searchKey) return { ...idleState(), loadMore, status: 'loading' }
-  return { ...state, loadMore }
+  const retry = useCallback(() => setAttempt(value => value + 1), [])
+
+  if (!enabled || !normalizedQuery) return { ...idleState(), loadMore, retry }
+  if (state.requestKey !== requestKey) return { ...idleState(), loadMore, retry, status: 'loading' }
+  return { ...state, loadMore, retry }
 }

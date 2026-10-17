@@ -70,7 +70,7 @@ export default function SearchPage() {
       ) : isSearching ? (
         <div className="empty-state"><Icon name="search" size={24} /><p>{t('search.loading')}</p></div>
       ) : searchState.status === 'error' ? (
-        <div className="empty-state"><Icon name="search" size={24} /><p>{t('search.error')}</p></div>
+        <div className="empty-state"><Icon name="search" size={24} /><p role="alert">{t('search.error')}</p><button className="button button--compact" onClick={searchState.retry} type="button">{t('reader.retry')}</button></div>
       ) : activeQuery && searchState.results.length ? (
         <div className="search-results">
           <p aria-live="polite" className="result-count">
