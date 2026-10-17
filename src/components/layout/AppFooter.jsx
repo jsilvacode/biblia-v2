@@ -1,11 +1,21 @@
-import { Link } from 'react-router-dom'
-import { PROJECT_AUTHOR, PROJECT_CONTACT_EMAIL, PROJECT_DONATION_LINKS, PROJECT_PUBLIC_VERSION } from '../../content/projectMeta'
+import { useRef, useState } from 'react'
+import { PROJECT_AUTHOR, PROJECT_PUBLIC_VERSION } from '../../content/projectMeta'
 import { useI18n } from '../../i18n'
+import { ProjectContact, ProjectDetails, ProjectHelp, ProjectSupport } from '../../features/about/ProjectInformation'
+import { ReaderDialog } from '../../features/reader/ReaderDialog'
 import { Icon } from '../ui/Icon'
 import styles from './AppFooter.module.css'
 
-export function AppFooter({ showSupport = false, editorial = false }) {
+export function AppFooter({ editorial = false }) {
   const { t } = useI18n()
+  const [information, setInformation] = useState(null)
+  const returnFocusRef = useRef(null)
+  const actions = [
+    { id: 'about', label: 'nav.about', title: 'about.title' },
+    { id: 'help', label: 'about.help', title: 'about.helpTitle' },
+    { id: 'support', label: 'about.supportTitle', title: 'about.supportTitle' },
+  ]
+  const selected = actions.find(({ id }) => id === information)
 
   return (
     <footer className={`${styles.footer}${editorial ? ` ${styles.editorial}` : ''}`}>
@@ -16,27 +26,20 @@ export function AppFooter({ showSupport = false, editorial = false }) {
           <p className={styles.author}>{t('about.developer', { author: PROJECT_AUTHOR })}</p>
         </div>
         <nav aria-label={t('about.footerNavigation')} className={styles.navigation}>
-          <Link to="/about">{t('nav.about')}</Link>
-          <Link to="/about#ayuda">{t('about.help')}</Link>
-          <a href={`mailto:${PROJECT_CONTACT_EMAIL}`}>{t('about.contact')}</a>
+          {actions.map(({ id, label }) => (
+            <button aria-expanded={information === id} aria-haspopup="dialog" key={id} onClick={(event) => { returnFocusRef.current = event.currentTarget; setInformation(id) }} type="button">{t(label)}</button>
+          ))}
         </nav>
-        {showSupport && (
-          <section aria-labelledby="support-project-title" className={styles.support}>
-            <div className={styles.supportCopy}>
-              <strong id="support-project-title">{t('about.supportTitle')}</strong>
-              <p>{t('about.supportDescription')}</p>
-            </div>
-            <nav aria-label={t('about.supportTitle')} className={styles.supportLinks}>
-              <a href={PROJECT_DONATION_LINKS.mercadoPago} rel="noopener noreferrer" target="_blank">
-                <span>{t('about.mercadoPago')}</span><Icon name="externalLink" size={15} strokeWidth={1.65} />
-              </a>
-              <a href={PROJECT_DONATION_LINKS.paypal} rel="noopener noreferrer" target="_blank">
-                <span>{t('about.paypal')}</span><Icon name="externalLink" size={15} strokeWidth={1.65} />
-              </a>
-            </nav>
-          </section>
-        )}
       </div>
+      {selected && (
+        <ReaderDialog className={styles.dialog} isOpen onClose={() => setInformation(null)} returnFocusRef={returnFocusRef} title={t(selected.title)}>
+          <div className={`reader-dialog__scroll-area ${styles.dialogContent}`}>
+            {information === 'about' && <><p>{t('about.description')}</p><ProjectDetails /><ProjectContact /></>}
+            {information === 'help' && <ProjectHelp />}
+            {information === 'support' && <ProjectSupport />}
+          </div>
+        </ReaderDialog>
+      )}
     </footer>
   )
 }

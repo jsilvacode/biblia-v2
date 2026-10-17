@@ -22,7 +22,8 @@ Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos
 | 8 | Primera búsqueda y trabajo repetido | Se reutiliza preparación del índice entre instancias sin mezclar consultas/versiones; carga diferida y recuperación se mantienen; se compara el trabajo antes/después | Completado |
 | 9 | Verificación de la experiencia completa | Recorridos principales en móvil/tablet/escritorio, teclado, dos temas y errores relevantes; correcciones puntuales y limpieza de lo sustituido | Completado |
 | 10 | Base definida entre apertura y cuerpo | Panel sólido con bordes nítidos; paisaje de apertura termina horizontalmente a la altura de la base del selector y enlaza con el color del cuerpo; conservar contenido y posición | Completado |
-| 11 | Footer compacto y apoyo en Acerca de | Solo Acerca de, Ayuda y Apoya el proyecto bajo la identificación; contacto y donaciones dentro de la página dedicada con anclas funcionales | Pendiente |
+| 11 | Footer compacto y tres modales informativos | Acerca de, Ayuda y Apoya el proyecto abren contenidos separados, centrados y con X; conservan foco y posición. Contacto dentro de Acerca de, pagos dentro de Apoya; /about conserva enlaces directos existentes | En curso |
+| 12 | Selector unido al cuerpo | Panel opaco sin contorno marcado, redondeado solo arriba; base recta del mismo color del cuerpo en día/noche, sin alterar márgenes, contenido ni posiciones | Pendiente |
 
 ## Comprobaciones comunes
 
@@ -59,4 +60,10 @@ Se incorporan dos publicaciones posteriores a la regresión en curso: retirar el
 
 La prueba final con SW real también conserva modal, foco y posición en la segunda pestaña y recarga una sola vez únicamente la que solicita actualizar. Las dos publicaciones adicionales conservan estos cambios y se verifican por separado.
 
-10. Base de apertura definida — panel opaco con borde y radio limpio, sin desenfoque, máscaras ni reflejos. Fotografía y velo terminan exactamente en su base; las coordenadas y dimensiones de hero/panel/selector/editorial se mantienen. Catorce E2E, geometría y revisión visual en 320/768/1440 px y ambos temas, lint y build aprobados.
+10. `86a7bd2` — Base de apertura definida — panel opaco con borde y radio limpio, sin desenfoque, máscaras ni reflejos. Fotografía y velo terminan exactamente en su base; las coordenadas y dimensiones de hero/panel/selector/editorial se mantienen. Catorce E2E, geometría y revisión visual en 320/768/1440 px y ambos temas, lint y build aprobados.
+
+## Ajustes del 17 de octubre
+
+Los tres destinos del footer se abren como modales independientes para conservar el contexto de lectura. Acerca de reúne identidad y contacto; Ayuda muestra sus cinco temas con desplazamiento interno cuando sea necesario; Apoya el proyecto contiene las opciones de donación. Mantener una X superior derecha, cierre con Escape y devolución del foco al control que abrió cada ventana. La página /about permanece como destino directo compatible.
+
+Después de publicar los modales, refinar la unión del selector con el cuerpo: conservar radio solo en las esquinas superiores, retirar el contorno visible y terminar la superficie opaca con el mismo color del cuerpo y una base horizontal.

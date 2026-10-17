@@ -96,7 +96,7 @@ export function AppShell() {
       <main id="main-content" className="app-main" tabIndex={-1}>
         <Outlet />
       </main>
-      {!isReader && <AppFooter editorial={isHome} showSupport={isHome} />}
+      {!isReader && <AppFooter editorial={isHome} />}
       {!isReader && <Navigation className="mobile-navigation" />}
     </div>
   )

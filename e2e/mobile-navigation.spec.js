@@ -11,9 +11,9 @@ test.describe('mobile navigation shell', () => {
     await expect(navigation.getByRole('link', { name: /Inicio|Home|Início/ })).toHaveAttribute('aria-current', 'page')
 
     const homeFooter = page.getByRole('contentinfo')
-    await expect(homeFooter.getByText(/Apoya el proyecto|Support the project|Apoie o projeto/)).toBeVisible()
-    await expect(homeFooter.getByRole('link', { name: /Mercado Pago/ })).toBeVisible()
-    await expect(homeFooter.getByRole('link', { name: /PayPal/ })).toBeVisible()
+    await expect(homeFooter.getByRole('button', { name: /Apoya el proyecto|Support the project|Apoie o projeto/ })).toHaveAttribute('aria-haspopup', 'dialog')
+    await expect(homeFooter.getByRole('button')).toHaveCount(3)
+    await expect(homeFooter.getByRole('link')).toHaveCount(0)
 
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
     await navigation.getByRole('link', { name: /Biblia|Bible/ }).click()
@@ -34,12 +34,12 @@ test.describe('mobile navigation shell', () => {
     await expect(settingsDialog.getByRole('link', { name: /Mercado Pago|PayPal/ })).toHaveCount(0)
 
     const footer = page.getByRole('contentinfo')
-    await expect(footer.getByText(/Apoya el proyecto|Support the project|Apoie o projeto/)).toHaveCount(0)
+    await expect(footer.getByRole('button', { name: /Apoya el proyecto|Support the project|Apoie o projeto/ })).toHaveAttribute('aria-haspopup', 'dialog')
     await expect(footer.getByRole('link', { name: /Mercado Pago/ })).toHaveCount(0)
     await expect(footer.getByRole('link', { name: /PayPal/ })).toHaveCount(0)
     await expect(footer.getByText('Santa Biblia v3.0', { exact: true })).toBeVisible()
     await expect(footer.getByText(/Julio Silva/)).toBeVisible()
-    await expect(footer.getByRole('link', { name: /Contacto|Contact|Contato/, exact: true })).toHaveAttribute('href', 'mailto:jsilvacode@gmail.com')
+    await expect(footer.locator('a[href^="mailto:"]')).toHaveCount(0)
     await expect(page.getByRole('dialog')).toHaveCount(1)
     await expect(page).toHaveURL(/\/bible$/)
   })

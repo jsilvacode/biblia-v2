@@ -1,52 +1,58 @@
 import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { PageIntro } from '../../components/ui/PageIntro'
-import { PROJECT_AUTHOR, PROJECT_CONTACT_EMAIL, PROJECT_PUBLIC_VERSION } from '../../content/projectMeta'
 import { useI18n } from '../../i18n'
+import { ProjectContact, ProjectDetails, ProjectHelp, ProjectSupport } from './ProjectInformation'
 import styles from './AboutPage.module.css'
-
-const helpTopics = ['reading', 'translations', 'verseActions', 'offline', 'localData']
 
 export default function AboutPage() {
   const { t } = useI18n()
   const { hash, key } = useLocation()
+  const pageRef = useRef(null)
   const helpRef = useRef(null)
+  const supportRef = useRef(null)
 
   useEffect(() => {
-    if (hash !== '#ayuda') return undefined
-    // Wait for the lazy destination. A new history entry can reuse the hash.
-    const frame = window.requestAnimationFrame(() => {
-      helpRef.current?.scrollIntoView({ block: 'start', behavior: 'instant' })
-      helpRef.current?.focus({ preventScroll: true })
-    })
-    return () => window.cancelAnimationFrame(frame)
+    let frame
+    const restore = () => {
+      window.cancelAnimationFrame(frame)
+      frame = window.requestAnimationFrame(() => {
+        const currentHash = window.location.hash
+        if (window.location.pathname !== '/about' || currentHash && !['#ayuda', '#apoya'].includes(currentHash)) return
+        const heading = currentHash === '#ayuda' ? helpRef.current
+          : currentHash === '#apoya' ? supportRef.current : pageRef.current?.querySelector('h1')
+        if (!heading) return
+        if (currentHash) heading.scrollIntoView({ block: 'start', behavior: 'instant' })
+        else {
+          window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+          heading.tabIndex = -1
+        }
+        heading.focus({ preventScroll: true })
+      })
+    }
+    // A quick Back during lazy navigation can retain this page and its key.
+    // Handle that native history event as well as normal route updates.
+    window.addEventListener('popstate', restore)
+    restore()
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.removeEventListener('popstate', restore)
+    }
   }, [hash, key])
 
-  const labels = { settings: t('settings.title'), downloads: t('settings.offline'), ready: t('settings.readyOffline') }
-
   return (
-    <div className={`page ${styles.aboutPage}`}>
+    <div className={`page ${styles.aboutPage}`} ref={pageRef}>
       <PageIntro title={t('about.title')}>{t('about.description')}</PageIntro>
-      <dl className={styles.projectMeta}>
-        <div><dt>{t('about.versionLabel')}</dt><dd>{PROJECT_PUBLIC_VERSION}</dd></div>
-        <div><dt>{t('about.authorLabel')}</dt><dd>{PROJECT_AUTHOR}</dd></div>
-      </dl>
+      <ProjectDetails />
       <section aria-labelledby="ayuda" className={styles.help}>
         <h2 id="ayuda" ref={helpRef} tabIndex={-1}>{t('about.helpTitle')}</h2>
-        <div className={styles.helpTopics}>
-          {helpTopics.map((topic) => (
-            <article aria-labelledby={`help-${topic}`} key={topic}>
-              <h3 id={`help-${topic}`}>{t(`about.${topic}Title`)}</h3>
-              <p>{t(`about.${topic}Help`, labels)}</p>
-            </article>
-          ))}
-        </div>
+        <ProjectHelp />
       </section>
-      <section aria-labelledby="about-contact-heading" className={styles.contact}>
-        <h2 id="about-contact-heading">{t('about.contact')}</h2>
-        <p>{t('about.contactDescription')}</p>
-        <a className={styles.contactLink} href={`mailto:${PROJECT_CONTACT_EMAIL}`}>{PROJECT_CONTACT_EMAIL}</a>
+      <section aria-labelledby="apoya" className={styles.support}>
+        <h2 id="apoya" ref={supportRef} tabIndex={-1}>{t('about.supportTitle')}</h2>
+        <ProjectSupport />
       </section>
+      <ProjectContact />
     </div>
   )
 }

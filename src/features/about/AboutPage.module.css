@@ -1,16 +1,21 @@
 .aboutPage { max-width: 52rem; }
+.informationText { margin: 0; color: var(--ink-muted); font-size: .9375rem; line-height: 1.75; }
 .projectMeta { display: flex; flex-wrap: wrap; gap: 1rem 3rem; margin: 1.75rem 0 2.5rem; }
 .projectMeta > div { display: grid; gap: .4rem; }
 .projectMeta dt { color: var(--ink-muted); font-size: .75rem; line-height: 1.5; }
 .projectMeta dd { margin: 0; color: var(--accent-deep); font-size: .9375rem; line-height: 1.5; }
 .help { padding-top: 2rem; border-top: 1px solid var(--border); }
-.help h2, .contact h2 { margin: 0; color: var(--accent-deep); font: 400 1.875rem/1.25 var(--font-display); letter-spacing: -.025em; }
-.help h2 { scroll-margin-top: calc(var(--topbar-height) + 20px); }
+.help h2, .contact h2, .support h2 { margin: 0; color: var(--accent-deep); font: 400 1.875rem/1.25 var(--font-display); letter-spacing: -.025em; }
+.help h2, .support h2 { scroll-margin-top: calc(var(--topbar-height) + 20px); }
 .helpTopics { display: grid; gap: 1.75rem; margin-top: 1.75rem; }
 .helpTopics h3 { margin: 0 0 .55rem; color: var(--ink); font-size: 1rem; font-weight: 600; line-height: 1.45; }
-.helpTopics p, .contact p { max-width: 46rem; margin: 0; color: var(--ink-muted); font-size: .9375rem; line-height: 1.75; }
-.contact { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--border); }
-.contact p { margin-top: 1rem; }
+.helpTopics p, .contact p, .support p { max-width: 46rem; margin: 0; color: var(--ink-muted); font-size: .9375rem; line-height: 1.75; }
+.contact, .support { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.contact p, .support p { margin-top: 1rem; }
+.supportLinks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1rem; }
+.supportLinks a { display: inline-flex; align-items: center; min-height: var(--control-hit-size); gap: 6px; padding: 8px 13px; border: 1px solid var(--control-border); border-radius: var(--control-radius); background: var(--control-surface); color: var(--accent-blue-deep); font-size: .875rem; line-height: 1.4; transition: border-color var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium); }
+.supportLinks a:hover, .supportLinks a:focus-visible { border-color: var(--accent-deep); color: var(--accent-deep); }
 .contactLink { display: inline-flex; align-items: center; min-height: var(--control-hit-size); max-width: 100%; margin-top: .5rem; padding-block: 8px; color: var(--accent-blue-deep); font-size: .9375rem; overflow-wrap: anywhere; text-decoration: underline; text-underline-offset: 4px; }
 .contactLink:hover { color: var(--accent-deep); }
-@media (max-width: 620px) { .projectMeta { gap: 1rem 2rem; } .help h2, .contact h2 { font-size: 1.625rem; } }
+@media (max-width: 620px) { .projectMeta { gap: 1rem 2rem; } .help h2, .contact h2, .support h2 { font-size: 1.625rem; } }
+@media (prefers-reduced-motion: reduce) { .supportLinks a { transition: none; } }
