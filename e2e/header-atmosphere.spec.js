@@ -285,8 +285,8 @@ test('the matte opal Home panel keeps its shape, soft light and texture in eithe
       })
       expect(geometry.containsEditorial).toBe(false)
       expect(geometry.bottom).toBeLessThan(geometry.nextTop)
-      expect(geometry.left).toBeLessThanOrEqual(geometry.panelLeft)
-      expect(geometry.right).toBeGreaterThanOrEqual(geometry.panelRight)
+      expect(geometry.left).toBeLessThanOrEqual(geometry.panelLeft + 1)
+      expect(geometry.right).toBeGreaterThanOrEqual(geometry.panelRight - 1)
       expect(geometry.mask).toBe('none')
       expect(geometry.webkitMask).toBe('none')
       expect(geometry.blur).toBe('none')
@@ -311,7 +311,7 @@ test('the matte opal Home panel keeps its shape, soft light and texture in eithe
   }
 })
 
-test('Home loads one responsive photograph and cuts it at the reading panel base in both themes', async ({ page }) => {
+test('Home loads one responsive photograph and cuts it at the opening base in both themes', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('santa_biblia_v2_settings', JSON.stringify({ theme: 'light', locale: 'es', bibleVersion: 'nbla' })))
   for (const width of [320, 768, 1440]) {
     // Resize away from Home so its previous picture cannot request a new
@@ -335,22 +335,23 @@ test('Home loads one responsive photograph and cuts it at the reading panel base
       const geometry = await image.evaluate(img => {
         const photograph = img.parentElement.getBoundingClientRect()
         const panel = document.querySelector('[data-testid="home-reading-panel"]').getBoundingClientRect()
-        const heroElement = img.closest('section')
-        const hero = heroElement.getBoundingClientRect()
-        const overlay = getComputedStyle(heroElement, '::after')
+        const openingElement = img.closest('[data-testid="home-opening"]')
+        const opening = openingElement.getBoundingClientRect()
+        const overlay = getComputedStyle(openingElement, '::after')
         const picture = getComputedStyle(img.parentElement)
         return {
-          top: photograph.top, heroTop: hero.top, bottom: photograph.bottom, panelBottom: panel.bottom,
-          overlayBottom: hero.top + parseFloat(overlay.top) + parseFloat(overlay.height),
+          top: photograph.top, openingTop: opening.top, bottom: photograph.bottom, openingBottom: opening.bottom, panelBottom: panel.bottom,
+          overlayBottom: opening.top + parseFloat(overlay.top) + parseFloat(overlay.height),
           pictureMask: picture.maskImage, pictureWebkitMask: picture.webkitMaskImage, overlayMask: overlay.maskImage,
           editorialTop: document.getElementById('home-editorial-heading').getBoundingClientRect().top,
           background: getComputedStyle(document.querySelector('.home-page')).backgroundColor,
           bodyBackground: getComputedStyle(document.body).backgroundColor,
         }
       })
-      expect(geometry.top).toBe(geometry.heroTop)
-      expect(Math.abs(geometry.bottom - geometry.panelBottom)).toBeLessThanOrEqual(1)
-      expect(Math.abs(geometry.overlayBottom - geometry.panelBottom)).toBeLessThanOrEqual(1)
+      expect(geometry.top).toBe(geometry.openingTop)
+      expect(Math.abs(geometry.bottom - geometry.openingBottom)).toBeLessThanOrEqual(1)
+      expect(Math.abs(geometry.overlayBottom - geometry.openingBottom)).toBeLessThanOrEqual(1)
+      expect(geometry.bottom).toBeGreaterThanOrEqual(geometry.panelBottom - 1)
       expect(geometry.pictureMask).toBe('none')
       expect(geometry.pictureWebkitMask).toBe('none')
       expect(geometry.overlayMask).toBe('none')

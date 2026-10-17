@@ -249,13 +249,14 @@ test.describe('desktop navigation shell', () => {
 })
 
 test.describe('editorial page composition', () => {
-  test('keeps the Home hero full-bleed and separates the primary blocks', async ({ page }) => {
+  test('keeps the Home opening full-bleed and separates the primary blocks', async ({ page }) => {
     await page.goto('/')
 
     const heroRegion = page.getByRole('region', { name: /Promesa del día|Promise of the day|Promessa do dia/ })
     // Measure the final promise rather than mixing its loading and ready layouts.
     await expect(heroRegion).toHaveAttribute('aria-busy', 'false')
     await page.evaluate(() => document.fonts.ready)
+    const openingBox = await page.getByTestId('home-opening').boundingBox()
     const heroBox = await heroRegion.boundingBox()
     const homeHeaderBox = await page.locator('header[class*="homeHeader"]').boundingBox()
     const heroKickerBox = await heroRegion.getByText(/Una promesa para hoy|A promise for today|Uma promessa para hoje/).boundingBox()
@@ -269,14 +270,15 @@ test.describe('editorial page composition', () => {
     const viewport = page.viewportSize()
 
     expect(heroBox).not.toBeNull()
+    expect(openingBox).not.toBeNull()
     expect(homeHeaderBox).not.toBeNull()
     expect(heroKickerBox).not.toBeNull()
     expect(heroHeadingBox).not.toBeNull()
     expect(readingBox).not.toBeNull()
     expect(viewport).not.toBeNull()
-    expect(Math.abs(heroBox.x)).toBeLessThanOrEqual(1)
-    expect(Math.abs(heroBox.y)).toBeLessThanOrEqual(1)
-    expect(Math.abs(heroBox.width - viewport.width)).toBeLessThanOrEqual(1)
+    expect(Math.abs(openingBox.x)).toBeLessThanOrEqual(1)
+    expect(Math.abs(openingBox.y)).toBeLessThanOrEqual(1)
+    expect(Math.abs(openingBox.width - viewport.width)).toBeLessThanOrEqual(1)
     // The editorial kicker is the first content beat below the header; the
     // main promise follows it with measured breathing room.
     expect(heroKickerBox.y - (homeHeaderBox.y + homeHeaderBox.height)).toBeLessThanOrEqual(70)
@@ -289,9 +291,11 @@ test.describe('editorial page composition', () => {
       expect(actionBox.y).toBeGreaterThan(heroHeadingBox.y + heroHeadingBox.height)
       expect(actionBox.y + actionBox.height).toBeLessThanOrEqual(heroBox.y + heroBox.height)
     }
-    // The primary reading panel follows the hero's quiet lower edge without
-    // covering the promise or its actions.
-    expect(readingBox.y - (heroBox.y + heroBox.height)).toBeGreaterThanOrEqual(0)
+    // The panel either follows the promise or occupies the second column,
+    // without covering its text or actions in either composition.
+    if (viewport.width >= 1100) expect(readingBox.x).toBeGreaterThanOrEqual(heroBox.x + heroBox.width)
+    else expect(readingBox.y).toBeGreaterThanOrEqual(heroBox.y + heroBox.height)
+    expect(readingBox.y + readingBox.height).toBeLessThanOrEqual(openingBox.y + openingBox.height + 1)
   })
 
   test('keeps Home and section header controls consistent and unclipped', async ({ page }) => {

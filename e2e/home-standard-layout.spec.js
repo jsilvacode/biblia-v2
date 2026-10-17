@@ -16,7 +16,7 @@ async function settledHome(page, date) {
   })
 }
 
-test('the hero and glass keep the same height across short, medium and long promises', async ({ page }) => {
+test('the Home opening and reading panel stay stable with complete short, medium and long promises', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   for (const viewport of [{ width: 320, height: 568 }, { width: 390, height: 844 }, { width: 768, height: 1024 }, { width: 1440, height: 720 }, { width: 1440, height: 900 }]) {
     await page.setViewportSize(viewport)
@@ -24,24 +24,61 @@ test('the hero and glass keep the same height across short, medium and long prom
     for (const date of ['2026-02-23', '2026-08-06', '2026-10-14']) {
       await settledHome(page, date)
       const geometry = await promiseRegion(page).evaluate((hero) => {
-        const quote = hero.querySelector('h1').getBoundingClientRect()
-        const slot = hero.querySelector('h1').parentElement.getBoundingClientRect()
+        const heading = hero.querySelector('h1')
+        const quote = heading.getBoundingClientRect()
+        const slot = heading.parentElement.getBoundingClientRect()
+        const text = document.createRange()
+        text.selectNodeContents(heading)
+        const textBounds = text.getBoundingClientRect()
         const panel = document.querySelector('[data-testid="home-reading-panel"]')
+        const openingElement = document.querySelector('[data-testid="home-opening"]')
+        const opening = openingElement.getBoundingClientRect()
+        const heroBounds = hero.getBoundingClientRect()
+        const panelBounds = panel.getBoundingClientRect()
         const picker = panel.querySelector('[data-testid="home-reading-actions"]')
         const search = panel.querySelector('[role="search"]')
+        const clippingAncestors = []
+        // Font glyphs can exceed their line box with visible overflow. Check
+        // the actual text range against any ancestor that clips its contents.
+        for (let element = heading; element && openingElement.contains(element); element = element.parentElement) {
+          const style = getComputedStyle(element)
+          const bounds = element.getBoundingClientRect()
+          const left = bounds.left + element.clientLeft
+          const top = bounds.top + element.clientTop
+          if (style.overflowX !== 'visible' && (textBounds.left < left - 1 || textBounds.right > left + element.clientWidth + 1)
+            || style.overflowY !== 'visible' && (textBounds.top < top - 1 || textBounds.bottom > top + element.clientHeight + 1)) {
+            clippingAncestors.push(element.tagName)
+          }
+        }
         return {
-          heroHeight: hero.getBoundingClientRect().height,
-          panelHeight: panel.getBoundingClientRect().height,
-          panelTop: panel.getBoundingClientRect().top,
+          openingHeight: opening.height,
+          heroHeight: heroBounds.height,
+          panelHeight: panelBounds.height,
+          panelTop: panelBounds.top,
+          panelLeft: panelBounds.left,
+          panelBottom: panelBounds.bottom,
+          heroRight: heroBounds.right,
+          heroBottom: heroBounds.bottom,
+          openingBottom: opening.bottom,
           quoteFits: quote.top >= slot.top - 1 && quote.bottom <= slot.bottom + 1,
+          quoteComplete: textBounds.top >= slot.top - 1 && textBounds.bottom <= slot.bottom + 1 && clippingAncestors.length === 0,
+          clippingAncestors,
           quoteHeight: quote.height,
           quoteSpace: slot.height,
           controlAlignment: Math.abs(picker.getBoundingClientRect().left - search.getBoundingClientRect().left) + Math.abs(picker.getBoundingClientRect().width - search.getBoundingClientRect().width),
         }
       })
       expect(geometry.quoteFits, `${viewport.width}×${viewport.height}, ${date}: ${JSON.stringify(geometry)}`).toBe(true)
+      expect(geometry.quoteComplete, `${viewport.width}×${viewport.height}, ${date}: ${JSON.stringify(geometry)}`).toBe(true)
       expect(geometry.controlAlignment).toBeLessThanOrEqual(1)
+      const lowerBreathingRoom = geometry.openingBottom - geometry.panelBottom
+      expect(lowerBreathingRoom).toBeGreaterThanOrEqual(viewport.width <= 620 ? 24 : 40)
+      if (viewport.width >= 1100) {
+        expect(geometry.panelLeft).toBeGreaterThan(geometry.heroRight)
+        expect(geometry.openingHeight).toBeLessThanOrEqual(560)
+      } else expect(geometry.panelTop).toBeGreaterThanOrEqual(geometry.heroBottom)
       if (!initial) initial = geometry
+      expect(geometry.openingHeight).toBe(initial.openingHeight)
       expect(geometry.heroHeight).toBe(initial.heroHeight)
       expect(geometry.panelHeight).toBe(initial.panelHeight)
       expect(geometry.panelTop).toBe(initial.panelTop)
@@ -57,11 +94,16 @@ test('loading the promise and adding reading history do not move the glass or th
   await page.goto('/')
   await expect(promiseRegion(page)).toHaveAttribute('aria-busy', 'true')
   await expect(page.getByRole('region', { name: /^(?:Última lectura|Lecturas recientes)$/ })).toHaveCount(0)
-  const geometry = () => page.getByTestId('home-reading-panel').evaluate(panel => ({
-    height: panel.getBoundingClientRect().height,
-    top: panel.getBoundingClientRect().top,
-    editorialTop: document.getElementById('home-editorial-heading').getBoundingClientRect().top,
-  }))
+  const geometry = () => page.getByTestId('home-reading-panel').evaluate(panel => {
+    const opening = document.querySelector('[data-testid="home-opening"]').getBoundingClientRect()
+    return {
+      height: panel.getBoundingClientRect().height,
+      top: panel.getBoundingClientRect().top,
+      openingHeight: opening.height,
+      openingBottom: opening.bottom,
+      editorialTop: document.getElementById('home-editorial-heading').getBoundingClientRect().top,
+    }
+  })
   const loading = await geometry()
   releaseChapter()
   await expect(promiseRegion(page)).toHaveAttribute('aria-busy', 'false')
@@ -78,6 +120,33 @@ test('loading the promise and adding reading history do not move the glass or th
   await expect(history.getByRole('link')).toHaveCount(isMobile ? 1 : 3)
   await expect(history.locator('a')).toHaveCount(3)
   expect(await geometry()).toEqual(loading)
+})
+
+test('resizing the Home opening through two columns preserves the single reading panel and search state', async ({ page }) => {
+  await page.setViewportSize({ width: 1099, height: 900 })
+  await settledHome(page, '2026-10-14')
+  const panel = page.getByTestId('home-reading-panel')
+  const input = panel.getByRole('searchbox')
+  const originalPanel = await panel.elementHandle()
+  const originalInput = await input.elementHandle()
+  await input.fill('Juan 3:16')
+  await expect(panel.getByRole('region', { name: 'Resultados de búsqueda', exact: true })).toBeVisible()
+
+  for (const width of [1100, 1440, 1099]) {
+    await page.setViewportSize({ width, height: 900 })
+    await expect(panel).toHaveCount(1)
+    await expect(input).toHaveValue('Juan 3:16')
+    expect(await panel.evaluate((element, original) => element === original, originalPanel)).toBe(true)
+    expect(await input.evaluate((element, original) => element === original, originalInput)).toBe(true)
+    const geometry = await panel.evaluate(element => {
+      const rect = element.getBoundingClientRect()
+      const promise = document.querySelector('[aria-label="Promesa del día"]').getBoundingClientRect()
+      return { panelLeft: rect.left, panelTop: rect.top, promiseRight: promise.right, promiseBottom: promise.bottom }
+    })
+    if (width >= 1100) expect(geometry.panelLeft).toBeGreaterThan(geometry.promiseRight)
+    else expect(geometry.panelTop).toBeGreaterThanOrEqual(geometry.promiseBottom)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+  }
 })
 
 test('enlarged text keeps the longest translated promise complete and its actions reachable', async ({ page }) => {

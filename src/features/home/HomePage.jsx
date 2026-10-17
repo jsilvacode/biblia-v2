@@ -146,67 +146,70 @@ export default function HomePage() {
 
   return (
     <div className={`home-page ${styles.homePage}`}>
-      <section aria-busy={promiseStatus === 'loading'} aria-label={t('home.promiseOfDay')} className={styles.hero}>
+      <div className={styles.opening} data-testid="home-opening">
         <HomeLandscape />
-        <div className={styles.heroInner}>
+        <div className={styles.openingInner}>
           <HomeHeader />
-          <div className={styles.heroCopy}>
-            <p className={styles.heroKicker}>{t('home.promiseKicker')}</p>
-            <div className={styles.heroQuote}><h1 className={heroQuoteClassName}>{visiblePromiseText}</h1></div>
-            <p className={styles.promiseReference}>{promiseReference}{promiseReference && ` · ${version.short}`}</p>
-            <div className={styles.heroActions}>
-              <Link aria-label={`${t('home.readInContext')}: ${promiseReference}`} className={styles.heroPrimaryAction} state={{ attentionVerse: true }} to={promisePath} {...(promise ? readingIntentProps(promise.reference) : {})}>
-                <Icon name="bookOpen" size={18} />
-                <span>{t('home.readInContext')}</span>
-              </Link>
-              <button aria-label={t('home.sharePromise')} className={styles.heroSecondaryAction} disabled={!promise || promiseStatus !== 'ready' || !promiseText} onClick={handlePromiseShare} type="button">
-                <Icon name="share" size={18} />
-                <span>{t('common.share')}</span>
-              </button>
+          <div className={styles.openingGrid}>
+            <section aria-busy={promiseStatus === 'loading'} aria-label={t('home.promiseOfDay')} className={styles.hero}>
+              <div className={styles.heroCopy}>
+                <p className={styles.heroKicker}>{t('home.promiseKicker')}</p>
+                <div className={styles.heroQuote}><h1 className={heroQuoteClassName}>{visiblePromiseText}</h1></div>
+                <p className={styles.promiseReference}>{promiseReference}{promiseReference && ` · ${version.short}`}</p>
+                <div className={styles.heroActions}>
+                  <Link aria-label={`${t('home.readInContext')}: ${promiseReference}`} className={styles.heroPrimaryAction} state={{ attentionVerse: true }} to={promisePath} {...(promise ? readingIntentProps(promise.reference) : {})}>
+                    <Icon name="bookOpen" size={18} />
+                    <span>{t('home.readInContext')}</span>
+                  </Link>
+                  <button aria-label={t('home.sharePromise')} className={styles.heroSecondaryAction} disabled={!promise || promiseStatus !== 'ready' || !promiseText} onClick={handlePromiseShare} type="button">
+                    <Icon name="share" size={18} />
+                    <span>{t('common.share')}</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+            <div className={styles.glassMantle}>
+              <section aria-label={t('home.primaryActions')}>
+                <article aria-labelledby="home-bible-heading" className={styles.readingPanel} data-testid="home-reading-panel">
+                  <div className={styles.readingLayout}>
+                    <div className={styles.readingHeading}>
+                      <h2 id="home-bible-heading">{t('home.readBible')}</h2>
+                      <p>{t('home.chooseBookChapter')}</p>
+                    </div>
+                    <div className={styles.readingTools}>
+                      {recentReadings.length > 0 && (
+                        <section aria-labelledby="home-recent-heading" className={styles.recentReadings}>
+                          <h3 id="home-recent-heading"><Icon name="history" size={14} /><span className={styles.recentDesktopLabel}>{t('home.recentReadings')}</span><span className={styles.recentMobileLabel}>{t('home.lastReading')}</span></h3>
+                          <ol className={styles.recentList}>
+                            {recentReadings.map((reading, index) => (
+                              <li key={`${reading.book}:${reading.chapter}`}>
+                                <Link
+                                  aria-label={`${t(index === 0 ? 'home.continueReading' : 'home.resumeReading')}: ${formatReference(reading, locale)}`}
+                                  className={styles.recentLink}
+                                  state={{ attentionVerse: true }}
+                                  to={getReaderPath(reading)}
+                                  {...readingIntentProps(reading)}
+                                >
+                                  <span className={styles.recentReference}>{formatReference(reading, locale)}</span>
+                                  {index === 0 && <span className={styles.recentContinue}>{t('common.continue')}</span>}
+                                </Link>
+                              </li>
+                            ))}
+                          </ol>
+                        </section>
+                      )}
+                      <HomePassagePicker onGoToChapter={goToReading} />
+                      <HomeQuickSearch currentBookId={hasReadingHistory ? lastRead.book : null} currentChapter={hasReadingHistory ? lastRead.chapter : null} onGoToChapter={goToReading} />
+                    </div>
+                  </div>
+                </article>
+              </section>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
       <div className={styles.homeFeed}>
-        <div className={styles.glassMantle}>
-          <section aria-label={t('home.primaryActions')}>
-            <article aria-labelledby="home-bible-heading" className={styles.readingPanel} data-testid="home-reading-panel">
-              <div className={styles.readingLayout}>
-                <div className={styles.readingHeading}>
-                  <h2 id="home-bible-heading">{t('home.readBible')}</h2>
-                  <p>{t('home.chooseBookChapter')}</p>
-                </div>
-                <div className={styles.readingTools}>
-                  {recentReadings.length > 0 && (
-                    <section aria-labelledby="home-recent-heading" className={styles.recentReadings}>
-                      <h3 id="home-recent-heading"><Icon name="history" size={14} /><span className={styles.recentDesktopLabel}>{t('home.recentReadings')}</span><span className={styles.recentMobileLabel}>{t('home.lastReading')}</span></h3>
-                      <ol className={styles.recentList}>
-                        {recentReadings.map((reading, index) => (
-                          <li key={`${reading.book}:${reading.chapter}`}>
-                            <Link
-                              aria-label={`${t(index === 0 ? 'home.continueReading' : 'home.resumeReading')}: ${formatReference(reading, locale)}`}
-                              className={styles.recentLink}
-                              state={{ attentionVerse: true }}
-                              to={getReaderPath(reading)}
-                              {...readingIntentProps(reading)}
-                            >
-                              <span className={styles.recentReference}>{formatReference(reading, locale)}</span>
-                              {index === 0 && <span className={styles.recentContinue}>{t('common.continue')}</span>}
-                            </Link>
-                          </li>
-                        ))}
-                      </ol>
-                    </section>
-                  )}
-                  <HomePassagePicker onGoToChapter={goToReading} />
-                  <HomeQuickSearch currentBookId={hasReadingHistory ? lastRead.book : null} currentChapter={hasReadingHistory ? lastRead.chapter : null} onGoToChapter={goToReading} />
-                </div>
-              </div>
-            </article>
-          </section>
-        </div>
-
         {hasReadingHistory && <InstallInvitation />}
 
         <section aria-labelledby="home-editorial-heading" className={styles.editorialSection}>

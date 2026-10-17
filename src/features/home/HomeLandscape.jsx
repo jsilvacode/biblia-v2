@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef } from 'react'
 import styles from './HomePage.module.css'
 
-// Covering both sections makes this landscape wider than the viewport
-// before it is cropped. Request enough pixels for that painted width.
+// Keep the responsive source contract shared with the document preload.
+// One picture serves the opening in both the stacked and two-column layouts.
 const desktopSizes = '(min-width: 2000px) 100vw, 2000px'
 
 export function HomeLandscape() {
