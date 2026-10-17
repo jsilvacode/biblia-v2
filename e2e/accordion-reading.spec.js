@@ -3,10 +3,12 @@ import { expect, test } from '@playwright/test'
 const close = (surface) => surface.getByRole('button', { name: 'Cerrar', exact: true })
 
 async function expectCloseAtRight(surface) {
-  const [panel, button] = await Promise.all([surface.boundingBox(), close(surface).boundingBox()])
-  expect(button.x).toBeGreaterThan(panel.x + panel.width / 2)
-  expect(button.y).toBeLessThan(panel.y + 65)
-  expect(button.width).toBeGreaterThanOrEqual(40)
+  // Read both rectangles in one frame while anchored panels find their position.
+  await expect.poll(() => surface.evaluate((element) => {
+    const panel = element.getBoundingClientRect()
+    const button = [...element.querySelectorAll('button')].find(control => control.getAttribute('aria-label') === 'Cerrar')?.getBoundingClientRect()
+    return Boolean(button && button.x > panel.x + panel.width / 2 && button.y < panel.y + 65 && button.width >= 40)
+  })).toBe(true)
   await expect(close(surface).locator('svg.lucide-x')).toHaveCount(1)
 }
 

@@ -52,9 +52,9 @@
   box-sizing: border-box;
   width: var(--mantle-width);
   transform: translateX(-50%);
-  border: 1px solid var(--border-strong);
-  border-radius: 24px;
-  background: var(--surface-1);
+  border: 0;
+  border-radius: 24px 24px 0 0;
+  background: var(--bg-reader);
   pointer-events: none;
   content: '';
 }
@@ -156,7 +156,7 @@
   .heroPrimaryAction, .heroSecondaryAction { padding: 12px 16px; font-size: .75rem; }
   .hero::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 58%, transparent), color-mix(in srgb, var(--bg-reader) 68%, transparent) 14%, color-mix(in srgb, var(--bg-reader) 68%, transparent) 40%, color-mix(in srgb, var(--bg-reader) 32%, transparent) 60%, transparent); }
   :global(:root[data-theme='dark']) .hero::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 58%, transparent), color-mix(in srgb, var(--bg-reader) 68%, transparent) 14%, color-mix(in srgb, var(--bg-reader) 68%, transparent) 40%, color-mix(in srgb, var(--bg-reader) 45%, transparent) 60%, color-mix(in srgb, var(--bg-reader) 30%, transparent)); }
-  .glassMantle::before { border-radius: 20px; }
+  .glassMantle::before { border-radius: 20px 20px 0 0; }
   .readingPanel { padding: 26px clamp(14px, 4vw, 22px) 31px; }
   .readingLayout { gap: 24px; }
   .readingTools { gap: 22px; }

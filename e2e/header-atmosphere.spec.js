@@ -265,9 +265,12 @@ test('the solid Home panel covers the picker width without faded edges in either
           webkitMask: style.webkitMaskImage,
           blur: style.backdropFilter,
           background: style.backgroundColor,
+          bodyBackground: getComputedStyle(document.body).backgroundColor,
           reflection: style.backgroundImage,
           border: style.borderTopStyle,
           borderWidth: style.borderTopWidth,
+          bottomLeftRadius: style.borderBottomLeftRadius,
+          bottomRightRadius: style.borderBottomRightRadius,
           shadow: style.boxShadow,
           rim: getComputedStyle(surface, '::after').content,
         }
@@ -281,8 +284,11 @@ test('the solid Home panel covers the picker width without faded edges in either
       expect(geometry.blur).toBe('none')
       expect(geometry.background).toMatch(/^rgb\(/)
       expect(geometry.reflection).toBe('none')
-      expect(geometry.border).toBe('solid')
-      expect(geometry.borderWidth).toBe('1px')
+      expect(geometry.background).toBe(geometry.bodyBackground)
+      expect(geometry.border).toBe('none')
+      expect(geometry.borderWidth).toBe('0px')
+      expect(geometry.bottomLeftRadius).toBe('0px')
+      expect(geometry.bottomRightRadius).toBe('0px')
       expect(geometry.shadow).toBe('none')
       expect(geometry.rim).toBe('none')
     }

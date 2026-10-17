@@ -50,7 +50,7 @@ test('the three footer controls open distinct centered dialogs and restore focus
       await expectSupportLinks(dialog)
       await expect(dialog.locator('article, a[href^="mailto:"]')).toHaveCount(0)
     }
-    const lockedY = await page.locator('body').evaluate(element => -parseFloat(element.style.top))
+    const lockedY = await page.locator('body').evaluate(element => Math.max(0, -parseFloat(element.style.top)))
     if (index === 1) await page.keyboard.press('Escape')
     else await close.click()
     await expect(page.getByRole('dialog')).toHaveCount(0)

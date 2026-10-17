@@ -22,8 +22,9 @@ Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos
 | 8 | Primera búsqueda y trabajo repetido | Se reutiliza preparación del índice entre instancias sin mezclar consultas/versiones; carga diferida y recuperación se mantienen; se compara el trabajo antes/después | Completado |
 | 9 | Verificación de la experiencia completa | Recorridos principales en móvil/tablet/escritorio, teclado, dos temas y errores relevantes; correcciones puntuales y limpieza de lo sustituido | Completado |
 | 10 | Base definida entre apertura y cuerpo | Panel sólido con bordes nítidos; paisaje de apertura termina horizontalmente a la altura de la base del selector y enlaza con el color del cuerpo; conservar contenido y posición | Completado |
-| 11 | Footer compacto y tres modales informativos | Acerca de, Ayuda y Apoya el proyecto abren contenidos separados, centrados y con X; conservan foco y posición. Contacto dentro de Acerca de, pagos dentro de Apoya; /about conserva enlaces directos existentes | En curso |
-| 12 | Selector unido al cuerpo | Panel opaco sin contorno marcado, redondeado solo arriba; base recta del mismo color del cuerpo en día/noche, sin alterar márgenes, contenido ni posiciones | Pendiente |
+| 11 | Footer compacto y tres modales informativos | Acerca de, Ayuda y Apoya el proyecto abren contenidos separados, centrados y con X; conservan foco y posición. Contacto dentro de Acerca de, pagos dentro de Apoya; /about conserva enlaces directos existentes | Completado |
+| 12 | Selector unido al cuerpo | Panel opaco sin contorno marcado, redondeado solo arriba; base recta del mismo color del cuerpo en día/noche, sin alterar márgenes, contenido ni posiciones | En curso |
+| 13 | Resaltado temporal fiable | El pulso de atención termina aun si se demora el RAF; una URL sin intención de atención no lo activa por comparar claves vacías; conserva destacados permanentes | Pendiente |
 
 ## Comprobaciones comunes
 
@@ -67,3 +68,7 @@ La prueba final con SW real también conserva modal, foco y posición en la segu
 Los tres destinos del footer se abren como modales independientes para conservar el contexto de lectura. Acerca de reúne identidad y contacto; Ayuda muestra sus cinco temas con desplazamiento interno cuando sea necesario; Apoya el proyecto contiene las opciones de donación. Mantener una X superior derecha, cierre con Escape y devolución del foco al control que abrió cada ventana. La página /about permanece como destino directo compatible.
 
 Después de publicar los modales, refinar la unión del selector con el cuerpo: conservar radio solo en las esquinas superiores, retirar el contorno visible y terminar la superficie opaca con el mismo color del cuerpo y una base horizontal.
+
+11. `37580d8` — Footer compacto y tres modales — contenidos separados de Acerca de/contacto, Ayuda y Apoya; reutilizados con la página /about y sus anclas. Siete E2E y una omisión esperada, 260 unitarias, lint/build/corpus aprobados; geometría y cierres revisados en ambos temas a 320 px con texto 200 %, 390/768/1440 px. Artefacto y recorridos públicos verificados: búsqueda, lectura, guardado, retomar, tres modales y cita temática, con foco/posición conservados.
+
+La regresión posterior detectó una carrera entre RAF y temporizador del pulso de atención. Se verificó el orden invertido con el efecto real: el temporizador puede terminar antes de la activación. Corregir en una publicación separada, junto con la comparación de claves vacías que activa indebidamente el pulso de una URL directa.
