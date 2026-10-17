@@ -6,7 +6,7 @@ Fecha: 16 de octubre de 2026.
 
 Cada etapa termina con comprobaciones proporcionales, un commit en `main`, push a `origin/main` y verificación del despliegue público. La etapa siguiente no comienza a modificar código hasta que la anterior esté publicada. Las auditorías de solo lectura pueden hacerse en paralelo.
 
-Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos coral y azul, paisaje y vidrio en la portada. Hacer visibles las acciones, mantener controles táctiles cómodos y ofrecer recuperación de errores. Evitar pantallas o funciones anunciadas que todavía no existen.
+Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos coral y azul, paisaje y panel de lectura en la portada. Hacer visibles las acciones, mantener controles táctiles cómodos y ofrecer recuperación de errores. Evitar pantallas o funciones anunciadas que todavía no existen.
 
 ## Etapas
 
@@ -21,8 +21,7 @@ Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos
 | 7 | Footer útil y cierre editorial | Identidad, ayuda sobre el proyecto, contacto y apoyo tienen una jerarquía clara; enlaces táctiles cómodos y una página informativa real | Completado |
 | 8 | Primera búsqueda y trabajo repetido | Se reutiliza preparación del índice entre instancias sin mezclar consultas/versiones; carga diferida y recuperación se mantienen; se compara el trabajo antes/después | Completado |
 | 9 | Verificación de la experiencia completa | Recorridos principales en móvil/tablet/escritorio, teclado, dos temas y errores relevantes; correcciones puntuales y limpieza de lo sustituido | Completado |
-
-| 10 | Base definida entre apertura y cuerpo | Panel sólido con bordes nítidos; paisaje de apertura termina horizontalmente a la altura de la base del selector y enlaza con el color del cuerpo; conservar contenido y posición | Pendiente |
+| 10 | Base definida entre apertura y cuerpo | Panel sólido con bordes nítidos; paisaje de apertura termina horizontalmente a la altura de la base del selector y enlaza con el color del cuerpo; conservar contenido y posición | Completado |
 | 11 | Footer compacto y apoyo en Acerca de | Solo Acerca de, Ayuda y Apoya el proyecto bajo la identificación; contacto y donaciones dentro de la página dedicada con anclas funcionales | Pendiente |
 
 ## Comprobaciones comunes
@@ -56,4 +55,8 @@ Las referencias del 16 de octubre orientan la jerarquía, no son una maqueta lit
 
 Se incorporan dos publicaciones posteriores a la regresión en curso: retirar el difuminado del panel ahora sólido y cerrar la apertura con una base horizontal junto al selector; compactar después el footer a tres enlaces y trasladar las opciones de donación a Acerca de. La ayuda y el contacto siguen disponibles dentro de esa página. La referencia a una sección que termina junto al selector se interpreta como el fondo de apertura hero/selector mostrado en la captura, no como mover el pie del sitio al centro.
 
-9. Accesibilidad y limpieza — hero sin desbordes y modales con cierres y espacio de lectura útiles a texto 200%; palabras largas del comentario se ajustan. Retirados estilos sustituidos y tres textos sin consumidores. 260 unitarias, regresión completa de 219 E2E aprobadas (19 omisiones por plataforma), seis E2E de zoom y tres WebKit; lint, build y auditoría de corpus aprobados. Recorridos públicos en móvil oscuro y escritorio claro: búsqueda/lectura/guardado/retomar/ayuda/modal; una imagen de paisaje incluso al instalar el SW.
+9. `3133d1c` — Accesibilidad y limpieza — hero sin desbordes y modales con cierres y espacio de lectura útiles a texto 200%; palabras largas del comentario se ajustan. Retirados estilos sustituidos y tres textos sin consumidores. 260 unitarias, regresión completa de 219 E2E aprobadas (19 omisiones por plataforma), seis E2E de zoom y tres WebKit; lint, build y auditoría de corpus aprobados. Recorridos públicos en móvil oscuro y escritorio claro: búsqueda/lectura/guardado/retomar/ayuda/modal; una imagen de paisaje incluso al instalar el SW.
+
+La prueba final con SW real también conserva modal, foco y posición en la segunda pestaña y recarga una sola vez únicamente la que solicita actualizar. Las dos publicaciones adicionales conservan estos cambios y se verifican por separado.
+
+10. Base de apertura definida — panel opaco con borde y radio limpio, sin desenfoque, máscaras ni reflejos. Fotografía y velo terminan exactamente en su base; las coordenadas y dimensiones de hero/panel/selector/editorial se mantienen. Catorce E2E, geometría y revisión visual en 320/768/1440 px y ambos temas, lint y build aprobados.

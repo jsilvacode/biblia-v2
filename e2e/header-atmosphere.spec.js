@@ -238,39 +238,60 @@ test('reducing transparency keeps a visible Home mantle surface in both themes',
   }
 })
 
-test('Home glass covers the picker width and ends before the editorial section', async ({ page }) => {
-  for (const width of [390, 1440]) {
+test('the solid Home panel covers the picker width without faded edges in either theme', async ({ page }) => {
+  for (const width of [320, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/')
     const editorial = page.getByRole('region', { name: /También en Santa Biblia|Also in Santa Biblia|Também na Santa Bíblia/ })
     await expect(editorial.getByRole('link')).toHaveCount(3)
-    const geometry = await editorial.evaluate((section) => {
-      const panel = document.querySelector('[data-testid="home-reading-panel"]')
-      const surface = panel.closest('[class*="glassMantle"]')
-      const rect = surface.getBoundingClientRect()
-      const style = getComputedStyle(surface, '::before')
-      const transform = new DOMMatrixReadOnly(style.transform)
-      const left = rect.left + parseFloat(style.left) + transform.m41
-      return {
-        containsEditorial: surface.contains(section),
-        bottom: rect.bottom,
-        nextTop: section.getBoundingClientRect().top,
-        left,
-        right: left + parseFloat(style.width),
-        panelLeft: panel.getBoundingClientRect().left,
-        panelRight: panel.getBoundingClientRect().right,
-      }
-    })
-    expect(geometry.containsEditorial).toBe(false)
-    expect(geometry.bottom).toBeLessThan(geometry.nextTop)
-    expect(geometry.left).toBeLessThanOrEqual(geometry.panelLeft)
-    expect(geometry.right).toBeGreaterThanOrEqual(geometry.panelRight)
+    for (const theme of ['light', 'dark']) {
+      await page.evaluate((nextTheme) => { document.documentElement.dataset.theme = nextTheme }, theme)
+      const geometry = await editorial.evaluate((section) => {
+        const panel = document.querySelector('[data-testid="home-reading-panel"]')
+        const surface = panel.closest('[class*="glassMantle"]')
+        const rect = surface.getBoundingClientRect()
+        const style = getComputedStyle(surface, '::before')
+        const transform = new DOMMatrixReadOnly(style.transform)
+        const left = rect.left + parseFloat(style.left) + transform.m41
+        return {
+          containsEditorial: surface.contains(section),
+          bottom: rect.bottom,
+          nextTop: section.getBoundingClientRect().top,
+          left,
+          right: left + parseFloat(style.width),
+          panelLeft: panel.getBoundingClientRect().left,
+          panelRight: panel.getBoundingClientRect().right,
+          mask: style.maskImage,
+          webkitMask: style.webkitMaskImage,
+          blur: style.backdropFilter,
+          background: style.backgroundColor,
+          reflection: style.backgroundImage,
+          border: style.borderTopStyle,
+          borderWidth: style.borderTopWidth,
+          shadow: style.boxShadow,
+          rim: getComputedStyle(surface, '::after').content,
+        }
+      })
+      expect(geometry.containsEditorial).toBe(false)
+      expect(geometry.bottom).toBeLessThan(geometry.nextTop)
+      expect(geometry.left).toBeLessThanOrEqual(geometry.panelLeft)
+      expect(geometry.right).toBeGreaterThanOrEqual(geometry.panelRight)
+      expect(geometry.mask).toBe('none')
+      expect(geometry.webkitMask).toBe('none')
+      expect(geometry.blur).toBe('none')
+      expect(geometry.background).toMatch(/^rgb\(/)
+      expect(geometry.reflection).toBe('none')
+      expect(geometry.border).toBe('solid')
+      expect(geometry.borderWidth).toBe('1px')
+      expect(geometry.shadow).toBe('none')
+      expect(geometry.rim).toBe('none')
+    }
   }
 })
 
-test('Home loads one responsive photograph and fades it below the whole reading panel', async ({ page }) => {
+test('Home loads one responsive photograph and cuts it at the reading panel base in both themes', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('santa_biblia_v2_settings', JSON.stringify({ theme: 'light', locale: 'es', bibleVersion: 'nbla' })))
-  for (const width of [390, 768, 1440]) {
+  for (const width of [320, 768, 1440]) {
     // Resize away from Home so its previous picture cannot request a new
     // candidate while the next navigation is being prepared.
     await page.goto('/bible')
@@ -287,20 +308,35 @@ test('Home loads one responsive photograph and fades it below the whole reading 
     expect(source.includes('-mobile-')).toBe(width <= 620)
     expect(new Set(requestedImages)).toEqual(new Set([source]))
     expect(requestedImages).toHaveLength(1)
-    const geometry = await image.evaluate(img => {
-      const photograph = img.parentElement.getBoundingClientRect()
-      const panel = document.querySelector('[data-testid="home-reading-panel"]').getBoundingClientRect()
-      const hero = img.closest('section').getBoundingClientRect()
-      return { top: photograph.top, heroTop: hero.top, bottom: photograph.bottom, panelBottom: panel.bottom, mask: getComputedStyle(img.parentElement).maskImage }
-    })
-    expect(geometry.top).toBe(geometry.heroTop)
-    expect(geometry.bottom - geometry.panelBottom).toBeGreaterThanOrEqual(140)
-    expect(geometry.bottom - geometry.panelBottom).toBeLessThanOrEqual(161)
-    expect(geometry.mask).toContain('linear-gradient')
-    expect(geometry.mask).toMatch(/rgba\(0, 0, 0, 0\)|transparent/)
-    await page.getByRole('button', { name: /Activar modo oscuro|Use dark theme|Usar tema escuro/ }).click()
-    expect(await image.evaluate(img => img.currentSrc)).toBe(source)
-    expect(requestedImages).toHaveLength(1)
+    for (const theme of ['light', 'dark']) {
+      if (theme === 'dark') await page.getByRole('button', { name: /Activar modo oscuro|Use dark theme|Usar tema escuro/ }).click()
+      const geometry = await image.evaluate(img => {
+        const photograph = img.parentElement.getBoundingClientRect()
+        const panel = document.querySelector('[data-testid="home-reading-panel"]').getBoundingClientRect()
+        const heroElement = img.closest('section')
+        const hero = heroElement.getBoundingClientRect()
+        const overlay = getComputedStyle(heroElement, '::after')
+        const picture = getComputedStyle(img.parentElement)
+        return {
+          top: photograph.top, heroTop: hero.top, bottom: photograph.bottom, panelBottom: panel.bottom,
+          overlayBottom: hero.top + parseFloat(overlay.top) + parseFloat(overlay.height),
+          pictureMask: picture.maskImage, pictureWebkitMask: picture.webkitMaskImage, overlayMask: overlay.maskImage,
+          editorialTop: document.getElementById('home-editorial-heading').getBoundingClientRect().top,
+          background: getComputedStyle(document.querySelector('.home-page')).backgroundColor,
+          bodyBackground: getComputedStyle(document.body).backgroundColor,
+        }
+      })
+      expect(geometry.top).toBe(geometry.heroTop)
+      expect(Math.abs(geometry.bottom - geometry.panelBottom)).toBeLessThanOrEqual(1)
+      expect(Math.abs(geometry.overlayBottom - geometry.panelBottom)).toBeLessThanOrEqual(1)
+      expect(geometry.pictureMask).toBe('none')
+      expect(geometry.pictureWebkitMask).toBe('none')
+      expect(geometry.overlayMask).toBe('none')
+      expect(geometry.bottom).toBeLessThan(geometry.editorialTop)
+      expect(geometry.background).toBe(geometry.bodyBackground)
+      expect(await image.evaluate(img => img.currentSrc)).toBe(source)
+      expect(requestedImages).toHaveLength(1)
+    }
     page.off('request', onRequest)
   }
 })
