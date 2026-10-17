@@ -109,9 +109,14 @@ test('footer controls and project content fit all languages, themes and supporte
         await expect(controls).toHaveCount(3)
         await expect(navigation.getByRole('link')).toHaveCount(0)
         await expect(footer(page).getByText(/Julio Silva/)).toHaveCount(0)
-        const [navigationBox, purposeBox] = await Promise.all([navigation.boundingBox(), footer(page).locator('p').last().boundingBox()])
-        expect(navigationBox.y).toBeGreaterThanOrEqual(purposeBox.y + purposeBox.height)
-        expect(Math.abs(navigationBox.x + navigationBox.width / 2 - width / 2)).toBeLessThanOrEqual(1)
+        const [navigationBox, identityBox] = await Promise.all([navigation.boundingBox(), footer(page).locator('p').last().locator('..').boundingBox()])
+        if (width >= 768) {
+          expect(navigationBox.x).toBeGreaterThanOrEqual(identityBox.x + identityBox.width)
+          expect(Math.abs(navigationBox.y + navigationBox.height / 2 - identityBox.y - identityBox.height / 2)).toBeLessThanOrEqual(1)
+        } else {
+          expect(navigationBox.y).toBeGreaterThanOrEqual(identityBox.y + identityBox.height)
+          expect(Math.abs(navigationBox.x + navigationBox.width / 2 - width / 2)).toBeLessThanOrEqual(1)
+        }
         for (const control of await controls.all()) {
           const box = await control.boundingBox()
           expect(box.height).toBeGreaterThanOrEqual(44)
