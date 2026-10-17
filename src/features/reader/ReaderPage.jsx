@@ -182,12 +182,13 @@ export default function ReaderPage() {
   useEffect(() => {
     if (!attentionKey || status !== 'ready') return undefined
 
+    let timeout
     const activationFrame = window.requestAnimationFrame(() => {
       setAttentionVerseKey(attentionKey)
+      timeout = window.setTimeout(() => {
+        setAttentionVerseKey((current) => current === attentionKey ? null : current)
+      }, 2700)
     })
-    const timeout = window.setTimeout(() => {
-      setAttentionVerseKey((current) => current === attentionKey ? null : current)
-    }, 2700)
 
     return () => {
       window.cancelAnimationFrame(activationFrame)
@@ -377,7 +378,7 @@ export default function ReaderPage() {
         )}
         {status === 'ready' && chapterData.map((item) => {
           const isActionSelection = activeDialog === 'actions' && selectedVerse === item.verse
-          const isAttentionPulsing = attentionVerseKey === attentionKey && item.verse === Number(rawVerse)
+          const isAttentionPulsing = Boolean(attentionKey) && attentionVerseKey === attentionKey && item.verse === Number(rawVerse)
           const isVerseHighlighted = isHighlighted({ book: reference.book, chapter: reference.chapter, verse: item.verse, version: version.id })
           const heading = getValidHeading(item.heading)
           return (

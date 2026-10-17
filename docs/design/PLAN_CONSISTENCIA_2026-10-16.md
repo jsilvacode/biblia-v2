@@ -23,8 +23,8 @@ Conservar la identidad editorial: tipografía de lectura, papel cálido, acentos
 | 9 | Verificación de la experiencia completa | Recorridos principales en móvil/tablet/escritorio, teclado, dos temas y errores relevantes; correcciones puntuales y limpieza de lo sustituido | Completado |
 | 10 | Base definida entre apertura y cuerpo | Panel sólido con bordes nítidos; paisaje de apertura termina horizontalmente a la altura de la base del selector y enlaza con el color del cuerpo; conservar contenido y posición | Completado |
 | 11 | Footer compacto y tres modales informativos | Acerca de, Ayuda y Apoya el proyecto abren contenidos separados, centrados y con X; conservan foco y posición. Contacto dentro de Acerca de, pagos dentro de Apoya; /about conserva enlaces directos existentes | Completado |
-| 12 | Selector unido al cuerpo | Panel opaco sin contorno marcado, redondeado solo arriba; base recta del mismo color del cuerpo en día/noche, sin alterar márgenes, contenido ni posiciones | En curso |
-| 13 | Resaltado temporal fiable | El pulso de atención termina aun si se demora el RAF; una URL sin intención de atención no lo activa por comparar claves vacías; conserva destacados permanentes | Pendiente |
+| 12 | Selector unido al cuerpo | Panel opaco sin contorno marcado, redondeado solo arriba; base recta del mismo color del cuerpo en día/noche, sin alterar márgenes, contenido ni posiciones | Completado |
+| 13 | Resaltado temporal fiable | El pulso de atención termina aun si se demora el RAF; una URL sin intención de atención no lo activa por comparar claves vacías; conserva destacados permanentes | Completado |
 
 ## Comprobaciones comunes
 
@@ -72,3 +72,9 @@ Después de publicar los modales, refinar la unión del selector con el cuerpo: 
 11. `37580d8` — Footer compacto y tres modales — contenidos separados de Acerca de/contacto, Ayuda y Apoya; reutilizados con la página /about y sus anclas. Siete E2E y una omisión esperada, 260 unitarias, lint/build/corpus aprobados; geometría y cierres revisados en ambos temas a 320 px con texto 200 %, 390/768/1440 px. Artefacto y recorridos públicos verificados: búsqueda, lectura, guardado, retomar, tres modales y cita temática, con foco/posición conservados.
 
 La regresión posterior detectó una carrera entre RAF y temporizador del pulso de atención. Se verificó el orden invertido con el efecto real: el temporizador puede terminar antes de la activación. Corregir en una publicación separada, junto con la comparación de claves vacías que activa indebidamente el pulso de una URL directa.
+
+12. `31c7e1e` — Selector unido al cuerpo — relleno opaco del mismo tono, sin contorno y redondeado solo arriba; base horizontal recta. Treinta E2E, comparación de geometría en 320/768/1440 px y dos temas, lint/build/corpus aprobados; verificado el artefacto público. Normalizadas dos mediciones de pruebas: cero negativo al recuperar scroll y lectura atómica de las coordenadas del cierre de popovers.
+
+13. Resaltado temporal fiable — el temporizador comienza después de la activación y se cancelan ambos recursos al salir; una clave vacía no produce un pulso permanente. Dos pruebas E2E nuevas reprodujeron ambos defectos en navegador real antes del arreglo y pasaron después, manteniendo los destacados guardados. Ocho E2E focalizadas y regresión final de 223 E2E aprobadas (19 omisiones esperadas por plataforma), lint/build/corpus aprobados.
+
+El acabado y los tres modales de las etapas 11–12 también pasaron los recorridos públicos de búsqueda, lectura, guardado y retomar, en móvil oscuro y escritorio claro; conservan foco y posición, y descargan una sola variante del paisaje.
