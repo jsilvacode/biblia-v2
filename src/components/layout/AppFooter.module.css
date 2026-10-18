@@ -2,7 +2,7 @@
   container: app-footer / inline-size;
   width: 100%;
   margin-top: clamp(.75rem, 2vw, 1.4rem);
-  padding: .5rem 0 calc(4.5rem + env(safe-area-inset-bottom));
+  padding: .75rem 0 calc(4.75rem + env(safe-area-inset-bottom));
   border-top: 1px solid var(--border);
   background: color-mix(in srgb, var(--surface-2) 48%, var(--bg-reader));
   color: var(--ink-muted);
@@ -20,7 +20,7 @@
 .dialogContent { color: var(--ink-muted); font-size: .9375rem; line-height: 1.75; }
 .dialogContent > :first-child { margin-top: .5rem; }
 @media (min-width: 1024px) {
-  .footer { padding-block: .5rem; }
+  .footer { padding-block: .75rem; }
 }
 @container app-footer (min-width: 48rem) {
   .inner { grid-template-columns: minmax(0, 1fr) auto; align-items: center; justify-items: start; column-gap: 24px; }
