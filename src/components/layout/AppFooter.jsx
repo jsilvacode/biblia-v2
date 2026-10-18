@@ -20,15 +20,15 @@ export function AppFooter({ editorial = false }) {
   return (
     <footer className={`${styles.footer}${editorial ? ` ${styles.editorial}` : ''}`}>
       <div className={styles.inner}>
-        <div className={styles.identity}>
-          <p className={styles.name}><Icon name="bookOpen" size={18} /><strong>{t('about.appName', { version: PROJECT_PUBLIC_VERSION })}</strong></p>
-          <p className={styles.purpose}>{t('about.footerPurpose')}</p>
-        </div>
         <nav aria-label={t('about.footerNavigation')} className={styles.navigation}>
           {actions.map(({ id, label }) => (
             <button aria-expanded={information === id} aria-haspopup="dialog" key={id} onClick={(event) => { returnFocusRef.current = event.currentTarget; setInformation(id) }} type="button">{t(label)}</button>
           ))}
         </nav>
+        <div className={styles.identity}>
+          <p className={styles.name}><Icon name="bookOpen" size={16} /><strong>{t('about.appName', { version: PROJECT_PUBLIC_VERSION })}</strong></p>
+          <p className={styles.purpose}>{t('about.footerPurpose')}</p>
+        </div>
       </div>
       {selected && (
         <ReaderDialog className={styles.dialog} isOpen onClose={() => setInformation(null)} returnFocusRef={returnFocusRef} title={t(selected.title)}>

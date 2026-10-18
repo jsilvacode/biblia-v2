@@ -109,13 +109,25 @@ test('footer controls and project content fit all languages, themes and supporte
         await expect(controls).toHaveCount(3)
         await expect(navigation.getByRole('link')).toHaveCount(0)
         await expect(footer(page).getByText(/Julio Silva/)).toHaveCount(0)
-        const [navigationBox, identityBox] = await Promise.all([navigation.boundingBox(), footer(page).locator('p').last().locator('..').boundingBox()])
+        const [navigationBox, identityBox, nameBox, purposeBox] = await Promise.all([
+          navigation.boundingBox(),
+          footer(page).locator('p').last().locator('..').boundingBox(),
+          footer(page).locator('p').first().boundingBox(),
+          footer(page).locator('p').last().boundingBox(),
+        ])
+        expect(navigationBox.y + navigationBox.height).toBeLessThanOrEqual(identityBox.y)
+        for (const box of [navigationBox, identityBox]) {
+          expect(Math.abs(box.x + box.width / 2 - width / 2)).toBeLessThanOrEqual(1)
+        }
         if (width >= 768) {
-          expect(navigationBox.x).toBeGreaterThanOrEqual(identityBox.x + identityBox.width)
-          expect(Math.abs(navigationBox.y + navigationBox.height / 2 - identityBox.y - identityBox.height / 2)).toBeLessThanOrEqual(1)
+          expect(purposeBox.x).toBeGreaterThanOrEqual(nameBox.x + nameBox.width)
+          expect(nameBox.y).toBeLessThan(purposeBox.y + purposeBox.height)
+          expect(purposeBox.y).toBeLessThan(nameBox.y + nameBox.height)
         } else {
-          expect(navigationBox.y).toBeGreaterThanOrEqual(identityBox.y + identityBox.height)
-          expect(Math.abs(navigationBox.x + navigationBox.width / 2 - width / 2)).toBeLessThanOrEqual(1)
+          expect(purposeBox.y).toBeGreaterThanOrEqual(nameBox.y + nameBox.height)
+          for (const box of [nameBox, purposeBox]) {
+            expect(Math.abs(box.x + box.width / 2 - width / 2)).toBeLessThanOrEqual(1)
+          }
         }
         for (const control of await controls.all()) {
           const box = await control.boundingBox()

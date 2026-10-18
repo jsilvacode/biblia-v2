@@ -2,33 +2,33 @@
   container: app-footer / inline-size;
   width: 100%;
   margin-top: clamp(.75rem, 2vw, 1.4rem);
-  padding: .75rem 0 calc(4.75rem + env(safe-area-inset-bottom));
+  padding: 1rem 0 calc(5rem + env(safe-area-inset-bottom));
   border-top: 1px solid var(--border);
   background: color-mix(in srgb, var(--surface-2) 48%, var(--bg-reader));
   color: var(--ink-muted);
 }
-.inner { display: grid; width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), var(--content-max-width)); justify-items: center; margin-inline: auto; }
-.identity { max-width: 32rem; text-align: center; }
-.name { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0; color: var(--ink); }
+.inner { display: grid; width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), var(--content-max-width)); justify-items: center; gap: 6px; margin-inline: auto; }
+.identity { display: flex; max-width: 100%; flex-direction: column; align-items: center; gap: 3px; text-align: center; }
+.name { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 0; color: var(--ink-muted); }
 .name > svg { flex: none; color: var(--accent-deep); }
-.name strong { font: 400 1.125rem/1.25 var(--font-display); }
-.purpose { margin: 0; font-size: .8125rem; line-height: 1.45; }
-.navigation { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
-.navigation button { display: inline-flex; align-items: center; justify-content: center; min-height: var(--control-hit-size); padding: 8px 10px; border: 0; border-radius: 8px; background: transparent; color: var(--accent-blue-deep); font: 400 .8125rem/1.4 var(--font-ui); text-align: center; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 1px; text-underline-offset: 4px; cursor: pointer; transition: background var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium), text-decoration-color var(--duration-fast) var(--ease-premium); }
+.name strong { font: 400 1rem/1.4 var(--font-display); }
+.purpose { margin: 0; font-size: .8125rem; line-height: 1.5; }
+.navigation { display: flex; flex-wrap: wrap; justify-content: center; }
+.navigation button { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: var(--control-hit-size); padding: 8px 10px; border: 0; border-radius: 6px; background: transparent; color: var(--ink); font: 500 .8125rem/1.4 var(--font-ui); text-align: center; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 1px; text-underline-offset: 4px; cursor: pointer; transition: background var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium), text-decoration-color var(--duration-fast) var(--ease-premium); }
+.navigation button + button::before { position: absolute; top: 50%; left: 0; width: 1px; height: 12px; background: var(--border-strong); content: ''; transform: translateY(-50%); }
 .navigation button:hover, .navigation button:focus-visible { background: color-mix(in srgb, var(--accent-soft) 40%, transparent); color: var(--accent-deep); text-decoration-color: currentColor; }
 .dialog { width: min(100%, 42rem); }
 .dialogContent { color: var(--ink-muted); font-size: .9375rem; line-height: 1.75; }
 .dialogContent > :first-child { margin-top: .5rem; }
 @media (min-width: 1024px) {
-  .footer { padding-block: .75rem; }
+  .footer { padding-block: 1.25rem 1.5rem; }
 }
 @container app-footer (min-width: 48rem) {
-  .inner { grid-template-columns: minmax(0, 1fr) auto; align-items: center; justify-items: start; column-gap: 24px; }
-  .identity { min-width: 0; text-align: left; }
-  .name { justify-content: flex-start; }
-  .name strong { font-size: 1.25rem; }
-  .navigation { justify-content: flex-end; }
+  .identity { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 4px 12px; }
+  .purpose { padding-left: 12px; border-left: 1px solid var(--border-strong); }
+  .navigation button { padding-inline: 18px; font-size: .875rem; }
 }
+@media (max-width: 380px) { .navigation button + button::before { display: none; } }
 .editorial { margin-top: 0; }
 .editorial .inner { width: min(calc(100% - 80px), 75rem); }
 @media (max-width: 800px) { .editorial .inner { width: calc(100% - 48px); } }
