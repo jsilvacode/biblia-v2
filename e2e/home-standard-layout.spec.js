@@ -10,9 +10,29 @@ async function settledHome(page, date) {
     await document.fonts.load('400 24px "Playfair Display"')
     await document.fonts.load('400 14px "Lora"')
     await document.fonts.ready
-    // A viewport change can queue a style update after fonts are ready.
-    // Measure the responsive layout after that update has been painted.
-    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+    // Container-query typography can settle after fonts and the ready state.
+    // Measure only after both the geometry and computed font stop changing.
+    await new Promise(resolve => {
+      let previous
+      let stableFrames = 0
+      const settle = () => {
+        const opening = document.querySelector('[data-testid="home-opening"]')
+        const panel = opening.querySelector('[data-testid="home-reading-panel"]')
+        const heading = opening.querySelector('h1')
+        const snapshot = JSON.stringify({
+          bounds: [opening, panel, heading, opening.querySelector('header')].map(element => {
+            const { x, y, width, height } = element.getBoundingClientRect()
+            return [x, y, width, height]
+          }),
+          font: getComputedStyle(heading).font,
+        })
+        stableFrames = snapshot === previous ? stableFrames + 1 : 0
+        previous = snapshot
+        if (stableFrames >= 4) resolve()
+        else requestAnimationFrame(settle)
+      }
+      requestAnimationFrame(settle)
+    })
   })
 }
 

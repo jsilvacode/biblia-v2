@@ -43,7 +43,7 @@
 
 .headerIconButton[aria-expanded='true'] { background: color-mix(in srgb, var(--accent-soft) 50%, transparent); color: var(--accent-deep); }
 .siteHeader, .readerHeader { position: relative; inset: auto; width: min(calc(100% - var(--chrome-gutter) * 2), 1100px); margin-inline: auto; }
-.heroHeader { --home-header-fill: color-mix(in srgb, var(--surface-raised) 92%, transparent); position: absolute; isolation: isolate; }
+.heroHeader { --home-header-fill: var(--surface-raised); position: absolute; isolation: isolate; }
 .heroHeader::before {
   position: absolute;
   z-index: -1;
@@ -88,8 +88,4 @@
 
 @media (prefers-reduced-motion: reduce) {
   .headerIconButton, .homeNavigationLink { transition: none; }
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .heroHeader { --home-header-fill: var(--surface-raised); }
 }
