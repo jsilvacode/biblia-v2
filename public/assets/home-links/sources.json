@@ -1,10 +1,10 @@
 {
   "reference": "https://escuelasabatica.cl/",
-  "reviewed": "2026-10-12",
+  "reviewed": "2026-10-19",
   "assets": {
     "escuela-sabatica.svg": "https://escuelasabatica.cl/favicon.svg",
-    "nuevo-tiempo.png": "https://www.google.com/s2/favicons?domain=nuevotiempo.cl&sz=64",
-    "adra.png": "https://www.google.com/s2/favicons?domain=adra.cl&sz=64",
+    "este-dia-con-dios.png": "https://estediacondios.com/wp-content/themes/EsteDiaComDeus/assets/img/favicon.png",
+    "estudie-la-biblia.svg": "Local semantic book illustration for https://estudielabiblia.com/; not an official logo.",
     "dialogo-biblico.png": "https://www.google.com/s2/favicons?domain=youtube.com&sz=64"
   }
 }

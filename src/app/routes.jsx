@@ -12,6 +12,7 @@ const SavedPage = lazy(() => import('../features/saved/SavedPage'))
 const AboutPage = lazy(() => import('../features/about/AboutPage'))
 const PlansPage = lazy(() => import('../features/plans/PlansPage'))
 const DailyReadingPage = lazy(() => import('../features/plans/DailyReadingPage'))
+const DailyVideoPage = lazy(() => import('../features/daily-video/DailyVideoPage'))
 const TopicsPage = lazy(() => import('../features/topics/TopicsPage'))
 const StudyIndexPage = lazy(() => import('../features/studies/StudyIndexPage'))
 const StudyLessonPage = lazy(() => import('../features/studies/StudyLessonPage'))
@@ -31,6 +32,8 @@ export function AppRoutes() {
         <Route path="saved" element={<DeferredRoute><SavedPage /></DeferredRoute>} />
         <Route path="plans" element={<DeferredRoute><PlansPage /></DeferredRoute>} />
         <Route path="reavivados" element={<DeferredRoute><DailyReadingPage /></DeferredRoute>} />
+        <Route path="este-dia-con-dios" element={<DeferredRoute><DailyVideoPage /></DeferredRoute>} />
+        <Route path="este-dia-con-dios/:date" element={<DeferredRoute><DailyVideoPage /></DeferredRoute>} />
         <Route path="topics" element={<DeferredRoute><TopicsPage /></DeferredRoute>} />
         <Route path="topics/:categoryId/:situationId" element={<DeferredRoute><TopicsPage /></DeferredRoute>} />
         <Route path="studies/la-fe-de-jesus" element={<DeferredRoute><StudyIndexPage /></DeferredRoute>} />

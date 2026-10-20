@@ -8,6 +8,9 @@
     },
     "api/rpsp.js": {
       "excludeFiles": "public/{data/**,icons/**,assets/**}"
+    },
+    "api/daily-video.js": {
+      "excludeFiles": "public/{data/**,icons/**,assets/**}"
     }
   },
   "redirects": [
@@ -21,6 +24,14 @@
     {
       "source": "/api/rpsp",
       "destination": "/api/rpsp"
+    },
+    {
+      "source": "/api/daily-video",
+      "destination": "/api/daily-video"
+    },
+    {
+      "source": "/este-dia-con-dios/:date",
+      "destination": "/api/share-page?type=daily-video&date=:date"
     },
     {
       "source": "/read/:book/:chapter/:verse",

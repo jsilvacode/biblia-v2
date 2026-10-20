@@ -2,16 +2,19 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { VitePWA } from 'vite-plugin-pwa'
 import rpspApi from './api/rpsp.js'
+import dailyVideoApi from './api/daily-video.js'
 import { APP_ICON_REVISION } from './src/features/reader/socialCardConfig.js'
 
-function rpspDevelopmentEndpoint() {
+function resourceDevelopmentEndpoints() {
   const middleware = async (request, response, next) => {
     const origin = `http://${request.headers.host ?? '127.0.0.1'}`
     const url = new URL(request.originalUrl ?? request.url, origin)
-    if (url.pathname !== '/api/rpsp') return next()
+    const endpoint = url.pathname === '/api/rpsp' ? rpspApi
+      : url.pathname === '/api/daily-video' ? dailyVideoApi : null
+    if (!endpoint) return next()
 
     try {
-      const apiResponse = await rpspApi.fetch(new Request(url, {
+      const apiResponse = await endpoint.fetch(new Request(url, {
         headers: request.headers,
         method: request.method,
       }))
@@ -22,12 +25,12 @@ function rpspDevelopmentEndpoint() {
     } catch {
       response.statusCode = 503
       response.setHeader('Content-Type', 'application/json; charset=utf-8')
-      response.end(JSON.stringify({ error: 'rpsp_unavailable' }))
+      response.end(JSON.stringify({ error: url.pathname === '/api/rpsp' ? 'rpsp_unavailable' : 'daily_video_unavailable' }))
     }
   }
 
   return {
-    name: 'rpsp-development-endpoint',
+    name: 'resource-development-endpoints',
     configureServer(server) {
       server.middlewares.use(middleware)
     },
@@ -58,7 +61,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    rpspDevelopmentEndpoint(),
+    resourceDevelopmentEndpoints(),
     VitePWA({
       includeManifestIcons: false,
       injectRegister: false,

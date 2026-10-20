@@ -82,7 +82,7 @@ function expectConnectedPopup(popupBox, triggerBox) {
   return direction
 }
 
-test('Home provides one editorial entry for each destination and the four original external links', async ({ page }) => {
+test('Home provides one editorial entry for each destination and the four selected external links', async ({ page }) => {
   const startupImages = []
   page.on('request', (request) => { if (request.resourceType() === 'image') startupImages.push(request.url()) })
   await clearAppStorage(page)
@@ -118,12 +118,14 @@ test('Home provides one editorial entry for each destination and the four origin
 
   const interestSection = page.getByRole('region', { name: 'Enlaces de interés · Sitios externos', exact: true })
   await expect(interestSection.locator('a[target="_blank"]')).toHaveCount(4)
-  for (const [name, url] of [
+  const externalLinks = [
+    ['Este Día con Dios', 'https://estediacondios.com/'],
+    ['Estudie la Biblia', 'https://estudielabiblia.com/'],
     ['Escuela Sabática', 'https://escuelasabatica.cl/'],
     ['Diálogo Bíblico', 'https://www.youtube.com/playlist?list=PLn19CCwh0uJwsZM3-89oEGdorLikq9hFS'],
-    ['Nuevo Tiempo', 'https://nuevotiempo.cl/'],
-    ['ADRA', 'https://adra.cl/'],
-  ]) {
+  ]
+  await expect(interestSection.locator('a[target="_blank"] strong')).toHaveText(externalLinks.map(([name]) => name))
+  for (const [name, url] of externalLinks) {
     const link = interestSection.getByRole('link', { name: new RegExp(name) })
     await expect(link).toHaveAttribute('href', url)
     await expect(link).toHaveAttribute('target', '_blank')
@@ -131,6 +133,7 @@ test('Home provides one editorial entry for each destination and the four origin
     await expect(link).toHaveAttribute('rel', /noreferrer/)
     const logo = link.locator('img')
     await expect(logo).toHaveCount(1)
+    await expect(logo).toHaveAttribute('alt', '')
     await logo.scrollIntoViewIfNeeded()
     await expect.poll(() => logo.evaluate((image) => image.complete && image.naturalWidth > 0)).toBe(true)
   }

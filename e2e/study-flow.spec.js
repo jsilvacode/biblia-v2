@@ -98,8 +98,8 @@ test('Home opens the Bible study and publishes the four selected interest links'
   await expect(interests.getByRole('link')).toHaveCount(4)
   await expect(interests.getByRole('link', { name: /Escuela Sabática/ })).toHaveAttribute('href', 'https://escuelasabatica.cl/')
   await expect(interests.getByRole('link', { name: /Diálogo Bíblico/ })).toHaveAttribute('href', /youtube\.com\/playlist\?list=PLn19CCwh0uJwsZM3-89oEGdorLikq9hFS/)
-  await expect(interests.getByRole('link', { name: /Nuevo Tiempo/ })).toHaveAttribute('href', 'https://nuevotiempo.cl/')
-  await expect(interests.getByRole('link', { name: /ADRA/ })).toHaveAttribute('href', 'https://adra.cl/')
+  await expect(interests.getByRole('link', { name: /Este Día con Dios/ })).toHaveAttribute('href', 'https://estediacondios.com/')
+  await expect(interests.getByRole('link', { name: /Estudie la Biblia/ })).toHaveAttribute('href', 'https://estudielabiblia.com/')
 })
 
 test('a reader advances sequentially, retries answers and keeps progress while reading in the modal', async ({ page }) => {

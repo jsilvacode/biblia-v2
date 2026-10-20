@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
+import { DailyVideoSection } from '../daily-video/DailyVideoSection'
 import { useI18n } from '../../i18n'
 import { formatReference, getVersion } from '../bible/catalog'
 import { InstallInvitation } from '../install/InstallInvitation'
@@ -22,6 +23,18 @@ import styles from './HomePage.module.css'
 
 const interestLinks = [
   {
+    descriptionKey: 'home.interestDailyVideoDescription',
+    image: 'este-dia-con-dios.png',
+    label: 'Este Día con Dios',
+    url: 'https://estediacondios.com/',
+  },
+  {
+    descriptionKey: 'home.interestBibleStudyDescription',
+    image: 'estudie-la-biblia.svg',
+    label: 'Estudie la Biblia',
+    url: 'https://estudielabiblia.com/',
+  },
+  {
     descriptionKey: 'home.interestSabbathSchoolDescription',
     image: 'escuela-sabatica.svg',
     label: 'Escuela Sabática',
@@ -32,18 +45,6 @@ const interestLinks = [
     image: 'dialogo-biblico.png',
     label: 'Diálogo Bíblico',
     url: 'https://www.youtube.com/playlist?list=PLn19CCwh0uJwsZM3-89oEGdorLikq9hFS',
-  },
-  {
-    descriptionKey: 'home.interestNewTimeDescription',
-    image: 'nuevo-tiempo.png',
-    label: 'Nuevo Tiempo',
-    url: 'https://nuevotiempo.cl/',
-  },
-  {
-    descriptionKey: 'home.interestAdraDescription',
-    image: 'adra.png',
-    label: 'ADRA',
-    url: 'https://adra.cl/',
   },
 ]
 
@@ -210,6 +211,7 @@ export default function HomePage() {
       </div>
 
       <div className={styles.homeFeed}>
+        <DailyVideoSection featured />
         {hasReadingHistory && <InstallInvitation />}
 
         <section aria-labelledby="home-editorial-heading" className={styles.editorialSection}>

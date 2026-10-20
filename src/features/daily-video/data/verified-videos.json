@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-10-19",
+  "note": "Verified editorial-date, WordPress-post and YouTube associations. This bundled catalogue pins only these entries and provides an outage fallback; new dates are resolved from the official source and are not durably persisted by a serverless instance.",
+  "entries": [
+    {
+      "contentDate": "2026-10-19",
+      "sourcePostId": 3202,
+      "episodeNumber": 292,
+      "title": "No depende solo de nosotros",
+      "videoId": "PbyYEJDJFwg",
+      "sourcePageUrl": "https://estediacondios.com/2026/10/19/292-no-depende-solo-de-nosotros-i-este-dia-con-dios-pr-jorge-rampogna/",
+      "presenter": "Pr. Jorge Rampogna",
+      "creator": "Este Día con Dios",
+      "channelUrl": "https://www.youtube.com/@EsteDiaConDios",
+      "language": "es"
+    },
+    {
+      "contentDate": "2026-10-18",
+      "sourcePostId": 3201,
+      "episodeNumber": 291,
+      "title": "Separados para representar",
+      "videoId": "mJmZNM0AHzA",
+      "sourcePageUrl": "https://estediacondios.com/2026/10/18/291-separados-para-representar-i-este-dia-con-dios-pr-jorge-rampogna/",
+      "presenter": "Pr. Jorge Rampogna",
+      "creator": "Este Día con Dios",
+      "channelUrl": "https://www.youtube.com/@EsteDiaConDios",
+      "language": "es"
+    },
+    {
+      "contentDate": "2026-10-17",
+      "sourcePostId": 3210,
+      "episodeNumber": 290,
+      "title": "Probando la Palabra",
+      "videoId": "-1l4aNoFduQ",
+      "sourcePageUrl": "https://estediacondios.com/2026/10/17/290-probando-la-palabra-i-este-dia-con-dios-pr-jorge-rampogna/",
+      "presenter": "Pr. Jorge Rampogna",
+      "creator": "Este Día con Dios",
+      "channelUrl": "https://www.youtube.com/@EsteDiaConDios",
+      "language": "es"
+    }
+  ]
+}

@@ -210,7 +210,7 @@ export function renderShareMetadata(metadata) {
   const socialUrl = new URL(metadata.canonicalUrl)
   socialUrl.searchParams.set('share', SOCIAL_CARD_REVISION)
   const value = Object.fromEntries(
-    Object.entries({ ...metadata, socialUrl: socialUrl.toString() }).map(([key, entry]) => [key, escapeHtmlAttribute(entry)]),
+    Object.entries({ imageWidth: 1200, imageHeight: 630, ...metadata, socialUrl: socialUrl.toString() }).map(([key, entry]) => [key, escapeHtmlAttribute(entry)]),
   )
   return `<!-- share-meta:start -->
     <meta name="application-name" content="Santa Biblia" />
@@ -225,8 +225,8 @@ export function renderShareMetadata(metadata) {
     <meta property="og:image" content="${value.imageUrl}" />
     <meta property="og:image:secure_url" content="${value.imageUrl}" />
     <meta property="og:image:type" content="${value.imageType}" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:width" content="${value.imageWidth}" />
+    <meta property="og:image:height" content="${value.imageHeight}" />
     <meta property="og:image:alt" content="${value.imageAlt}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${value.title}" />
