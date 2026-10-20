@@ -167,11 +167,7 @@ export function DailyVideoSection({ date, featured = false }) {
   return (
     <section aria-labelledby={headingId} className={`${styles.section}${featured ? ` ${styles.featured}` : ''}`}>
       <header className={styles.sectionHeader}>
-        <div>
-          <p className={styles.eyebrow}>{t('dailyVideo.eyebrow')}</p>
-          <Heading id={headingId}>{t('dailyVideo.title')}</Heading>
-        </div>
-        <p className={styles.description}>{t('dailyVideo.description')}</p>
+        <Heading id={headingId}>{t('dailyVideo.title')}</Heading>
       </header>
 
       {!online && activeEpisode && <p className={styles.offlineNotice} role="status"><Icon name="info" size={16} /> {t('dailyVideo.offline')}</p>}
@@ -182,25 +178,12 @@ export function DailyVideoSection({ date, featured = false }) {
         <div className={styles.copy}>
           {validDate && <time aria-label={dateLabel} className={styles.date} dateTime={validDate} title={dateLabel}><Icon name="calendar" size={15} /> {formatVideoDate(validDate, locale, { compact: true })}</time>}
 
-          {activeEpisode && (
-            <>
-              <EpisodeHeading className={styles.episodeTitle} lang={activeEpisode.language}>{activeEpisode.title}</EpisodeHeading>
-              <div className={styles.actions}>
-                <button className={styles.shareButton} disabled={shareRequestKey === episodeKey} onClick={handleShare} type="button">
-                  <Icon name="share" size={17} /> {t('dailyVideo.share')}
-                </button>
-              </div>
-              <p aria-live="polite" className={styles.feedback} role="status">{feedbackKey ? t(`dailyVideo.${feedbackKey}`) : ''}</p>
-            </>
-          )}
-
-          {!activeEpisode && (
-            <>
+          {activeEpisode ? (
+            <EpisodeHeading className={styles.episodeTitle} lang={activeEpisode.language}>{activeEpisode.title}</EpisodeHeading>
+          ) : (
             <div aria-hidden="true" className={`${styles.copyPlaceholder}${displayedStatus === 'loading' ? ` ${styles.loadingPlaceholder}` : ''}`}>
               <div className={styles.titlePlaceholder} />
             </div>
-            <div aria-hidden="true" className={styles.actions}><span className={styles.actionPlaceholder} /></div>
-            </>
           )}
 
           {locale !== 'es' && <p className={styles.language}><Icon name="language" size={14} /> {t('dailyVideo.contentLanguage')}</p>}
@@ -217,6 +200,15 @@ export function DailyVideoSection({ date, featured = false }) {
               {activeEpisode && <a href={`https://www.youtube.com/watch?v=${activeEpisode.videoId}`} rel="noopener noreferrer" target="_blank">{t('dailyVideo.watchOnYoutube')} <Icon name="externalLink" size={13} /></a>}
             </div>
           </div>
+
+          <div aria-hidden={!activeEpisode || undefined} className={styles.actions}>
+            {activeEpisode ? (
+              <button className={styles.shareButton} disabled={shareRequestKey === episodeKey} onClick={handleShare} type="button">
+                <Icon name="share" size={17} /> {t('dailyVideo.share')}
+              </button>
+            ) : <span className={styles.actionPlaceholder} />}
+          </div>
+          {activeEpisode && <p aria-live="polite" className={styles.feedback} role="status">{feedbackKey ? t(`dailyVideo.${feedbackKey}`) : ''}</p>}
         </div>
 
         <div className={styles.mediaColumn}>

@@ -35,8 +35,6 @@ export default {
   },
   dailyVideo: {
     title: 'Este Día con Dios',
-    eyebrow: 'Una pausa para la esperanza',
-    description: 'Una reflexión en video para acompañar tu día.',
     play: 'Reproducir: {{title}}',
     watchOnYoutube: 'Ver en YouTube',
     officialSite: 'Sitio oficial',

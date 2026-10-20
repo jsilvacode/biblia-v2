@@ -16,8 +16,6 @@ export default {
   common: { all: 'All', back: 'Back', chapter: 'Chapter', close: 'Close', continue: 'Continue', explore: 'Explore', next: 'Next', open: 'Open', previous: 'Previous', read: 'Read', save: 'Save', saving: 'Saving', saved: 'Saved', search: 'Search', share: 'Share', skipToContent: 'Skip to content', start: 'Start', today: 'Today', version: 'Version' },
   dailyVideo: {
     title: 'Este Día con Dios',
-    eyebrow: 'A moment of hope',
-    description: 'A video reflection to accompany your day.',
     play: 'Play: {{title}}',
     watchOnYoutube: 'Watch on YouTube',
     officialSite: 'Official website',

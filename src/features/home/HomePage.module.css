@@ -2,6 +2,7 @@
   --home-width: 68.75rem;
   --home-gutter: 40px;
   --home-opening-gap: 24px;
+  --home-section-divider: linear-gradient(90deg, transparent, color-mix(in srgb, var(--border-strong) 60%, transparent) 22%, color-mix(in srgb, var(--border-strong) 60%, transparent) 78%, transparent);
   --home-lower-veil: linear-gradient(180deg, transparent 40%, color-mix(in srgb, var(--bg-reader) 18%, transparent) 58%, color-mix(in srgb, var(--bg-reader) 32%, transparent) 82%, color-mix(in srgb, var(--bg-reader) 45%, transparent));
   --home-quote-height: 27rem;
   width: 100%;
@@ -124,6 +125,8 @@
 .interestCard > svg { color: var(--ink-muted); }
 .promiseFeedback { position: fixed; z-index: 102; right: 1rem; bottom: 5.5rem; left: 1rem; max-width: 26rem; margin-inline: auto; padding: .75rem 1rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-raised); color: var(--ink); box-shadow: var(--shadow-sm); text-align: center; font-size: .875rem; }
 @media (min-width: 768px) {
+  .editorialSection { position: relative; margin-top: 28px; padding-top: 28px; }
+  .editorialSection::before { position: absolute; inset: 0 0 auto; height: 1px; background: var(--home-section-divider); content: ''; pointer-events: none; }
   .editorialList { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .entryTitle { min-height: 2.44em; }
   .recentList { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
