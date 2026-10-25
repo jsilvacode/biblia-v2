@@ -17,9 +17,25 @@
 .navigation button { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: var(--control-hit-size); padding: 8px 10px; border: 0; border-radius: 6px; background: transparent; color: var(--ink-muted); font: 400 .8125rem/1.5 var(--font-ui); text-align: center; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 1px; text-underline-offset: 4px; cursor: pointer; transition: background var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium), text-decoration-color var(--duration-fast) var(--ease-premium); }
 .navigation button + button::before { position: absolute; top: 50%; left: 0; width: 1px; height: 12px; background: var(--border); content: ''; transform: translateY(-50%); }
 .navigation button:hover, .navigation button:focus-visible { background: color-mix(in srgb, var(--accent-soft) 40%, transparent); color: var(--accent-deep); text-decoration-color: currentColor; }
-.dialog { width: min(100%, 42rem); }
-.dialogContent { color: var(--ink-muted); font-size: .9375rem; line-height: 1.75; }
-.dialogContent > :first-child { margin-top: .5rem; }
+.dialog:global(.reader-dialog) { width: min(100%, 42rem); overflow: hidden; padding: 0; background: var(--paper-texture), var(--bg-reader); }
+.about { --dialog-art: url('/assets/editorial/daily-reading-v1.webp'); }
+.help { --dialog-art: url('/assets/editorial/guidance-v1.webp'); }
+.support { --dialog-art: url('/assets/editorial/faith-v1.webp'); }
+:global(:root[data-theme='dark']) .about { --dialog-art: url('/assets/editorial/daily-reading-night-v1.webp'); }
+:global(:root[data-theme='dark']) .help { --dialog-art: url('/assets/editorial/guidance-night-v1.webp'); }
+:global(:root[data-theme='dark']) .support { --dialog-art: url('/assets/editorial/faith-night-v1.webp'); }
+.dialog :global(.reader-dialog__header) { position: relative; isolation: isolate; align-items: start; min-height: 9rem; padding: clamp(1.1rem, 4vw, 1.75rem); border-bottom: 1px solid var(--border); background: var(--bg-reader); }
+.dialog :global(.reader-dialog__header)::before, .dialog :global(.reader-dialog__header)::after { position: absolute; z-index: -1; inset: 0; pointer-events: none; content: ''; }
+.dialog :global(.reader-dialog__header)::before { background: var(--dialog-art) 85% 55% / cover no-repeat; filter: var(--editorial-art-filter); mix-blend-mode: var(--editorial-art-blend); }
+.dialog :global(.reader-dialog__header)::after { background: linear-gradient(90deg, var(--bg-reader), color-mix(in srgb, var(--bg-reader) 92%, transparent) 34%, color-mix(in srgb, var(--bg-reader) 48%, transparent) 67%, color-mix(in srgb, var(--bg-reader) 15%, transparent)); }
+.dialog :global(.reader-dialog__header h2) { align-self: center; text-align: left; font-size: clamp(1.5rem, 4vw, 1.9rem); line-height: 1.22; }
+.dialogTitle { display: grid; justify-items: start; max-width: 22ch; gap: .7rem; }
+.dialogTitle > svg { color: var(--accent-coral-deep); }
+.dialog :global(.reader-dialog__header > button:last-child) { position: relative; border: 1px solid var(--border); background: var(--surface-raised); }
+.dialogContent:global(.reader-dialog__scroll-area) { padding: 1.25rem clamp(1.1rem, 4vw, 1.75rem) 1.5rem; color: var(--ink-muted); font-size: .9375rem; line-height: 1.75; }
+.dialogContent > :first-child { margin-top: 0; }
+.dialogContent article + article { padding-top: 1.3rem; border-top: 1px solid var(--border); }
+.dialogContent article h3 { font-family: var(--font-reading); font-size: 1.1rem; font-weight: 500; }
 @media (min-width: 1024px) {
   .footer { padding-block: 1.25rem 1.5rem; }
 }

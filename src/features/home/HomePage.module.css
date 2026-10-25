@@ -3,7 +3,7 @@
   --home-gutter: 40px;
   --home-opening-gap: 24px;
   --home-section-divider: linear-gradient(90deg, transparent, color-mix(in srgb, var(--border-strong) 60%, transparent) 22%, color-mix(in srgb, var(--border-strong) 60%, transparent) 78%, transparent);
-  --home-lower-veil: linear-gradient(180deg, transparent 40%, color-mix(in srgb, var(--bg-reader) 18%, transparent) 58%, color-mix(in srgb, var(--bg-reader) 32%, transparent) 82%, color-mix(in srgb, var(--bg-reader) 45%, transparent));
+  --home-lower-veil: linear-gradient(180deg, transparent 64%, color-mix(in srgb, var(--bg-reader) 16%, transparent) 76%, color-mix(in srgb, var(--bg-reader) 58%, transparent) 89%, var(--bg-reader));
   --home-quote-height: 27rem;
   width: 100%;
   margin: 0;
@@ -12,23 +12,31 @@
 }
 .opening { position: relative; z-index: 2; isolation: isolate; width: 100%; background: var(--bg-reader); }
 .hero { display: grid; min-width: 0; min-height: var(--home-quote-height); }
-:global(:root[data-theme='dark']) .homePage { --home-lower-veil: linear-gradient(180deg, transparent 40%, color-mix(in srgb, var(--bg-reader) 25%, transparent) 58%, color-mix(in srgb, var(--bg-reader) 50%, transparent) 82%, color-mix(in srgb, var(--bg-reader) 65%, transparent)); }
+:global(:root[data-theme='dark']) .homePage { --home-lower-veil: linear-gradient(180deg, transparent 64%, color-mix(in srgb, var(--bg-reader) 24%, transparent) 76%, color-mix(in srgb, var(--bg-reader) 65%, transparent) 89%, var(--bg-reader)); }
 .heroLandscape, .opening::after { position: absolute; inset: 0; pointer-events: none; }
 .heroLandscape { z-index: -2; display: block; }
-/* Keep the summit below the header; mobile retains its portrait framing. */
-.heroLandscape img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 60% 24px; }
+/* Preserve the responsive framing and keep the landscape itself sharp. */
+.heroLandscape img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 60% 24px; filter: saturate(.88); }
+:global(:root[data-theme='dark']) .heroLandscape img { filter: saturate(.84) brightness(.82); }
 .opening::after {
   z-index: -1;
   content: '';
-  background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 40%, transparent), color-mix(in srgb, var(--bg-reader) 28%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 46%, transparent), color-mix(in srgb, var(--bg-reader) 40%, transparent) 24%, color-mix(in srgb, var(--bg-reader) 20%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 5%, transparent) 56%, transparent 68%);
-}
-:global(:root[data-theme='dark']) .opening::after {
-  background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 78%, transparent), color-mix(in srgb, var(--bg-reader) 74%, transparent) 24%, color-mix(in srgb, var(--bg-reader) 52%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 18%, transparent) 56%, transparent 68%);
+  background: var(--home-lower-veil);
 }
 .openingInner, .homeFeed { width: min(calc(100% - var(--home-gutter) * 2), var(--home-width)); margin-inline: auto; }
 .openingInner { position: relative; container: home-opening / inline-size; padding-top: calc(var(--topbar-height) + 40px); padding-bottom: 56px; }
 .openingGrid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: var(--home-opening-gap); }
 .heroCopy { display: grid; grid-template-rows: auto minmax(min-content, 1fr) auto auto; justify-items: center; width: 100%; max-width: 740px; min-width: 0; min-height: min-content; margin-inline: auto; padding: 28px 0 32px; text-align: center; }
+/* Anchor the veil to the full opening, rather than framing the copy.
+   A continuous gradient keeps the landscape visible without a text box. */
+.heroCopy::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0 calc(50% - 50vw);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 94%, transparent), color-mix(in srgb, var(--bg-reader) 90%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 76%, transparent) 56%, transparent 82%);
+  pointer-events: none;
+  content: '';
+}
 .heroKicker { margin: 0 0 16px; color: var(--ink); font: 500 .6875rem/1.4 var(--font-ui); letter-spacing: .16em; text-transform: uppercase; }
 :global(:root[data-theme='dark']) .heroKicker { color: var(--accent-deep); }
 .heroQuote { display: flex; align-items: center; min-height: min-content; width: 100%; }
@@ -111,7 +119,7 @@
 .entryDetail { margin: 8px 0 0; color: var(--ink-muted); font-size: .875rem; line-height: 1.6; }
 .entryAction { display: inline-flex; align-items: center; align-self: flex-start; min-height: 44px; gap: 8px; margin-top: auto; padding-top: 10px; color: var(--accent-blue-deep); font-size: .8125rem; }
 .entryAction svg { transition: transform 200ms ease; }
-.entryImage { display: block; width: 100%; aspect-ratio: 2.4/1; overflow: hidden; border-radius: 13px 13px 0 0; }
+.entryImage { isolation: isolate; display: block; width: 100%; aspect-ratio: 2.4/1; overflow: hidden; border-radius: 13px 13px 0 0; background: var(--bg-reader); }
 .entryImage img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 240ms ease, filter 240ms ease; }
 .interestSection { margin-top: 56px; }
 .interestSection > .eyebrow { margin-bottom: 16px; }
@@ -141,7 +149,7 @@
 @media (hover: hover) and (pointer: fine) {
   .editorialEntry:hover .entryTitle { transform: translateX(2px); text-decoration-color: color-mix(in srgb, var(--accent-deep) 32%, transparent); }
   .editorialEntry:hover .entryAction svg { transform: translateX(3px); }
-  .editorialEntry:hover .entryImage img { transform: scale(1.015); filter: saturate(1.04); }
+  .editorialEntry:hover .entryImage img { transform: scale(1.015); }
   .interestCard:hover { border-color: color-mix(in srgb, var(--accent-blue-deep) 45%, var(--border)); background: color-mix(in srgb, var(--surface-raised) 94%, var(--accent-mist)); transform: translateY(-1px); }
   .heroSecondaryAction:hover { background: color-mix(in srgb, var(--surface-raised) 90%, var(--accent-soft)); }
 }
@@ -154,8 +162,6 @@
 }
 @media (max-width: 800px) {
   .homePage { --home-gutter: 24px; }
-  .opening::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 40%, transparent), color-mix(in srgb, var(--bg-reader) 28%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 10%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 30%, transparent), color-mix(in srgb, var(--bg-reader) 24%, transparent) 50%, color-mix(in srgb, var(--bg-reader) 6%, transparent)); }
-  :global(:root[data-theme='dark']) .opening::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 28%, transparent), color-mix(in srgb, var(--bg-reader) 18%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 7%, transparent) 15%, transparent 25%), linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 36%, transparent), color-mix(in srgb, var(--bg-reader) 30%, transparent) 50%, color-mix(in srgb, var(--bg-reader) 9%, transparent)); }
 }
 @media (max-width: 620px) {
   .homePage { --home-gutter: 18px; --home-opening-gap: 16px; }
@@ -168,8 +174,6 @@
   .promiseReference { margin-top: 16px; font-size: .75rem; }
   .heroActions { gap: 9px; margin-top: 21px; }
   .heroPrimaryAction, .heroSecondaryAction { padding: 12px 16px; font-size: .75rem; }
-  .opening::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 42%, transparent), color-mix(in srgb, var(--bg-reader) 52%, transparent) 14%, color-mix(in srgb, var(--bg-reader) 48%, transparent) 40%, color-mix(in srgb, var(--bg-reader) 22%, transparent) 60%, transparent); }
-  :global(:root[data-theme='dark']) .opening::after { background: var(--home-lower-veil), linear-gradient(180deg, color-mix(in srgb, var(--bg-reader) 58%, transparent), color-mix(in srgb, var(--bg-reader) 68%, transparent) 14%, color-mix(in srgb, var(--bg-reader) 68%, transparent) 40%, color-mix(in srgb, var(--bg-reader) 45%, transparent) 60%, color-mix(in srgb, var(--bg-reader) 30%, transparent)); }
   .glassMantle::before, .glassMantle::after { border-radius: 20px; }
   .readingPanel { padding: 26px clamp(14px, 4vw, 22px) 31px; }
   .readingHeading p { font-size: .8125rem; }
@@ -206,6 +210,9 @@
   @container home-opening (min-width: 58rem) {
     .openingGrid { --home-quote-height: 28rem; grid-template-columns: minmax(0, 1.15fr) minmax(380px, .95fr); gap: 48px; padding-block: 24px 40px; }
     .heroCopy { justify-items: start; max-width: 560px; padding: 16px 0 20px; text-align: left; }
+    .heroCopy::before {
+      background: linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 94%, transparent), color-mix(in srgb, var(--bg-reader) 92%, transparent) 28%, color-mix(in srgb, var(--bg-reader) 88%, transparent) 44%, color-mix(in srgb, var(--bg-reader) 78%, transparent) 54%, color-mix(in srgb, var(--bg-reader) 28%, transparent) 66%, transparent 78%);
+    }
     .hero h1 { font-size: 2.25rem; }
     .hero h1.heroQuoteLong { font-size: 1.875rem; }
     .hero h1.heroQuoteExtended { font-size: 1.625rem; }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
+import { EditorialIllustration } from '../../components/ui/EditorialIllustration'
 import { DailyVideoSection } from '../daily-video/DailyVideoSection'
 import { useI18n } from '../../i18n'
 import { formatReference, getVersion } from '../bible/catalog'
@@ -218,8 +219,8 @@ export default function HomePage() {
           <div className={styles.editorialList}>
             {entries.map((entry, index) => (
               <Link className={styles.editorialEntry} key={entry.href} to={entry.href}>
-                <span aria-hidden="true" className={styles.entryImage}>
-                  <img alt="" decoding="async" height="1024" loading="lazy" src={entry.image} width="1536" />
+                <span aria-hidden="true" className={`${styles.entryImage} editorial-art`}>
+                  <EditorialIllustration alt="" decoding="async" height="1024" loading="lazy" src={entry.image} width="1536" />
                 </span>
                 <div className={styles.entryCopy}>
                   <div className={styles.entryHeading}>

@@ -346,6 +346,8 @@ export default function ReaderPage() {
               compact
               key={`${reference.book}:${reference.chapter}`}
               bookTriggerRef={passageBookTriggerRef}
+              currentBookId={reference.book}
+              currentChapter={reference.chapter}
               onGoToChapter={goToChapter}
               onOpenChange={handlePassagePickerOpenChange}
             />

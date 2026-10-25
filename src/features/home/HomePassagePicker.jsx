@@ -10,20 +10,21 @@ import styles from './HomePassagePicker.module.css'
 
 const MENU_HEIGHT = 324
 const TYPEAHEAD_TIMEOUT = 700
+const CHAPTER_REVEAL_MARGIN = 8
 
-function BookAccordion({ book, expanded, id, locale, t, onToggle, onBookKeyDown, onKeyUp, onChapterKeyDown, onRead, onWarmChapter }) {
+function BookAccordion({ book, expanded, currentBookId, currentChapter, id, locale, t, onToggle, onBookKeyDown, onKeyUp, onChapterKeyDown, onRead, onWarmChapter }) {
   const name = getLocalizedBookName(book, locale)
   return (
     <div className={`${styles.book}${expanded ? ` ${styles.expandedBook}` : ''}`}>
       <div className={styles.bookBar}>
-        <button aria-controls={`${id}-chapters-${book.id}`} aria-expanded={expanded} className={styles.bookToggle} data-book-id={book.id} onClick={() => onToggle(book.id)} onKeyDown={(event) => onBookKeyDown(event, book.id)} onKeyUp={onKeyUp} type="button">
+        <button aria-controls={`${id}-chapters-${book.id}`} aria-current={book.id === currentBookId ? 'true' : undefined} aria-expanded={expanded} className={styles.bookToggle} data-book-id={book.id} onClick={() => onToggle(book.id)} onKeyDown={(event) => onBookKeyDown(event, book.id)} onKeyUp={onKeyUp} type="button">
           <span>{name}</span>{' '}<small>{t('bible.shortChapterCount', { count: book.chapters })}</small>
         </button>
         {expanded && <OverlayCloseButton label={`${t('common.close')}: ${name}`} onClose={() => onToggle(book.id)} />}
       </div>
       <div aria-label={`${name} · ${t('bible.chapters')}`} className={styles.chapterGrid} hidden={!expanded} id={`${id}-chapters-${book.id}`} onKeyDown={onChapterKeyDown}>
         {expanded && Array.from({ length: book.chapters }, (_, index) => index + 1).map((chapter) => (
-          <button aria-label={t('bible.openReference', { reference: `${name} ${chapter}` })} data-chapter={chapter} key={chapter} onClick={() => onRead(book.id, chapter)} onFocus={() => onWarmChapter(book.id, chapter)} onPointerDown={() => onWarmChapter(book.id, chapter)} type="button">{chapter}</button>
+          <button aria-current={book.id === currentBookId && chapter === currentChapter ? 'page' : undefined} aria-label={t('bible.openReference', { reference: `${name} ${chapter}` })} data-chapter={chapter} key={chapter} onClick={() => onRead(book.id, chapter)} onFocus={() => onWarmChapter(book.id, chapter)} onPointerDown={() => onWarmChapter(book.id, chapter)} type="button">{chapter}</button>
         ))}
       </div>
     </div>
@@ -32,12 +33,19 @@ function BookAccordion({ book, expanded, id, locale, t, onToggle, onBookKeyDown,
 
 // Books and chapters share a non-modal disclosure. A listbox cannot contain
 // an accordion of interactive chapter buttons; keep every action native.
-export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerRef, onOpenChange }) {
+export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerRef, onOpenChange, currentBookId = null, currentChapter = null }) {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
   const id = useId()
+  const currentBook = bibleBooks.find((book) => book.id === Number(currentBookId))
+  const chapter = Number(currentChapter)
+  const hasCurrentChapter = Boolean(currentBook && Number.isInteger(chapter) && chapter >= 1 && chapter <= currentBook.chapters)
   const [isOpen, setIsOpen] = useState(false)
   const [expandedBook, setExpandedBook] = useState(null)
+  const [activeTestament, setActiveTestament] = useState(() => currentBook?.testament ?? 'OT')
+  const visibleBooks = bibleBooks.filter((book) => book.testament === activeTestament)
+  const expandedBookData = visibleBooks.find((book) => book.id === expandedBook)
+  const menuHeading = expandedBookData ? `${getLocalizedBookName(expandedBookData, locale)} · ${t('bible.chapters')}` : t('home.chooseReading')
   const rootRef = useRef(null)
   const anchorRef = useRef(null)
   const triggerRef = useRef(null)
@@ -46,6 +54,8 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
   const openChangeRef = useRef(onOpenChange)
   const revealBookRef = useRef(false)
   const focusBookRef = useRef(null)
+  const revealChapterRef = useRef(false)
+  const focusChapterRef = useRef(false)
   const typeahead = useRef({ text: '', at: 0 })
   const pointerInsideRef = useRef(false)
 
@@ -63,9 +73,15 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
     if (restoreFocus) triggerRef.current?.focus({ preventScroll: true })
   }, [])
 
-  function open(focusBook = null) {
+  function open(focusBook = null, focusFromKeyboard = false) {
+    const target = bibleBooks.find((book) => book.id === (focusBook ?? currentBook?.id ?? expandedBook)) ?? visibleBooks[0]
     revealPickerAnchor(anchorRef.current)
-    focusBookRef.current = focusBook
+    setActiveTestament(target.testament)
+    if (target.id === currentBook?.id) setExpandedBook(currentBook.id)
+    else if (target.testament !== activeTestament) setExpandedBook(null)
+    revealChapterRef.current = focusBook === null && target.id === currentBook?.id && hasCurrentChapter
+    focusChapterRef.current = focusFromKeyboard && revealChapterRef.current
+    focusBookRef.current = focusBook ?? (focusFromKeyboard && !focusChapterRef.current ? target.id : null)
     revealBookRef.current = true
     openRef.current = true
     setIsOpen(true)
@@ -89,12 +105,28 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
       return () => cancelAnimationFrame(frame)
     }
     const focusBook = focusBookRef.current
-    if (revealBookRef.current) revealBook(focusBook ?? expandedBook ?? 1)
+    if (revealBookRef.current) revealBook(focusBook ?? expandedBook ?? (activeTestament === 'OT' ? 1 : 40))
+    if (revealChapterRef.current) {
+      const menu = menuRef.current
+      const current = menu?.querySelector('button[data-chapter][aria-current="page"]')
+      if (current) {
+        const bounds = menu.getBoundingClientRect()
+        const clientTop = bounds.top + menu.clientTop
+        const top = clientTop + (menu.querySelector('header')?.offsetHeight ?? 44) + CHAPTER_REVEAL_MARGIN
+        const bottom = clientTop + (menu.clientHeight || bounds.height) - CHAPTER_REVEAL_MARGIN
+        const rect = current.getBoundingClientRect()
+        if (rect.top < top) menu.scrollTop -= top - rect.top
+        else if (rect.bottom > bottom) menu.scrollTop += rect.bottom - bottom
+        if (focusChapterRef.current) current.focus({ preventScroll: true })
+      }
+    }
     if (focusBook) menuRef.current?.querySelector(`[data-book-id="${focusBook}"]`)?.focus({ preventScroll: true })
     revealBookRef.current = false
     focusBookRef.current = null
+    revealChapterRef.current = false
+    focusChapterRef.current = false
     return undefined
-  }, [isOpen, expandedBook, close])
+  }, [isOpen, expandedBook, activeTestament, close])
 
   useEffect(() => {
     if (!isOpen) return undefined
@@ -126,8 +158,39 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
   }
 
   function focusBook(bookId) {
+    const book = bibleBooks.find((entry) => entry.id === bookId)
+    if (!book) return
+    if (book.testament !== activeTestament) {
+      focusBookRef.current = bookId
+      revealBookRef.current = true
+      setExpandedBook(null)
+      setActiveTestament(book.testament)
+      return
+    }
     revealBook(bookId)
     menuRef.current?.querySelector(`[data-book-id="${bookId}"]`)?.focus({ preventScroll: true })
+  }
+
+  function changeTestament(testament) {
+    if (testament === activeTestament) return
+    typeahead.current = { text: '', at: 0 }
+    revealBookRef.current = true
+    focusBookRef.current = null
+    setExpandedBook(currentBook?.testament === testament ? currentBook.id : null)
+    setActiveTestament(testament)
+  }
+
+  function handleTestamentNavigation(event) {
+    const { key } = event
+    if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(key)) {
+      event.preventDefault()
+      const testament = key === 'ArrowLeft' || key === 'Home' ? 'OT' : 'NT'
+      changeTestament(testament)
+      menuRef.current?.querySelector(`[data-testament="${testament}"]`)?.focus({ preventScroll: true })
+    } else if (key === 'ArrowDown') {
+      event.preventDefault()
+      focusBook(expandedBook ?? visibleBooks[0].id)
+    } else handleBookNavigation(event)
   }
 
   function handleBookNavigation(event, bookId = null) {
@@ -135,23 +198,21 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
     if (['ArrowDown', 'ArrowUp', 'Home', 'End', 'PageDown', 'PageUp'].includes(key)) {
       event.preventDefault()
       typeahead.current = { text: '', at: 0 }
-      const current = bookId ?? expandedBook ?? 1
-      const next = key === 'Home' ? 1 : key === 'End' ? 66
+      const current = Math.max(0, visibleBooks.findIndex((book) => book.id === (bookId ?? expandedBook)))
+      const next = key === 'Home' ? 0 : key === 'End' ? visibleBooks.length - 1
         : current + (key === 'ArrowDown' ? 1 : key === 'ArrowUp' ? -1 : key === 'PageDown' ? 6 : -6)
-      if (!isOpen) open(key === 'ArrowUp' || key === 'End' ? 66 : 1)
-      else focusBook(Math.max(1, Math.min(66, next)))
+      if (!isOpen) open(key === 'Home' ? visibleBooks[0].id : key === 'End' ? visibleBooks.at(-1).id
+        : currentBook?.id ?? visibleBooks[key === 'ArrowUp' ? visibleBooks.length - 1 : 0].id)
+      else focusBook(visibleBooks[Math.max(0, Math.min(visibleBooks.length - 1, next))].id)
     } else if (key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey
       && (key !== ' ' || typeahead.current.text && event.timeStamp - typeahead.current.at < TYPEAHEAD_TIMEOUT)) {
       event.preventDefault()
       const text = (event.timeStamp - typeahead.current.at < TYPEAHEAD_TIMEOUT ? typeahead.current.text : '') + key
-      if (!isOpen) open()
-      typeahead.current = { text, at: event.timeStamp }
       const query = normalizeText(text)
       const found = bibleBooks.find((book) => normalizeText(getLocalizedBookName(book, locale)).startsWith(query))
-      if (found) {
-        if (!isOpen) focusBookRef.current = found.id
-        else focusBook(found.id)
-      }
+      if (!isOpen) open(found?.id ?? null)
+      else if (found) focusBook(found.id)
+      typeahead.current = { text, at: event.timeStamp }
     }
   }
 
@@ -207,7 +268,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
         <button
           aria-controls={`${id}-books`} aria-expanded={isOpen} aria-haspopup="dialog"
           className={`${styles.trigger} ${styles.bookTrigger}`} data-picker-trigger="book"
-          onClick={() => isOpen ? close() : open()}
+          onClick={(event) => isOpen ? close() : open(null, event.detail === 0)}
           onKeyDown={(event) => handleBookNavigation(event)}
           onKeyUp={handleKeyUp}
           ref={(node) => { triggerRef.current = node; if (bookTriggerRef) bookTriggerRef.current = node }}
@@ -219,15 +280,20 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
         </button>
         {isOpen && (
           <div aria-label={t('home.chooseReading')} className={`${styles.menu} ${styles.bookMenu}`} data-height-limit={MENU_HEIGHT} data-picker-menu="book" id={`${id}-books`} ref={menuRef} role="dialog">
-            <header className={styles.menuHeader}><span>{t('home.chooseReading')}</span><OverlayCloseButton onClose={() => close(true)} /></header>
-            {['OT', 'NT'].map((testament) => (
-              <section aria-labelledby={`${id}-${testament}`} key={testament}>
-                <h3 className={styles.groupLabel} id={`${id}-${testament}`}>{t(testament === 'OT' ? 'bible.oldTestament' : 'bible.newTestament')}</h3>
-                {bibleBooks.filter((book) => book.testament === testament).map((book) => (
-                  <BookAccordion book={book} expanded={expandedBook === book.id} id={id} key={book.id} locale={locale} onBookKeyDown={handleBookNavigation} onChapterKeyDown={handleChapterNavigation} onKeyUp={handleKeyUp} onRead={readChapter} onToggle={toggleBook} onWarmChapter={warmChapter} t={t} />
+            <header className={styles.menuHeader}>
+              <div className={styles.menuHeading}><span>{menuHeading}</span><OverlayCloseButton onClose={() => close(true)} /></div>
+              <div aria-label={`${t('bible.oldTestament')} / ${t('bible.newTestament')}`} className={styles.testamentSwitch} role="group">
+                {['OT', 'NT'].map((testament) => (
+                  <button aria-controls={`${id}-book-list`} aria-label={t(testament === 'OT' ? 'bible.oldTestament' : 'bible.newTestament')} aria-pressed={activeTestament === testament} data-testament={testament} key={testament} onClick={() => changeTestament(testament)} onKeyDown={handleTestamentNavigation} onKeyUp={handleKeyUp} type="button">{testament === 'OT' && locale !== 'en' ? 'AT' : testament}</button>
                 ))}
-              </section>
-            ))}
+              </div>
+            </header>
+            <section aria-labelledby={`${id}-${activeTestament}`} id={`${id}-book-list`}>
+              <h3 className={styles.groupLabel} id={`${id}-${activeTestament}`}>{t(activeTestament === 'OT' ? 'bible.oldTestament' : 'bible.newTestament')}</h3>
+              {visibleBooks.map((book) => (
+                <BookAccordion book={book} expanded={expandedBook === book.id} currentBookId={currentBook?.id} currentChapter={chapter} id={id} key={book.id} locale={locale} onBookKeyDown={handleBookNavigation} onChapterKeyDown={handleChapterNavigation} onKeyUp={handleKeyUp} onRead={readChapter} onToggle={toggleBook} onWarmChapter={warmChapter} t={t} />
+              ))}
+            </section>
           </div>
         )}
       </div>

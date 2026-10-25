@@ -1,3 +1,4 @@
+import { EditorialIllustration } from './EditorialIllustration'
 import styles from './PageIntro.module.css'
 
 function normalizeHeading(value) {
@@ -36,8 +37,8 @@ export function PageIntro({ eyebrow, title, children, action, illustration }) {
         {action}
       </div>
       {hasIllustration && (
-        <div aria-hidden="true" className={styles.art}>
-          <img
+        <div aria-hidden="true" className={`${styles.art} editorial-art`}>
+          <EditorialIllustration
             alt=""
             aria-hidden="true"
             decoding="async"

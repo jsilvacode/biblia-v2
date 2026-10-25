@@ -32,6 +32,8 @@
 
   /* Fine paper grain is used only by editorial surfaces, never the reader. */
   --paper-texture: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22180%22%3E%3Cfilter%20id%3D%22grain%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.72%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20opacity%3D%22.035%22%20filter%3D%22url%28%23grain%29%22%2F%3E%3C%2Fsvg%3E");
+  --editorial-art-filter: saturate(.9);
+  --editorial-art-blend: multiply;
 
   --canvas: var(--bg-app);
   --surface: var(--surface-1);
@@ -98,6 +100,9 @@
 
 :root[data-theme='dark'] {
   color-scheme: dark;
+  /* Night editions are painted for slate paper, with natural pigment. */
+  --editorial-art-filter: none;
+  --editorial-art-blend: normal;
   --bg-app: #171f22;
   --bg-reader: #1b2326;
   --bg-sidebar: #1e292b;

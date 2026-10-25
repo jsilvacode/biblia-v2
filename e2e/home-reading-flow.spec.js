@@ -54,6 +54,7 @@ async function expectNeutralPicker(page) {
 async function chooseBook(page, bookId) {
   const picker = homePicker(page)
   if (await picker.book.getAttribute('aria-expanded') !== 'true') await picker.book.click()
+  await picker.form.locator(`[data-testament="${bookId <= 39 ? 'OT' : 'NT'}"]`).click()
   await picker.form.locator(`[data-book-id="${bookId}"]`).click()
 }
 
@@ -231,7 +232,7 @@ test('the book accordion opens toward available space and contains even all 150 
     await picker.book.click()
     const box = await expectPopupWithinScreen(page)
     directions.add(expectConnectedPopup(box, await picker.book.boundingBox()))
-    await expect(picker.form.locator('[data-book-id]')).toHaveCount(66)
+    await expect(picker.form.locator('[data-book-id]')).toHaveCount(39)
     const psalms = picker.form.locator('[data-book-id="19"]')
     if (await psalms.getAttribute('aria-expanded') !== 'true') await psalms.click()
     await expect(picker.form.locator('[data-chapter]')).toHaveCount(150)
@@ -251,6 +252,9 @@ test('keyboard navigation and enlarged text can open the last chapter of a book'
   await page.evaluate(() => { document.documentElement.style.fontSize = '20px' })
   const picker = homePicker(page)
   await picker.book.focus()
+  await page.keyboard.press('ArrowDown')
+  await picker.form.getByRole('button', { name: 'Antiguo Testamento', exact: true }).focus()
+  await page.keyboard.press('ArrowRight')
   await page.keyboard.press('ArrowDown')
   await page.keyboard.press('End')
   await page.keyboard.press('Enter')

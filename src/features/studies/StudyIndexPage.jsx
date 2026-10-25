@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
+import { EditorialIllustration } from '../../components/ui/EditorialIllustration'
 import { useI18n } from '../../i18n'
 import { studyLessons } from './studyContent'
 import { getLessonAccess, getNextPendingLesson } from './studyAccess'
@@ -34,7 +35,9 @@ function StudyHero({ resumePath, summary, t }) {
           <Icon name="arrowRight" size={17} />
         </Link>
       </div>
-      <div aria-hidden="true" className={styles.studyHeroArt} />
+      <div aria-hidden="true" className={`${styles.studyHeroArt} editorial-art`}>
+        <EditorialIllustration alt="" decoding="async" height="1024" src="/assets/editorial/faith-v1.webp" width="1536" />
+      </div>
     </section>
   )
 }

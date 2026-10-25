@@ -7,36 +7,31 @@
 .studyHero {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(1rem, 3vw, 2rem);
   min-height: clamp(16.25rem, 28vw, 17.5rem);
   align-items: center;
   overflow: hidden;
   padding: clamp(1.45rem, 4.5vw, 3.35rem);
-  border: 1px solid var(--border);
-  border-radius: clamp(1.2rem, 3vw, 1.7rem);
-  background: var(--paper-texture), color-mix(in srgb, var(--surface-soft) 45%, var(--bg-reader));
-  box-shadow: var(--shadow-sm);
+  border: 0;
+  background: transparent;
   isolation: isolate;
 }
 
 .studyHeroArt {
-  min-width: 0;
-  width: 100%;
-  height: clamp(10rem, 22vw, 15rem);
-  background: url('/assets/editorial/faith-v1.webp') center / contain no-repeat;
-  mix-blend-mode: multiply;
-  mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%);
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 87%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 12%, #000 87%, transparent);
   pointer-events: none;
 }
 
-:global(:root[data-theme='dark']) .studyHeroArt {
-  mix-blend-mode: normal;
-  mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%);
-  opacity: 0.85;
-}
+.studyHeroArt img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 64% 58%; }
+.studyHeroArt::after { position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg-reader), color-mix(in srgb, var(--bg-reader) 96%, transparent) 25%, color-mix(in srgb, var(--bg-reader) 82%, transparent) 46%, color-mix(in srgb, var(--bg-reader) 18%, transparent) 77%, transparent); content: ''; }
 
 .studyHeroCopy {
+  position: relative;
+  z-index: 1;
   display: grid;
   max-width: min(100%, 34rem);
   gap: 0.6rem;
@@ -1079,17 +1074,11 @@
 @media (max-width: 640px) {
   .studyHero {
     min-height: 16.25rem;
-    grid-template-columns: minmax(0, 1fr);
     align-items: center;
-    gap: 0.75rem;
     padding: 1.3rem;
   }
 
-  .studyHeroArt {
-    justify-self: end;
-    width: min(50%, 12rem);
-    height: 6rem;
-  }
+  .studyHeroArt::after { background: linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 98%, transparent), color-mix(in srgb, var(--bg-reader) 90%, transparent) 48%, color-mix(in srgb, var(--bg-reader) 55%, transparent)); }
 
   .studyHeroCopy {
     max-width: 25rem;

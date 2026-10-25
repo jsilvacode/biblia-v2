@@ -65,6 +65,7 @@ test.describe('mobile navigation shell', () => {
     const books = picker.getByRole('dialog')
     await expect(books).toBeVisible()
     await expect(bible).toHaveAttribute('aria-expanded', 'true')
+    await books.getByRole('button', { name: /^(Antiguo Testamento|Old Testament|Antigo Testamento)$/ }).click()
     await books.locator('[data-book-id="1"]').click()
     await expect(bible).toHaveAttribute('aria-expanded', 'true')
     await books.locator('[data-chapter="1"]').click()

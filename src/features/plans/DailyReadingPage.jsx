@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect -- These effects synchronize route-local date, storage, and asynchronous resources. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Icon } from '../../components/ui/Icon'
+import { EditorialIllustration } from '../../components/ui/EditorialIllustration'
 import { useI18n } from '../../i18n'
 import { formatReference, getBook, getLocalizedBookName, getVersion } from '../bible/catalog'
 import { loadChapter } from '../bible/bibleRepository'
@@ -171,13 +172,15 @@ export default function DailyReadingPage() {
   return (
     <div className={`${styles.dailyPage}${settings.fontFamily === 'sans' ? ` ${styles.fontSans}` : ''}`}>
       <section aria-label="Reavivados por su Palabra" className={styles.hero}>
+          <div aria-hidden="true" className={`${styles.heroImage} editorial-art`}>
+          <EditorialIllustration alt="" decoding="async" height="1024" src="/assets/editorial/daily-reading-v1.webp" width="1536" />
+        </div>
         <div className={styles.heroInner}>
           <div className={styles.heroCopy}>
             <p className={styles.kicker}>Reavivados por su Palabra</p>
             <h1>{referenceLabel}</h1>
             <p className={styles.date}>{dateLabel}</p>
           </div>
-          <div aria-hidden="true" className={styles.heroImage} />
         </div>
       </section>
 

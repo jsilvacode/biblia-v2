@@ -31,6 +31,7 @@ test('Home matches the approved simple picker and recent readings without repeat
   await picker.getByRole('button', { name: 'Seleccionar libro', exact: true }).click()
   const menu = picker.getByRole('dialog')
   await expectCloseAtRight(menu)
+  await menu.getByRole('button', { name: 'Nuevo Testamento', exact: true }).click()
   await menu.locator('[data-book-id="43"]').click()
   await expect(menu.locator('[data-chapter]')).toHaveCount(21)
   await menu.locator('[data-book-id="43"]').click()

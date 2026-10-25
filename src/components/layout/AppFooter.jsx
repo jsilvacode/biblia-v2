@@ -11,9 +11,9 @@ export function AppFooter({ editorial = false }) {
   const [information, setInformation] = useState(null)
   const returnFocusRef = useRef(null)
   const actions = [
-    { id: 'about', label: 'nav.about', title: 'about.title' },
-    { id: 'help', label: 'about.help', title: 'about.helpTitle' },
-    { id: 'support', label: 'about.supportTitle', title: 'about.supportTitle' },
+    { id: 'about', label: 'nav.about', title: 'about.title', icon: 'bookOpen' },
+    { id: 'help', label: 'about.help', title: 'about.helpTitle', icon: 'circleHelp' },
+    { id: 'support', label: 'about.supportTitle', title: 'about.supportTitle', icon: 'heartHandshake' },
   ]
   const selected = actions.find(({ id }) => id === information)
 
@@ -31,7 +31,13 @@ export function AppFooter({ editorial = false }) {
         </div>
       </div>
       {selected && (
-        <ReaderDialog className={styles.dialog} isOpen onClose={() => setInformation(null)} returnFocusRef={returnFocusRef} title={t(selected.title)}>
+        <ReaderDialog
+          className={`${styles.dialog} ${styles[information]}`}
+          isOpen
+          onClose={() => setInformation(null)}
+          returnFocusRef={returnFocusRef}
+          title={<span className={styles.dialogTitle}><Icon name={selected.icon} size={24} /><span>{t(selected.title)}</span></span>}
+        >
           <div className={`reader-dialog__scroll-area ${styles.dialogContent}`}>
             {information === 'about' && <><p>{t('about.description')}</p><ProjectDetails /><ProjectContact /></>}
             {information === 'help' && <ProjectHelp />}
