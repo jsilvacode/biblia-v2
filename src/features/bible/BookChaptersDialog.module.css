@@ -9,8 +9,8 @@
   padding: 20px;
   border-bottom: 1px solid var(--border);
   border-radius: 24px;
-  background: linear-gradient(135deg, var(--surface-highlight), transparent 65%), var(--surface-raised);
-  box-shadow: var(--shadow-lg);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-md);
 }
 
 .dialog :global(.reader-dialog__handle) { display: none; }

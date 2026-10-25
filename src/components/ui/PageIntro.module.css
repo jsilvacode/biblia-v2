@@ -1,0 +1,82 @@
+/* Only illustrated introductions opt into this layout. Existing page headings
+   keep their global rules, spacing and actions when no artwork is supplied. */
+.illustrated:global(.page-intro) {
+  display: grid;
+  grid-template-areas: 'eyebrow art' 'body art';
+  grid-template-columns: minmax(0, 1fr) minmax(180px, .75fr);
+  align-content: center;
+  align-items: center;
+  min-height: 220px;
+  column-gap: 28px;
+}
+
+:global(.page) > .illustrated:global(.page-intro) { width: 100%; max-width: none; }
+.illustrated:global(.page-intro):not(:has(> :global(.eyebrow))) { grid-template-areas: 'body art'; }
+
+.illustrated > :global(.eyebrow) {
+  grid-area: eyebrow;
+  align-self: end;
+  margin-bottom: var(--space-2);
+}
+
+.illustrated > :global(.page-intro__row) {
+  grid-area: body;
+  min-width: 0;
+}
+
+.illustrated:global(.page-intro) h1 {
+  font-size: clamp(2rem, 4.4vw, 3.1rem);
+  line-height: 1.18;
+  letter-spacing: -.035em;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.illustrated:global(.page-intro) > :global(.page-intro__row) > div > p {
+  font-size: 1.025rem;
+  line-height: 1.7;
+}
+
+.art {
+  grid-area: art;
+  width: 100%;
+  height: 210px;
+  min-width: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 68% 72% at 50% 50%, #000 38%, rgb(0 0 0 / 92%) 56%, transparent 82%);
+  mask-image: radial-gradient(ellipse 68% 72% at 50% 50%, #000 38%, rgb(0 0 0 / 92%) 56%, transparent 82%);
+}
+
+.art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+:global(:root[data-theme='dark']) .art img { filter: brightness(.82); }
+
+@media (max-width: 760px) {
+  .illustrated:global(.page-intro) {
+    grid-template-columns: minmax(0, 1fr) minmax(148px, .65fr);
+    column-gap: 20px;
+  }
+  .art { height: 190px; }
+}
+
+@media (max-width: 620px) {
+  .illustrated:global(.page-intro) {
+    grid-template-columns: minmax(0, 1fr) clamp(96px, 28vw, 128px);
+    min-height: 190px;
+    column-gap: 12px;
+  }
+  .illustrated:global(.page-intro) h1 { font-size: clamp(1.875rem, 7.8vw, 2.15rem); }
+  .illustrated:global(.page-intro) > :global(.page-intro__row) > div > p { font-size: 1rem; line-height: 1.6; }
+  .art { align-self: start; height: 136px; margin-top: 4px; }
+}
+
+@media (max-width: 380px) {
+  .illustrated:global(.page-intro) { grid-template-columns: minmax(0, 1fr) 96px; }
+  .art { height: 126px; }
+}

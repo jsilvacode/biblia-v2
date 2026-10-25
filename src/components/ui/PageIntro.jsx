@@ -1,3 +1,5 @@
+import styles from './PageIntro.module.css'
+
 function normalizeHeading(value) {
   return String(value ?? '')
     .normalize('NFD')
@@ -19,11 +21,12 @@ export function isRedundantEyebrow(eyebrow, title) {
   return normalizedEyebrow.length >= 5 && normalizedTitle.startsWith(`${normalizedEyebrow} `)
 }
 
-export function PageIntro({ eyebrow, title, children, action }) {
+export function PageIntro({ eyebrow, title, children, action, illustration }) {
   const visibleEyebrow = isRedundantEyebrow(eyebrow, title) ? null : eyebrow
+  const hasIllustration = Boolean(illustration?.src)
 
   return (
-    <header className="page-intro">
+    <header className={`page-intro${hasIllustration ? ` ${styles.illustrated}` : ''}`}>
       {visibleEyebrow && <p className="eyebrow">{visibleEyebrow}</p>}
       <div className="page-intro__row">
         <div>
@@ -32,6 +35,18 @@ export function PageIntro({ eyebrow, title, children, action }) {
         </div>
         {action}
       </div>
+      {hasIllustration && (
+        <div aria-hidden="true" className={styles.art}>
+          <img
+            alt=""
+            aria-hidden="true"
+            decoding="async"
+            height={illustration.height}
+            src={illustration.src}
+            width={illustration.width}
+          />
+        </div>
+      )}
     </header>
   )
 }

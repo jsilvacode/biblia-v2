@@ -10,38 +10,39 @@
   width: 100%;
   padding: 0;
   color: var(--ink);
-  font-size: 0.92rem;
-  font-weight: 650;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 .description {
   margin: 0.24rem 0 0.8rem;
   color: var(--ink-muted);
-  font-size: 0.76rem;
-  line-height: 1.45;
+  font-size: 0.8125rem;
+  line-height: 1.55;
 }
 
 .actions {
   display: grid;
-  grid-template-columns: 3.25rem minmax(4.5rem, 1fr) 3.25rem;
+  grid-template-columns: max(44px, 3.25rem) minmax(4.5rem, 1fr) max(44px, 3.25rem);
   align-items: center;
   gap: 0.55rem;
 }
 
 .actions button {
   display: inline-flex;
-  min-width: 3.25rem;
-  min-height: 3.1rem;
+  min-width: max(44px, 3.25rem);
+  min-height: max(44px, 3.1rem);
   align-items: center;
   justify-content: center;
   gap: 0.08rem;
   padding: 0.35rem;
-  border: 1px solid color-mix(in srgb, var(--border-strong) 78%, transparent);
-  border-radius: 0.8rem;
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-xs);
   background: var(--surface-raised);
   color: var(--ink);
-  box-shadow: inset 0 1px 0 var(--surface-highlight);
-  transition: border-color var(--duration-fast) ease, background var(--duration-fast) ease, transform var(--duration-fast) ease;
+  box-shadow: none;
+  transition: border-color var(--duration-fast) ease, background var(--duration-fast) ease;
 }
 
 .actions button:not(:disabled):hover {
@@ -49,30 +50,28 @@
   background: color-mix(in srgb, var(--accent-soft) 34%, var(--surface-raised));
 }
 
-.actions button:not(:disabled):active { transform: scale(0.97); }
+.actions button:not(:disabled):active { background: var(--accent-soft); }
 
 .smallLetter { font-family: var(--font-reading); font-size: 0.92rem; }
 .largeLetter { font-family: var(--font-reading); font-size: 1.28rem; }
 
 .actions output {
   display: grid;
-  min-height: 3.1rem;
+  min-height: max(44px, 3.1rem);
   place-items: center;
-  border-radius: 0.8rem;
-  background: color-mix(in srgb, var(--surface-soft) 68%, transparent);
+  background: transparent;
   color: var(--accent-deep);
-  font-size: 0.9rem;
+  font-size: 0.9375rem;
   font-variant-numeric: tabular-nums;
-  font-weight: 720;
+  font-weight: 600;
 }
 
 .preview {
   margin: 0.85rem 0 0;
   padding: 0.7rem 0.8rem;
-  border-left: 2px solid color-mix(in srgb, var(--accent) 58%, transparent);
-  border-radius: 0 0.55rem 0.55rem 0;
-  background: color-mix(in srgb, var(--surface-soft) 56%, transparent);
-  color: var(--ink-muted);
+  border-left: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+  background: transparent;
+  color: var(--ink);
   font-family: var(--font-reading);
   line-height: 1.55;
   transition: font-size var(--duration-fast) ease;
@@ -80,16 +79,15 @@
 
 .compact {
   padding: 0.85rem;
-  border: 1px solid var(--border);
-  border-radius: 0.9rem;
-  background: color-mix(in srgb, var(--surface-soft) 38%, transparent);
+  border: 0;
+  background: transparent;
 }
 
 .compact .actions {
-  grid-template-columns: 3.1rem minmax(4rem, 1fr) 3.1rem;
+  grid-template-columns: max(44px, 3.1rem) minmax(4rem, 1fr) max(44px, 3.1rem);
 }
 
-.compact .actions button { min-width: 3.1rem; }
+.compact .actions button { min-width: max(44px, 3.1rem); }
 
 @media (min-width: 600px) {
   .control:not(.compact) {

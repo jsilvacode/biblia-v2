@@ -171,11 +171,13 @@ export default function DailyReadingPage() {
   return (
     <div className={`${styles.dailyPage}${settings.fontFamily === 'sans' ? ` ${styles.fontSans}` : ''}`}>
       <section aria-label="Reavivados por su Palabra" className={styles.hero}>
-        <div aria-hidden="true" className={styles.heroImage} />
         <div className={styles.heroInner}>
-          <p className={styles.kicker}>Reavivados por su Palabra</p>
-          <h1>{referenceLabel}</h1>
-          <p className={styles.date}>{dateLabel}</p>
+          <div className={styles.heroCopy}>
+            <p className={styles.kicker}>Reavivados por su Palabra</p>
+            <h1>{referenceLabel}</h1>
+            <p className={styles.date}>{dateLabel}</p>
+          </div>
+          <div aria-hidden="true" className={styles.heroImage} />
         </div>
       </section>
 

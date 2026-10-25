@@ -43,7 +43,7 @@ export default function SavedPage() {
     )
     if (!isReady) return null
     if (!items.length) {
-      return <div className="empty-state"><Icon name={icon} size={25} /><p>{emptyMessage}</p></div>
+      return <div className="empty-state"><Icon name={icon} size={25} /><p>{emptyMessage}</p><p className="empty-state__hint">{t('saved.emptyHint', { action: t(icon === 'highlight' ? 'reader.highlight' : 'reader.bookmark') })}</p></div>
     }
 
     return (
@@ -66,7 +66,7 @@ export default function SavedPage() {
 
   return (
     <div className="page saved-page">
-      <PageIntro title={t('saved.title')}>
+      <PageIntro illustration={{ src: '/assets/editorial/saved-v1.webp', width: 1536, height: 1024 }} title={t('saved.title')}>
         {t('saved.subtitle')}
       </PageIntro>
       <div className="saved-tabs" role="tablist">

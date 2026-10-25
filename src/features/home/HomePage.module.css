@@ -8,7 +8,7 @@
   width: 100%;
   margin: 0;
   padding-bottom: 42px;
-  background: var(--bg-reader);
+  background: var(--paper-texture), var(--bg-reader);
 }
 .opening { position: relative; z-index: 2; isolation: isolate; width: 100%; background: var(--bg-reader); }
 .hero { display: grid; min-width: 0; min-height: var(--home-quote-height); }
@@ -38,16 +38,16 @@
 .promiseReference { margin: 19px 0 0; color: var(--ink); font: 400 .875rem/1.5 var(--font-reading); }
 .heroActions { display: flex; flex-wrap: wrap; justify-content: center; gap: 11px; margin-top: 24px; }
 .heroPrimaryAction, .heroSecondaryAction { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; gap: 8px; padding: 12px 20px; border: 1px solid transparent; border-radius: 999px; font: 500 .8125rem/1.4 var(--font-ui); transition: background 180ms ease, border-color 180ms ease; }
-.heroPrimaryAction { background: var(--accent-deep); color: var(--bg-reader); }
+.heroPrimaryAction { background: var(--action-reading-bg); color: var(--action-reading-ink); }
 .heroSecondaryAction { border-color: var(--border); background: var(--surface-raised); color: var(--ink); }
 .homeFeed { position: relative; z-index: 1; width: min(calc(100% - var(--home-gutter) * 2), 75rem); }
 .glassMantle {
   --mantle-width: min(calc(100% + 16px), 1100px);
-  --mantle-fill: light-dark(#e9e6e0, #28272b);
+  --mantle-fill: color-mix(in srgb, var(--bg-reader) 80%, var(--surface-2));
   --mantle-light: light-dark(rgb(255 255 255 / 72%), rgb(237 242 246 / 11%));
-  --mantle-warm-light: light-dark(rgb(251 231 205 / 32%), rgb(237 202 177 / 5%));
+  --mantle-warm-light: color-mix(in srgb, var(--accent-champagne) 12%, transparent);
   --mantle-shade: light-dark(rgb(74 67 58 / 6%), rgb(0 0 0 / 11%));
-  --mantle-grain: light-dark(rgb(77 70 60 / 25%), rgb(238 243 246 / 16%));
+  --mantle-grain: color-mix(in srgb, var(--ink) 20%, transparent);
   position: relative;
   z-index: 1;
   min-width: 0;

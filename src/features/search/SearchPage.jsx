@@ -35,7 +35,7 @@ export default function SearchPage() {
 
   return (
     <div className="page search-page">
-      <PageIntro title={t('search.title')}>
+      <PageIntro illustration={{ src: '/assets/editorial/search-v1.webp', width: 1536, height: 1024 }} title={t('search.title')}>
         {t('search.subtitle')}
       </PageIntro>
       <form className="search-form" onSubmit={submit} role="search">

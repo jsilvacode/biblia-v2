@@ -74,6 +74,9 @@
   }
   .homeNavigationLink.isActive { background: transparent; color: var(--accent-deep); font-weight: 600; }
   .homeNavigationLink.isActive > span { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+  .siteHeader .homeNavigationLink { color: var(--ink-muted); font-weight: 400; }
+  .siteHeader .homeNavigationLink.isActive { color: var(--accent-deep); font-weight: 500; }
+  .siteHeader .homeNavigationLink.isActive > span { text-decoration-thickness: 1px; }
 }
 
 @media (hover: hover) and (pointer: fine) {

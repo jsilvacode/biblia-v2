@@ -11,7 +11,7 @@ export default function BibleBrowserPage() {
 
   return (
     <div className={`page bible-page ${styles.library}`}>
-      <PageIntro title={t('bible.title')}>
+      <PageIntro illustration={{ src: '/assets/editorial/bible-library-v1.webp', width: 1536, height: 1024 }} title={t('bible.title')}>
         {t('bible.subtitle')}
       </PageIntro>
 

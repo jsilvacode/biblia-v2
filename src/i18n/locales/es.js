@@ -235,6 +235,7 @@ export default {
     notes: 'Notas',
     empty: 'Aún no has guardado versículos.',
     emptyHighlights: 'Aún no has destacado versículos.',
+    emptyHint: 'Al leer, selecciona un versículo y elige «{{action}}». Lo encontrarás aquí.',
   },
   plans: {
     title: 'Reavivados por su Palabra',

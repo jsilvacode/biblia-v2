@@ -34,6 +34,7 @@ function StudyHero({ resumePath, summary, t }) {
           <Icon name="arrowRight" size={17} />
         </Link>
       </div>
+      <div aria-hidden="true" className={styles.studyHeroArt} />
     </section>
   )
 }

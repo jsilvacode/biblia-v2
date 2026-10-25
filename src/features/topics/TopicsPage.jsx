@@ -46,7 +46,7 @@ function TopicsGuide() {
 
   return (
     <div className={`page ${styles.guide}`}>
-      <PageIntro eyebrow={t('topics.eyebrow')} title={t('topics.title')} />
+      <PageIntro eyebrow={t('topics.eyebrow')} illustration={{ src: '/assets/editorial/guidance-v1.webp', width: 1536, height: 1024 }} title={t('topics.title')} />
       {locale !== 'es' && <p className={styles.contentLanguage}>{t('topics.contentLanguage')}</p>}
       <SituationSelector onSelect={selectSituation} selected={selected} situations={situations} />
       {selected && (

@@ -123,14 +123,14 @@ export default function HomePage() {
       title: t('plans.featured'),
       detail: `${dailyProgress ? t('plans.resumeToday') : t(`plans.${dailyPlan.status}`)} · ${dailyReference}`,
       action: t('home.readListen'),
-      image: '/assets/home-rpsp-landscape-v1.webp',
+      image: '/assets/editorial/daily-reading-v1.webp',
       href: '/reavivados',
     },
     {
       title: t('home.thematicTitle'),
       detail: t('home.guideSummary'),
       action: t('home.consultTopic'),
-      image: '/assets/home-guide-editorial-v2.webp',
+      image: '/assets/editorial/guidance-v1.webp',
       href: '/topics',
     },
     {
@@ -139,8 +139,7 @@ export default function HomePage() {
         ? t('home.studyProgress', { completed: studySummary.completedLessons, total: studySummary.totalLessons })
         : t('home.courseSummary'),
       action: t('home.viewCourse'),
-      image: '/assets/home-study-invitation-v1.webp',
-      imagePosition: 'center 15%',
+      image: '/assets/editorial/faith-v1.webp',
       href: '/studies/la-fe-de-jesus',
     },
   ]
@@ -220,7 +219,7 @@ export default function HomePage() {
             {entries.map((entry, index) => (
               <Link className={styles.editorialEntry} key={entry.href} to={entry.href}>
                 <span aria-hidden="true" className={styles.entryImage}>
-                  <img alt="" decoding="async" height="720" loading="lazy" src={entry.image} style={entry.imagePosition ? { objectPosition: entry.imagePosition } : undefined} width="1440" />
+                  <img alt="" decoding="async" height="1024" loading="lazy" src={entry.image} width="1536" />
                 </span>
                 <div className={styles.entryCopy}>
                   <div className={styles.entryHeading}>

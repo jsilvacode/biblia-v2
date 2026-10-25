@@ -10,33 +10,35 @@
   position: relative;
   min-height: clamp(10.5rem, 22vw, 13rem);
   overflow: hidden;
-  border-bottom: 1px solid color-mix(in srgb, var(--daily-blue) 28%, var(--border));
-  background: var(--daily-blue-deep);
-  color: #fff9ec;
+  border-bottom: 1px solid var(--border);
+  background: var(--paper-texture), color-mix(in srgb, var(--surface-soft) 45%, var(--bg-reader));
+  color: var(--ink);
 }
 
 .heroImage {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(90deg, rgb(17 49 72 / 91%) 0%, rgb(25 61 85 / 75%) 43%, rgb(22 56 79 / 21%) 75%, rgb(22 56 79 / 8%)),
-    linear-gradient(180deg, rgb(9 29 45 / 14%), rgb(9 29 45 / 48%)),
-    url('/assets/home-rpsp-landscape-v1.webp');
-  background-position: center, center, 70% 52%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  filter: saturate(0.86) contrast(1.02);
+  width: 100%;
+  height: clamp(8rem, 16vw, 11rem);
+  background: url('/assets/editorial/daily-reading-v1.webp') center / contain no-repeat;
+  mix-blend-mode: multiply;
+  mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%);
+  pointer-events: none;
 }
 
 .heroInner {
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(10rem, 19rem);
+  align-items: center;
   width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), 64rem);
   align-content: center;
   min-height: inherit;
   margin: 0 auto;
   padding: clamp(1.5rem, 4vw, 2.5rem) 0;
+  gap: clamp(1rem, 4vw, 3rem);
 }
+
+.heroCopy { min-width: 0; overflow-wrap: anywhere; }
+.hero .kicker { color: var(--accent-coral-deep); }
 
 .kicker,
 .chapterKicker {
@@ -61,7 +63,7 @@
 }
 
 .hero h1 { font-size: clamp(2.1rem, 7vw, 3.45rem); line-height: 1.02; }
-.date { margin: 0.44rem 0 0; color: rgb(255 249 236 / 84%); font-size: 0.84rem; font-weight: 650; }
+.date { margin: 0.44rem 0 0; color: var(--ink-muted); font-size: 0.84rem; font-weight: 650; }
 
 .readingFlow {
   display: grid;
@@ -189,8 +191,11 @@
 .unavailable { width: min(100%, 45rem); margin: 0 auto; padding: clamp(3rem, 10vw, 7rem) 0; }
 .unavailable h1 { font-size: clamp(2.2rem, 7vw, 3.5rem); line-height: 1.06; }.unavailable > p:last-child { max-width: 38rem; color: var(--ink-muted); }
 
-:global(:root[data-theme='dark']) .heroImage { filter: saturate(0.7) brightness(0.8) contrast(1.08); }
-:global(:root[data-theme='dark']) .hero { border-bottom-color: color-mix(in srgb, var(--daily-gold) 17%, var(--border)); }
+:global(:root[data-theme='dark']) .heroImage {
+  mix-blend-mode: normal;
+  mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%);
+  opacity: 0.85;
+}
 :global(:root[data-theme='dark']) .dayChange { background: color-mix(in srgb, var(--daily-blue-deep) 38%, var(--surface-raised)); }
 :global(:root[data-theme='dark']) .dayChange button,
 :global(:root[data-theme='dark']) .chapterError button,
@@ -200,11 +205,17 @@
 :global(:root[data-theme='dark']) .audioKicker { color: color-mix(in srgb, var(--daily-gold) 72%, var(--ink)); }
 
 @media (max-width: 420px) {
-  .heroImage { background-position: center, center, 64% 52%; }
+  .heroInner { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; padding-block: 1.25rem; }
+  .heroImage { justify-self: end; width: min(50%, 9rem); height: 5rem; }
   .dayChange { align-items: stretch; }
   .dayChange button { width: 100%; }
   .audioContext { align-items: flex-start; }
   .audioSourceLink { margin-top: 0.12rem; }
+}
+
+@media (min-width: 421px) and (max-width: 640px) {
+  .heroInner { grid-template-columns: minmax(0, 1fr) minmax(6rem, 24%); gap: 1rem; }
+  .heroImage { height: 7rem; }
 }
 
 @media (min-width: 700px) {
