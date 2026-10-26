@@ -10,7 +10,7 @@ import styles from './HomePassagePicker.module.css'
 
 const MENU_HEIGHT = 324
 const TYPEAHEAD_TIMEOUT = 700
-const CHAPTER_REVEAL_MARGIN = 8
+const BOOK_REVEAL_MARGIN = 8
 
 function BookAccordion({ book, expanded, currentBookId, currentChapter, id, locale, t, onToggle, onBookKeyDown, onKeyUp, onChapterKeyDown, onRead, onWarmChapter }) {
   const name = getLocalizedBookName(book, locale)
@@ -39,7 +39,6 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
   const id = useId()
   const currentBook = bibleBooks.find((book) => book.id === Number(currentBookId))
   const chapter = Number(currentChapter)
-  const hasCurrentChapter = Boolean(currentBook && Number.isInteger(chapter) && chapter >= 1 && chapter <= currentBook.chapters)
   const [isOpen, setIsOpen] = useState(false)
   const [expandedBook, setExpandedBook] = useState(null)
   const [activeTestament, setActiveTestament] = useState(() => currentBook?.testament ?? 'OT')
@@ -52,10 +51,8 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
   const menuRef = useRef(null)
   const openRef = useRef(false)
   const openChangeRef = useRef(onOpenChange)
-  const revealBookRef = useRef(false)
+  const revealBookRef = useRef(null)
   const focusBookRef = useRef(null)
-  const revealChapterRef = useRef(false)
-  const focusChapterRef = useRef(false)
   const typeahead = useRef({ text: '', at: 0 })
   const pointerInsideRef = useRef(false)
 
@@ -77,12 +74,9 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
     const target = bibleBooks.find((book) => book.id === (focusBook ?? currentBook?.id ?? expandedBook)) ?? visibleBooks[0]
     revealPickerAnchor(anchorRef.current)
     setActiveTestament(target.testament)
-    if (target.id === currentBook?.id) setExpandedBook(currentBook.id)
-    else if (target.testament !== activeTestament) setExpandedBook(null)
-    revealChapterRef.current = focusBook === null && target.id === currentBook?.id && hasCurrentChapter
-    focusChapterRef.current = focusFromKeyboard && revealChapterRef.current
-    focusBookRef.current = focusBook ?? (focusFromKeyboard && !focusChapterRef.current ? target.id : null)
-    revealBookRef.current = true
+    if (currentBook || target.testament !== activeTestament) setExpandedBook(null)
+    focusBookRef.current = focusBook ?? (focusFromKeyboard ? target.id : null)
+    revealBookRef.current = target.id
     openRef.current = true
     setIsOpen(true)
     typeahead.current = { text: '', at: 0 }
@@ -94,8 +88,8 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
     const button = menu?.querySelector(`[data-book-id="${bookId}"]`)
     if (!menu || !button) return
     const headerHeight = menu.querySelector('header')?.offsetHeight ?? 44
-    const precedingRow = menu.clientHeight > 250 ? 46 : 0
-    menu.scrollTop += button.getBoundingClientRect().top - menu.getBoundingClientRect().top - headerHeight - precedingRow
+    const top = menu.getBoundingClientRect().top + menu.clientTop + headerHeight + BOOK_REVEAL_MARGIN
+    menu.scrollTop += button.getBoundingClientRect().top - top
   }
 
   useLayoutEffect(() => {
@@ -105,26 +99,10 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
       return () => cancelAnimationFrame(frame)
     }
     const focusBook = focusBookRef.current
-    if (revealBookRef.current) revealBook(focusBook ?? expandedBook ?? (activeTestament === 'OT' ? 1 : 40))
-    if (revealChapterRef.current) {
-      const menu = menuRef.current
-      const current = menu?.querySelector('button[data-chapter][aria-current="page"]')
-      if (current) {
-        const bounds = menu.getBoundingClientRect()
-        const clientTop = bounds.top + menu.clientTop
-        const top = clientTop + (menu.querySelector('header')?.offsetHeight ?? 44) + CHAPTER_REVEAL_MARGIN
-        const bottom = clientTop + (menu.clientHeight || bounds.height) - CHAPTER_REVEAL_MARGIN
-        const rect = current.getBoundingClientRect()
-        if (rect.top < top) menu.scrollTop -= top - rect.top
-        else if (rect.bottom > bottom) menu.scrollTop += rect.bottom - bottom
-        if (focusChapterRef.current) current.focus({ preventScroll: true })
-      }
-    }
+    if (revealBookRef.current !== null) revealBook(revealBookRef.current)
     if (focusBook) menuRef.current?.querySelector(`[data-book-id="${focusBook}"]`)?.focus({ preventScroll: true })
-    revealBookRef.current = false
+    revealBookRef.current = null
     focusBookRef.current = null
-    revealChapterRef.current = false
-    focusChapterRef.current = false
     return undefined
   }, [isOpen, expandedBook, activeTestament, close])
 
@@ -154,7 +132,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
   }, [isOpen, close])
 
   function toggleBook(bookId) {
-    revealBookRef.current = true
+    revealBookRef.current = bookId
     focusBookRef.current = bookId
     setExpandedBook((current) => current === bookId ? null : bookId)
   }
@@ -164,7 +142,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
     if (!book) return
     if (book.testament !== activeTestament) {
       focusBookRef.current = bookId
-      revealBookRef.current = true
+      revealBookRef.current = bookId
       setExpandedBook(null)
       setActiveTestament(book.testament)
       return
@@ -176,9 +154,11 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
   function changeTestament(testament) {
     if (testament === activeTestament) return
     typeahead.current = { text: '', at: 0 }
-    revealBookRef.current = true
+    revealBookRef.current = currentBook?.testament === testament
+      ? currentBook.id
+      : bibleBooks.find((book) => book.testament === testament).id
     focusBookRef.current = null
-    setExpandedBook(currentBook?.testament === testament ? currentBook.id : null)
+    setExpandedBook(null)
     setActiveTestament(testament)
   }
 
@@ -191,7 +171,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
       menuRef.current?.querySelector(`[data-testament="${testament}"]`)?.focus({ preventScroll: true })
     } else if (key === 'ArrowDown') {
       event.preventDefault()
-      focusBook(expandedBook ?? visibleBooks[0].id)
+      focusBook(expandedBook ?? (currentBook?.testament === activeTestament ? currentBook.id : visibleBooks[0].id))
     } else handleBookNavigation(event)
   }
 
@@ -200,7 +180,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
     if (['ArrowDown', 'ArrowUp', 'Home', 'End', 'PageDown', 'PageUp'].includes(key)) {
       event.preventDefault()
       typeahead.current = { text: '', at: 0 }
-      const current = Math.max(0, visibleBooks.findIndex((book) => book.id === (bookId ?? expandedBook)))
+      const current = Math.max(0, visibleBooks.findIndex((book) => book.id === (bookId ?? expandedBook ?? currentBook?.id)))
       const next = key === 'Home' ? 0 : key === 'End' ? visibleBooks.length - 1
         : current + (key === 'ArrowDown' ? 1 : key === 'ArrowUp' ? -1 : key === 'PageDown' ? 6 : -6)
       if (!isOpen) open(key === 'Home' ? visibleBooks[0].id : key === 'End' ? visibleBooks.at(-1).id

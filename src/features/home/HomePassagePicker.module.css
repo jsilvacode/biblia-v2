@@ -31,8 +31,9 @@
 .bookTrigger > svg:last-child { flex: none; color: var(--accent-deep); transition: transform 160ms ease; }
 .bookTrigger[aria-expanded='true'] > svg:last-child { transform: rotate(180deg); }
 .bookMenu { max-height: 324px; padding: 6px 8px 8px; }
-.bookMenu .menuHeader { display: block; margin: -6px -8px 0; padding: 0 8px 8px; }
+.bookMenu .menuHeader { display: block; margin: -6px -8px 0; padding: 0 8px 8px; background: var(--surface-raised); }
 .menuHeading { display: flex; align-items: center; justify-content: space-between; min-height: var(--control-hit-size); gap: 8px; padding-left: 10px; }
+.menuHeading > span { min-width: 0; overflow-wrap: anywhere; }
 .testamentSwitch { display: flex; gap: 8px; }
 .testamentSwitch button { flex: 1; min-width: 0; min-height: var(--control-hit-size); padding: 8px 12px; border: 1px solid var(--border); border-radius: 9px; background: transparent; color: var(--ink-muted); font: 500 .8125rem/1.4 var(--font-ui); }
 .testamentSwitch button[aria-pressed='true'] { border-color: var(--accent-deep); background: var(--accent-soft); color: var(--accent-deep); }
@@ -41,8 +42,10 @@
 .expandedBook { margin-block: 4px 8px; background: color-mix(in srgb, var(--accent-soft) 48%, var(--picker-fill)); }
 .bookBar { display: flex; align-items: center; }
 .bookToggle { display: flex; flex: 1; align-items: center; min-width: 0; min-height: 46px; gap: 12px; padding: 11px 12px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); font: 400 .9375rem/1.45 var(--font-ui); text-align: left; cursor: pointer; }
-.bookToggle > span { flex: 1; min-width: 0; }
+.bookToggle > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .bookToggle > small { flex: none; color: var(--ink-muted); font-size: .75rem; white-space: nowrap; }
+.bookToggle[aria-current='true'] { background: var(--accent-soft); }
+.bookToggle[aria-current='true'] > span { font-weight: 500; }
 .expandedBook .bookToggle > span { color: var(--accent-deep); font-weight: 500; }
 .bookToggle:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
 .chapterGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(var(--control-hit-size), 1fr)); gap: 7px; padding: 2px 12px 14px; }
@@ -59,5 +62,6 @@
   .chapterGrid > button:hover { border-color: var(--accent-deep); background: var(--accent-deep); color: var(--bg-reader); transform: translateY(-1px); }
 }
 @media (max-width: 460px) { .bookMenu { padding-inline: 5px; } .bookMenu .menuHeader { margin-inline: -5px; } .chapterGrid { gap: 6px; padding-inline: 8px; } }
+@media (max-width: 360px) { .compact .bookToggle { flex-wrap: wrap; gap: 2px 8px; } .compact .bookToggle > span { flex-basis: 100%; } }
 @media (prefers-reduced-transparency: reduce) { .menu { --picker-fill: var(--surface-raised); backdrop-filter: none; -webkit-backdrop-filter: none; } }
 @media (prefers-reduced-motion: reduce) { .control, .bookTrigger > svg:last-child, .chapterGrid > button { transition: none; } }

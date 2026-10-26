@@ -25,6 +25,22 @@ async function expectContainedReaderList(page) {
   return box
 }
 
+async function expectCollapsedCurrentBook(list, bookId) {
+  const current = list.locator(`[data-book-id="${bookId}"]`)
+  await expect(current).toHaveAttribute('aria-current', 'true')
+  await expect(current).toHaveAttribute('aria-expanded', 'false')
+  await expect(list.locator('[data-chapter]')).toHaveCount(0)
+  await expect(current).toBeInViewport()
+  await expect.poll(() => current.evaluate((element) => {
+    const menu = element.closest('[data-picker-menu]')
+    const book = element.getBoundingClientRect()
+    const header = menu.querySelector('header').getBoundingClientRect()
+    const bounds = menu.getBoundingClientRect()
+    return book.top >= header.bottom && book.bottom <= bounds.bottom
+  })).toBe(true)
+  return current
+}
+
 test('a shared verse URL opens the exact Bible version encoded in the link', async ({ page }) => {
   await page.goto('/read/43/3/16?v=rva2015')
 
@@ -185,6 +201,8 @@ test('the inline reader picker is bounded, keyboard accessible and separate from
   await expect(picker.form.getByRole('dialog')).toHaveCount(0)
   await expect(picker.book).toBeFocused()
   await page.keyboard.press('ArrowDown')
+  await expect(picker.form.locator('[data-book-id="43"]')).toBeFocused()
+  await expectCollapsedCurrentBook(picker.form.getByRole('dialog'), 43)
   await page.keyboard.press('End')
   await page.keyboard.press('Enter')
   await expect(picker.form.locator('[data-book-id="66"]')).toHaveAttribute('aria-expanded', 'true')
@@ -468,7 +486,7 @@ test('changing or clearing a search does not leave stale results on the page', a
   await expect(page.locator('.search-results')).toHaveCount(0)
 })
 
-test('the compact reader switches testaments and opens the current book without leaving the mobile screen', async ({ page }, testInfo) => {
+test('the compact reader switches testaments and reveals the collapsed current book without leaving the mobile screen', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile', 'Mobile-only reader dropdown coverage')
   await page.setViewportSize({ width: 320, height: 568 })
   await page.goto('/read/43/3')
@@ -480,7 +498,9 @@ test('the compact reader switches testaments and opens the current book without 
   await expect(list.locator('[data-book-id]')).toHaveCount(27)
   await expect(list.getByRole('button', { name: /^(Nuevo Testamento|New Testament|Novo Testamento)$/ })).toHaveAttribute('aria-pressed', 'true')
   await expect(list.getByRole('region', { name: /Nuevo Testamento|New Testament|Novo Testamento/ })).toHaveCount(1)
-  await expect(list.locator('[data-book-id="43"]')).toHaveAttribute('aria-expanded', 'true')
+  const currentBook = await expectCollapsedCurrentBook(list, 43)
+  await currentBook.click()
+  await expect(currentBook).toHaveAttribute('aria-expanded', 'true')
   await expect(list.locator('[data-chapter="3"]')).toHaveAttribute('aria-current', 'page')
   await list.evaluate((element) => { element.scrollTop = element.scrollHeight })
   await expect(list.locator('[data-book-id="66"]')).toBeInViewport()
@@ -488,8 +508,43 @@ test('the compact reader switches testaments and opens the current book without 
   await expect(list.locator('[data-book-id]')).toHaveCount(39)
   await expect(list.getByRole('button', { name: /^(Antiguo Testamento|Old Testament|Antigo Testamento)$/ })).toHaveAttribute('aria-pressed', 'true')
   await expectContainedReaderList(page)
+  await list.getByRole('button', { name: /^(Nuevo Testamento|New Testament|Novo Testamento)$/ }).click()
+  await expect(list.locator('[data-book-id]')).toHaveCount(27)
+  await expectCollapsedCurrentBook(list, 43)
   await picker.book.press('Escape')
   await expect(page).toHaveURL(/\/read\/43\/3$/)
+})
+
+test('long current books reopen collapsed below the testament header and keep their chapter marked after expansion', async ({ page }) => {
+  for (const [bookId, chapter] of [[18, 42], [19, 150]]) {
+    await page.goto(`/read/${bookId}/${chapter}`)
+    await expect(page.locator('.reader-content h1')).toBeVisible()
+    await page.evaluate(() => document.fonts.ready)
+    const picker = passagePicker(page)
+    const initialScroll = await page.evaluate(() => window.scrollY)
+    await picker.book.click()
+    await expectContainedReaderList(page)
+    const list = picker.form.getByRole('dialog')
+    const currentBook = await expectCollapsedCurrentBook(list, bookId)
+    expect(await page.evaluate(() => window.scrollY)).toBe(initialScroll)
+
+    await currentBook.click()
+    await expect(currentBook).toHaveAttribute('aria-expanded', 'true')
+    await expect(list.locator(`[data-chapter="${chapter}"]`)).toHaveAttribute('aria-current', 'page')
+    await page.keyboard.press('Escape')
+    await expect(picker.book).toBeFocused()
+    await page.keyboard.press('ArrowDown')
+    await expectCollapsedCurrentBook(list, bookId)
+    await expect(currentBook).toBeFocused()
+
+    await list.getByRole('button', { name: /^(Nuevo Testamento|New Testament|Novo Testamento)$/ }).click()
+    await expect(list.locator('[data-book-id]')).toHaveCount(27)
+    await list.getByRole('button', { name: /^(Antiguo Testamento|Old Testament|Antigo Testamento)$/ }).click()
+    await expect(list.locator('[data-book-id]')).toHaveCount(39)
+    await expectCollapsedCurrentBook(list, bookId)
+    await page.keyboard.press('Escape')
+    await expect(picker.book).toBeFocused()
+  }
 })
 
 
