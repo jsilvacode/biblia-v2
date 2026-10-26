@@ -1,21 +1,94 @@
-import { useRef, useState } from 'react'
+import { Component, lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { PROJECT_PUBLIC_VERSION } from '../../content/projectMeta'
 import { useI18n } from '../../i18n'
-import { ProjectContact, ProjectDetails, ProjectHelp, ProjectSupport } from '../../features/about/ProjectInformation'
-import { ReaderDialog } from '../../features/reader/ReaderDialog'
+import { requestAppReload } from '../../features/offline/appUpdates'
 import { Icon } from '../ui/Icon'
 import styles from './AppFooter.module.css'
+
+const ProjectInformationDialog = lazy(() => import('./ProjectInformationDialog'))
+
+class InformationBoundary extends Component {
+  state = { failed: false }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children
+  }
+}
+
+function InformationFailure({ onClose, returnFocusRef }) {
+  const { t } = useI18n()
+  const [reloading, setReloading] = useState(false)
+  const closeRef = useRef(null)
+
+  function dismiss() {
+    onClose()
+    returnFocusRef.current?.focus({ preventScroll: true })
+  }
+
+  useEffect(() => {
+    closeRef.current?.focus({ preventScroll: true })
+    const dismissFromKeyboard = (event) => {
+      if (event.key !== 'Escape') return
+      event.preventDefault()
+      onClose()
+      returnFocusRef.current?.focus({ preventScroll: true })
+    }
+    document.addEventListener('keydown', dismissFromKeyboard)
+    return () => document.removeEventListener('keydown', dismissFromKeyboard)
+  }, [onClose, returnFocusRef])
+
+  async function reload() {
+    setReloading(true)
+    try {
+      await requestAppReload()
+    } catch {
+      // Keep the local recovery and close actions available if reload fails.
+    } finally {
+      setReloading(false)
+    }
+  }
+
+  return (
+    <div className={styles.inner} role="alert">
+      <p>{t('appRecovery.loadErrorBody')}</p>
+      <div className={styles.navigation}>
+        <button aria-busy={reloading} disabled={reloading} onClick={reload} type="button">{t('appRecovery.reload')}</button>
+        <button onClick={dismiss} ref={closeRef} type="button">{t('common.close')}</button>
+      </div>
+    </div>
+  )
+}
+
+function InformationLoading({ label, onClose, returnFocusRef }) {
+  useEffect(() => {
+    const dismiss = (event) => {
+      if (event.key !== 'Escape') return
+      event.preventDefault()
+      onClose()
+      returnFocusRef.current?.focus({ preventScroll: true })
+    }
+    document.addEventListener('keydown', dismiss)
+    return () => document.removeEventListener('keydown', dismiss)
+  }, [onClose, returnFocusRef])
+
+  return <span className="sr-only" role="status">{label}</span>
+}
 
 export function AppFooter({ editorial = false }) {
   const { t } = useI18n()
   const [information, setInformation] = useState(null)
   const returnFocusRef = useRef(null)
   const actions = [
-    { id: 'about', label: 'nav.about', title: 'about.title', icon: 'bookOpen' },
-    { id: 'help', label: 'about.help', title: 'about.helpTitle', icon: 'circleHelp' },
-    { id: 'support', label: 'about.supportTitle', title: 'about.supportTitle', icon: 'heartHandshake' },
+    { id: 'about', label: 'nav.about' },
+    { id: 'help', label: 'about.help' },
+    { id: 'support', label: 'about.supportTitle' },
   ]
   const selected = actions.find(({ id }) => id === information)
+  const closeInformation = useCallback(() => setInformation(null), [])
 
   return (
     <footer className={`${styles.footer}${editorial ? ` ${styles.editorial}` : ''}`}>
@@ -31,19 +104,16 @@ export function AppFooter({ editorial = false }) {
         </div>
       </div>
       {selected && (
-        <ReaderDialog
-          className={`${styles.dialog} ${styles[information]}`}
-          isOpen
-          onClose={() => setInformation(null)}
-          returnFocusRef={returnFocusRef}
-          title={<span className={styles.dialogTitle}><Icon name={selected.icon} size={24} /><span>{t(selected.title)}</span></span>}
+        <InformationBoundary
+          fallback={<InformationFailure onClose={closeInformation} returnFocusRef={returnFocusRef} />}
+          key={information}
         >
-          <div className={`reader-dialog__scroll-area ${styles.dialogContent}`}>
-            {information === 'about' && <><p>{t('about.description')}</p><ProjectDetails /><ProjectContact /></>}
-            {information === 'help' && <ProjectHelp />}
-            {information === 'support' && <ProjectSupport />}
-          </div>
-        </ReaderDialog>
+          <Suspense
+            fallback={<InformationLoading label={t('appRecovery.loading')} onClose={closeInformation} returnFocusRef={returnFocusRef} />}
+          >
+            <ProjectInformationDialog information={information} onClose={closeInformation} returnFocusRef={returnFocusRef} />
+          </Suspense>
+        </InformationBoundary>
       )}
     </footer>
   )

@@ -56,6 +56,7 @@ body,
 .site-header,
 .reader-header__bar {
   --hero-strip-height: clamp(29rem, 70vh, 35rem);
+  --chrome-reflection-height: calc(var(--hero-strip-height) * .08);
   min-height: var(--topbar-height);
   isolation: isolate;
   border: 0;
@@ -72,21 +73,22 @@ body,
   position: absolute;
   z-index: 0;
   inset: 0 0 auto;
-  height: var(--hero-strip-height);
-  clip-path: inset(0 0 calc(100% - var(--chrome-height, var(--topbar-height))));
   content: '';
   pointer-events: none;
 }
 
 .site-header::before,
 .reader-header__bar::before {
+  height: var(--hero-strip-height);
+  clip-path: inset(0 0 calc(100% - var(--chrome-height, var(--topbar-height))));
   background: url('/assets/aurora-champagne-landscape.webp') 60% 52% / cover;
 }
 
 .site-header::after,
 .reader-header__bar::after {
+  height: var(--chrome-height, var(--topbar-height));
   background:
-    linear-gradient(180deg, var(--chrome-reflection), transparent 8%),
+    linear-gradient(180deg, var(--chrome-reflection), transparent var(--chrome-reflection-height)),
     linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 75%, transparent), color-mix(in srgb, var(--bg-reader) 42%, transparent) 58%, color-mix(in srgb, var(--bg-reader) 24%, transparent)),
     var(--chrome-glass);
   backdrop-filter: blur(12px) saturate(118%);
@@ -106,7 +108,7 @@ body,
 :root[data-theme='dark'] .site-header::after,
 :root[data-theme='dark'] .reader-header__bar::after {
   background:
-    linear-gradient(180deg, var(--chrome-reflection), transparent 8%),
+    linear-gradient(180deg, var(--chrome-reflection), transparent var(--chrome-reflection-height)),
     linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 85%, transparent), color-mix(in srgb, var(--bg-reader) 56%, transparent) 58%, color-mix(in srgb, var(--bg-reader) 28%, transparent)),
     var(--chrome-glass);
 }
@@ -441,7 +443,7 @@ body,
 .reader-header__passage-band { position: relative; z-index: 1; isolation: isolate; padding: 22px 0 12px; background: var(--bg-reader); }
 .reader-header__passage { position: relative; width: min(calc(100% - var(--chrome-gutter) * 2), 1100px); margin-inline: auto; }
 /* Reserve equal side rails so Back keeps its position without shifting the tools. */
-.reader-header__reading-tools { --home-control-border: var(--border-strong); --home-control-fill: color-mix(in srgb, var(--surface-raised) 40%, transparent); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); align-items: center; width: min(var(--reader-text-width), calc(100% - 2 * (5rem + 14px))); gap: 12px; margin-inline: auto; }
+.reader-header__reading-tools { --home-control-border: var(--border-strong); --home-control-fill: color-mix(in srgb, var(--surface-raised) 40%, transparent); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; width: min(var(--reader-text-width), calc(100% - 2 * (5rem + 14px))); gap: 12px; margin-inline: auto; }
 .reader-header__search-panel { min-width: 0; }
 .reader-header__search-toggle, .reader-header__search-heading { display: none; }
 .reader-header__back:focus-visible, .reader-header__search-toggle:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
@@ -451,13 +453,14 @@ body,
 .reader-content > .reader-chapter-subtitle { margin-top: 0; text-align: center; }
 @media (max-width: 767px) {
   .reader-header__passage-band { padding-top: 16px; }
-  .reader-header__passage { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 8px; }
+  .reader-header__passage { --reader-side-width: 44px; --reader-tools-gap: 8px; --reader-search-padding: 8px; display: grid; grid-template-columns: var(--reader-side-width) minmax(0, 1fr) var(--reader-side-width); align-items: center; gap: var(--reader-tools-gap); }
   .reader-header__reading-tools { display: contents; }
   .reader-header__back { position: static; transform: none; }
   .reader-header__back, .reader-header__search-toggle { display: grid; width: 44px; height: 44px; min-height: 44px; padding: 0; place-items: center; border: 1px solid var(--border); border-radius: 50%; background: var(--surface-raised); color: var(--ink); cursor: pointer; }
   .reader-header__back > span { display: none; }
   .reader-header__search-toggle:hover, .reader-header__search-toggle[aria-expanded='true'] { background: var(--accent-soft); color: var(--accent-deep); }
-  .reader-header__search-panel { position: absolute; z-index: 5; top: -8px; right: -8px; left: -8px; padding: 4px 8px 8px; border: 1px solid var(--border-strong); border-radius: 16px; background: var(--surface-raised); box-shadow: var(--shadow-md); }
+  /* Align the field inside the panel with the book selector's center column. */
+  .reader-header__search-panel { position: absolute; z-index: 5; top: -8px; right: calc(var(--reader-side-width) + var(--reader-tools-gap) - var(--reader-search-padding) - 1px); left: calc(var(--reader-side-width) + var(--reader-tools-gap) - var(--reader-search-padding) - 1px); padding: 4px var(--reader-search-padding) var(--reader-search-padding); border: 1px solid var(--border-strong); border-radius: 16px; background: var(--surface-raised); box-shadow: var(--shadow-md); }
   .reader-header__search-heading { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding-left: 8px; color: var(--ink-muted); font: 400 .75rem/1.4 var(--font-ui); }
 }
 @media (max-width: 620px) { .reader-header__brand { font-size: 1.25rem; } }

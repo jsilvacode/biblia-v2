@@ -16,8 +16,7 @@
 .heroLandscape, .opening::after { position: absolute; inset: 0; pointer-events: none; }
 .heroLandscape { z-index: -2; display: block; }
 /* Preserve the responsive framing and keep the landscape itself sharp. */
-.heroLandscape img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 60% 24px; filter: saturate(.88); }
-:global(:root[data-theme='dark']) .heroLandscape img { filter: saturate(.84) brightness(.82); }
+.heroLandscape img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 60% 24px; filter: var(--hero-art-filter); }
 .opening::after {
   z-index: -1;
   content: '';
@@ -115,12 +114,12 @@
 .entryNumber { padding-top: 5px; color: var(--accent-deep); font: 400 .6875rem/1.4 var(--font-reading); }
 .entryCopy { display: flex; flex-direction: column; min-width: 0; padding: 16px 18px; }
 .entryHeading { display: grid; grid-template-columns: 18px minmax(0, 1fr); align-items: start; gap: 8px; }
-.entryTitle { margin: 0; color: var(--accent-deep); font: 400 1.5rem/1.22 var(--font-display); letter-spacing: -.02em; text-wrap: balance; overflow-wrap: anywhere; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 1px; text-underline-offset: 6px; transition: transform 200ms ease, text-decoration-color 200ms ease; }
+.entryTitle { margin: 0; color: var(--ink); font: 400 1.5rem/1.22 var(--font-display); letter-spacing: -.02em; text-wrap: balance; overflow-wrap: anywhere; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 1px; text-underline-offset: 6px; transition: transform 200ms ease, text-decoration-color 200ms ease; }
 .entryDetail { margin: 8px 0 0; color: var(--ink-muted); font-size: .875rem; line-height: 1.6; }
-.entryAction { display: inline-flex; align-items: center; align-self: flex-start; min-height: 44px; gap: 8px; margin-top: auto; padding-top: 10px; color: var(--accent-blue-deep); font-size: .8125rem; }
+.entryAction { display: inline-flex; align-items: center; align-self: flex-start; min-height: 44px; gap: 8px; margin-top: auto; padding-top: 10px; color: var(--accent-deep); font-size: .8125rem; }
 .entryAction svg { transition: transform 200ms ease; }
 .entryImage { isolation: isolate; display: block; width: 100%; aspect-ratio: 2.4/1; overflow: hidden; border-radius: 13px 13px 0 0; background: var(--bg-reader); }
-.entryImage img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 240ms ease, filter 240ms ease; }
+.entryImage img { display: block; width: 100%; height: 100%; object-fit: cover; filter: var(--editorial-art-filter); mix-blend-mode: var(--editorial-art-blend); transition: transform 240ms ease, filter 240ms ease; }
 .interestSection { margin-top: 56px; }
 .interestSection > .eyebrow { margin-bottom: 16px; }
 .interestGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }

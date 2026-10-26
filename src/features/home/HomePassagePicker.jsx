@@ -5,7 +5,7 @@ import { useI18n } from '../../i18n'
 import { bibleBooks, getLocalizedBookName, normalizeText } from '../bible/catalog'
 import { preloadReading } from '../reader/preloadReading'
 import { useSettings } from '../settings/SettingsProvider'
-import { positionPickerMenu, revealPickerAnchor } from './pickerPosition'
+import { createPickerPositionScheduler, positionPickerMenu, revealPickerAnchor } from './pickerPosition'
 import styles from './HomePassagePicker.module.css'
 
 const MENU_HEIGHT = 324
@@ -130,9 +130,10 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
 
   useEffect(() => {
     if (!isOpen) return undefined
-    const reposition = () => {
+    const scheduler = createPickerPositionScheduler(() => {
       if (!positionPickerMenu(menuRef.current, anchorRef.current, MENU_HEIGHT)) close()
-    }
+    })
+    const reposition = scheduler.request
     const dismiss = (event) => {
       if (!rootRef.current?.contains(event.target)) close()
     }
@@ -143,6 +144,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
     viewport?.addEventListener('resize', reposition)
     viewport?.addEventListener('scroll', reposition)
     return () => {
+      scheduler.cancel()
       document.removeEventListener('pointerdown', dismiss)
       window.removeEventListener('resize', reposition)
       window.removeEventListener('scroll', reposition)

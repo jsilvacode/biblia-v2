@@ -9,7 +9,7 @@ import { formatReference, getLocalizedBookName, normalizeText } from '../bible/c
 import { parseReference } from '../bible/reference'
 import { useBibleTextSearch } from '../search/useBibleTextSearch'
 import { useSettings } from '../settings/SettingsProvider'
-import { positionPickerMenu, revealPickerAnchor } from './pickerPosition'
+import { createPickerPositionScheduler, positionPickerMenu, revealPickerAnchor } from './pickerPosition'
 import styles from './HomeQuickSearch.module.css'
 
 function readerPath(reference) {
@@ -65,9 +65,15 @@ export function HomeQuickSearch({ compact = false, currentBookId, currentChapter
 
   useEffect(() => {
     if (!showResults || selectedBook) return undefined
-    const reposition = () => positionPickerMenu(resultsRef.current, formRef.current)
+    let revealOnResize = false
+    const scheduler = createPickerPositionScheduler(() => {
+      if (revealOnResize && document.activeElement === inputRef.current) revealPickerAnchor(formRef.current)
+      revealOnResize = false
+      positionPickerMenu(resultsRef.current, formRef.current)
+    })
+    const reposition = scheduler.request
     const resize = () => {
-      if (document.activeElement === inputRef.current) revealPickerAnchor(formRef.current)
+      revealOnResize = true
       reposition()
     }
     const dismiss = (event) => {
@@ -80,6 +86,7 @@ export function HomeQuickSearch({ compact = false, currentBookId, currentChapter
     viewport?.addEventListener('resize', resize)
     viewport?.addEventListener('scroll', reposition)
     return () => {
+      scheduler.cancel()
       document.removeEventListener('pointerdown', dismiss)
       window.removeEventListener('scroll', reposition)
       window.removeEventListener('resize', resize)

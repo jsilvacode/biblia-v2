@@ -1,8 +1,8 @@
 :root {
   color-scheme: light;
 
-  /* Aurora Champagne: semantic foundations. The legacy names below remain
-     intentional compatibility aliases while individual features migrate. */
+  /* Warm paper with turquoise actions and dusty rose editorial details.
+     Pale supporting surfaces stay neutral so color remains an accent. */
   --bg-app: #f3f1e9;
   --bg-reader: #f8f6f0;
   --bg-sidebar: #f3f0e7;
@@ -13,27 +13,28 @@
   --text-primary: #303f43;
   --text-secondary: #626d6c;
   --text-inverse: #fffdf8;
-  --accent-coral: #a9775e;
-  --accent-coral-deep: #8f604d;
-  --accent-champagne: #c9b78f;
-  --accent-blue: #758e95;
-  --accent-blue-deep: #425f65;
-  --accent-mist: #edf1ef;
+  --accent-coral: #d7aaa2;
+  --accent-coral-deep: #98605e;
+  --accent-champagne: #cdbb98;
+  --accent-blue: #78a4ac;
+  --accent-blue-deep: #2a5b6b;
+  --accent-mist: #edf2f0;
   --action-reading-bg: var(--accent-blue-deep);
   --action-reading-ink: var(--text-inverse);
-  --badge-warm-bg: #ede5d3;
+  --badge-warm-bg: #eee7dc;
   --badge-warm-ink: #4e656a;
   --feedback-error: #9a463e;
   --border-subtle: #dedfd7;
   --border-strong: #c7cdc7;
-  --focus-ring: #587379;
+  --focus-ring: var(--accent-blue-deep);
   --ambient-top: #e9e8df;
   --ambient-glow: #d7cfb7;
 
   /* Fine paper grain is used only by editorial surfaces, never the reader. */
   --paper-texture: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22180%22%3E%3Cfilter%20id%3D%22grain%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.72%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20opacity%3D%22.035%22%20filter%3D%22url%28%23grain%29%22%2F%3E%3C%2Fsvg%3E");
-  --editorial-art-filter: saturate(.9);
+  --editorial-art-filter: saturate(1.14) contrast(1.05);
   --editorial-art-blend: multiply;
+  --hero-art-filter: saturate(1.02) contrast(1.02);
 
   --canvas: var(--bg-app);
   --surface: var(--surface-1);
@@ -45,7 +46,7 @@
   --border: var(--border-subtle);
   --accent: var(--accent-blue-deep);
   --accent-deep: var(--accent-blue-deep);
-  --accent-soft: #e7edee;
+  --accent-soft: #eaf1ef;
   --sage: #e8ece5;
 
   --surface-highlight: rgb(255 253 248 / 64%);
@@ -100,47 +101,50 @@
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  /* Night editions are painted for slate paper, with natural pigment. */
-  --editorial-art-filter: none;
+  /* Warm charcoal with coral actions; sand and muted teal support them.
+     Night illustrations retain their own naturally painted pigments. */
+  --editorial-art-filter: saturate(1.04) contrast(1.02);
   --editorial-art-blend: normal;
-  --bg-app: #171f22;
-  --bg-reader: #1b2326;
-  --bg-sidebar: #1e292b;
-  --surface-1: #243033;
-  --surface-2: #2a3639;
-  --surface-3: #303e41;
+  --hero-art-filter: saturate(.93) brightness(.82) contrast(1.02);
+  --bg-app: #1a1e20;
+  --bg-reader: #1d2123;
+  --bg-sidebar: #202427;
+  --surface-1: #262b2d;
+  --surface-2: #2c3133;
+  --surface-3: #32383a;
   --surface-inverse: #f8f6f0;
   --text-primary: #efece3;
-  --text-secondary: #bbc5c1;
+  --text-secondary: #c0beb9;
   --text-inverse: #1b2326;
-  --accent-coral: #c59c80;
-  --accent-coral-deep: #d9b69a;
-  --accent-champagne: #bda87d;
-  --accent-blue: #93adb3;
-  --accent-blue-deep: #b7cacb;
-  --accent-mist: #2a3a3d;
-  --badge-warm-bg: #3c3930;
-  --badge-warm-ink: #ddd1b5;
+  --accent-coral: #d6a096;
+  --accent-coral-deep: #e5b5aa;
+  --accent-champagne: #cdbb9d;
+  --accent-blue: #7eabb5;
+  --accent-blue-deep: #aec3c2;
+  --accent-mist: #30383b;
+  --badge-warm-bg: #453f37;
+  --badge-warm-ink: #ead9bd;
   --feedback-error: #e2aaa1;
-  --border-subtle: rgb(220 229 220 / 12%);
-  --border-strong: rgb(220 229 220 / 22%);
-  --focus-ring: #b7cacb;
-  --ambient-top: #283538;
-  --ambient-glow: #645c4a;
+  --border-subtle: rgb(229 220 216 / 12%);
+  --border-strong: rgb(229 220 216 / 22%);
+  --focus-ring: var(--accent-coral-deep);
+  --ambient-top: #30292a;
+  --ambient-glow: #735d59;
 
   --paper-texture: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22180%22%3E%3Cfilter%20id%3D%22grain%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.72%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20opacity%3D%22.02%22%20filter%3D%22url%28%23grain%29%22%2F%3E%3C%2Fsvg%3E");
 
   --canvas: var(--bg-app);
   --surface: var(--surface-1);
-  --surface-raised: #283437;
+  --surface-raised: #2a2f31;
   --surface-soft: var(--surface-2);
   --ink: var(--text-primary);
   --ink-muted: var(--text-secondary);
   --border: var(--border-subtle);
-  --accent: var(--accent-blue-deep);
-  --accent-deep: var(--accent-blue-deep);
-  --accent-soft: #2e4145;
-  --sage: #35403a;
+  --action-reading-bg: var(--accent-coral-deep);
+  --accent: var(--accent-coral-deep);
+  --accent-deep: var(--accent-coral-deep);
+  --accent-soft: #403a39;
+  --sage: #3c3835;
 
   --surface-highlight: rgb(255 253 248 / 5%);
   --shadow-ink: #000000;

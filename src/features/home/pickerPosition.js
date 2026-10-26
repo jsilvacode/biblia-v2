@@ -1,6 +1,24 @@
 export const MAX_PICKER_HEIGHT = 288
 const VIEWPORT_MARGIN = 12
 
+// Window and visualViewport can report the same movement in one frame.
+export function createPickerPositionScheduler(callback) {
+  let frame = null
+  return {
+    request() {
+      if (frame !== null) return
+      frame = window.requestAnimationFrame(() => {
+        frame = null
+        callback()
+      })
+    },
+    cancel() {
+      if (frame !== null) window.cancelAnimationFrame(frame)
+      frame = null
+    },
+  }
+}
+
 function viewportBounds() {
   const viewport = window.visualViewport
   const top = viewport?.offsetTop ?? 0
@@ -41,8 +59,11 @@ export function positionPickerMenu(list, anchorElement, maxHeight = MAX_PICKER_H
 
   const width = Math.min(anchor.width, bounds.right - bounds.left)
   const left = Math.max(bounds.left, Math.min(anchor.left, bounds.right - width))
-  list.style.width = `${width}px`
-  list.style.left = `${left - anchor.left}px`
+  const anchorHeight = anchorElement.clientHeight
+  const widthStyle = `${width}px`
+  const leftStyle = `${left - anchor.left}px`
+  if (list.style.width !== widthStyle) list.style.width = widthStyle
+  if (list.style.left !== leftStyle) list.style.left = leftStyle
   const style = getComputedStyle(list)
   const borderHeight = (parseFloat(style.borderTopWidth) || 0) + (parseFloat(style.borderBottomWidth) || 0)
   const desired = Math.min(maxHeight, list.scrollHeight + borderHeight)
@@ -58,8 +79,8 @@ export function positionPickerMenu(list, anchorElement, maxHeight = MAX_PICKER_H
   list.dataset.direction = direction
   // Absolute offsets use the padding box; counting the border here would
   // detach a fully outlined trigger from its menu.
-  list.style.top = direction === 'down' ? `${anchorElement.clientHeight}px` : 'auto'
-  list.style.bottom = direction === 'up' ? `${anchorElement.clientHeight}px` : 'auto'
+  list.style.top = direction === 'down' ? `${anchorHeight}px` : 'auto'
+  list.style.bottom = direction === 'up' ? `${anchorHeight}px` : 'auto'
   list.style.maxHeight = `${Math.min(maxHeight, available)}px`
   list.style.setProperty('--picker-menu-height', `${Math.min(maxHeight, available)}px`)
   list.style.visibility = 'visible'

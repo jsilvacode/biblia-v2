@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { EditorialIllustration } from '../../components/ui/EditorialIllustration'
-import { DailyVideoSection } from '../daily-video/DailyVideoSection'
 import { useI18n } from '../../i18n'
 import { formatReference, getVersion } from '../bible/catalog'
 import { InstallInvitation } from '../install/InstallInvitation'
@@ -16,6 +15,7 @@ import { useStudyProgressSummary } from '../studies/useStudyProgressSummary'
 import { preloadReading } from '../reader/preloadReading'
 import { formatPromiseReference } from './dailyPromise'
 import { HomeHeader } from './HomeHeader'
+import { HomeDailyVideo } from './HomeDailyVideo'
 import { HomeLandscape } from './HomeLandscape'
 import { HomePassagePicker } from './HomePassagePicker'
 import { HomeQuickSearch } from './HomeQuickSearch'
@@ -211,7 +211,7 @@ export default function HomePage() {
       </div>
 
       <div className={styles.homeFeed}>
-        <DailyVideoSection featured />
+        <HomeDailyVideo />
         {hasReadingHistory && <InstallInvitation />}
 
         <section aria-labelledby="home-editorial-heading" className={styles.editorialSection}>

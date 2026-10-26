@@ -47,10 +47,8 @@
 .heroHeader::before {
   position: absolute;
   z-index: -1;
-  inset: 0;
+  inset: 0 calc(50% - 50vw);
   background: var(--home-header-fill);
-  box-shadow: 0 0 0 100vmax var(--home-header-fill);
-  clip-path: inset(0 -100vmax);
   content: '';
   pointer-events: none;
 }
