@@ -143,6 +143,13 @@ export default function HomePage() {
       image: '/assets/editorial/faith-v1.webp',
       href: '/studies/la-fe-de-jesus',
     },
+    {
+      title: t('home.beliefsTitle'),
+      detail: t('home.beliefsSummary'),
+      action: t('home.exploreBeliefs'),
+      image: '/assets/editorial/bible-library-v1.webp',
+      href: '/beliefs',
+    },
   ]
 
   return (

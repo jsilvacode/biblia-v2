@@ -10,9 +10,10 @@ import styles from './PassagePreview.module.css'
 const PassagePreviewBody = lazy(() => import('./PassagePreviewBody'))
 const PassagePreviewContext = createContext(null)
 
-export function PassagePreviewProvider({ children }) {
+export function PassagePreviewProvider({ children, versionId: versionIdOverride }) {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
+  const versionId = versionIdOverride ?? settings.bibleVersion
   const [selection, setSelection] = useState(null)
   const returnFocusRef = useRef(null)
   const openPassage = useCallback((passage, trigger) => {
@@ -33,10 +34,10 @@ export function PassagePreviewProvider({ children }) {
       >
         {selection && (
           <>
-            <p className={styles.context}>{selection.title}<span>{getVersion(settings.bibleVersion)?.short}</span></p>
+            <p className={styles.context}>{selection.title}<span>{getVersion(versionId)?.short}</span></p>
             <div className={`reader-dialog__scroll-area ${styles.reading}`} data-font={settings.fontFamily} data-line-height={settings.readerLineHeight}>
               <Suspense fallback={<p role="status">{t('topics.passageLoading')}</p>}>
-                <PassagePreviewBody key={`${selection.label}:${settings.bibleVersion}`} label={selection.label} versionId={settings.bibleVersion} />
+                <PassagePreviewBody key={selection.label + ' : ' + versionId} label={selection.label} versionId={versionId} />
               </Suspense>
             </div>
           </>

@@ -14,6 +14,7 @@ const PlansPage = lazy(() => import('../features/plans/PlansPage'))
 const DailyReadingPage = lazy(() => import('../features/plans/DailyReadingPage'))
 const DailyVideoPage = lazy(() => import('../features/daily-video/DailyVideoPage'))
 const TopicsPage = lazy(() => import('../features/topics/TopicsPage'))
+const BeliefsPage = lazy(() => import('../features/beliefs/BeliefsPage'))
 const StudyIndexPage = lazy(() => import('../features/studies/StudyIndexPage'))
 const StudyLessonPage = lazy(() => import('../features/studies/StudyLessonPage'))
 
@@ -36,6 +37,8 @@ export function AppRoutes() {
         <Route path="este-dia-con-dios/:date" element={<DeferredRoute><DailyVideoPage /></DeferredRoute>} />
         <Route path="topics" element={<DeferredRoute><TopicsPage /></DeferredRoute>} />
         <Route path="topics/:categoryId/:situationId" element={<DeferredRoute><TopicsPage /></DeferredRoute>} />
+        <Route path="beliefs" element={<DeferredRoute><BeliefsPage /></DeferredRoute>} />
+        <Route path="beliefs/:slug" element={<DeferredRoute><BeliefsPage /></DeferredRoute>} />
         <Route path="studies/la-fe-de-jesus" element={<DeferredRoute><StudyIndexPage /></DeferredRoute>} />
         <Route path="studies/la-fe-de-jesus/:lessonSlug" element={<DeferredRoute><StudyLessonPage /></DeferredRoute>} />
         <Route path="settings" element={<Navigate replace state={{ openSettings: true }} to="/" />} />
