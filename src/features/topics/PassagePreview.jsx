@@ -4,7 +4,7 @@ import { useI18n } from '../../i18n'
 import { getVersion } from '../bible/catalog'
 import { ReaderDialog } from '../reader/ReaderDialog'
 import { useSettings } from '../settings/SettingsProvider'
-import { formatThematicReference } from './topicReference'
+import { formatThematicReference, resolveThematicReference } from './topicReference'
 import styles from './PassagePreview.module.css'
 
 const PassagePreviewBody = lazy(() => import('./PassagePreviewBody'))
@@ -17,9 +17,20 @@ export function PassagePreviewProvider({ children, versionId: versionIdOverride 
   const [selection, setSelection] = useState(null)
   const returnFocusRef = useRef(null)
   const openPassage = useCallback((passage, trigger) => {
+    const references = passage.references?.length ? passage.references
+      : passage.labels?.length ? passage.labels : [passage.label]
+    const passages = [...new Map(references.filter(Boolean).map((value) => {
+      const reference = resolveThematicReference(value)
+      const label = formatThematicReference(reference) || (typeof value === 'string' ? value : value.label)
+      return [label, { label, reference }]
+    })).values()]
+    if (!passages.length) return
     returnFocusRef.current = trigger
-    setSelection(passage)
+    setSelection({ title: passage.title, passages, index: 0 })
   }, [])
+
+  const activeIndex = selection?.index ?? 0
+  const activePassage = selection?.passages[activeIndex]
 
   return (
     <PassagePreviewContext.Provider value={openPassage}>
@@ -30,14 +41,31 @@ export function PassagePreviewProvider({ children, versionId: versionIdOverride 
         isOpen={Boolean(selection)}
         onClose={() => setSelection(null)}
         returnFocusRef={returnFocusRef}
-        title={selection ? formatThematicReference(selection.label, locale) || selection.label : ''}
+        title={activePassage ? formatThematicReference(activePassage.reference, locale) || activePassage.label : ''}
       >
         {selection && (
           <>
             <p className={styles.context}>{selection.title}<span>{getVersion(versionId)?.short}</span></p>
+            {selection.passages.length > 1 && (
+              <nav aria-label="Referencias de la cita" className={styles.sequenceControls}>
+                <span aria-live="polite">Pasaje {activeIndex + 1} de {selection.passages.length}</span>
+                <div>
+                  <button
+                    disabled={activeIndex === 0}
+                    onClick={() => setSelection((current) => ({ ...current, index: current.index - 1 }))}
+                    type="button"
+                  >Anterior</button>
+                  <button
+                    disabled={activeIndex >= selection.passages.length - 1}
+                    onClick={() => setSelection((current) => ({ ...current, index: current.index + 1 }))}
+                    type="button"
+                  >Siguiente</button>
+                </div>
+              </nav>
+            )}
             <div className={`reader-dialog__scroll-area ${styles.reading}`} data-font={settings.fontFamily} data-line-height={settings.readerLineHeight}>
               <Suspense fallback={<p role="status">{t('topics.passageLoading')}</p>}>
-                <PassagePreviewBody key={selection.label + ' : ' + versionId} label={selection.label} versionId={versionId} />
+                <PassagePreviewBody key={activePassage.label + ' : ' + versionId} reference={activePassage.reference ?? activePassage.label} versionId={versionId} />
               </Suspense>
             </div>
           </>
@@ -45,6 +73,12 @@ export function PassagePreviewProvider({ children, versionId: versionIdOverride 
       </ReaderDialog>
     </PassagePreviewContext.Provider>
   )
+}
+
+export function usePassagePreview() {
+  const openPassage = useContext(PassagePreviewContext)
+  if (!openPassage) throw new Error('usePassagePreview must be used inside PassagePreviewProvider')
+  return openPassage
 }
 
 export function PassageReferences({ references, title, primaryReference }) {

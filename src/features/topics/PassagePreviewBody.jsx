@@ -3,14 +3,14 @@ import { useI18n } from '../../i18n'
 import { loadThematicPassage } from './topicPassage'
 import styles from './PassagePreview.module.css'
 
-export default function PassagePreviewBody({ label, versionId }) {
+export default function PassagePreviewBody({ reference, versionId }) {
   const { t } = useI18n()
   const [result, setResult] = useState({ status: 'loading', passage: null })
   const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
     const controller = new AbortController()
-    loadThematicPassage(label, { versionId, signal: controller.signal })
+    loadThematicPassage(reference, { versionId, signal: controller.signal })
       .then((passage) => {
         if (!controller.signal.aborted) setResult({ status: 'ready', passage })
       })
@@ -18,7 +18,7 @@ export default function PassagePreviewBody({ label, versionId }) {
         if (!controller.signal.aborted && error.name !== 'AbortError') setResult({ status: 'error', passage: null })
       })
     return () => controller.abort()
-  }, [attempt, label, versionId])
+  }, [attempt, reference, versionId])
 
   if (result.status === 'loading') return <p role="status">{t('topics.passageLoading')}</p>
   if (result.status === 'error') return (

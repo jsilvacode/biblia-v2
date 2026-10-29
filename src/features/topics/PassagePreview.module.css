@@ -22,3 +22,8 @@
   .dialog :global(.reader-dialog__handle) { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .referenceButton { transition: none; } }
+
+.sequenceControls { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:8px 16px; border-block:1px solid var(--border); color:var(--ink-muted); font-size:.75rem; }
+.sequenceControls > div { display:flex; gap:8px; }
+.sequenceControls button { padding:6px 9px; border:1px solid var(--border); border-radius:999px; background:var(--surface-raised); color:var(--accent-blue-deep); font:inherit; cursor:pointer; }
+.sequenceControls button:disabled { opacity:.45; cursor:default; }

@@ -13,16 +13,18 @@ export function selectThematicVerses(chapters, reference) {
   if (!reference) return []
   return chapters.flatMap(({ chapter, verses }) => verses
     .filter((verse) => {
+      if (chapter < reference.chapterStart || chapter > reference.chapterEnd) return false
       if (reference.verseStart === null || reference.verseStart === undefined) return true
-      if (chapter !== reference.chapterStart) return false
-      return verse.verse >= reference.verseStart && verse.verse <= reference.verseEnd
+      if (chapter === reference.chapterStart && verse.verse < reference.verseStart) return false
+      if (chapter === reference.chapterEnd && verse.verse > reference.verseEnd) return false
+      return true
     })
     .map((verse) => ({ ...verse, chapter })))
 }
 
-export async function loadThematicPassage(label, { versionId, signal } = {}) {
-  const reference = resolveThematicReference(label)
-  if (!reference) throw new Error(`Unknown thematic reference: ${label}`)
+export async function loadThematicPassage(value, { versionId, signal } = {}) {
+  const reference = resolveThematicReference(value)
+  if (!reference) throw new Error(`Unknown thematic reference: ${typeof value === 'string' ? value : value?.label}`)
 
   const chapters = await Promise.all(getThematicChapterNumbers(reference).map(async (chapter) => ({
     chapter,
