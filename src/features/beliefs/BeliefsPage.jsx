@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { EditorialIllustration } from '../../components/ui/EditorialIllustration'
 import { Icon } from '../../components/ui/Icon'
 import { PageIntro } from '../../components/ui/PageIntro'
@@ -26,10 +26,45 @@ const categoryNames = {
   restauracion: 'La restauración',
 }
 
+const EXPLORER_SESSION_KEY = 'santa-biblia:beliefs-explorer:v1'
+
+function readExplorerState() {
+  const initialBatch = window.matchMedia('(max-width: 620px)').matches ? 3 : 9
+  const fallback = { query: '', category: 'all', initialBatch, visibleCount: initialBatch }
+  try {
+    const saved = JSON.parse(window.sessionStorage.getItem(EXPLORER_SESSION_KEY) || 'null')
+    if (!saved || typeof saved !== 'object') return fallback
+    return {
+      query: typeof saved.query === 'string' ? saved.query : '',
+      category: saved.category === 'all' || catalog.categories.some((item) => item.id === saved.category) ? saved.category : 'all',
+      initialBatch,
+      visibleCount: saved.initialBatch === initialBatch && Number.isInteger(saved.visibleCount) && saved.visibleCount >= initialBatch
+        ? Math.min(saved.visibleCount, catalog.beliefs.length) : initialBatch,
+    }
+  } catch {
+    return fallback
+  }
+}
+
 function excerpt(text, limit = 180) {
   if (text.length <= limit) return text
   const end = text.lastIndexOf(' ', limit)
   return text.slice(0, end > limit * 0.72 ? end : limit).trimEnd() + '…'
+}
+
+function BeliefSelector({ slug = '' }) {
+  const navigate = useNavigate()
+  return <label className={styles.selectorField}>
+    <span>Ir a una creencia</span>
+    <select aria-label="Ir a una creencia" onChange={(event) => {
+      if (event.target.value) navigate('/beliefs/' + event.target.value)
+    }} value={slug}>
+      <option value="">Elegir una creencia</option>
+      {catalog.categories.map((category) => <optgroup key={category.id} label={categoryNames[category.id]}>
+        {catalog.beliefs.filter((item) => item.categoryId === category.id).map((item) => <option key={item.id} value={item.slug}>{item.number}. {item.title}</option>)}
+      </optgroup>)}
+    </select>
+  </label>
 }
 
 function OfficialReferences({ references, title }) {
@@ -180,10 +215,7 @@ function ExpandedBelief({ beliefNumber, title }) {
 function BeliefsContent() {
   const { locale } = useI18n()
   const { slug } = useParams()
-  const [{ query, category, visibleCount }, setExplorer] = useState(() => {
-    const initialBatch = window.matchMedia('(max-width: 620px)').matches ? 3 : 9
-    return { query: '', category: 'all', initialBatch, visibleCount: initialBatch }
-  })
+  const [{ query, category, visibleCount, initialBatch }, setExplorer] = useState(readExplorerState)
   const [notesOpen, setNotesOpen] = useState(false)
   const notesTriggerRef = useRef(null)
   const belief = slug ? catalog.beliefs.find((item) => item.slug === slug) : null
@@ -207,6 +239,14 @@ function BeliefsContent() {
     mobileViewport.addEventListener('change', updateInitialBatch)
     return () => mobileViewport.removeEventListener('change', updateInitialBatch)
   }, [])
+  useEffect(() => {
+    if (slug) return
+    try {
+      window.sessionStorage.setItem(EXPLORER_SESSION_KEY, JSON.stringify({ query, category, visibleCount, initialBatch }))
+    } catch {
+      // Reading and navigation remain available when tab storage is disabled.
+    }
+  }, [category, initialBatch, query, slug, visibleCount])
   const visibleBeliefs = filtered.slice(0, visibleCount)
 
   function setFilters(updates) {
@@ -260,6 +300,10 @@ function BeliefsContent() {
     const previous = catalog.beliefs[index - 1]
     const next = catalog.beliefs[index + 1]
     return <div className={'page ' + styles.page}>
+      <nav aria-label="Navegar por las creencias" className={styles.detailToolbar}>
+        <Link className={styles.backLink} to="/beliefs"><Icon name="arrowLeft" size={17} />Volver a las 28 creencias</Link>
+        <BeliefSelector slug={belief.slug} />
+      </nav>
       <PageIntro eyebrow={categoryNames[belief.categoryId]} illustration={{ height: 1024, src: artwork[belief.categoryId], width: 1536 }} title={belief.title}>
         Declaración oficial · División Sudamericana
       </PageIntro>
@@ -292,7 +336,10 @@ function BeliefsContent() {
     <section aria-labelledby="belief-list-heading" className={styles.explorer}>
       <div className={styles.explorerHeading}>
         <div><p className="eyebrow">Un recorrido por nuestra fe</p><h2 id="belief-list-heading">Encuentra un tema para explorar.</h2></div>
-        <label className={styles.searchField}><Icon name="search" size={19} /><input aria-label="Buscar creencias" onChange={(event) => setFilters({ query: event.target.value })} placeholder="Buscar por título, tema o pasaje bíblico" type="search" value={query} /></label>
+        <div className={styles.explorerTools}>
+          <BeliefSelector />
+          <label className={styles.searchLabel}><span>Buscar creencias</span><span className={styles.searchField}><Icon name="search" size={19} /><input aria-label="Buscar creencias" onChange={(event) => setFilters({ query: event.target.value })} placeholder="Buscar por título, tema o pasaje bíblico" type="search" value={query} /></span></label>
+        </div>
       </div>
       <div aria-label="Filtrar por tema" className={styles.categories} role="group">
         <button aria-pressed={category === 'all'} onClick={() => setFilters({ category: 'all' })} type="button">Todas <span>28</span></button>

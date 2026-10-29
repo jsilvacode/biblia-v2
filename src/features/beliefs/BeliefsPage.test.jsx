@@ -1,6 +1,6 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom'
 import BeliefsPage from './BeliefsPage'
 
 vi.mock('../../i18n', () => ({ useI18n: () => ({ locale: 'es', t: (key) => key }) }))
@@ -15,16 +15,22 @@ function chapter(number) {
   }
 }
 
+function KeyedBeliefsPage() {
+  const { pathname, search } = useLocation()
+  return <BeliefsPage key={pathname + search} />
+}
+
 function renderBelief(path = '/beliefs/las-sagradas-escrituras') {
   return render(<MemoryRouter initialEntries={[path]}>
     <Routes>
-      <Route path="/beliefs" element={<BeliefsPage />} />
-      <Route path="/beliefs/:slug" element={<BeliefsPage />} />
+      <Route path="/beliefs" element={<KeyedBeliefsPage />} />
+      <Route path="/beliefs/:slug" element={<KeyedBeliefsPage />} />
     </Routes>
   </MemoryRouter>)
 }
 
 beforeEach(() => {
+  window.sessionStorage.clear()
   vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() })))
 })
 afterEach(() => {
@@ -115,4 +121,57 @@ describe('belief explorer pagination', () => {
     view.unmount()
     expect(mobileViewport.removeEventListener).toHaveBeenCalledWith('change', onViewportChange)
   })
+})
+
+
+describe('direct belief navigation', () => {
+  it('offers every belief on mobile and follows the current detail selection', () => {
+    vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() })))
+    renderBelief('/beliefs')
+    expect(screen.getAllByRole('link', { name: /: leer creencia/ })).toHaveLength(3)
+    const selector = screen.getByRole('combobox', { name: 'Ir a una creencia' })
+    expect(selector.querySelectorAll('option')).toHaveLength(29)
+    expect(selector.querySelectorAll('optgroup')).toHaveLength(6)
+    expect(selector.value).toBe('')
+    fireEvent.change(selector, { target: { value: 'las-sagradas-escrituras' } })
+    expect(screen.getByRole('heading', { level: 1, name: 'Las Sagradas Escrituras' })).toBeTruthy()
+    expect(screen.getByRole('combobox', { name: 'Ir a una creencia' }).value).toBe('las-sagradas-escrituras')
+    expect(screen.getByRole('link', { name: 'Volver a las 28 creencias' })).toBeTruthy()
+    fireEvent.change(screen.getByRole('combobox', { name: 'Ir a una creencia' }), { target: { value: 'la-trinidad' } })
+    expect(screen.getByRole('heading', { level: 1, name: /Trinidad/ })).toBeTruthy()
+    expect(screen.getByRole('combobox', { name: 'Ir a una creencia' }).value).toBe('la-trinidad')
+  })
+
+  it('returns to the same search, category and visible batch from the detail toolbar', () => {
+    renderBelief('/beliefs')
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'a' } })
+    fireEvent.click(screen.getByRole('button', { name: /Mostrar 9 creencias más/ }))
+    expect(screen.getAllByRole('link', { name: /: leer creencia/ })).toHaveLength(18)
+    fireEvent.change(screen.getByRole('combobox', { name: 'Ir a una creencia' }), { target: { value: 'las-sagradas-escrituras' } })
+    fireEvent.click(screen.getByRole('link', { name: 'Volver a las 28 creencias' }))
+    expect(screen.getByRole('searchbox').value).toBe('a')
+    expect(screen.getByRole('button', { name: /^Todas / }).getAttribute('aria-pressed')).toBe('true')
+    expect(screen.getAllByRole('link', { name: /: leer creencia/ })).toHaveLength(18)
+    fireEvent.click(screen.getByRole('button', { name: /^La iglesia / }))
+    const filteredNames = screen.getAllByRole('link', { name: /: leer creencia/ }).map((link) => link.getAttribute('aria-label'))
+    fireEvent.change(screen.getByRole('combobox', { name: 'Ir a una creencia' }), { target: { value: 'las-sagradas-escrituras' } })
+    fireEvent.click(screen.getByRole('link', { name: 'Volver a las 28 creencias' }))
+    expect(screen.getByRole('searchbox').value).toBe('a')
+    expect(screen.getByRole('button', { name: /^La iglesia / }).getAttribute('aria-pressed')).toBe('true')
+    expect(screen.getAllByRole('link', { name: /: leer creencia/ }).map((link) => link.getAttribute('aria-label'))).toEqual(filteredNames)
+  })
+})
+
+
+it('keeps navigation available when session storage is unavailable', () => {
+  vi.stubGlobal('sessionStorage', {
+    getItem: () => { throw new Error('Storage disabled') },
+    setItem: () => { throw new Error('Storage disabled') },
+  })
+  renderBelief('/beliefs')
+  fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'a' } })
+  fireEvent.change(screen.getByRole('combobox', { name: 'Ir a una creencia' }), { target: { value: 'las-sagradas-escrituras' } })
+  expect(screen.getByRole('heading', { level: 1, name: 'Las Sagradas Escrituras' })).toBeTruthy()
+  fireEvent.click(screen.getByRole('link', { name: 'Volver a las 28 creencias' }))
+  expect(screen.getByRole('combobox', { name: 'Ir a una creencia' }).querySelectorAll('option')).toHaveLength(29)
 })

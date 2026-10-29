@@ -5,7 +5,13 @@
 .notice p { margin:0; font-size:.84rem; line-height:1.7; }
 .notice button,.notesFooter button { display:inline; padding:0; border:0; border-bottom:1px solid color-mix(in srgb,var(--accent-blue-deep) 40%,transparent); background:transparent; color:var(--accent-blue-deep); font:inherit; cursor:pointer; }
 .explorer { display:grid; width:min(100%,var(--content-inner-width)); gap:18px; min-width:0; margin-inline:auto; }
-.explorerHeading { display:grid; grid-template-columns:minmax(0,1fr) minmax(250px,.72fr); align-items:end; gap:22px; }
+.explorerHeading { display:grid; gap:18px; }
+.explorerTools,.detailToolbar { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); align-items:end; gap:16px; min-width:0; }
+.detailToolbar { width:min(100%,var(--content-inner-width)); margin-inline:auto; }
+.selectorField,.searchLabel { display:grid; min-width:0; gap:7px; color:var(--ink-muted); font-size:.75rem; line-height:1.5; }
+.selectorField select { width:100%; min-width:0; min-height:var(--control-height); padding:10px 13px; border:1px solid var(--control-border); border-radius:var(--control-radius); background:var(--control-surface); color:var(--ink); font:400 .875rem/1.5 var(--font-ui); cursor:pointer; }
+.selectorField select:focus-visible { outline:2px solid var(--focus-ring); outline-offset:3px; border-color:var(--control-focus-border); }
+.detailToolbar .backLink { align-self:end; min-height:var(--control-height); font-size:.8125rem; }
 .explorerHeading > div > .eyebrow { margin-bottom:7px; }
 .explorerHeading h2 { margin:0; color:var(--ink); font:400 var(--font-size-section)/1.25 var(--font-display); letter-spacing:-.025em; text-wrap:balance; }
 .searchField { display:flex; align-items:center; min-width:0; min-height:var(--control-height); gap:11px; padding:0 15px; border:1px solid var(--control-border); border-radius:var(--control-radius); background:var(--control-surface); color:var(--ink-muted); }
@@ -69,8 +75,8 @@
 .notesBody p { margin:0 0 10px; }
 .notesBody a { color:var(--accent-blue-deep); text-decoration:underline; text-underline-offset:2px; }
 .rights { margin-top:18px!important; padding-top:13px; border-top:1px solid var(--border); font-size:.75rem; }
-@media(max-width:1000px) { .beliefGrid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; } .explorerHeading { grid-template-columns:minmax(0,1fr) minmax(230px,.8fr); } }
-@media(max-width:760px) { .explorerHeading { grid-template-columns:minmax(0,1fr); gap:15px; } .beliefGrid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .cardCopy { padding:15px 14px 12px; } }
+@media(max-width:1000px) { .beliefGrid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; } }
+@media(max-width:760px) { .explorerHeading { gap:15px; } .explorerTools,.detailToolbar { grid-template-columns:minmax(0,1fr); gap:12px; } .beliefGrid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .cardCopy { padding:15px 14px 12px; } }
 @media(max-width:620px) { .page { gap:22px; } .notice { padding:12px 14px; } .notice p { font-size:.78rem; } .explorer { gap:15px; } .beliefGrid { grid-template-columns:minmax(0,1fr); gap:15px; } .cardArt { aspect-ratio:2.25/1; } .cardCopy { padding:16px 17px 13px; } .pager { grid-template-columns:minmax(0,1fr); } .pager .nextLink { justify-content:flex-start; text-align:left; } .notesBody { font-size:.8rem; } }
 :global(:root[data-theme='dark']) .cardArt img,
 :global(:root[data-theme='dark']) .page > :global(.page-intro) img { filter:none; mix-blend-mode:normal; }
