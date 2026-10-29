@@ -13,9 +13,9 @@ const artwork = {
   dios: '/assets/editorial/beliefs/scriptures.webp',
   humanidad: '/assets/editorial/beliefs/creation.webp',
   salvacion: '/assets/editorial/beliefs/salvation.webp',
-  iglesia: '/assets/editorial/beliefs/scriptures.webp',
-  'vida-cristiana': '/assets/editorial/beliefs/creation.webp',
-  restauracion: '/assets/editorial/beliefs/creation.webp',
+  iglesia: '/assets/editorial/beliefs/church-v1.webp',
+  'vida-cristiana': '/assets/editorial/beliefs/christian-life-v1.webp',
+  restauracion: '/assets/editorial/beliefs/restoration-v1.webp',
 }
 const categoryNames = {
   dios: 'Dios',

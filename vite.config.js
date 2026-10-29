@@ -104,7 +104,7 @@ export default defineConfig({
         importScripts: ['sw-update.js'],
         globPatterns: ['**/*.{js,css,html,png,svg,webp,avif,jpg,jpeg,woff,woff2}'],
         // Social-card images are read by the server and are not offline UI.
-        globIgnores: ['assets/social/**', 'og-share.jpg', 'assets/home-landscape-v*-*.{avif,webp}'],
+        globIgnores: ['assets/social/**', 'og-share.jpg', 'assets/home-landscape-v*-*.{avif,webp}', 'assets/editorial/beliefs/**'],
         cleanupOutdatedCaches: true,
         // Online navigations should see this deployment immediately, rather
         // than show the previous HTML until the next SW finishes installing.
@@ -112,6 +112,15 @@ export default defineConfig({
         directoryIndex: null,
         navigationPreload: true,
         runtimeCaching: [
+          {
+            // Fetch only the category and day/night variant the reader visits.
+            urlPattern: /\/assets\/editorial\/beliefs\/.*\.webp$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'santa-biblia-v2-belief-artwork',
+              expiration: { maxEntries: 24, maxAgeSeconds: 60 * 60 * 24 * 90 },
+            },
+          },
           {
             // Cache the chosen crop/format, without downloading all ten
             // responsive alternatives during service-worker installation.

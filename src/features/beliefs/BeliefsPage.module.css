@@ -73,7 +73,7 @@
 @media(max-width:760px) { .explorerHeading { grid-template-columns:minmax(0,1fr); gap:15px; } .beliefGrid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .cardCopy { padding:15px 14px 12px; } .cardTitle { font-size:1.1rem; } .statement { font-size:1.08rem; line-height:1.8; } }
 @media(max-width:620px) { .page { gap:22px; } .notice { padding:12px 14px; } .notice p { font-size:.78rem; } .explorer { gap:15px; } .beliefGrid { grid-template-columns:minmax(0,1fr); gap:15px; } .cardArt { aspect-ratio:2.25/1; } .cardCopy { padding:16px 17px 13px; } .cardTitle { font-size:1.2rem; } .pager { grid-template-columns:minmax(0,1fr); } .pager .nextLink { justify-content:flex-start; text-align:left; } .notesBody { font-size:.8rem; } }
 :global(:root[data-theme='dark']) .cardArt img,
-:global(:root[data-theme='dark']) .page > :global(.page-intro) img { filter:saturate(.92) brightness(.78) contrast(1.03); mix-blend-mode:normal; }
+:global(:root[data-theme='dark']) .page > :global(.page-intro) img { filter:none; mix-blend-mode:normal; }
 @media(prefers-reduced-motion:reduce) { .beliefCard { transition:none; } .beliefCard:hover { transform:none; } }
 
 .expansion { width:min(100%,62rem); min-width:0; margin:0 auto; overflow:hidden; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--surface-raised); }
