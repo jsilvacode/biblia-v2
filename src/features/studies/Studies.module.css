@@ -1,16 +1,16 @@
 .studyIndexPage {
   display: grid;
-  width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), 62rem);
+  width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), var(--content-max-width));
   gap: var(--page-section-gap);
 }
 
 .studyHero {
   position: relative;
   display: grid;
-  min-height: clamp(16.25rem, 28vw, 17.5rem);
+  min-height: var(--intro-min-height);
   align-items: center;
   overflow: hidden;
-  padding: clamp(1.45rem, 4.5vw, 3.35rem);
+  padding: var(--intro-padding-block) var(--page-inset);
   border: 0;
   background: transparent;
   isolation: isolate;
@@ -21,13 +21,13 @@
   z-index: 0;
   inset: 0;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 87%, transparent);
-  mask-image: linear-gradient(180deg, transparent, #000 12%, #000 87%, transparent);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 13%, #000 85%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 13%, #000 85%, transparent);
   pointer-events: none;
 }
 
-.studyHeroArt img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 64% 58%; }
-.studyHeroArt::after { position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg-reader), color-mix(in srgb, var(--bg-reader) 96%, transparent) 25%, color-mix(in srgb, var(--bg-reader) 82%, transparent) 46%, color-mix(in srgb, var(--bg-reader) 18%, transparent) 77%, transparent); content: ''; }
+.studyHeroArt img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 64% 30%; }
+.studyHeroArt::after { position: absolute; inset: 0; background: var(--intro-gradient); content: ''; }
 
 .studyHeroCopy {
   position: relative;
@@ -49,13 +49,13 @@
 }
 
 .studyHero h1 {
-  max-width: 14ch;
+  max-width: 22ch;
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 6vw, 4.25rem);
+  font-size: var(--font-size-page);
   font-weight: 500;
-  letter-spacing: -0.052em;
-  line-height: 0.98;
+  letter-spacing: -0.035em;
+  line-height: 1.18;
 }
 
 .studyHeroCopy > p:not(.studyHeroEyebrow) {
@@ -63,8 +63,8 @@
   margin: 0;
   color: var(--ink-muted);
   font-family: var(--font-reading);
-  font-size: clamp(0.93rem, 1.7vw, 1.07rem);
-  line-height: 1.55;
+  font-size: 1rem;
+  line-height: 1.7;
 }
 
 .heroAction {
@@ -96,7 +96,8 @@
   align-items: center;
   justify-self: start;
   gap: 0.4rem;
-  margin: -0.8rem 0 0;
+  margin: 0;
+  margin-inline-start: max(0px, calc((100% - var(--content-inner-width)) / 2));
   padding: 0.38rem 0.62rem;
   border-radius: 999px;
   background: var(--surface-soft);
@@ -108,7 +109,8 @@
 .courseProgress {
   position: relative;
   display: grid;
-  width: min(100%, 56rem);
+  width: min(100%, var(--content-inner-width));
+  margin-inline: auto;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.85rem 1rem;
@@ -195,7 +197,8 @@
 }
 
 .lessonIndex {
-  width: min(100%, 56rem);
+  width: min(100%, var(--content-inner-width));
+  margin-inline: auto;
 }
 
 .sectionHeading {
@@ -209,7 +212,7 @@
 .sectionHeading h2 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 4vw, 1.95rem);
+  font-size: var(--font-size-section);
   font-weight: 500;
   letter-spacing: -0.03em;
 }
@@ -238,7 +241,7 @@
   border: 1px solid color-mix(in srgb, var(--border) 74%, transparent);
   border-radius: 1rem;
   background: color-mix(in srgb, var(--surface-raised) 97%, var(--surface-celeste));
-  box-shadow: 0 0.7rem 1.2rem -1.35rem color-mix(in srgb, var(--shadow-ink) 64%, transparent);
+  box-shadow: none;
   color: var(--ink);
   transition: border-color var(--duration-fast) var(--ease-premium), background var(--duration-fast) var(--ease-premium), box-shadow var(--duration-fast) var(--ease-premium), transform var(--duration-fast) var(--ease-premium);
 }
@@ -246,7 +249,7 @@
 .lessonCard:hover {
   border-color: color-mix(in srgb, var(--accent-blue) 42%, var(--border));
   background: color-mix(in srgb, var(--surface-raised) 91%, var(--surface-celeste));
-  box-shadow: 0 0.85rem 1.4rem -1.35rem color-mix(in srgb, var(--shadow-ink) 62%, transparent);
+  box-shadow: var(--shadow-sm);
   transform: translateY(-1px);
 }
 
@@ -322,7 +325,7 @@
 .lockedCard:hover {
   border-color: color-mix(in srgb, var(--border) 74%, transparent);
   background: color-mix(in srgb, var(--surface-raised) 97%, var(--surface-celeste));
-  box-shadow: 0 0.7rem 1.2rem -1.35rem color-mix(in srgb, var(--shadow-ink) 64%, transparent);
+  box-shadow: none;
   transform: none;
 }
 
@@ -337,7 +340,8 @@
 
 .credits {
   display: flex;
-  width: min(100%, 56rem);
+  width: min(100%, var(--content-inner-width));
+  margin-inline: auto;
   align-items: flex-start;
   gap: 0.8rem;
   margin-top: 0;
@@ -377,7 +381,7 @@
 }
 
 .studyLessonPage {
-  width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), 46rem);
+  width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), var(--content-max-width));
   display: grid;
   gap: 0.8rem;
   padding-top: var(--page-top-space);
@@ -410,14 +414,21 @@
   gap: 0;
 }
 
+.lessonArticle > :not(.lessonHeader),
+.studyLessonPage > .lessonNavigation {
+  width: min(100%, var(--reading-max-width));
+  margin-inline: auto;
+}
+
 .lessonHeader {
   position: relative;
   display: grid;
   overflow: hidden;
-  padding: clamp(1.35rem, 4.6vw, 2.5rem);
+  min-height: var(--intro-min-height);
+  align-content: center;
+  padding: var(--intro-padding-block) var(--page-inset);
   border: 1px solid color-mix(in srgb, var(--accent-blue) 32%, var(--border));
-  border-top: 5px solid color-mix(in srgb, var(--accent-champagne) 82%, var(--accent));
-  border-radius: clamp(1.1rem, 3vw, 1.45rem);
+  border-radius: var(--radius-md);
   background:
     radial-gradient(ellipse at 96% 0%, color-mix(in srgb, var(--accent-blue) 21%, transparent), transparent 42%),
     linear-gradient(145deg, color-mix(in srgb, var(--surface-raised) 96%, var(--accent-champagne)), var(--surface-raised) 52%);
@@ -477,13 +488,13 @@
 
 .lessonHeader h1 {
   position: relative;
-  max-width: 18ch;
+  max-width: 26ch;
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 7vw, 3.65rem);
+  font-size: var(--font-size-page);
   font-weight: 500;
-  letter-spacing: -0.045em;
-  line-height: 1.02;
+  letter-spacing: -0.035em;
+  line-height: 1.18;
 }
 
 .lessonHeader > p {
@@ -510,7 +521,7 @@
 .lessonSection h2 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.45rem, 4vw, 1.85rem);
+  font-size: var(--font-size-section);
   font-weight: 500;
   letter-spacing: -0.025em;
 }
@@ -598,7 +609,7 @@
   overflow: hidden;
   padding: clamp(1.15rem, 4vw, 1.75rem);
   border: 1px solid color-mix(in srgb, var(--accent-blue) 32%, var(--border));
-  border-top: 4px solid color-mix(in srgb, var(--accent-champagne) 76%, var(--accent));
+  border-top: 1px solid var(--border);
   border-radius: clamp(1rem, 3vw, 1.35rem);
   background:
     linear-gradient(145deg, color-mix(in srgb, var(--surface-celeste) 28%, transparent), transparent 48%),
@@ -636,7 +647,7 @@
 .quickTestHeader h2 {
   margin: 0.15rem 0 0;
   font-family: var(--font-display);
-  font-size: clamp(1.55rem, 4vw, 2rem);
+  font-size: var(--font-size-section);
   font-weight: 500;
   letter-spacing: -0.03em;
 }
@@ -852,7 +863,7 @@
   gap: 0.8rem;
   padding: clamp(1rem, 3vw, 1.35rem);
   border: 1px solid color-mix(in srgb, var(--accent-blue) 30%, var(--border));
-  border-top: 4px solid color-mix(in srgb, var(--accent-champagne) 76%, var(--accent));
+  border-top: 1px solid var(--border);
   border-radius: 1rem;
   background:
     linear-gradient(145deg, color-mix(in srgb, var(--surface-celeste) 32%, transparent), transparent 50%),
@@ -978,13 +989,14 @@
 
 .lockedLesson {
   display: grid;
-  max-width: 36rem;
+  width: min(100%, var(--reading-max-width));
+  margin-inline: auto;
   justify-items: start;
   gap: 0.8rem;
   margin-top: clamp(2rem, 8vw, 5rem);
   padding: clamp(1.2rem, 5vw, 2rem);
   border: 1px solid color-mix(in srgb, var(--accent-blue) 32%, var(--border));
-  border-top: 4px solid color-mix(in srgb, var(--accent-champagne) 76%, var(--accent));
+  border-top: 1px solid var(--border);
   border-radius: 1.15rem;
   background: var(--surface-raised);
 }
@@ -996,7 +1008,7 @@
 .lockedLesson h1 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 7vw, 3rem);
+  font-size: var(--font-size-page);
   font-weight: 500;
 }
 
@@ -1009,10 +1021,11 @@
 .localProgressNote,
 .storageWarning {
   display: flex;
-  width: min(100%, 56rem);
+  width: min(100%, var(--content-inner-width));
+  margin-inline: auto;
   align-items: flex-start;
   gap: 0.45rem;
-  margin: -0.4rem 0 0;
+  margin: -0.4rem auto 0;
   color: var(--ink-muted);
   font-size: 0.72rem;
   line-height: 1.5;
@@ -1072,20 +1085,8 @@
 }
 
 @media (max-width: 640px) {
-  .studyHero {
-    min-height: 16.25rem;
-    align-items: center;
-    padding: 1.3rem;
-  }
-
-  .studyHeroArt::after { background: linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 98%, transparent), color-mix(in srgb, var(--bg-reader) 90%, transparent) 48%, color-mix(in srgb, var(--bg-reader) 55%, transparent)); }
-
   .studyHeroCopy {
     max-width: 25rem;
-  }
-
-  .studyHero h1 {
-    font-size: clamp(2.3rem, 12vw, 3.35rem);
   }
 
   .studyHeroCopy > p:not(.studyHeroEyebrow) {
@@ -1130,10 +1131,6 @@
 
   .lessonNavigation > span {
     display: none;
-  }
-
-  .lessonHeader {
-    padding: 1.2rem;
   }
 
   .lessonHeader::after {

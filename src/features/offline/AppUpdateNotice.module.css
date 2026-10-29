@@ -1,7 +1,7 @@
 .notice {
   display: flex;
   flex: none;
-  width: min(calc(100% - var(--chrome-gutter) * 2), 1100px);
+  width: min(calc(100% - var(--layout-gutter) * 2), var(--content-max-width));
   align-items: center;
   gap: 8px;
   margin: 8px auto;

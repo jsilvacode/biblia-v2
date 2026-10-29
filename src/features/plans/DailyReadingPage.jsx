@@ -173,7 +173,7 @@ export default function DailyReadingPage() {
     <div className={`${styles.dailyPage}${settings.fontFamily === 'sans' ? ` ${styles.fontSans}` : ''}`}>
       <section aria-label="Reavivados por su Palabra" className={styles.hero}>
           <div aria-hidden="true" className={`${styles.heroImage} editorial-art`}>
-          <EditorialIllustration alt="" decoding="async" height="1024" src="/assets/editorial/daily-reading-v1.webp" width="1536" />
+          <EditorialIllustration alt="" decoding="async" height="1024" src="/assets/editorial/daily-reading-v2.webp" width="1536" />
         </div>
         <div className={styles.heroInner}>
           <div className={styles.heroCopy}>

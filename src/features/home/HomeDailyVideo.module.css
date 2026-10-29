@@ -9,7 +9,7 @@
 
 .placeholder h2 {
   margin: 0;
-  font: 400 clamp(1.5rem, 2.5vw, 1.875rem)/1.14 var(--font-display);
+  font: 400 var(--font-size-section)/1.14 var(--font-display);
   letter-spacing: -.035em;
   text-wrap: balance;
 }
@@ -23,6 +23,5 @@
 
 @media (max-width: 620px) {
   .placeholder { padding-top: 14px; }
-  .placeholder h2 { font-size: 1.5rem; }
 }
 .container { position: relative; min-width: 0; }

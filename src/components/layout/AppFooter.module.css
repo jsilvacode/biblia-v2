@@ -4,7 +4,7 @@
   margin-top: clamp(.75rem, 2vw, 1.4rem);
   padding: 1rem 0 calc(5rem + env(safe-area-inset-bottom));
   border-top: 1px solid var(--border);
-  background: var(--paper-texture), color-mix(in srgb, var(--surface-2) 48%, var(--bg-reader));
+  background: var(--paper-texture), var(--bg-reader);
   color: var(--ink-muted);
 }
 .inner { display: grid; width: min(calc(100% - var(--layout-gutter) - var(--layout-gutter)), var(--content-max-width)); justify-items: center; gap: 8px; margin-inline: auto; }
@@ -18,16 +18,16 @@
 .navigation button + button::before { position: absolute; top: 50%; left: 0; width: 1px; height: 12px; background: var(--border); content: ''; transform: translateY(-50%); }
 .navigation button:hover, .navigation button:focus-visible { background: color-mix(in srgb, var(--accent-soft) 40%, transparent); color: var(--accent-deep); text-decoration-color: currentColor; }
 .dialog:global(.reader-dialog) { width: min(100%, 42rem); overflow: hidden; padding: 0; background: var(--paper-texture), var(--bg-reader); }
-.about { --dialog-art: url('/assets/editorial/daily-reading-v1.webp'); }
-.help { --dialog-art: url('/assets/editorial/guidance-v1.webp'); }
-.support { --dialog-art: url('/assets/editorial/faith-v1.webp'); }
-:global(:root[data-theme='dark']) .about { --dialog-art: url('/assets/editorial/daily-reading-night-v1.webp'); }
-:global(:root[data-theme='dark']) .help { --dialog-art: url('/assets/editorial/guidance-night-v1.webp'); }
-:global(:root[data-theme='dark']) .support { --dialog-art: url('/assets/editorial/faith-night-v1.webp'); }
+.about { --dialog-art: url('/assets/editorial/daily-reading-v2.webp'); }
+.help { --dialog-art: url('/assets/editorial/guidance-v2.webp'); }
+.support { --dialog-art: url('/assets/editorial/faith-v2.webp'); --dialog-art-position: 85% 30%; }
+:global(:root[data-theme='dark']) .about { --dialog-art: url('/assets/editorial/daily-reading-night-v2.webp'); }
+:global(:root[data-theme='dark']) .help { --dialog-art: url('/assets/editorial/guidance-night-v2.webp'); }
+:global(:root[data-theme='dark']) .support { --dialog-art: url('/assets/editorial/faith-night-v2.webp'); }
 .dialog :global(.reader-dialog__header) { position: relative; isolation: isolate; align-items: start; min-height: 9rem; padding: clamp(1.1rem, 4vw, 1.75rem); border-bottom: 1px solid var(--border); background: var(--bg-reader); }
 .dialog :global(.reader-dialog__header)::before, .dialog :global(.reader-dialog__header)::after { position: absolute; z-index: -1; inset: 0; pointer-events: none; content: ''; }
-.dialog :global(.reader-dialog__header)::before { background: var(--dialog-art) 85% 55% / cover no-repeat; filter: var(--editorial-art-filter); mix-blend-mode: var(--editorial-art-blend); }
-.dialog :global(.reader-dialog__header)::after { background: linear-gradient(90deg, var(--bg-reader), color-mix(in srgb, var(--bg-reader) 92%, transparent) 34%, color-mix(in srgb, var(--bg-reader) 48%, transparent) 67%, color-mix(in srgb, var(--bg-reader) 15%, transparent)); }
+.dialog :global(.reader-dialog__header)::before { background: var(--dialog-art) var(--dialog-art-position, 85% 55%) / cover no-repeat; filter: var(--editorial-art-filter); mix-blend-mode: var(--editorial-art-blend); }
+.dialog :global(.reader-dialog__header)::after { background: var(--intro-gradient); }
 .dialog :global(.reader-dialog__header h2) { align-self: center; text-align: left; font-size: clamp(1.5rem, 4vw, 1.9rem); line-height: 1.22; }
 .dialogTitle { display: grid; justify-items: start; max-width: 22ch; gap: .7rem; }
 .dialogTitle > svg { color: var(--accent-coral-deep); }
@@ -46,8 +46,4 @@
 }
 @media (max-width: 380px) { .navigation button + button::before { display: none; } }
 .editorial { margin-top: 0; }
-.editorial .inner { width: min(calc(100% - 80px), 75rem); }
-@media (max-width: 800px) { .editorial .inner { width: calc(100% - 48px); } }
-@media (max-width: 620px) { .editorial .inner { width: calc(100% - 36px); } }
-@media (max-width: 350px) { .editorial .inner { width: calc(100% - 30px); } }
 @media (prefers-reduced-motion: reduce) { .navigation button { transition: none; } }

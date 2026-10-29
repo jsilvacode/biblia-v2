@@ -12,7 +12,7 @@
 .sectionHeader h1,
 .sectionHeader h2 {
   margin: 0;
-  font: 400 clamp(1.5rem, 2.5vw, 1.875rem)/1.14 var(--font-display);
+  font: 400 var(--font-size-section)/1.14 var(--font-display);
   letter-spacing: -.035em;
   text-wrap: balance;
 }
@@ -97,7 +97,8 @@
 .offlineNotice > svg { flex: 0 0 auto; margin-top: 3px; }
 
 
-.page { max-width: 64rem; }
+.page > .section { width: min(100%, var(--content-inner-width)); margin-inline: auto; }
+.page .sectionHeader h1 { font-size: var(--font-size-page); }
 .backLink { display: inline-flex; min-height: 44px; align-items: center; gap: 7px; margin-bottom: 24px; color: var(--ink-muted); font: 500 .8125rem/1.5 var(--font-ui); text-decoration: none; }
 .backLink:hover { color: var(--accent-deep); }
 
@@ -118,8 +119,6 @@
 
 @media (max-width: 620px) {
   .featured { padding-top: 14px; }
-  .sectionHeader h1,
-  .sectionHeader h2 { font-size: 1.5rem; }
   .body { gap: 10px; margin-top: 10px; }
 }
 

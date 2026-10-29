@@ -49,12 +49,12 @@ describe('EditorialIllustration', () => {
     storedSettings.set('santa_biblia_v2_settings', JSON.stringify({ theme: 'dark' }))
     const { container } = render(
       <SettingsProvider>
-        <EditorialIllustration alt="" aria-hidden="true" className="opening-art" decoding="async" height="1024" loading="lazy" src="/assets/editorial/faith-v1.webp" width="1536" />
+        <EditorialIllustration alt="" aria-hidden="true" className="opening-art" decoding="async" height="1024" loading="lazy" src="/assets/editorial/faith-v2.webp" width="1536" />
         <ThemeControls />
       </SettingsProvider>,
     )
     const image = container.querySelector('img')
-    expect(image.getAttribute('src')).toBe('/assets/editorial/faith-night-v1.webp')
+    expect(image.getAttribute('src')).toBe('/assets/editorial/faith-night-v2.webp')
     expect(image.getAttribute('alt')).toBe('')
     expect(image.getAttribute('aria-hidden')).toBe('true')
     expect(image.className).toBe('editorial-illustration opening-art')
@@ -65,7 +65,7 @@ describe('EditorialIllustration', () => {
 
     expect(container.querySelectorAll('img')).toHaveLength(1)
     expect(container.querySelector('img')).toBe(image)
-    expect(image.getAttribute('src')).toBe('/assets/editorial/faith-v1.webp')
+    expect(image.getAttribute('src')).toBe('/assets/editorial/faith-v2.webp')
   })
 
   it('follows system preference changes through SettingsProvider', () => {

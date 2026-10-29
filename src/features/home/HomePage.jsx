@@ -124,14 +124,14 @@ export default function HomePage() {
       title: t('plans.featured'),
       detail: `${dailyProgress ? t('plans.resumeToday') : t(`plans.${dailyPlan.status}`)} · ${dailyReference}`,
       action: t('home.readListen'),
-      image: '/assets/editorial/daily-reading-v1.webp',
+      image: '/assets/editorial/daily-reading-v2.webp',
       href: '/reavivados',
     },
     {
       title: t('home.thematicTitle'),
       detail: t('home.guideSummary'),
       action: t('home.consultTopic'),
-      image: '/assets/editorial/guidance-v1.webp',
+      image: '/assets/editorial/guidance-v2.webp',
       href: '/topics',
     },
     {
@@ -140,14 +140,14 @@ export default function HomePage() {
         ? t('home.studyProgress', { completed: studySummary.completedLessons, total: studySummary.totalLessons })
         : t('home.courseSummary'),
       action: t('home.viewCourse'),
-      image: '/assets/editorial/faith-v1.webp',
+      image: '/assets/editorial/faith-v2.webp',
       href: '/studies/la-fe-de-jesus',
     },
     {
       title: t('home.beliefsTitle'),
       detail: t('home.beliefsSummary'),
       action: t('home.exploreBeliefs'),
-      image: '/assets/editorial/bible-library-v1.webp',
+      image: '/assets/editorial/beliefs/scriptures.webp',
       href: '/beliefs',
     },
   ]
@@ -224,14 +224,13 @@ export default function HomePage() {
         <section aria-labelledby="home-editorial-heading" className={styles.editorialSection}>
           <h2 className={styles.sectionTitle} id="home-editorial-heading">{t('home.alsoIn')}</h2>
           <div className={styles.editorialList}>
-            {entries.map((entry, index) => (
+            {entries.map((entry) => (
               <Link className={styles.editorialEntry} key={entry.href} to={entry.href}>
                 <span aria-hidden="true" className={`${styles.entryImage} editorial-art`}>
                   <EditorialIllustration alt="" decoding="async" height="1024" loading="lazy" src={entry.image} width="1536" />
                 </span>
                 <div className={styles.entryCopy}>
                   <div className={styles.entryHeading}>
-                    <span aria-hidden="true" className={styles.entryNumber}>{String(index + 1).padStart(2, '0')}</span>
                     <h3 className={styles.entryTitle}>{entry.title}</h3>
                   </div>
                   <p className={styles.entryDetail}>{entry.detail}</p>

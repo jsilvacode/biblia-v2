@@ -5,8 +5,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 220px;
-  padding-block: 1.5rem;
+  min-height: var(--intro-min-height);
+  padding: var(--intro-padding-block) var(--page-inset);
 }
 
 :global(.page) > .illustrated:global(.page-intro) { width: 100%; max-width: none; }
@@ -24,7 +24,7 @@
 }
 
 .illustrated:global(.page-intro) h1 {
-  font-size: clamp(2rem, 4.4vw, 3.1rem);
+  font-size: var(--font-size-page);
   line-height: 1.18;
   letter-spacing: -.035em;
   overflow-wrap: anywhere;
@@ -32,7 +32,7 @@
 }
 
 .illustrated:global(.page-intro) > :global(.page-intro__row) > div > p {
-  font-size: 1.025rem;
+  font-size: 1rem;
   line-height: 1.7;
 }
 
@@ -57,16 +57,10 @@
 .art::after {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, var(--bg-reader), color-mix(in srgb, var(--bg-reader) 96%, transparent) 20%, color-mix(in srgb, var(--bg-reader) 82%, transparent) 42%, color-mix(in srgb, var(--bg-reader) 20%, transparent) 72%, transparent);
+  background: var(--intro-gradient);
   content: '';
 }
 
 @media (max-width: 620px) {
-  .illustrated:global(.page-intro) {
-    min-height: 190px;
-    padding-block: 1.25rem;
-  }
-  .illustrated:global(.page-intro) h1 { font-size: clamp(1.875rem, 7.8vw, 2.15rem); }
   .illustrated:global(.page-intro) > :global(.page-intro__row) > div > p { font-size: 1rem; line-height: 1.6; }
-  .art::after { background: linear-gradient(90deg, color-mix(in srgb, var(--bg-reader) 98%, transparent), color-mix(in srgb, var(--bg-reader) 88%, transparent) 48%, color-mix(in srgb, var(--bg-reader) 42%, transparent)); }
 }

@@ -36,7 +36,7 @@ function StudyHero({ resumePath, summary, t }) {
         </Link>
       </div>
       <div aria-hidden="true" className={`${styles.studyHeroArt} editorial-art`}>
-        <EditorialIllustration alt="" decoding="async" height="1024" src="/assets/editorial/faith-v1.webp" width="1536" />
+        <EditorialIllustration alt="" decoding="async" height="1024" src="/assets/editorial/faith-v2.webp" width="1536" />
       </div>
     </section>
   )

@@ -1,5 +1,6 @@
-.guide { display: grid; align-content: start; gap: 32px; max-width: 52rem; min-height: 55dvh; }
+.guide { display: grid; align-content: start; gap: var(--page-section-gap); min-height: 55dvh; }
 .guide > :global(.page-intro) { margin: 0; }
+.guide > :not(:global(.page-intro)) { width: min(100%, var(--content-inner-width)); margin-inline: auto; }
 .selectorBar { position: relative; z-index: 2; display: flex; align-items: center; min-width: 0; min-height: var(--control-height); gap: 14px; padding: 0 16px; border: 1px solid var(--control-border); border-radius: var(--control-radius); background: var(--control-surface); color: var(--accent-blue-deep); }
 .selectorBar:focus-within { border-color: var(--control-focus-border); box-shadow: var(--control-focus-shadow); }
 .selectorBar > svg { flex: 0 0 auto; }
@@ -8,13 +9,12 @@
 .selectTrigger { min-height: calc(var(--control-height) - 2px); font-size: .9375rem; }
 .readings { display: grid; gap: 24px; min-width: 0; }
 .readings > header p { margin: 0 0 8px; color: var(--accent-deep); font-size: .75rem; }
-.readings h2 { margin: 0; color: var(--accent-deep); font: 400 clamp(1.75rem, 4vw, 2.25rem)/1.2 var(--font-display); letter-spacing: -.025em; text-wrap: balance; overflow-wrap: anywhere; }
+.readings h2 { margin: 0; color: var(--accent-deep); font: 400 var(--font-size-section)/1.25 var(--font-display); letter-spacing: -.025em; text-wrap: balance; overflow-wrap: anywhere; }
 .contentLanguage { margin: 0; color: var(--ink-muted); font-size: .8125rem; }
 .missing { display: grid; gap: 12px; color: var(--ink-muted); }
 .missing h1 { font-family: var(--font-display); color: var(--ink); }
 .missing a { color: var(--accent-blue-deep); }
 @media (max-width: 620px) {
-  .guide { gap: 26px; }
   .selectorBar { gap: 10px; padding-inline: 12px; }
   .readings { gap: 20px; }
 }
