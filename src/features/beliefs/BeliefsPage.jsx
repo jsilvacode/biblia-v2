@@ -56,14 +56,14 @@ function BeliefSelector({ slug = '' }) {
   const navigate = useNavigate()
   return <label className={styles.selectorField}>
     <span>Ir a una creencia</span>
-    <select aria-label="Ir a una creencia" onChange={(event) => {
+    <span className={styles.selectorControl}><select aria-label="Ir a una creencia" onChange={(event) => {
       if (event.target.value) navigate('/beliefs/' + event.target.value)
     }} value={slug}>
       <option value="">Elegir una creencia</option>
       {catalog.categories.map((category) => <optgroup key={category.id} label={categoryNames[category.id]}>
         {catalog.beliefs.filter((item) => item.categoryId === category.id).map((item) => <option key={item.id} value={item.slug}>{item.number}. {item.title}</option>)}
       </optgroup>)}
-    </select>
+    </select><Icon name="chevronDown" size={18} /></span>
   </label>
 }
 
@@ -338,7 +338,7 @@ function BeliefsContent() {
         <div><p className="eyebrow">Un recorrido por nuestra fe</p><h2 id="belief-list-heading">Encuentra un tema para explorar.</h2></div>
         <div className={styles.explorerTools}>
           <BeliefSelector />
-          <label className={styles.searchLabel}><span>Buscar creencias</span><span className={styles.searchField}><Icon name="search" size={19} /><input aria-label="Buscar creencias" onChange={(event) => setFilters({ query: event.target.value })} placeholder="Buscar por título, tema o pasaje bíblico" type="search" value={query} /></span></label>
+          <label className={styles.searchLabel}><span>Buscar creencias</span><span className={styles.searchField}><Icon name="search" size={18} /><input aria-label="Buscar creencias" onChange={(event) => setFilters({ query: event.target.value })} placeholder="Título, tema o cita bíblica" type="search" value={query} /></span></label>
         </div>
       </div>
       <div aria-label="Filtrar por tema" className={styles.categories} role="group">
