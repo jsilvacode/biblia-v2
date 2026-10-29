@@ -47,7 +47,7 @@ function RouteTransition() {
     previousPath.current = pathname
     const savedY = positions.current.get(key)
     if (navigationType === 'POP') {
-      if (pathname.startsWith('/read/') || hash || savedY === undefined) return undefined
+      if (pathname.startsWith('/biblia/') || pathname.startsWith('/read/') || hash || savedY === undefined) return undefined
       let frame
       const restore = () => {
         window.cancelAnimationFrame(frame)
@@ -84,7 +84,7 @@ function RouteTransition() {
 export function AppShell() {
   const { pathname } = useLocation()
   const { t } = useI18n()
-  const isReader = pathname.startsWith('/read/')
+  const isReader = pathname.startsWith('/biblia/') || pathname.startsWith('/read/')
   const isHome = pathname === '/'
 
   return (

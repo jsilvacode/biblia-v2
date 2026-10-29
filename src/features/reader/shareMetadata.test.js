@@ -51,13 +51,13 @@ describe('share metadata', () => {
 
     expect(metadata.citation).toBe('Génesis 46:3-4 · NBLA')
     expect(metadata.text).toBe('No temas bajar a Egipto, Yo descenderé contigo.')
-    expect(metadata.canonicalUrl).toBe('https://biblia-v2.vercel.app/read/1/46/3?v=nbla&end=4')
+    expect(metadata.canonicalUrl).toBe('https://biblia-v2.vercel.app/biblia/genesis/46/3?v=nbla&end=4')
     expect(metadata.imageUrl).toContain('https://biblia-v2.vercel.app/api/og-card?')
     expect(metadata.imageUrl).toContain('card=12')
     expect(metadata.imageType).toBe('image/jpeg')
     const html = injectShareMetadata('<!-- share-meta:start --><!-- share-meta:end -->', metadata)
-    expect(html).toContain('<link rel="canonical" href="https://biblia-v2.vercel.app/read/1/46/3?v=nbla&amp;end=4"')
-    expect(html).toContain('<meta property="og:url" content="https://biblia-v2.vercel.app/read/1/46/3?v=nbla&amp;end=4&amp;share=12"')
+    expect(html).toContain('<link rel="canonical" href="https://biblia-v2.vercel.app/biblia/genesis/46/3?v=nbla&amp;end=4"')
+    expect(html).toContain('<meta property="og:url" content="https://biblia-v2.vercel.app/biblia/genesis/46/3?v=nbla&amp;end=4&amp;share=12"')
     expect(fetchImpl).toHaveBeenCalledWith(new URL('https://biblia-v2.vercel.app/data/nbla/01_genesis/46.json'))
   })
 

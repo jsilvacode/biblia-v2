@@ -15,7 +15,7 @@ async function expectSupportLinks(surface) {
 }
 
 test('the three footer controls open distinct centered dialogs and restore focus and scroll on close', async ({ page }) => {
-  await page.goto('/bible')
+  await page.goto('/biblia')
   const controls = footer(page).getByRole('button')
   await expect(controls).toHaveCount(3)
   await expect(footer(page).getByRole('link')).toHaveCount(0)
@@ -27,7 +27,7 @@ test('the three footer controls open distinct centered dialogs and restore focus
     const dialog = page.getByRole('dialog', { name: title, exact: true })
     await expect(dialog).toBeVisible()
     await expect(page.getByRole('dialog')).toHaveCount(1)
-    await expect(page).toHaveURL(/\/bible$/)
+    await expect(page).toHaveURL(/\/biblia$/)
     await expect.poll(() => dialog.evaluate(element => element.contains(document.activeElement))).toBe(true)
     await page.evaluate(() => document.fonts.ready)
     const box = await dialog.boundingBox()

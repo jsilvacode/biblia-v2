@@ -3,6 +3,7 @@ import { PageIntro } from '../../components/ui/PageIntro'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import { formatReference } from '../bible/catalog'
+import { getReaderPath } from '../bible/readerPath'
 import { parseReference } from '../bible/reference'
 import { useSettings } from '../settings/SettingsProvider'
 import { useBibleTextSearch } from './useBibleTextSearch'
@@ -58,7 +59,7 @@ export default function SearchPage() {
         <Link
           className="reference-result"
           state={{ attentionVerse: true }}
-          to={`/read/${reference.book}/${reference.chapter}${reference.verse ? `/${reference.verse}` : ''}`}
+          to={getReaderPath(reference)}
         >
           <span className="card-icon"><Icon name="book" size={19} /></span>
           <span>
@@ -81,7 +82,7 @@ export default function SearchPage() {
               className="reference-result search-result"
               key={`${result.book}:${result.chapter}:${result.verse}`}
               state={{ attentionVerse: true }}
-              to={`/read/${result.book}/${result.chapter}/${result.verse}`}
+              to={getReaderPath(result)}
             >
               <span className="card-icon"><Icon name="book" size={19} /></span>
               <span>

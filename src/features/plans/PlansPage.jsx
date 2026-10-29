@@ -4,6 +4,7 @@ import { PageIntro } from '../../components/ui/PageIntro'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import { formatReference } from '../bible/catalog'
+import { getReaderPath } from '../bible/readerPath'
 import { getRpspPlanState, getRpspReadingWindow } from './rpsp2026'
 import styles from './PlansPage.module.css'
 
@@ -45,7 +46,7 @@ export default function PlansPage() {
             <span style={{ width: `${progress}%` }} />
           </div>
         </div>
-        <Link className="button" to={`/read/${reading.book}/${reading.chapter}`}>
+        <Link className="button" to={getReaderPath(reading)}>
           {t('plans.openReading')} <Icon name="arrowRight" size={18} />
         </Link>
       </article>
@@ -57,7 +58,7 @@ export default function PlansPage() {
         </div>
         <div className={styles.readingList}>
           {readingWindow.map((item, index) => (
-            <Link className={`${styles.readingRow} ${index === 0 ? styles.currentReading : ''}`} key={item.day} to={`/read/${item.book}/${item.chapter}`}>
+            <Link className={`${styles.readingRow} ${index === 0 ? styles.currentReading : ''}`} key={item.day} to={getReaderPath(item)}>
               <span className={styles.dayNumber}>{item.day}</span>
               <span>
                 <strong>{formatReference(item, locale)}</strong>

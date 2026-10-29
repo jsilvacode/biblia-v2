@@ -17,7 +17,7 @@ async function letterPosition(page, selector, offset = 0) {
 
 test('native word selection and copy events do not open verse actions', async ({ page, isMobile }) => {
   test.skip(isMobile, 'Touch readers use the explicit Copy verse action')
-  await page.goto('/read/43/3/16')
+  await page.goto('/biblia/juan/3/16')
   await expect(page.locator('#verse-16')).toBeVisible()
   await page.evaluate(async () => { await document.fonts.ready })
   const point = await letterPosition(page, '#verse-16 span', 5)
@@ -45,7 +45,7 @@ test('native word selection and copy events do not open verse actions', async ({
 
 test('dragging a selection across verses preserves the selected text', async ({ page, isMobile }) => {
   test.skip(isMobile, 'Touch readers use the explicit Copy verse action')
-  await page.goto('/read/43/3/16')
+  await page.goto('/biblia/juan/3/16')
   await expect(page.locator('#verse-17')).toBeVisible()
   await page.evaluate(async () => { await document.fonts.ready })
   // Start inside a word, away from the leading punctuation and verse number.
@@ -61,7 +61,7 @@ test('dragging a selection across verses preserves the selected text', async ({ 
 })
 
 test('commentary text can be selected and its native context menu remains available', async ({ page }) => {
-  await page.goto('/read/43/3/16')
+  await page.goto('/biblia/juan/3/16')
   await page.locator('#verse-16').click()
   await page.getByRole('button', { name: /Ver comentario bíblico|View Bible commentary|Ver comentário bíblico/ }).click()
   const commentary = page.locator('.reader-dialog--commentary .reader-dialog__scroll-area')
@@ -96,7 +96,7 @@ test('Copy verse copies plain text with the reference using the explicit reader 
       value: async () => { throw new Error('Copy should not invoke sharing') },
     })
   })
-  await page.goto('/read/43/3/16')
+  await page.goto('/biblia/juan/3/16')
   const verse = page.locator('#verse-16')
   await expect(verse).toBeVisible()
   const text = await verse.locator('span').innerText()
@@ -111,7 +111,7 @@ test('Copy verse copies plain text with the reference using the explicit reader 
 
 test('mobile uses one tap and explicit Copy verse without a competing long-press menu', async ({ page, context, isMobile }) => {
   test.skip(!isMobile, 'Touch interaction coverage')
-  await page.goto('/read/43/3/16')
+  await page.goto('/biblia/juan/3/16')
   const verse = page.locator('#verse-16')
   await expect(verse).toBeVisible()
   await page.evaluate(async () => { await document.fonts.ready })

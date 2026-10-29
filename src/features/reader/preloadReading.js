@@ -1,4 +1,4 @@
-import { getBook, getVersion } from '../bible/catalog'
+import { getBook, getBookBySlug, getVersion } from '../bible/catalog'
 
 let readerPageRequest
 
@@ -27,11 +27,15 @@ export function preloadReading(reference, versionId) {
 }
 
 export function preloadInitialReading(location, versionId) {
-  const match = /^\/read\/(\d+)\/(\d+)(?:\/\d+)?\/?$/.exec(location.pathname)
-  if (!match) return
+  const slugMatch = /^\/biblia\/([^/]+)\/(\d+)(?:\/\d+)?\/?$/u.exec(location.pathname)
+  const legacyMatch = /^\/read\/(\d+)\/(\d+)(?:\/\d+)?\/?$/u.exec(location.pathname)
+  if (!slugMatch && !legacyMatch) return
+  const book = slugMatch ? getBookBySlug(slugMatch[1]) : getBook(legacyMatch[1])
+  if (!book) return
   const sharedVersionId = new URLSearchParams(location.search).get('v')
   const sharedVersion = sharedVersionId && getVersion(sharedVersionId).id === sharedVersionId
     ? sharedVersionId
     : versionId
-  preloadReading({ book: Number(match[1]), chapter: Number(match[2]) }, sharedVersion)
+  const chapter = Number(slugMatch?.[2] ?? legacyMatch[2])
+  preloadReading({ book: book.id, chapter }, sharedVersion)
 }

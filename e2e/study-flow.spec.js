@@ -17,11 +17,11 @@ async function setStudyProgress(page, progress) {
 
 test('the course index keeps its real route, progress and responsive lesson journey', async ({ page }, testInfo) => {
   await clearStudyProgress(page)
-  await page.goto('/studies/la-fe-de-jesus')
+  await page.goto('/fe-de-jesus')
 
   const hero = page.locator('section').filter({ has: page.getByRole('heading', { name: studyName }) }).first()
   await expect(hero).toBeVisible()
-  await expect(hero.getByRole('link', { name: /Comenzar estudio|Start study|Começar estudo/ })).toHaveAttribute('href', '/studies/la-fe-de-jesus/quien-es-dios')
+  await expect(hero.getByRole('link', { name: /Comenzar estudio|Start study|Começar estudo/ })).toHaveAttribute('href', '/fe-de-jesus/quien-es-dios')
   await expect(page.getByText(/0 de 20 lecciones|0 of 20 lessons|0 de 20 lições/).first()).toBeVisible()
   await expect(page.getByText(/Siguiente paso: ¿Quién es Dios\?|Next step: Who is God\?|Próximo passo: Quem é Deus\?/).first()).toBeVisible()
   await expect(page.locator('ol > li')).toHaveCount(20)
@@ -48,8 +48,8 @@ test('the course index keeps its real route, progress and responsive lesson jour
     lessonProgress: {},
     updatedAt: Date.now(),
   })
-  await page.goto('/studies/la-fe-de-jesus')
-  await expect(page.getByRole('link', { name: /Continuar estudio|Continue study|Continuar estudo/ })).toHaveAttribute('href', '/studies/la-fe-de-jesus/la-santa-biblia')
+  await page.goto('/fe-de-jesus')
+  await expect(page.getByRole('link', { name: /Continuar estudio|Continue study|Continuar estudo/ })).toHaveAttribute('href', '/fe-de-jesus/la-santa-biblia')
   await expect(page.getByText(/1 de 20 lecciones|1 of 20 lessons|1 de 20 lições/).first()).toBeVisible()
   await expect(page.getByText(/Siguiente paso: La Santa Biblia|Next step: The Holy Bible|Próximo passo: A Santa Bíblia/).first()).toBeVisible()
 })
@@ -57,7 +57,7 @@ test('the course index keeps its real route, progress and responsive lesson jour
 test('a study lesson keeps the global navigation fixed on compact screens', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile', 'The compact global navigation is not rendered on desktop.')
   await clearStudyProgress(page)
-  await page.goto('/studies/la-fe-de-jesus/quien-es-dios')
+  await page.goto('/fe-de-jesus/quien-es-dios')
   await expect(page.getByRole('heading', { name: '¿Quién es Dios?', exact: true })).toBeVisible()
 
   const navigation = page.locator('.mobile-navigation')
@@ -78,7 +78,7 @@ test('a study lesson follows the saved reading preferences', async ({ page }) =>
       bibleVersion: 'nbla', fontFamily: 'sans', locale: 'es', readerFontScale: 1.3, readerLineHeight: 'spacious', theme: 'light',
     }))
   })
-  await page.goto('/studies/la-fe-de-jesus/quien-es-dios')
+  await page.goto('/fe-de-jesus/quien-es-dios')
   await expect(page.getByRole('heading', { name: '¿Quién es Dios?', exact: true })).toBeVisible()
 
   const lessonPage = page.locator('[data-study-font]')
@@ -92,7 +92,7 @@ test('Home opens the Bible study and publishes the four selected interest links'
 
   const studyCard = page.getByRole('link', { name: studyName })
   await expect(studyCard).toBeVisible()
-  await expect(studyCard).toHaveAttribute('href', '/studies/la-fe-de-jesus')
+  await expect(studyCard).toHaveAttribute('href', '/fe-de-jesus')
 
   const interests = page.getByRole('region', { name: /Enlaces de interés|Links of interest|Links de interesse/ })
   await expect(interests.getByRole('link')).toHaveCount(4)
@@ -106,18 +106,18 @@ test('a reader advances sequentially, retries answers and keeps progress while r
   await clearStudyProgress(page)
   await page.getByRole('link', { name: studyName }).click()
 
-  await expect(page).toHaveURL(/\/studies\/la-fe-de-jesus$/)
+  await expect(page).toHaveURL(/\/fe-de-jesus$/)
   await expect(page.getByRole('heading', { name: studyName })).toBeVisible()
   await expect(page.locator('ol li')).toHaveCount(20)
   await expect(page.getByText(/Completa primero la lección 1|Complete lesson 1 first|Conclua primeiro a lição 1/).first()).toBeVisible()
-  await page.goto('/studies/la-fe-de-jesus/la-santa-biblia')
+  await page.goto('/fe-de-jesus/la-santa-biblia')
   await expect(page.getByText(/Completa primero la lección 1|Complete lesson 1 first|Conclua primeiro a lição 1/)).toBeVisible()
   await expect(page.getByRole('heading', { name: 'La Santa Biblia' })).toBeVisible()
 
-  await page.goto('/studies/la-fe-de-jesus')
+  await page.goto('/fe-de-jesus')
 
   await page.getByRole('link', { name: /¿Quién es Dios\?/ }).click()
-  await expect(page).toHaveURL(/\/studies\/la-fe-de-jesus\/quien-es-dios$/)
+  await expect(page).toHaveURL(/\/fe-de-jesus\/quien-es-dios$/)
   await expect(page.getByRole('heading', { name: '¿Quién es Dios?', exact: true })).toBeVisible()
 
   const firstQuestion = page.locator('details').first()

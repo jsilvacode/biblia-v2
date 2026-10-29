@@ -18,7 +18,7 @@ test.describe('mobile navigation shell', () => {
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
     await navigation.getByRole('link', { name: /Biblia|Bible/ }).click()
 
-    await expect(page).toHaveURL(/\/bible$/)
+    await expect(page).toHaveURL(/\/biblia$/)
     await expect(page.locator('main')).toBeFocused()
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0)
 
@@ -41,12 +41,12 @@ test.describe('mobile navigation shell', () => {
     await expect(footer.getByText(/Julio Silva/)).toHaveCount(0)
     await expect(footer.locator('a[href^="mailto:"]')).toHaveCount(0)
     await expect(page.getByRole('dialog')).toHaveCount(1)
-    await expect(page).toHaveURL(/\/bible$/)
+    await expect(page).toHaveURL(/\/biblia$/)
   })
 
   test('uses reader chrome without mounting the global header or bottom navigation', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'mobile', 'Mobile-only navigation coverage')
-    await page.goto('/read/43/3/16')
+    await page.goto('/biblia/juan/3/16')
 
     await expect(page.locator('.reader-header')).toBeVisible()
     await expect(page.locator('.reader-header__desktop-navigation')).toBeHidden()
@@ -54,6 +54,7 @@ test.describe('mobile navigation shell', () => {
     await expect(page.getByRole('contentinfo')).toHaveCount(0)
     await expect(page.locator('.mobile-navigation')).toHaveCount(0)
     await expect(page.locator('.reader-bottom-navigation').getByRole('link')).toHaveCount(3)
+    await expect(page.locator('#verse-16')).toBeInViewport()
     const bible = page.locator('.reader-bottom-navigation').getByRole('button', { name: /Biblia|Bible|Bíblia/ })
     await expect(bible).toBeVisible()
     await expect(bible).toHaveAttribute('aria-haspopup', 'dialog')
@@ -62,6 +63,7 @@ test.describe('mobile navigation shell', () => {
     const trigger = picker.locator('[data-picker-trigger="book"]')
     await expect(trigger).toHaveText(/^(Seleccionar libro|Select a book|Selecionar livro)$/)
     await bible.click()
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true')
     const books = picker.getByRole('dialog')
     await expect(books).toBeVisible()
     await expect(bible).toHaveAttribute('aria-expanded', 'true')
@@ -69,7 +71,7 @@ test.describe('mobile navigation shell', () => {
     await books.locator('[data-book-id="1"]').click()
     await expect(bible).toHaveAttribute('aria-expanded', 'true')
     await books.locator('[data-chapter="1"]').click()
-    await expect(page).toHaveURL(/\/read\/1\/1$/)
+    await expect(page).toHaveURL(/\/biblia\/genesis\/1$/)
     await expect(page.getByRole('heading', { name: /^(Génesis|Genesis|Gênesis)$/, exact: true })).toBeVisible()
     await expect(trigger).toHaveText(/^(Seleccionar libro|Select a book|Selecionar livro)$/)
     await expect(trigger).toHaveAttribute('aria-expanded', 'false')
@@ -83,7 +85,7 @@ test.describe('mobile navigation shell', () => {
 
   test('opens quick search above the reader without moving it and closes each layer with Escape', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'mobile', 'Mobile-only reader quick-search coverage')
-    await page.goto('/read/43/3')
+    await page.goto('/biblia/juan/3')
     const row = page.getByTestId('reader-passage-row')
     const trigger = row.getByRole('button', { name: 'Búsqueda rápida', exact: true })
     const panel = row.getByRole('dialog', { name: 'Búsqueda rápida', exact: true })
@@ -162,7 +164,7 @@ test.describe('mobile navigation shell', () => {
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(150)
 
     await page.locator('.mobile-navigation').getByRole('link', { name: /Biblia|Bible/ }).click()
-    await expect(page).toHaveURL(/\/bible$/)
+    await expect(page).toHaveURL(/\/biblia$/)
     await page.goBack()
 
     await expect(page).toHaveURL(/\/$/)
@@ -171,7 +173,7 @@ test.describe('mobile navigation shell', () => {
 
   test('moves from books to chapters and back without losing the library context', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'mobile', 'Mobile-only browser coverage')
-    await page.goto('/bible')
+    await page.goto('/biblia')
 
     const selectedBook = page.getByRole('button', { name: /Apocalipsis|Revelation|Apocalipse/ })
     await selectedBook.click()
@@ -190,7 +192,7 @@ test.describe('mobile navigation shell', () => {
     for (const viewport of [{ width: 320, height: 568 }, { width: 390, height: 844 }]) {
       await page.setViewportSize(viewport)
 
-      for (const path of ['/', '/bible', '/search', '/saved', '/plans', '/topics', '/studies/la-fe-de-jesus', '/studies/la-fe-de-jesus/quien-es-dios', '/settings', '/read/43/3']) {
+      for (const path of ['/', '/biblia', '/search', '/saved', '/plans', '/topics', '/fe-de-jesus', '/fe-de-jesus/quien-es-dios', '/settings', '/biblia/juan/3']) {
         await page.goto(path)
         await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth)).toBe(true)
       }
@@ -200,7 +202,7 @@ test.describe('mobile navigation shell', () => {
   test('keeps reader settings inside the contextual menu instead of over verse text', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'mobile', 'Mobile-only reader layout coverage')
     await page.setViewportSize({ width: 320, height: 568 })
-    await page.goto('/read/43/3/16')
+    await page.goto('/biblia/juan/3/16')
 
     await expect(page.locator('.reader-toolbar')).toHaveCount(0)
     const sections = page.getByRole('button', { name: /Abrir menú de lectura|Open reading menu|Abrir menu de leitura/ })
@@ -225,7 +227,7 @@ test.describe('mobile navigation shell', () => {
     const settingsDialog = page.getByRole('dialog', { name: /Ajustes|Settings|Configurações/ })
     await expect(settingsDialog).toBeVisible()
     await expect(settingsDialog).toHaveClass(/reader-dialog--popover/)
-    await expect(page).toHaveURL(/\/read\/43\/3\/16$/)
+    await expect(page).toHaveURL(/\/biblia\/juan\/3\/16$/)
     await expect(page.locator('.reader-header')).toBeVisible()
     await expect(page.locator('.site-header')).toHaveCount(0)
   })
@@ -301,7 +303,7 @@ test.describe('editorial page composition', () => {
 
   test('keeps Home and section header controls consistent and unclipped', async ({ page }) => {
     const controlSizes = []
-    for (const path of ['/', '/bible']) {
+    for (const path of ['/', '/biblia']) {
       await page.goto(path)
       const header = page.locator('header[class*="homeHeader"]')
       const headerBox = await header.boundingBox()
@@ -328,7 +330,13 @@ test.describe('editorial page composition', () => {
         sizes.push({ width: box.width, height: box.height })
       }
       controlSizes.push(sizes)
-      expect(await header.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true)
+      expect(await header.evaluate((element) => {
+        const bounds = element.getBoundingClientRect()
+        return [...element.children].filter((child) => getComputedStyle(child).display !== 'none').every((child) => {
+          const childBounds = child.getBoundingClientRect()
+          return childBounds.left >= bounds.left - 1 && childBounds.right <= bounds.right + 1
+        })
+      })).toBe(true)
     }
     for (let index = 0; index < controlSizes[0].length; index += 1) {
       expect(Math.abs(controlSizes[0][index].width - controlSizes[1][index].width)).toBeLessThanOrEqual(1)
@@ -337,7 +345,7 @@ test.describe('editorial page composition', () => {
   })
 
   test('centers the shared content body on every primary section', async ({ page }) => {
-    for (const path of ['/bible', '/search', '/saved', '/plans', '/topics', '/studies/la-fe-de-jesus', '/studies/la-fe-de-jesus/quien-es-dios', '/about']) {
+    for (const path of ['/biblia', '/search', '/saved', '/plans', '/topics', '/fe-de-jesus', '/fe-de-jesus/quien-es-dios', '/about']) {
       await page.goto(path)
       const pageBox = await page.locator('.page').boundingBox()
       const viewport = page.viewportSize()
@@ -385,7 +393,7 @@ test.describe('editorial page composition', () => {
   })
 
   test('keeps interface language inside settings and leaves only theme and settings in the top bar', async ({ page }) => {
-    for (const path of ['/', '/bible', '/search']) {
+    for (const path of ['/', '/biblia', '/search']) {
       await page.goto(path)
       await expect(page.locator('header select[aria-label*="Idioma"], header select[aria-label*="language"]')).toHaveCount(0)
       const headerActions = page.locator('button[class*="headerIconButton"]')

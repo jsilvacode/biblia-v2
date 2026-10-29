@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useI18n } from '../../i18n'
 import { ReaderDialog } from '../reader/ReaderDialog'
 import { getLocalizedBookName } from './catalog'
+import { getReaderPath } from './readerPath'
 import { useSettings } from '../settings/SettingsProvider'
 import { loadReaderPage, preloadReading } from '../reader/preloadReading'
 import styles from './BookChaptersDialog.module.css'
@@ -28,7 +29,7 @@ export function BookChaptersDialog({ book, currentBookId, currentChapter, onClos
     if (isValidChapter) {
       warmChapter(chapterNumber)
       if (onGoToChapter) { onClose(); onGoToChapter(book.id, chapterNumber) }
-      else navigate(`/read/${book.id}/${chapterNumber}`)
+      else navigate(getReaderPath({ book: book.id, chapter: chapterNumber }))
     }
   }
 
@@ -74,7 +75,7 @@ export function BookChaptersDialog({ book, currentBookId, currentChapter, onClos
               }}
               onFocus={() => warmChapter(chapter)}
               onPointerDown={() => warmChapter(chapter)}
-              to={`/read/${book.id}/${chapter}`}
+              to={getReaderPath({ book: book.id, chapter })}
             >
               {chapter}
             </Link>

@@ -7,7 +7,7 @@ import { getLessonAccess, getNextPendingLesson } from './studyAccess'
 import { useStudyProgress } from './studyProgress'
 import styles from './Studies.module.css'
 
-const COURSE_PATH = '/studies/la-fe-de-jesus'
+const COURSE_PATH = '/fe-de-jesus'
 const OFFICIAL_SOURCE = 'https://downloads.adventistas.org/es/ministerio-personal/estudios-biblicos/guia-interactiva-la-fe-de-jesus/'
 
 function getLessonStatus(lesson, progress) {

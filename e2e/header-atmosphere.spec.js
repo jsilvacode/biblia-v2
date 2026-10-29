@@ -13,14 +13,9 @@ async function headerAppearance(page, selector) {
   }))
 }
 
-function hasVisibleBlur(layers) {
-  return layers.some((layer) => {
-    if (layer.display === 'none' || Number(layer.opacity) === 0) return false
-    return [layer.backdropFilter, layer.filter].some((filter) => {
-      const blur = filter?.match(/blur\(([\d.]+)px\)/)
-      return blur && Number(blur[1]) > 0
-    })
-  })
+function hasVisiblePaperTexture(layers) {
+  return layers.some((layer) => layer.display !== 'none' && Number(layer.opacity) > 0
+    && layer.backgroundImage.includes('data:image/svg+xml'))
 }
 
 async function typography(locator) {
@@ -30,23 +25,20 @@ async function typography(locator) {
   })
 }
 
-test('the shared landscape and glass remain visible in site and reader headers at every supported width', async ({ page }) => {
+test('the paper texture and solid surface remain visible in site and reader headers at every supported width', async ({ page }) => {
   for (const viewport of [
     { width: 390, height: 844 },
     { width: 768, height: 1024 },
     { width: 1440, height: 900 },
   ]) {
     await page.setViewportSize(viewport)
-    for (const [path, selector] of [['/saved', '.site-header'], ['/read/43/3', '.reader-header__bar']]) {
+    for (const [path, selector] of [['/saved', '.site-header'], ['/biblia/juan/3', '.reader-header__bar']]) {
       await page.goto(path)
       for (const theme of ['light', 'dark']) {
         await page.evaluate((nextTheme) => { document.documentElement.dataset.theme = nextTheme }, theme)
-        await expect.poll(async () => {
-          const layers = await headerAppearance(page, selector)
-          return layers.some((layer) => layer.display !== 'none' && Number(layer.opacity) > 0
-            && layer.backgroundImage.includes('aurora-champagne-landscape.webp'))
-        }).toBe(true)
-        await expect.poll(async () => hasVisibleBlur(await headerAppearance(page, selector))).toBe(true)
+        await expect.poll(async () => hasVisiblePaperTexture(await headerAppearance(page, selector))).toBe(true)
+        await expect.poll(async () => (await headerAppearance(page, selector))
+          .some((layer) => layer.display !== 'none' && layer.backgroundColor !== 'rgba(0, 0, 0, 0)')).toBe(true)
       }
       if (path === '/saved' && viewport.width >= 1024) {
         await expect(page.locator('.site-header a[href="/saved"]')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
@@ -59,7 +51,7 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
   for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
     await page.setViewportSize(viewport)
     const appearances = []
-    for (const path of ['/', '/bible']) {
+    for (const path of ['/', '/biblia']) {
       await page.goto(path)
       const header = page.locator('header[class*="homeHeader"]')
       const brand = header.getByRole('link', { name: 'Santa Biblia', exact: true })
@@ -69,8 +61,8 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
       await expect(settings.locator('svg')).toHaveAttribute('width', '17')
       const appearance = { brand: await typography(brand), brandX: (await brand.boundingBox()).x }
 
-      const headerBible = header.locator('a[href="/bible"]')
-      const bottomBible = page.locator('.mobile-navigation a[href="/bible"]')
+      const headerBible = header.locator('a[href="/biblia"]')
+      const bottomBible = page.locator('.mobile-navigation a[href="/biblia"]')
       if (viewport.width >= 1024) {
         await expect(headerBible).toBeVisible()
         await expect(headerBible.locator('svg.lucide-book-open')).toHaveCount(1)
@@ -78,8 +70,8 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
         const { family, size, weight } = await typography(headerBible)
         appearance.navigation = { family, size }
         expect(size).toBe('14px')
-        expect(weight).toBe(path === '/bible' ? '600' : '500')
-        if (path === '/bible') {
+        expect(weight).toBe('500')
+        if (path === '/biblia') {
           await expect(headerBible).toHaveAttribute('aria-current', 'page')
           await expect(headerBible.locator('span')).toHaveCSS('text-decoration-line', 'underline')
         }
@@ -91,11 +83,11 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
     }
     expect(appearances[0]).toEqual(appearances[1])
 
-    await page.goto('/read/43/3')
+    await page.goto('/biblia/juan/3')
     const readerBrand = page.locator('.reader-header__bar').getByRole('link', { name: 'Santa Biblia', exact: true })
     expect(Math.abs((await readerBrand.boundingBox()).x - appearances[0].brandX)).toBeLessThanOrEqual(1)
     const readerBible = viewport.width >= 1024
-      ? page.locator('.reader-header__desktop-navigation a[href="/bible"]')
+      ? page.locator('.reader-header__desktop-navigation a[href="/biblia"]')
       : page.locator('.reader-bottom-navigation').getByRole('button', { name: /Biblia|Bible|Bíblia/, exact: true })
     await expect(readerBible).toBeVisible()
     await expect(readerBible.locator('svg.lucide-book-open')).toHaveCount(1)
@@ -105,7 +97,7 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
 test('the reader aligns Back, its neutral selector and quick search below the glass bar', async ({ page }) => {
   for (const [width, fontSize] of [[1440, '16px'], [1024, '16px'], [768, '16px'], [390, '16px'], [320, '16px'], [320, '32px']]) {
     await page.setViewportSize({ width, height: 900 })
-    await page.goto('/read/43/3')
+    await page.goto('/biblia/juan/3')
     await page.evaluate((size) => { document.documentElement.style.fontSize = size }, fontSize)
     const bar = page.locator('.reader-header__bar')
     const band = page.locator('.reader-header__passage-band')
@@ -164,7 +156,7 @@ test('reader dropdowns and search results scroll behind the sticky header', asyn
   for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 900 })
     for (const kind of ['picker', 'search']) {
-      await page.goto('/read/43/3')
+      await page.goto('/biblia/juan/3')
       const row = page.getByTestId('reader-passage-row')
       await expect(page.getByRole('heading', { name: 'Juan', exact: true })).toBeVisible()
       await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
@@ -243,7 +235,7 @@ test('the matte opal Home panel keeps its shape, soft light and texture in eithe
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/')
     const editorial = page.getByRole('region', { name: /También en Santa Biblia|Also in Santa Biblia|Também na Santa Bíblia/ })
-    await expect(editorial.getByRole('link')).toHaveCount(3)
+    await expect(editorial.getByRole('link')).toHaveCount(4)
     for (const theme of ['light', 'dark']) {
       await page.evaluate((nextTheme) => { document.documentElement.dataset.theme = nextTheme }, theme)
       const geometry = await editorial.evaluate((section) => {
@@ -316,7 +308,7 @@ test('Home loads one responsive photograph and cuts it at the opening base in bo
   for (const width of [320, 768, 1440]) {
     // Resize away from Home so its previous picture cannot request a new
     // candidate while the next navigation is being prepared.
-    await page.goto('/bible')
+    await page.goto('/biblia')
     await page.setViewportSize({ width, height: 900 })
     const requestedImages = []
     const onRequest = request => {
@@ -356,7 +348,8 @@ test('Home loads one responsive photograph and cuts it at the opening base in bo
       expect(geometry.pictureWebkitMask).toBe('none')
       expect(geometry.overlayMask).toBe('none')
       expect(geometry.bottom).toBeLessThan(geometry.editorialTop)
-      expect(geometry.background).toBe(geometry.bodyBackground)
+      expect(geometry.background).toBe('rgba(0, 0, 0, 0)')
+      expect(geometry.bodyBackground).not.toBe('rgba(0, 0, 0, 0)')
       expect(await image.evaluate(img => img.currentSrc)).toBe(source)
       expect(requestedImages).toHaveLength(1)
     }
@@ -365,7 +358,7 @@ test('Home loads one responsive photograph and cuts it at the opening base in bo
 })
 
 test('tablet navigation switches once without duplicated menus', async ({ page }) => {
-  for (const path of ['/', '/topics', '/studies/la-fe-de-jesus', '/read/43/3']) {
+  for (const path of ['/', '/topics', '/fe-de-jesus', '/biblia/juan/3']) {
     await page.goto(path)
     for (const width of [950, 1024]) {
       await page.setViewportSize({ width, height: 900 })

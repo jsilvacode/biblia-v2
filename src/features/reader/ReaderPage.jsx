@@ -4,11 +4,13 @@ import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import {
   formatReference,
+  getBookBySlug,
+  getBookRouteSlug,
   getAdjacentReference,
-  getBook,
   getLocalizedBookName,
   getVersion,
 } from '../bible/catalog'
+import { getReaderPath } from '../bible/readerPath'
 import { loadChapter } from '../bible/bibleRepository'
 import { HomeHeader } from '../home/HomeHeader'
 import { HomePassagePicker } from '../home/HomePassagePicker'
@@ -60,12 +62,12 @@ export default function ReaderPage() {
   const synchronizedSharedVersionRef = useRef(null)
   const passageBookTriggerRef = useRef(null)
   const chapterHeadingRef = useRef(null)
+  const book = getBookBySlug(rawBook)
   const reference = useMemo(() => ({
-    book: Number(rawBook),
+    book: book?.id,
     chapter: Number(rawChapter),
     verse: rawVerse ? Number(rawVerse) : null,
-  }), [rawBook, rawChapter, rawVerse])
-  const book = getBook(reference.book)
+  }), [book, rawChapter, rawVerse])
   const sharedVersionId = new URLSearchParams(location.search).get('v')
   const sharedVersion = sharedVersionId && getVersion(sharedVersionId).id === sharedVersionId
     ? getVersion(sharedVersionId)
@@ -76,6 +78,7 @@ export default function ReaderPage() {
   const requestedReturnTo = typeof location.state?.returnTo === 'string' ? location.state.returnTo : null
   const returnTo = requestedReturnTo && (
     requestedReturnTo.startsWith('/topics')
+    || requestedReturnTo.startsWith('/fe-de-jesus')
     || requestedReturnTo.startsWith('/studies/la-fe-de-jesus')
   ) ? requestedReturnTo : null
   const returnLabel = returnTo && typeof location.state?.returnLabel === 'string'
@@ -202,7 +205,12 @@ export default function ReaderPage() {
     return () => window.clearTimeout(timeout)
   }, [actionFeedback])
 
-  if (!book || reference.chapter < 1 || reference.chapter > book.chapters) return <Navigate replace to="/bible" />
+  if (!book || reference.chapter < 1 || reference.chapter > book.chapters) return <Navigate replace to="/biblia" />
+  if (rawBook !== getBookRouteSlug(book)) return <Navigate replace state={location.state} to={{
+    pathname: getReaderPath(reference),
+    search: location.search,
+    hash: location.hash,
+  }} />
 
   const selectedReference = {
     book: reference.book,
@@ -248,14 +256,14 @@ export default function ReaderPage() {
     const appHistoryIndex = window.history.state?.idx
     if (returnTo) navigate(returnTo, { replace: true })
     else if (typeof appHistoryIndex === 'number' && appHistoryIndex > 0) navigate(-1)
-    else navigate('/bible', { replace: true })
+    else navigate('/biblia', { replace: true })
   }
 
   function move(direction) {
     const adjacent = direction === 'next' ? next : previous
     if (adjacent) {
       closeDialog()
-      navigate(`/read/${adjacent.book}/${adjacent.chapter}`, {
+      navigate(getReaderPath(adjacent), {
         state: returnTo ? { returnLabel, returnSource, returnTo } : undefined,
       })
     }
@@ -270,7 +278,7 @@ export default function ReaderPage() {
 
   function goToChapter(bookId, chapter, verse = null) {
     closeDialog()
-    navigate(`/read/${bookId}/${chapter}${verse ? `/${verse}` : ''}`, {
+    navigate(getReaderPath({ book: bookId, chapter, verse }), {
       state: returnTo || verse ? {
         ...(verse ? { attentionVerse: true } : {}),
         ...(returnTo ? { returnLabel, returnSource, returnTo } : {}),
@@ -374,7 +382,7 @@ export default function ReaderPage() {
             <p>{t('reader.loadError')}</p>
             <div className="reader-error__actions">
               <button className="button button--compact" onClick={() => { setChapterResult({ key: requestKey, status: 'loading', data: [] }); setChapterRetry((value) => value + 1) }} type="button">{t('reader.retry')}</button>
-              <Link to="/bible">{t('common.back')}</Link>
+              <Link to="/biblia">{t('common.back')}</Link>
             </div>
           </div>
         )}

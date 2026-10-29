@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 test('bookmarks and highlights reopen their original translation after a preference change', async ({ page }) => {
-  await page.goto('/read/43/3/16?v=rva2015')
+  await page.goto('/biblia/juan/3/16?v=rva2015')
   const actions = page.getByRole('dialog', { name: 'Acciones del versículo', exact: true })
   const verse = page.locator('#verse-16')
   await expect(verse).toContainText('ha dado a su Hijo unigénito')
@@ -20,9 +20,9 @@ test('bookmarks and highlights reopen their original translation after a prefere
     if (tab === 'Resaltados') await page.getByRole('tab', { name: tab, exact: true }).click()
     const saved = page.locator('.saved-list').getByRole('link', { name: /Juan 3:16/ })
     await expect(saved).toContainText('RVA2015')
-    await expect(saved).toHaveAttribute('href', '/read/43/3/16?v=rva2015')
+    await expect(saved).toHaveAttribute('href', '/biblia/juan/3/16?v=rva2015')
     await saved.click()
-    await expect(page).toHaveURL(/\/read\/43\/3\/16\?v=rva2015$/)
+    await expect(page).toHaveURL(/\/biblia\/juan\/3\/16\?v=rva2015$/)
     await expect(verse).toContainText('ha dado a su Hijo unigénito')
     await expect(verse).toHaveClass(/is-highlighted/)
     await verse.click()

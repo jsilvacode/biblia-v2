@@ -1,4 +1,5 @@
 import books from '../../src/features/bible/data/books.json' with { type: 'json' }
+import { findBookByRouteSlug, getBookRouteSlug } from '../../src/features/bible/bookRoute.js'
 import versions from '../../src/features/bible/data/versions.json' with { type: 'json' }
 import { getLocalizedBookName } from '../../src/features/bible/bookNames.js'
 import { normalizeScriptureText } from '../../src/features/bible/textNormalizer.js'
@@ -99,7 +100,10 @@ export function getRequestOrigin(request) {
 }
 
 export function parseVerseShareQuery(query = {}) {
-  const bookId = parsePositiveInteger(getQueryValue(query, 'book'), 'Libro')
+  const rawBook = String(getQueryValue(query, 'book') ?? '')
+  const book = /^\d{1,3}$/u.test(rawBook)
+    ? books.find((item) => item.id === Number(rawBook))
+    : findBookByRouteSlug(rawBook, books)
   const chapter = parsePositiveInteger(getQueryValue(query, 'chapter'), 'Capítulo')
   const verseStart = parsePositiveInteger(getQueryValue(query, 'verse'), 'Versículo')
   const rawEnd = getQueryValue(query, 'end')
@@ -111,14 +115,13 @@ export function parseVerseShareQuery(query = {}) {
     throw new ShareMetadataError('Rango de versículos inválido.')
   }
 
-  const book = books.find((item) => item.id === bookId)
   if (!book || chapter > book.chapters) throw new ShareMetadataError('Referencia bíblica inválida.', 404)
 
   return { book, chapter, locale, verseEnd, verseStart, version }
 }
 
 function buildReaderUrl(origin, parsed) {
-  const url = new URL(`/read/${parsed.book.id}/${parsed.chapter}/${parsed.verseStart}`, origin)
+  const url = new URL(`/biblia/${getBookRouteSlug(parsed.book)}/${parsed.chapter}/${parsed.verseStart}`, origin)
   url.searchParams.set('v', parsed.version.id)
   if (parsed.verseEnd > parsed.verseStart) url.searchParams.set('end', String(parsed.verseEnd))
   if (parsed.locale !== 'es') url.searchParams.set('lang', parsed.locale)

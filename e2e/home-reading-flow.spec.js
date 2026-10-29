@@ -90,7 +90,7 @@ test('Home provides one editorial entry for each destination and the four select
   await expect(page.locator('#boot-splash')).toHaveCount(0)
   const hero = page.getByRole('region', { name: promiseTitle })
   await expect(hero.getByRole('heading')).toBeVisible()
-  await expect(hero.getByRole('link', { name: /Leer capítulo/ })).toHaveAttribute('href', /^\/read\/\d+\/\d+\/\d+$/)
+  await expect(hero.getByRole('link', { name: /Leer capítulo/ })).toHaveAttribute('href', /^\/biblia\/[a-z0-9-]+\/\d+\/\d+$/)
   await expect(page.getByRole('heading', { name: 'Leer la Biblia', exact: true })).toBeVisible()
   await expect(page.getByRole('region', { name: /^(?:Última lectura|Lecturas recientes)$/ })).toHaveCount(0)
   expect(startupImages.some((url) => url.includes('/assets/social/verse-card-background.jpg'))).toBe(false)
@@ -101,7 +101,7 @@ test('Home provides one editorial entry for each destination and the four select
   for (const [name, path] of [
     [/Reavivados por su Palabra/, '/reavivados'],
     [/Qué leer cuando/, '/topics'],
-    [/La Fe de Jesús/, '/studies/la-fe-de-jesus'],
+    [/La Fe de Jesús/, '/fe-de-jesus'],
   ]) {
     const entry = page.getByRole('link', { name })
     await expect(entry).toHaveCount(1)
@@ -110,7 +110,7 @@ test('Home provides one editorial entry for each destination and the four select
   }
 
   const editorialImages = page.getByRole('region', { name: 'También en Santa Biblia', exact: true }).locator('img')
-  await expect(editorialImages).toHaveCount(3)
+  await expect(editorialImages).toHaveCount(4)
   for (const image of await editorialImages.all()) {
     await image.scrollIntoViewIfNeeded()
     await expect.poll(() => image.evaluate((element) => element.complete && element.naturalWidth > 0)).toBe(true)
@@ -154,7 +154,7 @@ test('a new reader chooses a chapter inside its book and enters the reader direc
   const picker = homePicker(page)
   await expect(picker.form.locator('[data-chapter]')).toHaveCount(50)
   await picker.form.getByRole('button', { name: 'Abrir Génesis 1', exact: true }).click()
-  await expect(page).toHaveURL(/\/read\/1\/1$/)
+  await expect(page).toHaveURL(/\/biblia\/genesis\/1$/)
   await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0)
 })
 
@@ -163,7 +163,7 @@ test('returning Home keeps the picker neutral and offers the last reading as a s
   const picker = homePicker(page)
   await chooseBook(page, 43)
   await picker.form.locator('[data-chapter="3"]').click()
-  await expect(page).toHaveURL(/\/read\/43\/3$/)
+  await expect(page).toHaveURL(/\/biblia\/juan\/3$/)
   await expect.poll(() => page.evaluate(() => {
     const value = window.localStorage.getItem('santa_biblia_v2_reading')
     return value ? JSON.parse(value).updatedAt : null
@@ -175,9 +175,9 @@ test('returning Home keeps the picker neutral and offers the last reading as a s
   await expect(panel.getByRole('heading', { name: page.viewportSize().width <= 620 ? 'Última lectura' : 'Lecturas recientes', exact: true })).toBeVisible()
   await expect(panel.getByText(/^Juan 3(?::\d+)?$/, { exact: true })).toBeVisible()
   const continueReading = panel.getByRole('link', { name: continueLabel })
-  await expect(continueReading).toHaveAttribute('href', /^\/read\/43\/3(?:\/\d+)?$/)
+  await expect(continueReading).toHaveAttribute('href', /^\/biblia\/juan\/3(?:\/\d+)?$/)
   await continueReading.click()
-  await expect(page).toHaveURL(/\/read\/43\/3(?:\/\d+)?$/)
+  await expect(page).toHaveURL(/\/biblia\/juan\/3(?:\/\d+)?$/)
 })
 
 test('changing and closing a book leaves reading history intact until a chapter is chosen', async ({ page }) => {
@@ -265,14 +265,14 @@ test('keyboard navigation and enlarged text can open the last chapter of a book'
   await expectPopupWithinScreen(page)
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
   await page.keyboard.press('Enter')
-  await expect(page).toHaveURL(/\/read\/66\/22$/)
+  await expect(page).toHaveURL(/\/biblia\/apocalipsis\/22$/)
 })
 
 test('the daily promise opens its exact verse with a temporary attention pulse', async ({ page }) => {
   await clearAppStorage(page)
   const promiseReading = page.getByRole('region', { name: promiseTitle }).getByRole('link', { name: /Leer capítulo|Read chapter|Ler capítulo/ })
   await promiseReading.click()
-  await expect(page).toHaveURL(/\/read\/\d+\/\d+\/\d+$/)
+  await expect(page).toHaveURL(/\/biblia\/[a-z0-9-]+\/\d+\/\d+$/)
   const verse = page.locator('.verse.is-attention-pulsing')
   await expect(verse).toBeVisible()
   await expect(verse).toHaveCount(0, { timeout: 4000 })
@@ -295,6 +295,6 @@ test('sharing the promise sends one detectable URL for its social card', async (
     return value ? JSON.parse(value) : null
   })).not.toBeNull()
   const payload = await page.evaluate(() => JSON.parse(window.sessionStorage.getItem('captured-promise-share')))
-  expect(payload.text).toMatch(/\/read\/\d+\/\d+\/\d+\?v=[a-z0-9-]+(?:&end=\d+)?&share=12$/)
+  expect(payload.text).toMatch(/\/biblia\/[a-z0-9-]+\/\d+\/\d+\?v=[a-z0-9-]+(?:&end=\d+)?&share=12$/)
   expect(payload).not.toHaveProperty('url')
 })

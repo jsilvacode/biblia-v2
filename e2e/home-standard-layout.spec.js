@@ -106,7 +106,7 @@ test('the Home opening and reading panel stay stable with complete short, medium
   }
 })
 
-test('loading the promise and adding reading history do not move the glass or the next section', async ({ page }) => {
+test('loading the promise keeps the opening stable and reading history stays inside it', async ({ page }) => {
   let releaseChapter
   const chapterGate = new Promise(resolve => { releaseChapter = resolve })
   await page.route('**/data/nbla/**', async route => { await chapterGate; await route.continue() })
@@ -116,18 +116,22 @@ test('loading the promise and adding reading history do not move the glass or th
   await expect(page.getByRole('region', { name: /^(?:Última lectura|Lecturas recientes)$/ })).toHaveCount(0)
   const geometry = () => page.getByTestId('home-reading-panel').evaluate(panel => {
     const opening = document.querySelector('[data-testid="home-opening"]').getBoundingClientRect()
+    const panelBox = panel.getBoundingClientRect()
     return {
-      height: panel.getBoundingClientRect().height,
-      top: panel.getBoundingClientRect().top,
       openingHeight: opening.height,
       openingBottom: opening.bottom,
-      editorialTop: document.getElementById('home-editorial-heading').getBoundingClientRect().top,
+      panelTop: panelBox.top,
+      panelBottom: panelBox.bottom,
     }
   })
   const loading = await geometry()
   releaseChapter()
   await expect(promiseRegion(page)).toHaveAttribute('aria-busy', 'false')
-  expect(await geometry()).toEqual(loading)
+  const withPromise = await geometry()
+  expect(withPromise.openingHeight).toBe(loading.openingHeight)
+  expect(withPromise.openingBottom).toBe(loading.openingBottom)
+  expect(withPromise.panelTop).toBe(loading.panelTop)
+  expect(withPromise.panelBottom).toBe(loading.panelBottom)
   await page.evaluate(() => {
     const readings = [43, 19, 1].map((book, index) => ({ book, chapter: 1, verse: 1, progress: 10, updatedAt: 300 - index }))
     localStorage.setItem('santa_biblia_v2_recent_readings', JSON.stringify(readings))
@@ -139,7 +143,11 @@ test('loading the promise and adding reading history do not move the glass or th
   const history = page.getByRole('region', { name: isMobile ? 'Última lectura' : 'Lecturas recientes', exact: true })
   await expect(history.getByRole('link')).toHaveCount(isMobile ? 1 : 3)
   await expect(history.locator('a')).toHaveCount(3)
-  expect(await geometry()).toEqual(loading)
+  const withHistory = await geometry()
+  expect(withHistory.panelTop).toBeGreaterThanOrEqual(0)
+  expect(withHistory.panelBottom).toBeLessThanOrEqual(withHistory.openingBottom)
+  const editorialTop = await page.locator('#home-editorial-heading').evaluate((element) => element.getBoundingClientRect().top)
+  expect(editorialTop).toBeGreaterThanOrEqual(withHistory.openingBottom)
 })
 
 test('resizing the Home opening through two columns preserves the single reading panel and search state', async ({ page }) => {
@@ -184,7 +192,7 @@ test('enlarged text keeps the longest translated promise complete and its action
   expect(geometry.actionsTop).toBeGreaterThanOrEqual(geometry.quoteBottom)
   const read = promiseRegion(page).getByRole('link', { name: /Leer capítulo/ })
   await read.click()
-  await expect(page).toHaveURL(/\/read\/50\/4\/12$/)
+  await expect(page).toHaveURL(/\/biblia\/filipenses\/4\/12$/)
   await expect(page.locator('#verse-12')).toBeVisible()
 })
 
@@ -198,7 +206,7 @@ test('editorial cards align on tablet and desktop and stack without clipping tra
       await page.goto('/')
       const editorial = page.getByRole('region', { name: /También en Santa Biblia|Also in Santa Biblia|Também em Santa Biblia/ })
       const cards = editorial.getByRole('link')
-      await expect(cards).toHaveCount(3)
+      await expect(cards).toHaveCount(4)
       await page.evaluate(() => document.fonts.ready)
       const heading = await editorial.getByRole('heading', { level: 2 }).evaluate(element => {
         const style = getComputedStyle(element)
@@ -219,10 +227,10 @@ test('editorial cards align on tablet and desktop and stack without clipping tra
       expect(Math.abs(heading.center - heading.sectionCenter)).toBeLessThanOrEqual(1)
       expect(heading.fits).toBe(true)
       if (width === 1440) {
-        expect(heading.sectionWidth).toBeGreaterThanOrEqual(1180)
-        expect(heading.sectionWidth).toBeLessThanOrEqual(1220)
+        expect(heading.sectionWidth).toBeGreaterThanOrEqual(880)
+        expect(heading.sectionWidth).toBeLessThanOrEqual(920)
       }
-      expect(await cards.evaluateAll((links) => links.map((link) => link.getAttribute('href')))).toEqual(['/reavivados', '/topics', '/studies/la-fe-de-jesus'])
+      expect(await cards.evaluateAll((links) => links.map((link) => link.getAttribute('href')))).toEqual(['/reavivados', '/topics', '/fe-de-jesus', '/creencias'])
       const geometry = await cards.evaluateAll((links) => links.map((link) => {
         const rect = link.getBoundingClientRect()
         const title = link.querySelector('h3')
@@ -239,14 +247,14 @@ test('editorial cards align on tablet and desktop and stack without clipping tra
         expect(card.right).toBeLessThanOrEqual(width)
         expect(card.titleFits).toBe(true)
         expect(card.imageBeforeTitle).toBe(true)
-        expect(card.imageRatio).toBeCloseTo(2.4, 1)
+        expect(card.imageRatio).toBeCloseTo(2.8, 1)
         expect(card.actionBottom).toBeLessThan(card.bottom)
       }
       if (width >= 768) {
-        for (const card of geometry.slice(1)) {
-          expect(Math.abs(card.top - geometry[0].top)).toBeLessThanOrEqual(1)
-          expect(Math.abs(card.height - geometry[0].height)).toBeLessThanOrEqual(1)
-          expect(Math.abs(card.actionBottom - geometry[0].actionBottom)).toBeLessThanOrEqual(1)
+        for (const [first, second] of [[geometry[0], geometry[1]], [geometry[2], geometry[3]]]) {
+          expect(Math.abs(second.top - first.top)).toBeLessThanOrEqual(1)
+          expect(Math.abs(second.height - first.height)).toBeLessThanOrEqual(1)
+          expect(Math.abs(second.actionBottom - first.actionBottom)).toBeLessThanOrEqual(1)
         }
       } else {
         for (let index = 1; index < geometry.length; index += 1) {

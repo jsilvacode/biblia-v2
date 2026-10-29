@@ -57,7 +57,7 @@ function BeliefSelector({ slug = '' }) {
   return <label className={styles.selectorField}>
     <span>Ir a una creencia</span>
     <span className={styles.selectorControl}><select aria-label="Ir a una creencia" onChange={(event) => {
-      if (event.target.value) navigate('/beliefs/' + event.target.value)
+      if (event.target.value) navigate('/creencias/' + event.target.value)
     }} value={slug}>
       <option value="">Elegir una creencia</option>
       {catalog.categories.map((category) => <optgroup key={category.id} label={categoryNames[category.id]}>
@@ -291,7 +291,7 @@ function BeliefsContent() {
   if (slug && !belief) {
     return <div className={'page ' + styles.page}>
       <PageIntro eyebrow="Un recorrido de estudio" title="28 creencias fundamentales">No encontramos esta creencia.</PageIntro>
-      <Link className={styles.backLink} to="/beliefs"><Icon name="arrowLeft" size={17} />Volver a las 28 creencias</Link>
+      <Link className={styles.backLink} to="/creencias"><Icon name="arrowLeft" size={17} />Volver a las 28 creencias</Link>
     </div>
   }
 
@@ -301,7 +301,7 @@ function BeliefsContent() {
     const next = catalog.beliefs[index + 1]
     return <div className={'page ' + styles.page}>
       <nav aria-label="Navegar por las creencias" className={styles.detailToolbar}>
-        <Link className={styles.backLink} to="/beliefs"><Icon name="arrowLeft" size={17} />Volver a las 28 creencias</Link>
+        <Link className={styles.backLink} to="/creencias"><Icon name="arrowLeft" size={17} />Volver a las 28 creencias</Link>
         <BeliefSelector slug={belief.slug} />
       </nav>
       <PageIntro eyebrow={categoryNames[belief.categoryId]} illustration={{ height: 1024, src: artwork[belief.categoryId], width: 1536 }} title={belief.title}>
@@ -318,9 +318,9 @@ function BeliefsContent() {
       <ExpandedBelief beliefNumber={belief.number} key={belief.number} title={belief.title} />
       <div className={styles.notesFooter}><button aria-haspopup="dialog" onClick={openNotes} type="button">Notas sobre la versión <Icon name="arrowRight" size={16} /></button></div>
       <nav aria-label="Recorrer las 28 creencias" className={styles.pager}>
-        {previous ? <Link to={'/beliefs/' + previous.slug}><Icon name="arrowLeft" size={16} /><span><small>Creencia anterior</small><strong>{previous.title}</strong></span></Link>
-          : <Link to="/beliefs"><Icon name="arrowLeft" size={16} /><span><small>El recorrido completo</small><strong>Las 28 creencias</strong></span></Link>}
-        {next && <Link className={styles.nextLink} to={'/beliefs/' + next.slug}><span><small>Creencia siguiente</small><strong>{next.title}</strong></span><Icon name="arrowRight" size={16} /></Link>}
+        {previous ? <Link to={'/creencias/' + previous.slug}><Icon name="arrowLeft" size={16} /><span><small>Creencia anterior</small><strong>{previous.title}</strong></span></Link>
+          : <Link to="/creencias"><Icon name="arrowLeft" size={16} /><span><small>El recorrido completo</small><strong>Las 28 creencias</strong></span></Link>}
+        {next && <Link className={styles.nextLink} to={'/creencias/' + next.slug}><span><small>Creencia siguiente</small><strong>{next.title}</strong></span><Icon name="arrowRight" size={16} /></Link>}
       </nav>
       {notesDialog}
     </div>
@@ -348,7 +348,7 @@ function BeliefsContent() {
       <p aria-live="polite" className={styles.resultsCount} role="status">Mostrando {visibleBeliefs.length} de {filtered.length} {filtered.length === 1 ? 'creencia' : 'creencias'}</p>
       {visibleBeliefs.length ? <>
         <div className={styles.beliefGrid} id="belief-grid">
-          {visibleBeliefs.map((item) => <Link aria-label={item.number + '. ' + item.title + ': leer creencia'} className={styles.beliefCard} key={item.id} to={'/beliefs/' + item.slug}>
+          {visibleBeliefs.map((item) => <Link aria-label={item.number + '. ' + item.title + ': leer creencia'} className={styles.beliefCard} key={item.id} to={'/creencias/' + item.slug}>
             <span aria-hidden="true" className={styles.cardArt + ' editorial-art'}><EditorialIllustration alt="" decoding="async" height="1024" loading="lazy" src={artwork[item.categoryId]} width="1536" /><span className={styles.cardNumber}>{String(item.number).padStart(2, '0')}</span></span>
             <span className={styles.cardCopy}><span className={styles.cardCategory}>{categoryNames[item.categoryId]}</span><strong className={styles.cardTitle}>{item.title}</strong><span className={styles.cardExcerpt}>{excerpt(item.paragraphs[0])}</span><span className={styles.cardFooter}><span>{item.references.length} pasajes bíblicos</span><span>Leer creencia <Icon name="arrowRight" size={16} /></span></span></span>
           </Link>)}

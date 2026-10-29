@@ -1,4 +1,6 @@
 import { SOCIAL_CARD_REVISION } from './socialCardConfig.js'
+import { bibleBooks, getBook, getBookRouteSlug } from '../bible/catalog.js'
+import { findBookByRouteSlug } from '../bible/bookRoute.js'
 
 const APP_SHARE_TEXT = 'Lee, medita y comparte la Biblia cada día.'
 const OFFICIAL_APP_ORIGIN = 'https://www.santabiblia.cloud'
@@ -24,7 +26,11 @@ export function createVerseShareUrl({
   verseEnd = verse,
   versionId,
 }) {
-  const url = new URL(`/read/${Number(book)}/${Number(chapter)}/${Number(verse)}`, getShareOrigin(origin))
+  const bookEntry = typeof book === 'string' && !/^\d+$/u.test(book)
+    ? findBookByRouteSlug(book, bibleBooks)
+    : getBook(book)
+  const routeSlug = getBookRouteSlug(bookEntry)
+  const url = new URL(`/biblia/${routeSlug}/${Number(chapter)}/${Number(verse)}`, getShareOrigin(origin))
   url.searchParams.set('v', versionId)
   if (Number(verseEnd) > Number(verse)) url.searchParams.set('end', String(Number(verseEnd)))
   if (locale !== 'es') url.searchParams.set('lang', locale)
@@ -64,13 +70,15 @@ function prewarmVerseCard(sharedUrl) {
 
   try {
     const url = new URL(sharedUrl)
-    const match = url.pathname.match(/^\/read\/(\d+)\/(\d+)\/(\d+)$/u)
+    const match = url.pathname.match(/^\/biblia\/([^/]+)\/(\d+)\/(\d+)$/u)
     if (url.origin !== OFFICIAL_APP_ORIGIN || !match) return
 
-    const [, book, chapter, verse] = match
+    const [, rawBook, chapter, verse] = match
+    const book = findBookByRouteSlug(rawBook, bibleBooks)
+    if (!book) return
     const imageUrl = new URL('/api/og-card', OFFICIAL_APP_ORIGIN)
     imageUrl.searchParams.set('type', 'verse')
-    imageUrl.searchParams.set('book', book)
+    imageUrl.searchParams.set('book', String(book.id))
     imageUrl.searchParams.set('chapter', chapter)
     imageUrl.searchParams.set('verse', verse)
     for (const name of ['v', 'end', 'lang']) {

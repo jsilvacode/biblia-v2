@@ -1,5 +1,6 @@
 import books from './data/books.json'
 import versions from './data/versions.json'
+import { findBookByRouteSlug, getBookRouteSlug as toBookRouteSlug } from './bookRoute'
 import { getLocalizedBookName } from './bookNames'
 
 export const bibleBooks = Object.freeze(books)
@@ -7,6 +8,15 @@ export const bibleVersions = Object.freeze(versions)
 
 export function getBook(bookId) {
   return bibleBooks.find((book) => book.id === Number(bookId)) ?? null
+}
+
+export function getBookRouteSlug(book) {
+  const entry = typeof book === 'object' ? book : getBook(book)
+  return toBookRouteSlug(entry)
+}
+
+export function getBookBySlug(slug) {
+  return findBookByRouteSlug(slug, bibleBooks)
 }
 
 export function getVersion(versionId) {

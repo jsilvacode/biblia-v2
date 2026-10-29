@@ -102,7 +102,7 @@ describe('saved provider', () => {
     await waitFor(() => expect(screen.getByRole('alert').textContent).toContain(dictionary.saved.loadError))
     expect(screen.queryByText(dictionary.saved.empty)).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: dictionary.saved.retry, exact: true }))
-    await waitFor(() => expect(screen.getByRole('link', { name: /3:16/ }).getAttribute('href')).toBe('/read/43/3/16?v=nbla'))
+    await waitFor(() => expect(screen.getByRole('link', { name: /3:16/ }).getAttribute('href')).toBe('/biblia/juan/3/16?v=nbla'))
     expect(screen.queryByRole('alert')).toBeNull()
   })
 })

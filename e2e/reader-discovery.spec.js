@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 test('verse help appears once and Copy is the first focused action', async ({ page }) => {
-  await page.goto('/read/43/3')
+  await page.goto('/biblia/juan/3')
   const hint = page.getByTestId('reader-action-hint')
   await expect(hint).toBeVisible()
   await page.locator('#verse-1').focus()
@@ -20,7 +20,7 @@ test('verse help appears once and Copy is the first focused action', async ({ pa
 })
 
 test('verse help can be dismissed without blocking reading', async ({ page }) => {
-  await page.goto('/read/43/3')
+  await page.goto('/biblia/juan/3')
   await page.getByRole('button', { name: 'Ocultar ayuda de los versículos' }).click()
   await page.reload()
   await expect(page.locator('#verse-1')).toBeVisible()
@@ -33,10 +33,10 @@ test('the single reader return action restores its thematic route context', asyn
   await page.getByRole('option', { name: 'Tengo miedo', exact: true }).click()
   const destination = page.url()
   await page.addInitScript((returnTo) => {
-    if (location.pathname.startsWith('/read/')) history.replaceState({ ...history.state, usr: { returnTo, returnSource: 'topics' } }, '', location.href)
+    if (location.pathname.startsWith('/biblia/')) history.replaceState({ ...history.state, usr: { returnTo, returnSource: 'topics' } }, '', location.href)
   }, new URL(destination).pathname + new URL(destination).search)
-  await page.goto('/read/19/27')
-  await expect(page).toHaveURL(/\/read\/19\/27/)
+  await page.goto('/biblia/salmos/27')
+  await expect(page).toHaveURL(/\/biblia\/salmos\/27/)
   const back = page.getByRole('button', { name: 'Volver a la guía', exact: true })
   await expect(back).toHaveCount(1)
   await back.click()

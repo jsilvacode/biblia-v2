@@ -41,7 +41,7 @@ test('the home promise reflows at 200 percent text size on a narrow phone', asyn
 })
 
 test('verse actions and commentary keep a usable close button at 200 percent text size', async ({ page }) => {
-  await enlarge(page, '/read/43/3')
+  await enlarge(page, '/biblia/juan/3')
   await page.locator('#verse-1').focus()
   await page.keyboard.press('Enter')
   const actions = page.getByRole('dialog')
@@ -60,7 +60,7 @@ test('verse actions and commentary keep a usable close button at 200 percent tex
 })
 
 test('chapter and thematic reading dialogs remain usable with enlarged text', async ({ page }) => {
-  await enlarge(page, '/bible')
+  await enlarge(page, '/biblia')
   await page.locator('[data-book-id="1"]').click()
   await usableDialog(page)
   await enlarge(page, '/topics')

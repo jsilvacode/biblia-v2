@@ -24,12 +24,12 @@ async function expectSelectedCategory(page, id, text) {
 }
 
 async function openOldTestament(page) {
-  await page.goto('/bible')
+  await page.goto('/biblia')
   await selectCategory(page, 'OT')
 }
 
 test('opens all 66 books with category cards on desktop and the icon dropdown on mobile', async ({ page, isMobile }) => {
-  await page.goto('/bible')
+  await page.goto('/biblia')
   const selector = page.getByRole('combobox', { name: 'Filtrar libros', exact: true })
   const cards = page.getByRole('group', { name: 'Filtrar libros', exact: true })
   if (isMobile) {
@@ -69,7 +69,7 @@ test('opens all 66 books with category cards on desktop and the icon dropdown on
 })
 
 test('historical and letter filters use the requested cross-testament and 14/7 groupings', async ({ page }) => {
-  await page.goto('/bible')
+  await page.goto('/biblia')
   const results = page.locator('#bible-book-results')
   await selectCategory(page, 'history')
   await expect(results.locator('[data-book-id]')).toHaveCount(13)
@@ -89,7 +89,7 @@ test('historical and letter filters use the requested cross-testament and 14/7 g
 
 test('the category dropdown is bounded on mobile and keeps its selection after closing chapters', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 })
-  await page.goto('/bible')
+  await page.goto('/biblia')
   const selector = page.getByRole('combobox', { name: 'Filtrar libros', exact: true })
   await selector.click()
   const list = page.getByRole('listbox')
@@ -114,7 +114,7 @@ test('the category dropdown is bounded on mobile and keeps its selection after c
 })
 
 test('search spans the whole Bible and clearing it restores the selected category', async ({ page }) => {
-  await page.goto('/bible')
+  await page.goto('/biblia')
   await selectCategory(page, 'minorProphets')
   const input = page.getByRole('searchbox')
   await input.fill('juan')
@@ -128,7 +128,7 @@ test('search spans the whole Bible and clearing it restores the selected categor
 
 test('tablet cards keep the same filter when resizing to and from the mobile dropdown', async ({ page }) => {
   await page.setViewportSize({ width: 768, height: 1024 })
-  await page.goto('/bible')
+  await page.goto('/biblia')
   const cards = page.getByRole('group', { name: 'Filtrar libros', exact: true })
   const selector = page.getByRole('combobox', { name: 'Filtrar libros', exact: true })
   await expect(cards.getByRole('button')).toHaveCount(13)
@@ -169,7 +169,7 @@ test('choosing a book opens its chapters in a centred modal and goes directly to
   expect(Math.abs(box.y + box.height / 2 - viewport.height / 2)).toBeLessThan(2)
   expect(corpusRequests).toEqual([])
   await dialog.getByRole('link', { name: '2', exact: true }).click()
-  await expect(page).toHaveURL(/\/read\/1\/2$/)
+  await expect(page).toHaveURL(/\/biblia\/genesis\/2$/)
   await expect(page.locator('#verse-1')).toBeVisible()
   expect(corpusRequests.length).toBeGreaterThan(0)
   await expect(page.getByRole('dialog')).toHaveCount(0)
@@ -204,7 +204,7 @@ test('long chapter lists stay inside a small screen and preserve list position a
 })
 
 test('a book found by name keeps its search after closing the chapter modal', async ({ page }) => {
-  await page.goto('/bible')
+  await page.goto('/biblia')
   const search = page.getByRole('searchbox')
   await search.fill('salmos')
   const book = page.locator('[data-book-id="19"]')
@@ -220,6 +220,6 @@ test('a book found by name keeps its search after closing the chapter modal', as
   await expect(dialog.getByRole('button', { name: 'Abrir', exact: true })).toBeDisabled()
   await input.fill('150')
   await input.press('Enter')
-  await expect(page).toHaveURL(/\/read\/19\/150$/)
+  await expect(page).toHaveURL(/\/biblia\/salmos\/150$/)
   await expect(page.locator('#verse-1')).toBeVisible()
 })

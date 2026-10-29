@@ -15,6 +15,51 @@
   },
   "redirects": [
     {
+      "source": "/bible",
+      "destination": "/biblia",
+      "permanent": true
+    },
+    {
+      "source": "/beliefs",
+      "destination": "/creencias",
+      "permanent": true
+    },
+    {
+      "source": "/beliefs/:slug",
+      "destination": "/creencias/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/studies/la-fe-de-jesus",
+      "destination": "/fe-de-jesus",
+      "permanent": true
+    },
+    {
+      "source": "/studies/la-fe-de-jesus/:lessonSlug",
+      "destination": "/fe-de-jesus/:lessonSlug",
+      "permanent": true
+    },
+    {
+      "source": "/fedejesus",
+      "destination": "/fe-de-jesus",
+      "permanent": true
+    },
+    {
+      "source": "/fedejesus/:lessonSlug",
+      "destination": "/fe-de-jesus/:lessonSlug",
+      "permanent": true
+    },
+    {
+      "source": "/biblia/:book/:chapter/:verse/",
+      "destination": "/biblia/:book/:chapter/:verse",
+      "permanent": true
+    },
+    {
+      "source": "/biblia/:book/:chapter/",
+      "destination": "/biblia/:book/:chapter",
+      "permanent": true
+    },
+    {
       "source": "/read/:book/:chapter/:verse/",
       "destination": "/read/:book/:chapter/:verse",
       "permanent": true
@@ -32,6 +77,10 @@
     {
       "source": "/este-dia-con-dios/:date",
       "destination": "/api/share-page?type=daily-video&date=:date"
+    },
+    {
+      "source": "/biblia/:book/:chapter/:verse",
+      "destination": "/api/share-page?type=verse&book=:book&chapter=:chapter&verse=:verse"
     },
     {
       "source": "/read/:book/:chapter/:verse",

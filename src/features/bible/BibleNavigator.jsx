@@ -9,12 +9,9 @@ import { BookChaptersDialog } from './BookChaptersDialog'
 import { findMatchingBooks } from './bookSearch'
 import { bibleCategories } from './bibleCategories'
 import { formatReference, getLocalizedBookName, normalizeText } from './catalog'
+import { getReaderPath } from './readerPath'
 import { parseReference } from './reference'
 import styles from './BibleNavigator.module.css'
-
-function referencePath(reference) {
-  return `/read/${reference.book}/${reference.chapter}${reference.verse ? `/${reference.verse}` : ''}`
-}
 
 export function BibleNavigator({
   currentBookId = null,
@@ -80,7 +77,7 @@ export function BibleNavigator({
     const key = `${result.book}:${result.chapter}:${result.verse}`
 
     return (
-      <Link className={className} key={key} state={{ attentionVerse: true }} to={referencePath(result)}>{content}</Link>
+      <Link className={className} key={key} state={{ attentionVerse: true }} to={getReaderPath(result)}>{content}</Link>
     )
   }
 
@@ -109,7 +106,7 @@ export function BibleNavigator({
 
       {parsedReference && (
         <div className={styles.referenceResult}>
-          <Link to={referencePath(parsedReference)}>
+          <Link to={getReaderPath(parsedReference)}>
             <Icon name="bookOpen" size={18} />
             <span>{t('bible.openReference', { reference: formatReference(parsedReference, locale) })}</span>
             <Icon name="arrowRight" size={17} />

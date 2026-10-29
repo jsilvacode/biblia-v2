@@ -4,6 +4,7 @@ import { Icon } from '../../components/ui/Icon'
 import { EditorialIllustration } from '../../components/ui/EditorialIllustration'
 import { useI18n } from '../../i18n'
 import { formatReference, getVersion } from '../bible/catalog'
+import { getReaderPath } from '../bible/readerPath'
 import { InstallInvitation } from '../install/InstallInvitation'
 import { getRpspPlanState } from '../plans/rpsp2026'
 import { getLocalRpspDate } from '../plans/rpspDate'
@@ -49,10 +50,6 @@ const interestLinks = [
   },
 ]
 
-function getReaderPath(reference) {
-  return `/read/${reference.book}/${reference.chapter}${reference.verse ? `/${reference.verse}` : ''}`
-}
-
 export default function HomePage() {
   const { locale, t } = useI18n()
   const { lastRead, recentReadings } = useReadingState()
@@ -73,7 +70,7 @@ export default function HomePage() {
     book: promise.reference.book,
     chapter: promise.reference.chapter,
     verse: promise.reference.verseStart,
-  }) : '/bible'
+  }) : '/biblia'
   const visiblePromiseText = promiseText || (promiseStatus === 'error' ? t('home.promiseUnavailable') : t('home.promiseLoading'))
   const heroQuoteClassName = visiblePromiseText.length > 220 ? styles.heroQuoteExtended
     : visiblePromiseText.length > 170 ? styles.heroQuoteLong : undefined
@@ -141,14 +138,14 @@ export default function HomePage() {
         : t('home.courseSummary'),
       action: t('home.viewCourse'),
       image: '/assets/editorial/faith-v2.webp',
-      href: '/studies/la-fe-de-jesus',
+      href: '/fe-de-jesus',
     },
     {
       title: t('home.beliefsTitle'),
       detail: t('home.beliefsSummary'),
       action: t('home.exploreBeliefs'),
       image: '/assets/editorial/beliefs/scriptures.webp',
-      href: '/beliefs',
+      href: '/creencias',
     },
   ]
 

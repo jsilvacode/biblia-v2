@@ -14,7 +14,7 @@ function RouteFailure() {
   const { t } = useI18n()
   const { pathname } = useLocation()
   const [reloading, setReloading] = useState(false)
-  const needsHeader = pathname === '/' || pathname.startsWith('/read/')
+  const needsHeader = pathname === '/' || pathname.startsWith('/biblia/') || pathname.startsWith('/read/')
 
   async function handleReload() {
     setReloading(true)

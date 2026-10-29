@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('the attention pulse expires after a delayed animation frame without removing a highlight', async ({ page }) => {
-  await page.goto('/read/43/3')
+  await page.goto('/biblia/juan/3')
   const verse = page.locator('#verse-1')
   const actions = page.getByRole('dialog', { name: 'Acciones del versículo', exact: true })
   await verse.click()
@@ -43,7 +43,7 @@ test('the attention pulse expires after a delayed animation frame without removi
   try {
     // DOM activation does not wait for the deliberately paused frame callbacks.
     await saved.evaluate(link => link.click())
-    await expect(page).toHaveURL(/\/read\/43\/3\/1\?v=nbla$/)
+    await expect(page).toHaveURL(/\/biblia\/juan\/3\/1\?v=nbla$/)
     await expect(verse).toBeVisible()
     await expect.poll(() => page.evaluate(() => window.__attentionFrameGate.frames.size)).toBeGreaterThan(0)
     // Simulate a background tab: timers can run while animation frames pause.
@@ -63,7 +63,7 @@ test('the attention pulse expires after a delayed animation frame without removi
 })
 
 test('direct verse links without attention state do not receive a pulse', async ({ page }) => {
-  await page.goto('/read/43/3/1?v=nbla')
+  await page.goto('/biblia/juan/3/1?v=nbla')
   const verse = page.locator('#verse-1')
   await expect(verse).toBeVisible()
   await expect(verse).not.toHaveClass(/is-attention-pulsing/, { timeout: 1000 })

@@ -4,6 +4,7 @@ import { PageIntro } from '../../components/ui/PageIntro'
 import { Icon } from '../../components/ui/Icon'
 import { useI18n } from '../../i18n'
 import { formatReference } from '../bible/catalog'
+import { getReaderPath } from '../bible/readerPath'
 import { useSaved } from './SavedProvider'
 
 // Notes are intentionally withheld until they have the same offline and
@@ -53,7 +54,7 @@ export default function SavedPage() {
             className="saved-item"
             key={item.id}
             state={{ attentionVerse: true }}
-            to={`/read/${item.book}/${item.chapter}/${item.verse}?v=${encodeURIComponent(item.version)}`}
+            to={`${getReaderPath(item)}?v=${encodeURIComponent(item.version)}`}
           >
             <span className="card-icon"><Icon name={icon} size={18} /></span>
             <span><strong>{formatReference(item, locale)}</strong><small>{String(item.version).toUpperCase()}</small></span>

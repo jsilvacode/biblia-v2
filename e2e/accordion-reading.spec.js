@@ -42,13 +42,13 @@ test('Home matches the approved simple picker and recent readings without repeat
   await close(menu).click()
   await expect(menu).toHaveCount(0)
   await recent.getByRole('link', { name: /Continuar(?:\b|:)/ }).click()
-  await expect(page).toHaveURL(/\/read\/3\/5\/1$/)
+  await expect(page).toHaveURL(/\/biblia\/levitico\/5\/1$/)
 })
 
 test('reader shows the approved book heading and searches books and exact citations in place', async ({ page }) => {
   const workers = []
   page.on('worker', worker => workers.push(worker.url()))
-  await page.goto('/read/43/3')
+  await page.goto('/biblia/juan/3')
   await expect(page.locator('.reader-chapter-version')).toHaveCount(0)
   await expect(page.getByRole('heading', { name: 'Juan', exact: true })).toBeVisible()
   await expect(page.locator('.reader-chapter-number')).toHaveText('Capítulo 3')
@@ -73,7 +73,7 @@ test('reader shows the approved book heading and searches books and exact citati
   await expect(input).toBeFocused()
   await input.fill('Juan 3:16')
   await input.press('Enter')
-  await expect(page).toHaveURL(/\/read\/43\/3\/16$/)
+  await expect(page).toHaveURL(/\/biblia\/juan\/3\/16$/)
   await expect(page.locator('#verse-16')).toBeVisible()
   await openSearch()
   await expect(input).toHaveValue('')
@@ -82,12 +82,12 @@ test('reader shows the approved book heading and searches books and exact citati
   const chapters = page.getByRole('dialog', { name: 'Salmos', exact: true })
   await expectCloseAtRight(chapters)
   await chapters.getByRole('link', { name: '150', exact: true }).click()
-  await expect(page).toHaveURL(/\/read\/19\/150$/)
+  await expect(page).toHaveURL(/\/biblia\/salmos\/150$/)
   await expect(page.getByRole('dialog')).toHaveCount(0)
 })
 
 test('modal X closes while a nested back arrow returns to the actual previous panel', async ({ page }) => {
-  await page.goto('/read/43/3/16')
+  await page.goto('/biblia/juan/3/16')
   await page.locator('#verse-16').click()
   const actions = page.getByRole('dialog', { name: 'Acciones del versículo', exact: true })
   await expectCloseAtRight(actions)
@@ -114,7 +114,7 @@ test('modal X closes while a nested back arrow returns to the actual previous pa
 
 test('category and situation dropdowns close with X without changing the selection', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/bible')
+  await page.goto('/biblia')
   const category = page.getByRole('combobox', { name: 'Filtrar libros', exact: true })
   await category.click()
   await close(page.locator('[class*="menu"]').filter({ has: page.getByRole('listbox') }).last()).click()

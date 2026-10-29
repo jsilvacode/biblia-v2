@@ -46,7 +46,7 @@ describe('shareVerse', () => {
       verse: 3,
       verseEnd: 4,
       versionId: 'nbla',
-    })).toBe('https://www.santabiblia.cloud/read/1/46/3?v=nbla&end=4&lang=pt-BR&share=12')
+    })).toBe('https://www.santabiblia.cloud/biblia/genesis/46/3?v=nbla&end=4&lang=pt-BR&share=12')
   })
 
   it('builds an application share pointing to the official public host', () => {
@@ -64,7 +64,7 @@ describe('shareVerse', () => {
       origin: 'http://127.0.0.1:5173',
       verse: 16,
       versionId: 'nbla',
-    })).toBe('http://127.0.0.1:5173/read/43/3/16?v=nbla&share=12')
+    })).toBe('http://127.0.0.1:5173/biblia/juan/3/16?v=nbla&share=12')
   })
 
   it('shares one detectable canonical URL so messaging apps can render its card', async () => {
@@ -72,12 +72,12 @@ describe('shareVerse', () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response())
     restoreNavigatorProperty('share', share)
     vi.stubGlobal('fetch', fetchMock)
-    const data = createVerseShareData({ reference: 'Juan 3:16', text: 'Porque de tal manera…', url: 'https://www.santabiblia.cloud/read/43/3/16?v=nbla&share=12', version: 'NBLA' })
+    const data = createVerseShareData({ reference: 'Juan 3:16', text: 'Porque de tal manera…', url: 'https://www.santabiblia.cloud/biblia/juan/3/16?v=nbla&share=12', version: 'NBLA' })
 
     await expect(shareVerse(data)).resolves.toBe('shared')
     expect(share).toHaveBeenCalledWith({
       title: 'Juan 3:16 · NBLA',
-      text: 'https://www.santabiblia.cloud/read/43/3/16?v=nbla&share=12',
+      text: 'https://www.santabiblia.cloud/biblia/juan/3/16?v=nbla&share=12',
     })
     expect(fetchMock).toHaveBeenCalledWith(
       new URL('https://www.santabiblia.cloud/api/og-card?type=verse&book=43&chapter=3&verse=16&v=nbla&card=12'),

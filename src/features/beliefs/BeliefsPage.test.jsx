@@ -20,11 +20,11 @@ function KeyedBeliefsPage() {
   return <BeliefsPage key={pathname + search} />
 }
 
-function renderBelief(path = '/beliefs/las-sagradas-escrituras') {
+function renderBelief(path = '/creencias/las-sagradas-escrituras') {
   return render(<MemoryRouter initialEntries={[path]}>
     <Routes>
-      <Route path="/beliefs" element={<KeyedBeliefsPage />} />
-      <Route path="/beliefs/:slug" element={<KeyedBeliefsPage />} />
+      <Route path="/creencias" element={<KeyedBeliefsPage />} />
+      <Route path="/creencias/:slug" element={<KeyedBeliefsPage />} />
     </Routes>
   </MemoryRouter>)
 }
@@ -93,7 +93,7 @@ describe('expanded belief loading', () => {
 
 describe('belief explorer pagination', () => {
   it('resets the visible batch with filters and preserves it while reading and returning', () => {
-    renderBelief('/beliefs')
+    renderBelief('/creencias')
     expect(screen.getAllByRole('link', { name: /: leer creencia/ })).toHaveLength(9)
     fireEvent.click(screen.getByRole('button', { name: /Mostrar 9 creencias más/ }))
     expect(screen.getAllByRole('link', { name: /: leer creencia/ })).toHaveLength(18)
@@ -113,7 +113,7 @@ describe('belief explorer pagination', () => {
   it('changes to a fresh mobile batch when the viewport crosses the breakpoint', () => {
     const mobileViewport = { matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }
     vi.stubGlobal('matchMedia', vi.fn(() => mobileViewport))
-    const view = renderBelief('/beliefs')
+    const view = renderBelief('/creencias')
     fireEvent.click(screen.getByRole('button', { name: /Mostrar 9 creencias más/ }))
     const onViewportChange = mobileViewport.addEventListener.mock.calls[0][1]
     act(() => { mobileViewport.matches = true; onViewportChange() })
@@ -127,7 +127,7 @@ describe('belief explorer pagination', () => {
 describe('direct belief navigation', () => {
   it('offers every belief on mobile and follows the current detail selection', () => {
     vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() })))
-    renderBelief('/beliefs')
+    renderBelief('/creencias')
     expect(screen.getAllByRole('link', { name: /: leer creencia/ })).toHaveLength(3)
     const selector = screen.getByRole('combobox', { name: 'Ir a una creencia' })
     expect(selector.querySelectorAll('option')).toHaveLength(29)
@@ -143,7 +143,7 @@ describe('direct belief navigation', () => {
   })
 
   it('returns to the same search, category and visible batch from the detail toolbar', () => {
-    renderBelief('/beliefs')
+    renderBelief('/creencias')
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'a' } })
     fireEvent.click(screen.getByRole('button', { name: /Mostrar 9 creencias más/ }))
     expect(screen.getAllByRole('link', { name: /: leer creencia/ })).toHaveLength(18)
@@ -168,7 +168,7 @@ it('keeps navigation available when session storage is unavailable', () => {
     getItem: () => { throw new Error('Storage disabled') },
     setItem: () => { throw new Error('Storage disabled') },
   })
-  renderBelief('/beliefs')
+  renderBelief('/creencias')
   fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'a' } })
   fireEvent.change(screen.getByRole('combobox', { name: 'Ir a una creencia' }), { target: { value: 'las-sagradas-escrituras' } })
   expect(screen.getByRole('heading', { level: 1, name: 'Las Sagradas Escrituras' })).toBeTruthy()

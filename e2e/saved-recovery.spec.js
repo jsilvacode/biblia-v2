@@ -20,7 +20,7 @@ test.beforeEach(async ({ page }) => {
 test('failed writes stay visible and recover without saving the wrong verse', async ({ page }) => {
   const errors = []
   page.on('pageerror', error => errors.push(error.message))
-  await page.goto('/read/43/3/16')
+  await page.goto('/biblia/juan/3/16')
   const actions = page.getByRole('dialog', { name: 'Acciones del versículo', exact: true })
   await page.locator('#verse-16').click()
   await page.evaluate(() => { window.__savedStorageFailures.write = 1 })
@@ -38,7 +38,7 @@ test('failed writes stay visible and recover without saving the wrong verse', as
   await actions.getByRole('button', { name: 'Intentar de nuevo', exact: true }).click()
   await expect(actions).toHaveCount(0)
   await page.goto('/saved')
-  await expect(page.locator('.saved-list').getByRole('link', { name: /Juan 3:17/ })).toHaveAttribute('href', '/read/43/3/17?v=nbla')
+  await expect(page.locator('.saved-list').getByRole('link', { name: /Juan 3:17/ })).toHaveAttribute('href', '/biblia/juan/3/17?v=nbla')
   await expect(page.locator('.saved-list').getByRole('link')).toHaveCount(1)
   await page.reload()
   await expect(page.locator('.saved-list').getByRole('link', { name: /Juan 3:17/ })).toBeVisible()
@@ -48,7 +48,7 @@ test('failed writes stay visible and recover without saving the wrong verse', as
 test('a failed read shows an error instead of an empty list and retry recovers existing verses', async ({ page }) => {
   const errors = []
   page.on('pageerror', error => errors.push(error.message))
-  await page.goto('/read/43/3/16')
+  await page.goto('/biblia/juan/3/16')
   await page.locator('#verse-16').click()
   const actions = page.getByRole('dialog', { name: 'Acciones del versículo', exact: true })
   await actions.getByRole('button', { name: 'Guardar versículo', exact: true }).click()
@@ -58,7 +58,7 @@ test('a failed read shows an error instead of an empty list and retry recovers e
   await expect(page.getByRole('alert')).toContainText('No pudimos cargar tus guardados.')
   await expect(page.getByText('Aún no has guardado versículos.', { exact: true })).toHaveCount(0)
   await page.getByRole('button', { name: 'Intentar de nuevo', exact: true }).click()
-  await expect(page.locator('.saved-list').getByRole('link', { name: /Juan 3:16/ })).toHaveAttribute('href', '/read/43/3/16?v=nbla')
+  await expect(page.locator('.saved-list').getByRole('link', { name: /Juan 3:16/ })).toHaveAttribute('href', '/biblia/juan/3/16?v=nbla')
   await expect(page.getByRole('alert')).toHaveCount(0)
   expect(errors).toEqual([])
 })

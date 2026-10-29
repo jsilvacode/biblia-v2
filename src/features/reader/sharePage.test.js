@@ -38,7 +38,7 @@ describe('share page endpoint', () => {
       }
       return JSON.stringify([{ text: 'Porque de tal manera amó Dios al mundo.', verse: 16 }])
     })
-    const request = new Request('https://biblia-v2.vercel.app/api/share-page?book=43&chapter=3&type=verse&v=nbla&verse=16', {
+    const request = new Request('https://biblia-v2.vercel.app/api/share-page?book=juan&chapter=3&type=verse&v=nbla&verse=16', {
       headers: { 'x-forwarded-host': 'biblia-v2.vercel.app', 'x-forwarded-proto': 'https' },
       method: 'GET',
     })
@@ -50,7 +50,7 @@ describe('share page endpoint', () => {
     expect(response.headers.get('Content-Type')).toBe('text/html; charset=utf-8')
     expect(body).toContain('<div id="root"></div>')
     expect(body).toContain('Juan 3:16 | Santa Biblia')
-    expect(body).toContain('https://biblia-v2.vercel.app/read/43/3/16?v=nbla')
+    expect(body).toContain('https://biblia-v2.vercel.app/biblia/juan/3/16?v=nbla')
     expect(body).toContain('Porque de tal manera amó Dios al mundo.')
     expect(body).toContain('image/jpeg')
     expect(body).toContain('card=12')

@@ -10,7 +10,7 @@ import { useStudyLessonProgress } from './studyLessonProgress'
 import { StudyQuestionCheck } from './StudyQuestionCheck.jsx'
 import styles from './Studies.module.css'
 
-const COURSE_PATH = '/studies/la-fe-de-jesus'
+const COURSE_PATH = '/fe-de-jesus'
 
 function StudyQuestion({ initialOpen, lesson, question, recordPosition, sectionTitle }) {
   const { t } = useI18n()

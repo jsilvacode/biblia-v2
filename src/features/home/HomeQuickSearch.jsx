@@ -6,15 +6,12 @@ import { useI18n } from '../../i18n'
 import { BookChaptersDialog } from '../bible/BookChaptersDialog'
 import { findMatchingBooks } from '../bible/bookSearch'
 import { formatReference, getLocalizedBookName, normalizeText } from '../bible/catalog'
+import { getReaderPath } from '../bible/readerPath'
 import { parseReference } from '../bible/reference'
 import { useBibleTextSearch } from '../search/useBibleTextSearch'
 import { useSettings } from '../settings/SettingsProvider'
 import { createPickerPositionScheduler, positionPickerMenu, revealPickerAnchor } from './pickerPosition'
 import styles from './HomeQuickSearch.module.css'
-
-function readerPath(reference) {
-  return `/read/${reference.book}/${reference.chapter}${reference.verse ? `/${reference.verse}` : ''}`
-}
 
 export function HomeQuickSearch({ compact = false, currentBookId, currentChapter, inputRef: forwardedInputRef, onGoToChapter, onOpenChange }) {
   const { locale, t } = useI18n()
@@ -43,7 +40,7 @@ export function HomeQuickSearch({ compact = false, currentBookId, currentChapter
     query: activeQuery,
     translationId: settings.bibleVersion,
   })
-  const resultsPath = `/${books.length ? 'bible' : 'search'}?q=${encodeURIComponent(activeQuery)}`
+  const resultsPath = `/${books.length ? 'biblia' : 'search'}?q=${encodeURIComponent(activeQuery)}`
 
   useEffect(() => { openChangeRef.current = onOpenChange }, [onOpenChange])
   useEffect(() => {
@@ -114,7 +111,7 @@ export function HomeQuickSearch({ compact = false, currentBookId, currentChapter
           setResultsOpen(false)
           onGoToChapter(result.book, result.chapter, result.verse)
         }
-      }} state={{ attentionVerse: true }} to={readerPath(result)}>
+      }} state={{ attentionVerse: true }} to={getReaderPath(result)}>
         <span><strong>{formatReference(result, locale)}</strong>{text && <small>{text}</small>}</span>
       </Link>
     )

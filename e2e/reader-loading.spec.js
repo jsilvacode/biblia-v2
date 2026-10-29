@@ -13,7 +13,7 @@ test('starts the chapter download while the reader module is still loading', asy
   })
 
   try {
-    await page.goto('/read/43/3/16?v=kjv', { waitUntil: 'domcontentloaded' })
+    await page.goto('/biblia/juan/3/16?v=kjv', { waitUntil: 'domcontentloaded' })
     await expect.poll(() => chapterRequested).toBe(true)
     await expect(page.locator('[data-verse-number="16"]')).toHaveCount(0)
   } finally {
