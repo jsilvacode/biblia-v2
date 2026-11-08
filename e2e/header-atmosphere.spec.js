@@ -316,7 +316,7 @@ test('Home loads one responsive photograph and cuts it at the opening base in bo
     }
     page.on('request', onRequest)
     await page.goto('/')
-    const image = page.locator('picture img')
+    const image = page.locator('[data-home-parallax="landscape"] img')
     await image.evaluate(img => img.decode())
     const source = await image.evaluate(img => img.currentSrc)
     expect(source.includes('-mobile-')).toBe(width <= 620)
@@ -325,18 +325,24 @@ test('Home loads one responsive photograph and cuts it at the opening base in bo
     for (const theme of ['light', 'dark']) {
       if (theme === 'dark') await page.getByRole('button', { name: /Activar modo oscuro|Use dark theme|Usar tema escuro/ }).click()
       const geometry = await image.evaluate(img => {
-        const photograph = img.parentElement.getBoundingClientRect()
+        const photograph = img.closest('[data-home-parallax-region]').getBoundingClientRect()
         const panel = document.querySelector('[data-testid="home-reading-panel"]').getBoundingClientRect()
         const openingElement = img.closest('[data-testid="home-opening"]')
         const opening = openingElement.getBoundingClientRect()
         const overlay = getComputedStyle(openingElement, '::after')
         const picture = getComputedStyle(img.parentElement)
+        const readerSurface = document.createElement('span')
+        readerSurface.style.cssText = 'position: absolute; visibility: hidden; background: var(--bg-reader)'
+        document.body.append(readerSurface)
+        const readerBackground = getComputedStyle(readerSurface).backgroundColor
+        readerSurface.remove()
         return {
           top: photograph.top, openingTop: opening.top, bottom: photograph.bottom, openingBottom: opening.bottom, panelBottom: panel.bottom,
           overlayBottom: opening.top + parseFloat(overlay.top) + parseFloat(overlay.height),
           pictureMask: picture.maskImage, pictureWebkitMask: picture.webkitMaskImage, overlayMask: overlay.maskImage,
           editorialTop: document.getElementById('home-editorial-heading').getBoundingClientRect().top,
           background: getComputedStyle(document.querySelector('.home-page')).backgroundColor,
+          readerBackground,
           bodyBackground: getComputedStyle(document.body).backgroundColor,
         }
       })
@@ -348,7 +354,8 @@ test('Home loads one responsive photograph and cuts it at the opening base in bo
       expect(geometry.pictureWebkitMask).toBe('none')
       expect(geometry.overlayMask).toBe('none')
       expect(geometry.bottom).toBeLessThan(geometry.editorialTop)
-      expect(geometry.background).toBe('rgba(0, 0, 0, 0)')
+      expect(geometry.background).toBe(geometry.readerBackground)
+      expect(geometry.background).not.toBe('rgba(0, 0, 0, 0)')
       expect(geometry.bodyBackground).not.toBe('rgba(0, 0, 0, 0)')
       expect(await image.evaluate(img => img.currentSrc)).toBe(source)
       expect(requestedImages).toHaveLength(1)

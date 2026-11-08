@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { EditorialIllustration } from '../../components/ui/EditorialIllustration'
@@ -21,6 +21,7 @@ import { HomeLandscape } from './HomeLandscape'
 import { HomePassagePicker } from './HomePassagePicker'
 import { HomeQuickSearch } from './HomeQuickSearch'
 import { useDailyPromise } from './useDailyPromise'
+import { useHomeParallax } from './useHomeParallax'
 import styles from './HomePage.module.css'
 
 const interestLinks = [
@@ -51,6 +52,8 @@ const interestLinks = [
 ]
 
 export default function HomePage() {
+  const homeRef = useRef(null)
+  useHomeParallax(homeRef)
   const { locale, t } = useI18n()
   const { lastRead, recentReadings } = useReadingState()
   const { settings } = useSettings()
@@ -150,7 +153,11 @@ export default function HomePage() {
   ]
 
   return (
-    <div className={`home-page ${styles.homePage}`}>
+    <div className={`home-page ${styles.homePage}`} ref={homeRef}>
+      <div aria-hidden="true" className={styles.homeAtmosphere} data-home-parallax-region="">
+        <span className={styles.atmosphereFar} data-home-parallax="ambient-far" />
+        <span className={styles.atmosphereNear} data-home-parallax="ambient-near" />
+      </div>
       <div className={styles.opening} data-testid="home-opening">
         <HomeLandscape />
         <div className={styles.openingInner}>
@@ -223,8 +230,10 @@ export default function HomePage() {
           <div className={styles.editorialList}>
             {entries.map((entry) => (
               <Link className={styles.editorialEntry} key={entry.href} to={entry.href}>
-                <span aria-hidden="true" className={`${styles.entryImage} editorial-art`}>
-                  <EditorialIllustration alt="" decoding="async" height="1024" loading="lazy" src={entry.image} width="1536" />
+                <span aria-hidden="true" className={`${styles.entryImage} editorial-art`} data-home-parallax-region="">
+                  <span className={styles.entryImageDepth} data-home-parallax="editorial">
+                    <EditorialIllustration alt="" decoding="async" height="1024" loading="lazy" src={entry.image} width="1536" />
+                  </span>
                 </span>
                 <div className={styles.entryCopy}>
                   <div className={styles.entryHeading}>

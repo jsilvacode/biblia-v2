@@ -4,6 +4,7 @@ import { useI18n } from '../../i18n'
 import { DAILY_VIDEO_CHANNEL, DAILY_VIDEO_CREATOR, formatVideoDate, isVideoId, normalizeVideoDate } from './dailyVideoModel.js'
 import { cacheDailyVideo, loadDailyVideo } from './dailyVideoRepository.js'
 import { DailyVideoGallery } from './DailyVideoGallery'
+import { DailyVideoPlayer } from './DailyVideoPlayer'
 import { shareDailyVideo } from './shareDailyVideo.js'
 import { useDailyVideo } from './useDailyVideo'
 import styles from './DailyVideoSection.module.css'
@@ -27,48 +28,6 @@ function useOnlineStatus() {
   return online
 }
 
-function VideoPlayer({ episode, onActivate, autoPlay = false, t }) {
-  const [activated, setActivated] = useState(autoPlay)
-  const playLabel = t('dailyVideo.play', { title: episode.title })
-
-  return (
-      <div className={styles.player}>
-        {activated ? (
-          <iframe
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            height="405"
-            referrerPolicy="strict-origin-when-cross-origin"
-            src={`https://www.youtube-nocookie.com/embed/${episode.videoId}?autoplay=1&controls=1&playsinline=1&rel=0`}
-            title={episode.title}
-            width="720"
-          />
-        ) : (
-          <button
-            aria-label={playLabel}
-            className={styles.poster}
-            onClick={() => {
-              setActivated(true)
-              onActivate()
-            }}
-            type="button"
-          >
-            <img
-              alt=""
-              decoding="async"
-              height="360"
-              loading="lazy"
-              referrerPolicy="strict-origin-when-cross-origin"
-              src={`https://i.ytimg.com/vi/${episode.videoId}/hqdefault.jpg`}
-              width="480"
-            />
-            <span aria-hidden="true" className={styles.playIcon}><Icon name="play" size={62} strokeWidth={1.25} /></span>
-          </button>
-        )}
-      </div>
-  )
-}
-
 export function DailyVideoSection({ date, featured = false }) {
   const { locale, t } = useI18n()
   const headingId = useId()
@@ -76,6 +35,7 @@ export function DailyVideoSection({ date, featured = false }) {
   const [homePlayerActivated, setHomePlayerActivated] = useState(false)
   const [selection, setSelection] = useState(null)
   const selectionRequest = useRef(null)
+  const selectionSequence = useRef(0)
   const {
     date: anchorDate,
     metadata,
@@ -116,7 +76,7 @@ export function DailyVideoSection({ date, featured = false }) {
   async function selectEpisode(entry) {
     selectionRequest.current?.abort()
     setHomePlayerActivated(true)
-    const selected = { anchorDate, date: entry.contentDate, entry }
+    const selected = { anchorDate, date: entry.contentDate, entry, playRequest: ++selectionSequence.current }
     if (isVideoId(entry.videoId)) {
       setSelection({ ...selected, status: 'ready', episode: {
         ...entry, creator: DAILY_VIDEO_CREATOR, channelUrl: DAILY_VIDEO_CHANNEL,
@@ -167,7 +127,11 @@ export function DailyVideoSection({ date, featured = false }) {
   return (
     <section aria-labelledby={headingId} className={`${styles.section}${featured ? ` ${styles.featured}` : ''}`}>
       <header className={styles.sectionHeader}>
-        <Heading id={headingId}>{t('dailyVideo.title')}</Heading>
+        <div>
+          <p className={styles.eyebrow}>{t('dailyVideo.eyebrow')}</p>
+          <Heading id={headingId}>{t('dailyVideo.title')}</Heading>
+        </div>
+        <p className={styles.intro}>{t('dailyVideo.intro')}</p>
       </header>
 
       {!online && activeEpisode && <p className={styles.offlineNotice} role="status"><Icon name="info" size={16} /> {t('dailyVideo.offline')}</p>}
@@ -213,7 +177,7 @@ export function DailyVideoSection({ date, featured = false }) {
 
         <div className={styles.mediaColumn}>
           {activeEpisode ? (
-          <VideoPlayer autoPlay={Boolean(currentSelection)} episode={activeEpisode} key={episodeKey} onActivate={() => setHomePlayerActivated(true)} t={t} />
+          <DailyVideoPlayer autoPlay={Boolean(currentSelection)} episode={activeEpisode} key={episodeKey} onActivate={() => setHomePlayerActivated(true)} playRequest={currentSelection?.playRequest} t={t} />
           ) : (
           <div className={styles.empty} role="status">
             <Icon name={displayedStatus === 'loading' ? 'play' : 'info'} size={30} />
@@ -223,9 +187,9 @@ export function DailyVideoSection({ date, featured = false }) {
             )}
           </div>
           )}
-          {anchorDate && <DailyVideoGallery date={anchorDate} featured={featured} historyStatus={historyStatus} key={anchorDate} loadPrevious={loadPrevious} onSelect={selectEpisode} previous={previous} selectedDate={resolvedDate} />}
         </div>
       </div>
+      {anchorDate && <DailyVideoGallery date={anchorDate} featured={featured} historyStatus={historyStatus} key={anchorDate} loadPrevious={loadPrevious} onSelect={selectEpisode} previous={previous} selectedDate={resolvedDate} />}
     </section>
   )
 }

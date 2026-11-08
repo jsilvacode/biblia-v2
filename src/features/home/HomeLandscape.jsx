@@ -19,11 +19,13 @@ export function HomeLandscape() {
   }, [])
 
   return (
-    <picture aria-hidden="true" className={styles.heroLandscape}>
-      <source media="(max-width: 620px)" sizes="100vw" srcSet="/assets/home-landscape-v8-mobile-360.avif 360w, /assets/home-landscape-v8-mobile-529.avif 529w" type="image/avif" />
-      <source media="(max-width: 620px)" sizes="100vw" srcSet="/assets/home-landscape-v8-mobile-360.webp 360w, /assets/home-landscape-v8-mobile-529.webp 529w" type="image/webp" />
-      <source sizes={desktopSizes} srcSet="/assets/home-landscape-v8-960.avif 960w, /assets/home-landscape-v8-1280.avif 1280w, /assets/home-landscape-v8-1672.avif 1672w" type="image/avif" />
-      <img alt="" decoding="async" fetchpriority="high" height="941" ref={imageRef} width="1672" />
-    </picture>
+    <div aria-hidden="true" className={styles.heroLandscape} data-home-parallax-region="">
+      <picture className={styles.landscapeDepth} data-home-parallax="landscape">
+        <source media="(max-width: 620px)" sizes="100vw" srcSet="/assets/home-landscape-v8-mobile-360.avif 360w, /assets/home-landscape-v8-mobile-529.avif 529w" type="image/avif" />
+        <source media="(max-width: 620px)" sizes="100vw" srcSet="/assets/home-landscape-v8-mobile-360.webp 360w, /assets/home-landscape-v8-mobile-529.webp 529w" type="image/webp" />
+        <source sizes={desktopSizes} srcSet="/assets/home-landscape-v8-960.avif 960w, /assets/home-landscape-v8-1280.avif 1280w, /assets/home-landscape-v8-1672.avif 1672w" type="image/avif" />
+        <img alt="" decoding="async" fetchpriority="high" height="941" ref={imageRef} width="1672" />
+      </picture>
+    </div>
   )
 }

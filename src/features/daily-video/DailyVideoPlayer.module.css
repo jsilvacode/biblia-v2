@@ -1,0 +1,32 @@
+.slot { position: relative; width: 100%; aspect-ratio: 16 / 9; min-width: 0; min-height: 200px; }
+.stage { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; overflow: visible; border: 0; background: transparent; color: #f7f5ef; }
+.frame { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 18px; background: #101415; box-shadow: 0 12px 36px -24px rgb(20 29 27 / 45%); transform-origin: top left; }
+.frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.poster { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: hidden; padding: 0; border: 0; background: #101415; color: #fff; cursor: pointer; }
+.poster img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 700ms cubic-bezier(.22, 1, .36, 1); }
+.poster::after { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(0 0 0 / 3%) 25%, rgb(0 0 0 / 38%)); content: ''; pointer-events: none; }
+.playIcon { position: absolute; z-index: 1; inset: 0; display: grid; place-items: center; }
+.playIcon svg { padding: 7px; border: 1px solid rgb(255 255 255 / 38%); border-radius: 50%; background: rgb(17 24 24 / 64%); box-shadow: 0 8px 28px rgb(0 0 0 / 18%); transition: background 220ms ease, transform 350ms cubic-bezier(.22, 1, .36, 1); }
+.posterHint { position: absolute; z-index: 1; right: 22px; bottom: 20px; left: 22px; display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #fff; font: 500 .75rem/1.5 var(--font-ui); letter-spacing: .015em; }
+.toolbar[hidden], .caption[hidden] { display: none; }
+.toolbar { position: absolute; right: 0; bottom: calc(100% + 14px); left: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; }
+.theaterLabel { display: inline-flex; align-items: center; gap: 8px; color: rgb(247 245 239 / 68%); font: 500 .6875rem/1.5 var(--font-ui); letter-spacing: .13em; text-transform: uppercase; }
+.closeButton { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; gap: 12px; padding: 8px 10px 8px 16px; border: 1px solid rgb(255 255 255 / 20%); border-radius: 999px; background: rgb(255 255 255 / 5%); color: #f7f5ef; font: 500 .75rem/1.4 var(--font-ui); cursor: pointer; transition: background 160ms ease; }
+.closeButton:hover { background: rgb(255 255 255 / 13%); }
+.caption { position: absolute; top: calc(100% + 15px); right: 0; left: 0; margin: 0; overflow: hidden; color: rgb(247 245 239 / 74%); font: 400 .875rem/1.5 var(--font-reading); text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+.enterButton { position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; min-height: 36px; gap: 7px; padding: 7px 12px; border: 1px solid rgb(255 255 255 / 30%); border-radius: 999px; background: rgb(12 19 20 / 88%); color: #fff; font: 500 .6875rem/1.4 var(--font-ui); cursor: pointer; }
+.stage[data-phase]:not([data-phase='inline']) { --theater-width: min(calc(100vw - clamp(24px, 4vw, 80px)), calc((100dvh - 148px) * 16 / 9)); position: fixed; inset: 0; width: var(--theater-width); height: max(200px, calc(var(--theater-width) * 9 / 16)); margin: auto; touch-action: manipulation; }
+.stage:not([data-phase='inline']) .frame { border-radius: 8px; box-shadow: 0 32px 100px rgb(0 0 0 / 55%); }
+.stage::backdrop { background: rgb(8 13 15 / 94%); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); animation: lightsDown 560ms cubic-bezier(.22, 1, .36, 1) both; }
+.stage[data-phase='closing']::backdrop { animation: lightsUp 420ms ease both; }
+.stage[data-phase='opening'] .toolbar, .stage[data-phase='opening'] .caption { animation: controlsIn 420ms ease 140ms both; }
+.stage[data-phase='closing'] .toolbar, .stage[data-phase='closing'] .caption { opacity: 0; transition: opacity 160ms ease; }
+.stage button:focus-visible { outline: 2px solid #e7d7b1; outline-offset: 4px; }
+.poster:focus-visible { outline-offset: -6px !important; }
+@keyframes lightsDown { from { background-color: rgb(8 13 15 / 0%); backdrop-filter: blur(0); } to { background-color: rgb(8 13 15 / 94%); backdrop-filter: blur(5px); } }
+@keyframes lightsUp { from { background-color: rgb(8 13 15 / 94%); backdrop-filter: blur(5px); } to { background-color: rgb(8 13 15 / 0%); backdrop-filter: blur(0); } }
+@keyframes controlsIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@media (hover: hover) and (pointer: fine) { .poster:hover img { transform: scale(1.025); } .poster:hover .playIcon svg { transform: scale(1.08); background: rgb(17 24 24 / 85%); } }
+@media (max-width: 620px) { .frame { border-radius: 14px; } .posterHint { right: 16px; bottom: 14px; left: 16px; font-size: .6875rem; } .stage[data-phase]:not([data-phase='inline']) { --theater-width: min(calc(100vw - 24px), calc((100dvh - 132px) * 16 / 9)); } .theaterLabel { font-size: .625rem; letter-spacing: .08em; } .caption { font-size: .8125rem; } }
+@media (max-height: 500px) { .stage[data-phase]:not([data-phase='inline']) { --theater-width: min(calc(100vw - 40px), calc((100dvh - 108px) * 16 / 9)); } .toolbar { bottom: calc(100% + 6px); } .caption { top: calc(100% + 7px); } }
+@media (prefers-reduced-motion: reduce) { .stage::backdrop, .stage .toolbar, .stage .caption { animation: none !important; } .poster img, .playIcon svg, .closeButton { transition: none; } }

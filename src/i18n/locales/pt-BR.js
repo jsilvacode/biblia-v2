@@ -16,6 +16,12 @@ export default {
   common: { all: 'Todos', back: 'Voltar', chapter: 'Capítulo', close: 'Fechar', continue: 'Continuar', explore: 'Explorar', next: 'Próximo', open: 'Abrir', previous: 'Anterior', read: 'Ler', save: 'Salvar', saving: 'Salvando', saved: 'Salvo', search: 'Buscar', share: 'Compartilhar', skipToContent: 'Pular para o conteúdo', start: 'Começar', today: 'Hoje', version: 'Versão' },
   dailyVideo: {
     title: 'Este Día con Dios',
+    eyebrow: 'Uma pausa para a alma',
+    intro: 'Um momento de fé para acompanhar o seu dia.',
+    watchReflection: 'Ver a reflexão',
+    theaterMode: 'Modo cinema',
+    theaterTitle: 'Modo cinema: {{title}}',
+    closeTheater: 'Fechar modo cinema',
     play: 'Reproduzir: {{title}}',
     watchOnYoutube: 'Ver no YouTube',
     officialSite: 'Site oficial',

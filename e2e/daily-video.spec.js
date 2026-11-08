@@ -41,12 +41,12 @@ async function mockCapsules(page, { pending = false } = {}) {
       } : {}),
     } })
   })
-  await page.route('https://www.youtube-nocookie.com/**', (route) => route.fulfill({ contentType: 'text/html', body: '<html lang="es"><body>Reproductor de prueba de YouTube</body></html>' }))
+  await page.route('https://www.youtube-nocookie.com/**', (route) => route.fulfill({ contentType: 'text/html', body: '<html lang="es"><body>Reproductor de prueba de YouTube <button type="button">Pausar reproducción</button></body></html>' }))
   return () => { waiting = false }
 }
 
 async function expectInlineVideo(page, videoId) {
-  const iframe = region(page).locator('iframe')
+  const iframe = page.locator('iframe[src^="https://www.youtube-nocookie.com/embed/"]')
   await expect(iframe).toHaveCount(1)
   await expect(iframe).toHaveAttribute('src', new RegExp(`/embed/${videoId}\\?`))
   const playerUrl = new URL(await iframe.getAttribute('src'))
@@ -54,6 +54,12 @@ async function expectInlineVideo(page, videoId) {
   expect(playerUrl.searchParams.get('playsinline')).toBe('1')
   expect(await page.evaluate(() => document.fullscreenElement)).toBeNull()
   return iframe
+}
+
+async function closeTheater(page) {
+  await page.getByRole('button', { name: 'Cerrar modo teatro', exact: true }).click()
+  await expect(page.getByRole('dialog', { name: /^Modo teatro:/ })).toHaveCount(0)
+  await expect(page.locator('html')).not.toHaveAttribute('data-video-theater', 'true')
 }
 
 test('Home places the daily capsule between the opening and other resources, and loads only one player on demand', async ({ page }) => {
@@ -71,14 +77,116 @@ test('Home places the daily capsule between the opening and other resources, and
   expect(placement.top).toBeGreaterThanOrEqual(placement.openingBottom)
   expect(placement.bottom).toBeLessThan(placement.nextTop)
   await capsule.getByRole('button', { name: `Reproducir: ${today.title}`, exact: true }).click()
-  const iframe = capsule.locator('iframe')
+  const iframe = page.locator('iframe[src^="https://www.youtube-nocookie.com/embed/"]')
   await expect(iframe).toHaveCount(1)
   await expect(iframe).toHaveAttribute('src', new RegExp(`^https://www.youtube-nocookie.com/embed/${today.videoId}\\?`))
   await expect(iframe).toHaveAttribute('referrerpolicy', 'strict-origin-when-cross-origin')
   const bounds = await iframe.boundingBox()
   expect(bounds.width).toBeGreaterThanOrEqual(200)
   expect(bounds.height).toBeGreaterThanOrEqual(200)
+  await closeTheater(page)
   await expect(capsule.getByRole('link', { name: 'Ver en YouTube' })).toHaveAttribute('href', `https://www.youtube.com/watch?v=${today.videoId}`)
+})
+
+test('playing a capsule opens a centered theater, locks the background and preserves playback on exit', async ({ page }) => {
+  await mockCapsules(page)
+  const playerRequests = []
+  page.on('request', (request) => {
+    if (request.url().startsWith('https://www.youtube-nocookie.com/embed/')) playerRequests.push(request.url())
+  })
+  await page.goto('/')
+  const poster = region(page).getByRole('button', { name: `Reproducir: ${today.title}`, exact: true })
+  await poster.scrollIntoViewIfNeeded()
+  await poster.focus()
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))))
+  const originalScroll = await page.evaluate(() => window.scrollY)
+  const decorationOffsets = () => page.locator('[data-home-parallax]').evaluateAll((elements) => elements.map((element) => element.style.transform))
+  const originalDecorationOffsets = await decorationOffsets()
+  await poster.click()
+  const theater = page.getByRole('dialog', { name: `Modo teatro: ${today.title}`, exact: true })
+  await expect(theater).toBeVisible()
+  expect(await theater.evaluate((element) => element.matches(':modal'))).toBe(true)
+  await expect(page.locator('html')).toHaveAttribute('data-video-theater', 'true')
+  expect(await page.locator('body').evaluate((element) => getComputedStyle(element).position)).toBe('fixed')
+  const iframe = await expectInlineVideo(page, today.videoId)
+  const originalPlayer = await iframe.elementHandle()
+  const viewport = page.viewportSize()
+  await expect.poll(async () => {
+    const box = await iframe.boundingBox()
+    return Math.abs(box.x + box.width / 2 - viewport.width / 2)
+  }).toBeLessThanOrEqual(2)
+  const box = await iframe.boundingBox()
+  expect(box.width).toBeGreaterThanOrEqual(Math.min(viewport.width * .85, viewport.height * 1.4))
+  expect(Math.abs(box.width / box.height - 16 / 9)).toBeLessThan(.02)
+  expect(Math.abs(box.y + box.height / 2 - viewport.height / 2)).toBeLessThanOrEqual(2)
+  expect(box.y).toBeGreaterThanOrEqual(0)
+  expect(box.y + box.height).toBeLessThanOrEqual(viewport.height)
+  await expect.poll(() => theater.evaluate((element) => {
+    const channels = getComputedStyle(element, '::backdrop').backgroundColor.match(/[\d.]+/g).map(Number)
+    return channels.length === 4 ? channels[3] : 1
+  })).toBeGreaterThanOrEqual(.85)
+  const close = theater.getByRole('button', { name: 'Cerrar modo teatro', exact: true })
+  const closeBox = await close.boundingBox()
+  expect(closeBox.y).toBeGreaterThanOrEqual(0)
+  expect(closeBox.y + closeBox.height).toBeLessThanOrEqual(viewport.height)
+
+  await page.locator('.home-page a[href="/biblia"]').first().evaluate((element) => element.focus())
+  expect(await page.evaluate(() => Boolean(document.activeElement.closest('dialog')))).toBe(true)
+  await close.focus()
+  await page.keyboard.press('Tab')
+  expect(await page.evaluate(() => Boolean(document.activeElement.closest('dialog')))).toBe(true)
+  const lockedScroll = await page.evaluate(() => window.scrollY)
+  await page.mouse.wheel(0, 500)
+  expect(await page.evaluate(() => window.scrollY)).toBe(lockedScroll)
+
+  await closeTheater(page)
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeCloseTo(originalScroll, 0)
+  await expect.poll(decorationOffsets).toEqual(originalDecorationOffsets)
+  expect(await iframe.evaluate((element, original) => element === original, originalPlayer)).toBe(true)
+  const reopen = region(page).getByRole('button', { name: 'Modo teatro', exact: true })
+  await expect(reopen).toBeFocused()
+  await reopen.click()
+  await expect(theater).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(theater).toHaveCount(0)
+  expect(await iframe.evaluate((element, original) => element === original, originalPlayer)).toBe(true)
+  expect(playerRequests).toHaveLength(1)
+})
+
+test('theater remains usable with reduced motion and restores the page after closing', async ({ page }) => {
+  await mockCapsules(page)
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.setViewportSize({ width: 320, height: 900 })
+  await page.goto('/')
+  await gallery(page).scrollIntoViewIfNeeded()
+  await galleryTiles(page).first().click()
+  const theater = page.getByRole('dialog', { name: 'Modo teatro: Separados para representar', exact: true })
+  await expect(theater).toBeVisible()
+  const iframe = await expectInlineVideo(page, snapshot.entries[1].videoId)
+  const originalPlayer = await iframe.elementHandle()
+  const box = await iframe.boundingBox()
+  expect(box.width).toBeGreaterThanOrEqual(200)
+  expect(box.height).toBeGreaterThanOrEqual(200)
+  expect(box.x).toBeGreaterThanOrEqual(0)
+  expect(box.x + box.width).toBeLessThanOrEqual(320)
+  expect(box.y).toBeGreaterThanOrEqual(0)
+  expect(box.y + box.height).toBeLessThanOrEqual(900)
+  await expect.poll(() => theater.evaluate((element) => element.getAnimations({ subtree: true })
+    .filter((animation) => animation.playState === 'running')
+    .map((animation) => ({
+      type: animation.constructor.name,
+      name: animation.animationName,
+      property: animation.transitionProperty,
+      target: animation.effect?.target?.tagName,
+      properties: [...new Set(animation.effect?.getKeyframes().flatMap((frame) => Object.keys(frame)))],
+    })))).toEqual([])
+  await closeTheater(page)
+  await expect(galleryTiles(page).first()).toHaveAttribute('aria-pressed', 'true')
+  await galleryTiles(page).first().click()
+  await expect(theater).toBeVisible()
+  expect(await iframe.evaluate((element, original) => element === original, originalPlayer)).toBe(true)
+  await closeTheater(page)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
 })
 
 test('previous videos retain their own date and shared link after the next day', async ({ page }) => {
@@ -91,12 +199,13 @@ test('previous videos retain their own date and shared link after the next day',
   await expect(selected).toHaveAccessibleName(/18 de octubre de 2026.*Separados para representar/)
   await selected.click()
   await expect(page).toHaveURL('/')
-  await expect(region(page).getByRole('heading', { name: 'Separados para representar' })).toBeVisible()
   await expectInlineVideo(page, snapshot.entries[1].videoId)
+  await closeTheater(page)
+  await expect(region(page).getByRole('heading', { name: 'Separados para representar' })).toBeVisible()
   await expect(selected).toHaveAttribute('aria-pressed', 'true')
   await region(page).getByRole('button', { name: 'Compartir cápsula' }).click()
   await expect(region(page).getByText('Enlace copiado', { exact: true })).toBeVisible()
-  await expect.poll(() => page.evaluate(() => window.copiedCapsule)).toBe('http://127.0.0.1:4176/este-dia-con-dios/2026-10-18')
+  await expect.poll(() => page.evaluate(() => window.copiedCapsule)).toBe(new URL('/este-dia-con-dios/2026-10-18', page.url()).href)
   await page.goto('/este-dia-con-dios/2026-10-18')
   await expect(region(page).getByRole('heading', { name: 'Separados para representar' })).toBeVisible()
   await page.clock.setFixedTime(new Date('2026-10-20T12:00:00-03:00'))
@@ -148,12 +257,15 @@ test('capsule fits narrow mobile, tablet and desktop in both themes', async ({ p
       const bounds = await poster.boundingBox()
       expect(bounds.width).toBeGreaterThanOrEqual(200)
       expect(bounds.height).toBeGreaterThanOrEqual(200)
+      if (bounds.width >= 356) expect(Math.abs(bounds.width / bounds.height - 16 / 9)).toBeLessThan(.02)
       const thumbnail = await galleryTiles(page).first().locator('img').boundingBox()
       const editorialCard = await page.getByRole('region', { name: 'También en Santa Biblia', exact: true }).getByRole('link').first().boundingBox()
       expect(thumbnail.width).toBeLessThanOrEqual(editorialCard.width / 2)
-      const gap = thumbnail.y - (bounds.y + bounds.height)
+      await expect(gallery(page).getByRole('heading', { name: 'Videos anteriores', exact: true })).toBeVisible()
+      const previousBounds = await gallery(page).boundingBox()
+      const gap = previousBounds.y - (bounds.y + bounds.height)
       expect(gap).toBeGreaterThanOrEqual(0)
-      expect(gap).toBeLessThanOrEqual(12)
+      expect(gap, `${theme}, ${width}px: gallery follows the player before its heading and thumbnails`).toBeLessThanOrEqual(48)
     }
   }
 })
@@ -227,6 +339,7 @@ test('the previous week is a manual thumbnail carousel below the player', async 
   await last.press('Enter')
   await expect(page).toHaveURL('/este-dia-con-dios/2026-10-19')
   const iframe = await expectInlineVideo(page, '4BRn2E0ZOxI')
+  await closeTheater(page)
   const playerBounds = await iframe.boundingBox()
   expect(Math.abs(playerBounds.width - posterBounds.width)).toBeLessThanOrEqual(1)
   expect(Math.abs(playerBounds.height - posterBounds.height)).toBeLessThanOrEqual(1)

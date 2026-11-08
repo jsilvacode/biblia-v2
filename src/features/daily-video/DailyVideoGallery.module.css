@@ -1,17 +1,19 @@
 .gallery {
   min-width: 0;
   max-width: 100%;
-  margin-top: 4px;
+  margin-top: 20px;
   padding-top: 0;
   border: 0;
 }
+
+.heading { margin: 0 0 10px; color: var(--ink-muted); font: 500 .625rem/1.5 var(--font-ui); letter-spacing: .12em; text-transform: uppercase; }
 
 .row { position: relative; display: grid; min-width: 0; }
 .track {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: min(140px, calc((100% - 12px) / 2));
-  gap: 10px;
+  grid-auto-columns: min(170px, calc((100% - 14px) / 2));
+  gap: 14px;
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -21,10 +23,11 @@
   overscroll-behavior-inline: contain;
   scroll-padding-inline: 5px;
   scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
+  scrollbar-width: none;
   scrollbar-color: var(--border-strong) transparent;
   list-style: none;
 }
+.track::-webkit-scrollbar { display: none; }
 
 .reservedTrack { overflow: hidden; visibility: hidden; }
 .track > li { min-width: 0; scroll-snap-align: start; }
@@ -49,7 +52,7 @@
 
 /* The first grid cell has the thumbnail's height, keeping both controls
    vertically centred on the image rather than over its date or title. */
-.controls { position: absolute; z-index: 1; inset: 6px 0 auto; display: grid; grid-template-columns: min(140px, calc((100% - 22px) / 2)) 1fr; pointer-events: none; }
+.controls { position: absolute; z-index: 1; inset: 6px 0 auto; display: grid; grid-template-columns: min(170px, calc((100% - 24px) / 2)) 1fr; pointer-events: none; }
 .controls::before { display: block; grid-column: 1; aspect-ratio: 16 / 9; content: ''; }
 .controls button { position: absolute; top: 50%; display: grid; width: 44px; height: 44px; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer; pointer-events: auto; transform: translateY(-50%); }
 .controls button:first-child { left: 0; }
@@ -72,6 +75,7 @@
 .gallery .card:focus-visible { outline-offset: 3px; }
 
 @media (min-width: 768px) {
-  .track { grid-auto-columns: min(160px, calc((100vw - 128px) / 6)); }
-  .controls { grid-template-columns: min(160px, calc((100vw - 128px) / 6)) 1fr; }
+  .gallery { padding-top: 0; }
+  .track { grid-auto-columns: calc((100% - 56px) / 4.5); }
+  .controls { grid-template-columns: calc((100% - 56px) / 4.5) 1fr; }
 }

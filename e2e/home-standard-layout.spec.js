@@ -234,7 +234,7 @@ test('editorial cards align on tablet and desktop and stack without clipping tra
       const geometry = await cards.evaluateAll((links) => links.map((link) => {
         const rect = link.getBoundingClientRect()
         const title = link.querySelector('h3')
-        const image = link.querySelector('img').getBoundingClientRect()
+        const image = link.querySelector('.editorial-art').getBoundingClientRect()
         const action = link.querySelector('[class*="entryAction"]').getBoundingClientRect()
         return {
           x: rect.x, right: rect.right, top: rect.top, bottom: rect.bottom, height: rect.height,

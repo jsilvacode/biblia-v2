@@ -16,6 +16,12 @@ export default {
   common: { all: 'All', back: 'Back', chapter: 'Chapter', close: 'Close', continue: 'Continue', explore: 'Explore', next: 'Next', open: 'Open', previous: 'Previous', read: 'Read', save: 'Save', saving: 'Saving', saved: 'Saved', search: 'Search', share: 'Share', skipToContent: 'Skip to content', start: 'Start', today: 'Today', version: 'Version' },
   dailyVideo: {
     title: 'Este Día con Dios',
+    eyebrow: 'A pause for the soul',
+    intro: 'A moment of faith to accompany your day.',
+    watchReflection: 'Watch the reflection',
+    theaterMode: 'Theater mode',
+    theaterTitle: 'Theater mode: {{title}}',
+    closeTheater: 'Close theater mode',
     play: 'Play: {{title}}',
     watchOnYoutube: 'Watch on YouTube',
     officialSite: 'Official website',

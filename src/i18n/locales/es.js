@@ -35,6 +35,12 @@ export default {
   },
   dailyVideo: {
     title: 'Este Día con Dios',
+    eyebrow: 'Una pausa para el alma',
+    intro: 'Un momento de fe para acompañar tu día.',
+    watchReflection: 'Ver la reflexión',
+    theaterMode: 'Modo teatro',
+    theaterTitle: 'Modo teatro: {{title}}',
+    closeTheater: 'Cerrar modo teatro',
     play: 'Reproducir: {{title}}',
     watchOnYoutube: 'Ver en YouTube',
     officialSite: 'Sitio oficial',

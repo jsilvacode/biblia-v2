@@ -96,7 +96,7 @@ export function DailyVideoGallery({ date, previous = [], historyStatus, loadPrev
 
   return (
     <section aria-label={t('dailyVideo.galleryLabel')} className={styles.gallery} ref={galleryRef}>
-      <Heading className={styles.srOnly}>{t('dailyVideo.previous')}</Heading>
+      <Heading className={styles.heading}>{t('dailyVideo.previous')}</Heading>
 
       <div className={styles.row}>
         <ol aria-busy={loading} aria-hidden={!loading && !hasEpisodes || undefined} className={`${styles.track}${!loading && !hasEpisodes ? ` ${styles.reservedTrack}` : ''}`} id={trackId} onScroll={updateEdges} ref={trackRef}>

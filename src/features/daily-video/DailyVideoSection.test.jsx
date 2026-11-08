@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { DailyVideoSection } from './DailyVideoSection'
@@ -31,6 +31,10 @@ vi.mock('../../i18n', () => ({
       'dailyVideo.galleryNext': 'Ver más videos',
       'dailyVideo.galleryLabel': 'Cápsulas de los siete días anteriores',
       'dailyVideo.historyError': 'No pudimos cargar los videos anteriores.',
+      'dailyVideo.theaterTitle': `Modo teatro: ${values.title}`,
+      'dailyVideo.closeTheater': 'Cerrar modo teatro',
+      'dailyVideo.theaterMode': 'Modo teatro',
+      'common.close': 'Cerrar',
     }[key] ?? key),
   }),
 }))
@@ -71,6 +75,12 @@ beforeEach(() => {
   shareMock.mockReset()
   useDailyVideoMock.mockReturnValue(readyState())
   shareMock.mockResolvedValue('copied')
+  vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() })))
+  vi.stubGlobal('scrollTo', vi.fn())
+  Object.defineProperties(HTMLDialogElement.prototype, {
+    showModal: { configurable: true, value() { this.open = true } },
+    close: { configurable: true, value() { this.open = false; this.dispatchEvent(new Event('close')) } },
+  })
   intersectionObservers = []
   vi.stubGlobal('IntersectionObserver', class {
     constructor(callback, options) {
@@ -83,9 +93,71 @@ beforeEach(() => {
   })
 })
 
-afterEach(() => vi.unstubAllGlobals())
+afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 
 describe('daily video section', () => {
+  it('keeps the same iframe when leaving and reopening theater, including Escape', async () => {
+    const { container } = renderSection({ featured: true })
+    const poster = screen.getByRole('button', { name: `Reproducir: ${episode.title}` })
+    expect(screen.queryByRole('dialog')).toBeNull()
+    fireEvent.click(poster)
+
+    const dialog = await screen.findByRole('dialog', { name: `Modo teatro: ${episode.title}` })
+    const player = container.querySelector('iframe')
+    expect(player).not.toBeNull()
+    expect(document.documentElement.dataset.videoTheater).toBe('true')
+    expect(document.body.style.position).toBe('fixed')
+    fireEvent.click(screen.getByRole('button', { name: 'Cerrar modo teatro', exact: true }))
+
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+    expect(container.querySelector('iframe')).toBe(player)
+    expect(document.documentElement.dataset.videoTheater).toBeUndefined()
+    const reopen = screen.getByRole('button', { name: 'Modo teatro', exact: true })
+    fireEvent.click(reopen)
+    await screen.findByRole('dialog', { name: `Modo teatro: ${episode.title}` })
+    expect(container.querySelector('iframe')).toBe(player)
+
+    fireEvent(dialog, new Event('cancel', { cancelable: true }))
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+    expect(container.querySelector('iframe')).toBe(player)
+    expect(document.body.style.position).not.toBe('fixed')
+  })
+
+  it('restores page scrolling if an active player is unmounted', async () => {
+    const originalStyle = document.body.getAttribute('style')
+    const { unmount } = renderSection()
+    fireEvent.click(screen.getByRole('button', { name: `Reproducir: ${episode.title}` }))
+    await screen.findByRole('dialog', { name: `Modo teatro: ${episode.title}` })
+    expect(document.body.style.position).toBe('fixed')
+    unmount()
+    expect(document.documentElement.dataset.videoTheater).toBeUndefined()
+    expect(document.body.getAttribute('style') || '').toBe(originalStyle || '')
+  })
+
+  it('finishes closing when Escape interrupts the entrance animation', () => {
+    vi.useFakeTimers()
+    vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })))
+    try {
+      const { container } = renderSection()
+      fireEvent.click(screen.getByRole('button', { name: `Reproducir: ${episode.title}` }))
+      const dialog = screen.getByRole('dialog', { name: `Modo teatro: ${episode.title}` })
+      const player = container.querySelector('iframe')
+      expect(dialog.dataset.phase).toBe('opening')
+      act(() => vi.advanceTimersByTime(200))
+      fireEvent(dialog, new Event('cancel', { cancelable: true }))
+      expect(dialog.dataset.phase).toBe('closing')
+      act(() => vi.advanceTimersByTime(420))
+      expect(dialog.dataset.phase).toBe('inline')
+      act(() => vi.advanceTimersByTime(560))
+      expect(dialog.dataset.phase).toBe('inline')
+      expect(container.querySelector('iframe')).toBe(player)
+      expect(document.documentElement.dataset.videoTheater).toBeUndefined()
+      expect(document.body.style.position).not.toBe('fixed')
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
   it('loads the embedded player only on request and keeps a direct playback alternative', () => {
     const { container } = renderSection({ featured: true })
 
@@ -119,12 +191,14 @@ describe('daily video section', () => {
     expect(screen.queryByRole('button', { name: 'Compartir cápsula' })).toBeNull()
   })
 
-  it('offers the new day without replacing a player until the reader requests it', () => {
+  it('offers the new day without replacing a player until the reader requests it', async () => {
     const { container, rerender } = renderSection({ featured: true })
     fireEvent.click(screen.getByRole('button', { name: `Reproducir: ${episode.title}` }))
     useDailyVideoMock.mockReturnValue(readyState({ newerDate: '2026-10-20' }))
     rerender(<MemoryRouter><DailyVideoSection featured /></MemoryRouter>)
     expect(container.querySelector('iframe').src).toContain(episode.videoId)
+    fireEvent.click(screen.getByRole('button', { name: 'Cerrar modo teatro', exact: true }))
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
     fireEvent.click(screen.getByRole('button', { name: 'Ver cápsula de hoy' }))
     expect(useDailyVideoMock).toHaveBeenLastCalledWith({ date: undefined, freezeDate: false })
   })
@@ -196,6 +270,8 @@ describe('daily video section', () => {
     expect(container.querySelectorAll('iframe')).toHaveLength(1)
     expect(container.querySelector('iframe').src).toContain('/embed/mJmZNM0AHzA?')
     expect(container.querySelector('iframe').src).toContain('playsinline=1')
+    fireEvent.click(screen.getByRole('button', { name: 'Cerrar modo teatro', exact: true }))
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
     expect(screen.getByRole('heading', { name: previous.title })).toBeTruthy()
     expect(screen.getByRole('button', { name: /18 de octubre de 2026.*Separados para representar/ }).getAttribute('aria-pressed')).toBe('true')
     fireEvent.click(screen.getByRole('button', { name: 'Compartir cápsula' }))
