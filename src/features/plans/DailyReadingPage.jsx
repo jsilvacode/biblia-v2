@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect -- These effects synchronize route-local date, storage, and asynchronous resources. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { Icon } from '../../components/ui/Icon'
 import { EditorialIllustration } from '../../components/ui/EditorialIllustration'
 import { useI18n } from '../../i18n'
@@ -12,6 +13,7 @@ import { getRpspReadingForDate } from './rpspDate'
 import { readRpspProgressForReading, saveRpspProgress } from './rpspProgress'
 import { loadRpspMetadata } from './rpspRepository'
 import { useRpspLocalDate } from './useRpspLocalDate'
+import { shareRpspAudio } from './shareRpspAudio'
 import styles from './DailyReadingPage.module.css'
 
 function readingKey(reading) {
@@ -33,14 +35,18 @@ function scrollSnapshot(verse) {
 export default function DailyReadingPage() {
   const { locale, t } = useI18n()
   const { settings } = useSettings()
+  const { date: sharedDate } = useParams()
   const localDate = useRpspLocalDate()
-  const [sessionDate, setSessionDate] = useState(() => localDate)
+  const [liveSessionDate, setSessionDate] = useState(() => localDate)
+  const sessionDate = sharedDate ?? liveSessionDate
   const [pendingDate, setPendingDate] = useState(null)
   const [audioSessionActive, setAudioSessionActive] = useState(false)
   const [metadataRetry, setMetadataRetry] = useState(0)
   const [chapterRetry, setChapterRetry] = useState(0)
   const [metadataResult, setMetadataResult] = useState({ key: null, status: 'loading', value: null })
   const [chapterResult, setChapterResult] = useState({ key: null, status: 'loading', data: [] })
+  const [shareFeedback, setShareFeedback] = useState({ key: null, result: null })
+  const [sharePendingKey, setSharePendingKey] = useState(null)
   const visibleVerseRef = useRef(null)
   const savedProgressRef = useRef(null)
 
@@ -54,6 +60,10 @@ export default function DailyReadingPage() {
   const receivedMetadata = metadataResult.key === metadataKey ? metadataResult.value : null
   const metadata = metadataMatchesReading(receivedMetadata, reading) ? receivedMetadata : null
   const episode = metadata?.episode ?? null
+  const shareKey = metadataStatus === 'ready' && episode ? `${sessionDate}:${episode.id}` : null
+  const shareMessage = shareFeedback.key === shareKey
+    ? { copied: 'copied', shared: 'shared', unavailable: 'shareUnavailable' }[shareFeedback.result]
+    : null
   const chapterStatus = chapterResult.key === chapterKey ? chapterResult.status : 'loading'
   const chapter = useMemo(
     () => chapterResult.key === chapterKey ? chapterResult.data : [],
@@ -64,14 +74,14 @@ export default function DailyReadingPage() {
     ? new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(`${sessionDate}T12:00:00`))
     : ''
   useEffect(() => {
-    if (!localDate || localDate === sessionDate) return
+    if (sharedDate !== undefined || !localDate || localDate === sessionDate) return
     if (audioSessionActive) {
       setPendingDate(localDate)
       return
     }
     setSessionDate(localDate)
     setPendingDate(null)
-  }, [audioSessionActive, localDate, sessionDate])
+  }, [audioSessionActive, localDate, sessionDate, sharedDate])
 
   useEffect(() => {
     if (!sessionDate || !reading || !metadataKey) return undefined
@@ -157,13 +167,29 @@ export default function DailyReadingPage() {
     setPendingDate(null)
   }
 
+  async function handleShareAudio() {
+    if (!shareKey) return
+    const key = shareKey
+    setSharePendingKey(key)
+    setShareFeedback({ key, result: null })
+    try {
+      const result = await shareRpspAudio({ date: sessionDate, episode, locale, origin: window.location.origin })
+      setShareFeedback({ key, result })
+    } catch {
+      setShareFeedback({ key, result: 'unavailable' })
+    } finally {
+      setSharePendingKey((current) => current === key ? null : current)
+    }
+  }
+
   if (sessionPlan.status !== 'active' || !reading || !book) {
     return (
       <div className={`page ${styles.dailyPage}`}>
         <section className={styles.unavailable}>
           <p className={styles.kicker}>Reavivados por su Palabra</p>
-          <h1>El calendario de esta experiencia está disponible durante 2026.</h1>
+          <h1>{sessionPlan.status === 'invalid_date' ? t('dailyAudio.invalidDate') : 'El calendario de esta experiencia está disponible durante 2026.'}</h1>
           <p>La Biblia completa sigue disponible para que elijas cualquier libro y capítulo.</p>
+          {sharedDate !== undefined && <Link to="/reavivados">{t('dailyAudio.viewToday')}</Link>}
         </section>
       </div>
     )
@@ -180,12 +206,13 @@ export default function DailyReadingPage() {
             <p className={styles.kicker}>Reavivados por su Palabra</p>
             <h1>{referenceLabel}</h1>
             <p className={styles.date}>{dateLabel}</p>
+            {sharedDate && sharedDate !== localDate && <Link className={styles.todayLink} to="/reavivados">{t('dailyAudio.viewToday')}</Link>}
           </div>
         </div>
       </section>
 
       <div className={styles.readingFlow}>
-        {pendingDate && (
+        {pendingDate && sharedDate === undefined && (
           <aside className={styles.dayChange} role="status">
             <span>Ya está disponible la lectura de hoy.</span>
             <button onClick={useTodayReading} type="button">Cambiar a la lectura de hoy</button>
@@ -196,11 +223,19 @@ export default function DailyReadingPage() {
           <div>
             <p className={styles.audioKicker}><Icon name="headphones" size="sm" /> Reflexión del día</p>
           </div>
-          {episode?.sourcePageUrl && (
-            <a className={styles.audioSourceLink} href={episode.sourcePageUrl} rel="noreferrer" target="_blank">
-              Ver fuente <Icon name="externalLink" size="sm" />
-            </a>
-          )}
+          <div className={styles.audioActions}>
+            {shareKey && (
+              <button className={styles.audioSourceLink} disabled={sharePendingKey === shareKey} onClick={handleShareAudio} type="button">
+                <Icon name="share" size="sm" /> {t('dailyAudio.share')}
+              </button>
+            )}
+            {episode?.sourcePageUrl && (
+              <a className={styles.audioSourceLink} href={episode.sourcePageUrl} rel="noreferrer" target="_blank">
+                Ver fuente <Icon name="externalLink" size="sm" />
+              </a>
+            )}
+          </div>
+          <p aria-live="polite" className={styles.shareFeedback} role="status">{shareMessage ? t(`dailyAudio.${shareMessage}`) : ''}</p>
         </header>
 
         <DailyAudioPlayer

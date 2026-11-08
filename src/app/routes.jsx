@@ -61,6 +61,7 @@ export function AppRoutes() {
         <Route path="saved" element={<DeferredRoute><SavedPage /></DeferredRoute>} />
         <Route path="plans" element={<DeferredRoute><PlansPage /></DeferredRoute>} />
         <Route path="reavivados" element={<DeferredRoute><DailyReadingPage /></DeferredRoute>} />
+        <Route path="reavivados/:date" element={<DeferredRoute><DailyReadingPage /></DeferredRoute>} />
         <Route path="este-dia-con-dios" element={<DeferredRoute><DailyVideoPage /></DeferredRoute>} />
         <Route path="este-dia-con-dios/:date" element={<DeferredRoute><DailyVideoPage /></DeferredRoute>} />
         <Route path="topics" element={<DeferredRoute><TopicsPage /></DeferredRoute>} />

@@ -162,6 +162,14 @@
 }
 
 .audioSourceLink:hover { border-color: color-mix(in srgb, var(--accent) 68%, var(--border)); }
+.audioSourceLink:disabled { cursor: wait; opacity: .6; }
+.audioSourceLink:focus-visible, .todayLink:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+.audioActions { display: flex; flex-wrap: wrap; justify-content: end; gap: .5rem; }
+.audioActions .audioSourceLink { min-height: 44px; }
+.audioActions button { cursor: pointer; }
+.shareFeedback { flex-basis: 100%; margin: 0; color: var(--ink-muted); font-size: .75rem; text-align: right; }
+.shareFeedback:empty { display: none; }
+.todayLink { display: inline-flex; min-height: 44px; align-items: center; margin-top: .35rem; color: var(--accent-deep); font-size: .8rem; text-underline-offset: 3px; }
 
 .chapterHeader { padding: 0.4rem 0 clamp(1rem, 3vw, 1.35rem); border-bottom: 1px solid var(--border); }
 .chapterKicker { color: var(--accent-deep); }

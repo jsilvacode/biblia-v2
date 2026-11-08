@@ -102,6 +102,53 @@ test('the chapter remains readable when the audio is not available', async ({ pa
   await page.goto('/reavivados')
   await expect(page.getByText('El audio de hoy aún no está disponible. Puedes comenzar con la lectura.')).toBeVisible()
   await expect(page.locator('[data-rpsp-verse]').first()).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Compartir cápsula', exact: true })).toHaveCount(0)
+})
+
+test('a shared audio capsule preserves its date, chapter and link on the following day', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-11-08T12:00:00-03:00'))
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'share', { configurable: true, value: undefined })
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (text) => { window.copiedRpsp = text } } })
+  })
+  const requestedDates = []
+  await page.route('**/api/rpsp?date=*', async (route) => {
+    const date = new URL(route.request().url()).searchParams.get('date')
+    requestedDates.push(date)
+    const metadata = metadataFor(date)
+    metadata.episode.title = 'La majestad de Jehová | Salmo 93 | Reavivados por su Palabra'
+    await route.fulfill({ json: metadata })
+  })
+  await page.goto('/reavivados/2026-11-08')
+  const share = page.getByRole('button', { name: 'Compartir cápsula', exact: true })
+  await expect(share).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Salmos 93', exact: true }).first()).toBeVisible()
+  await expect(page.locator('audio')).not.toHaveAttribute('src')
+  await share.click()
+  await expect(page.getByText('Enlace copiado', { exact: true })).toBeVisible()
+  const sharedUrl = new URL('/reavivados/2026-11-08', page.url()).href
+  await expect.poll(() => page.evaluate(() => window.copiedRpsp)).toBe(sharedUrl)
+  await page.clock.setFixedTime(new Date('2026-11-09T12:00:00-03:00'))
+  await page.reload()
+  await expect(share).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Salmos 93', exact: true }).first()).toBeVisible()
+  expect(requestedDates.every(date => date === '2026-11-08')).toBe(true)
+  await share.click()
+  await expect.poll(() => page.evaluate(() => window.copiedRpsp)).toBe(sharedUrl)
+  await expect(page.locator('audio')).not.toHaveAttribute('src')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.getByRole('link', { name: 'Ir a la cápsula de hoy', exact: true }).click()
+  await expect(page).toHaveURL(/\/reavivados$/)
+  await expect.poll(() => requestedDates.at(-1)).toBe('2026-11-09')
+})
+
+test('an invalid shared capsule date does not request or share another audio', async ({ page }) => {
+  let requests = 0
+  await page.route('**/api/rpsp?date=*', route => { requests += 1; return route.abort() })
+  await page.goto('/reavivados/2026-02-29')
+  await expect(page.getByRole('heading', { name: 'La fecha de esta cápsula no es válida.', exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Compartir cápsula', exact: true })).toHaveCount(0)
+  expect(requests).toBe(0)
 })
 
 test('opening Reavivados starts from its header even when daily progress exists', async ({ page }) => {

@@ -4,6 +4,8 @@ import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import sharp from 'sharp'
 import { loadLocalChapter } from './_lib/shareCorpus.js'
+import { createRpspCard } from './_lib/rpspCard.js'
+import { loadRpspShareMetadata } from './_lib/rpspShare.js'
 import {
   createAppShareMetadata,
   getRequestOrigin,
@@ -171,14 +173,19 @@ async function handler(request) {
   const origin = getRequestOrigin(request)
   const query = Object.fromEntries(new URL(request.url).searchParams.entries())
   try {
+    const isRpsp = query.type === 'rpsp'
     const [metadata, background] = await Promise.all([
-      query.type === 'verse'
+      isRpsp
+        ? loadRpspShareMetadata({ origin, date: query.date })
+        : query.type === 'verse'
         ? loadVerseShareMetadata({ origin, query, loadChapter: loadLocalChapter })
         : createAppShareMetadata(origin),
-      readFile(join(publicDirectory, 'assets/social/verse-card-background.jpg')),
+      readFile(join(publicDirectory, isRpsp ? 'assets/editorial/daily-reading-v2.webp' : 'assets/social/verse-card-background.jpg')),
     ])
-    const backgroundImage = background.buffer.slice(background.byteOffset, background.byteOffset + background.byteLength)
-    const rendered = new ImageResponse(createCard(metadata, backgroundImage), { height: 630, width: 1200 })
+    // Satori accepts JPEG backgrounds directly; the editorial original is WebP.
+    const image = isRpsp ? await sharp(background).resize(1200, 630, { fit: 'cover' }).jpeg({ quality: 84 }).toBuffer() : background
+    const backgroundImage = image.buffer.slice(image.byteOffset, image.byteOffset + image.byteLength)
+    const rendered = new ImageResponse(isRpsp ? createRpspCard(metadata, backgroundImage) : createCard(metadata, backgroundImage), { height: 630, width: 1200 })
     const jpeg = await sharp(Buffer.from(await rendered.arrayBuffer()))
       .flatten({ background: '#191310' })
       .jpeg({ quality: 82, progressive: false, chromaSubsampling: '4:4:4' })
@@ -189,8 +196,8 @@ async function handler(request) {
       headers: {
         'Content-Type': 'image/jpeg',
         'Content-Length': String(jpeg.length),
-        'Cache-Control': 'public, max-age=86400, s-maxage=31536000, immutable',
-        'Vercel-CDN-Cache-Control': 'public, max-age=31536000, immutable',
+        'Cache-Control': isRpsp ? 'public, max-age=900, s-maxage=900, stale-while-revalidate=3600' : 'public, max-age=86400, s-maxage=31536000, immutable',
+        'Vercel-CDN-Cache-Control': isRpsp ? 'public, max-age=900, stale-while-revalidate=3600' : 'public, max-age=31536000, immutable',
       },
     })
   } catch (error) {

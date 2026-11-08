@@ -14,6 +14,14 @@ export default {
   app: { name: 'Santa Biblia', tagline: 'Read, reflect, and return to what matters.' },
   nav: { home: 'Home', bible: 'Bible', search: 'Search', saved: 'Saved', plans: 'Plans', about: 'About', settings: 'Settings' },
   common: { all: 'All', back: 'Back', chapter: 'Chapter', close: 'Close', continue: 'Continue', explore: 'Explore', next: 'Next', open: 'Open', previous: 'Previous', read: 'Read', save: 'Save', saving: 'Saving', saved: 'Saved', search: 'Search', share: 'Share', skipToContent: 'Skip to content', start: 'Start', today: 'Today', version: 'Version' },
+  dailyAudio: {
+    share: 'Share capsule',
+    shared: 'Capsule shared',
+    copied: 'Link copied',
+    shareUnavailable: 'The link could not be shared.',
+    invalidDate: 'This capsule date is not valid.',
+    viewToday: "Go to today's capsule",
+  },
   dailyVideo: {
     title: 'Este Día con Dios',
     eyebrow: 'A pause for the soul',

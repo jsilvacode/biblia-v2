@@ -33,6 +33,14 @@ export default {
     today: 'Hoy',
     version: 'Versión',
   },
+  dailyAudio: {
+    share: 'Compartir cápsula',
+    shared: 'Cápsula compartida',
+    copied: 'Enlace copiado',
+    shareUnavailable: 'No fue posible compartir el enlace.',
+    invalidDate: 'La fecha de esta cápsula no es válida.',
+    viewToday: 'Ir a la cápsula de hoy',
+  },
   dailyVideo: {
     title: 'Este Día con Dios',
     eyebrow: 'Una pausa para el alma',

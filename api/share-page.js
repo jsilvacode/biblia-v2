@@ -5,6 +5,7 @@ import {
   createDailyVideoFallbackMetadata,
   loadDailyVideoShareMetadata,
 } from './_lib/dailyVideoShare.js'
+import { createRpspFallbackMetadata, loadRpspShareMetadata } from './_lib/rpspShare.js'
 import {
   createAppShareMetadata,
   getRequestOrigin,
@@ -43,6 +44,16 @@ async function handler(request) {
     } catch {
       // La URL por fecha conserva la SPA y su identidad aunque el origen esté
       // caído. No guardar una vista previa genérica de una ausencia temporal.
+    }
+  } else if (query.type === 'rpsp') {
+    metadata = createRpspFallbackMetadata({ origin, date: query.date })
+    cacheControl = 'no-store'
+    try {
+      metadata = await loadRpspShareMetadata({ origin, date: query.date })
+      cacheControl = 'public, s-maxage=900, stale-while-revalidate=3600'
+    } catch {
+      // Preserve the exact dated reading without caching a missing episode's
+      // generic preview while the source is temporarily unavailable.
     }
   }
 

@@ -79,6 +79,10 @@
       "destination": "/api/share-page?type=daily-video&date=:date"
     },
     {
+      "source": "/reavivados/:date",
+      "destination": "/api/share-page?type=rpsp&date=:date"
+    },
+    {
       "source": "/biblia/:book/:chapter/:verse",
       "destination": "/api/share-page?type=verse&book=:book&chapter=:chapter&verse=:verse"
     },

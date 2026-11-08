@@ -14,6 +14,14 @@ export default {
   app: { name: 'Santa Bíblia', tagline: 'Leia, reflita e volte ao essencial.' },
   nav: { home: 'Início', bible: 'Bíblia', search: 'Buscar', saved: 'Salvos', plans: 'Planos', about: 'Sobre', settings: 'Configurações' },
   common: { all: 'Todos', back: 'Voltar', chapter: 'Capítulo', close: 'Fechar', continue: 'Continuar', explore: 'Explorar', next: 'Próximo', open: 'Abrir', previous: 'Anterior', read: 'Ler', save: 'Salvar', saving: 'Salvando', saved: 'Salvo', search: 'Buscar', share: 'Compartilhar', skipToContent: 'Pular para o conteúdo', start: 'Começar', today: 'Hoje', version: 'Versão' },
+  dailyAudio: {
+    share: 'Compartilhar cápsula',
+    shared: 'Cápsula compartilhada',
+    copied: 'Link copiado',
+    shareUnavailable: 'Não foi possível compartilhar o link.',
+    invalidDate: 'A data desta cápsula não é válida.',
+    viewToday: 'Ir para a cápsula de hoje',
+  },
   dailyVideo: {
     title: 'Este Día con Dios',
     eyebrow: 'Uma pausa para a alma',
