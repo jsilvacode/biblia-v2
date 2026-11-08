@@ -4,13 +4,14 @@ import { HomePassagePicker } from './HomePassagePicker'
 
 vi.mock('../../i18n', () => ({ useI18n: () => ({ locale: 'es', t: (key, values = {}) => ({
   'home.selectBook': 'Seleccionar libro', 'home.chooseReading': 'Elegir una lectura',
+  'reader.changeBookOrChapter': 'Cambiar libro o capítulo',
   'common.close': 'Cerrar', 'bible.oldTestament': 'Antiguo Testamento', 'bible.newTestament': 'Nuevo Testamento',
   'bible.chapters': 'Capítulos', 'bible.shortChapterCount': `${values.count} cap.`, 'bible.openReference': `Abrir ${values.reference}`,
 }[key] ?? key) }) }))
 vi.mock('../settings/SettingsProvider', () => ({ useSettings: () => ({ settings: { bibleVersion: 'nbla' } }) }))
 vi.mock('../reader/preloadReading', () => ({ preloadReading: vi.fn() }))
 
-const trigger = () => screen.getByRole('button', { name: 'Seleccionar libro', exact: true })
+const trigger = () => screen.getByRole('button', { name: /^(Seleccionar libro|Cambiar libro o capítulo:)/ })
 const book = (name) => screen.getByRole('button', { name: new RegExp(`^${name} \\d+ cap\\.$`) })
 
 describe('accordion passage picker', () => {
@@ -39,6 +40,21 @@ describe('accordion passage picker', () => {
     fireEvent.click(trigger())
     expect(screen.getAllByRole('button').filter(node => node.hasAttribute('data-book-id'))).toHaveLength(39)
     expect(screen.getByRole('button', { name: 'Antiguo Testamento', exact: true }).getAttribute('aria-pressed')).toBe('true')
+  })
+
+  it('keeps Home neutral and identifies the current passage in the compact reader', () => {
+    const view = render(<HomePassagePicker currentBookId={43} currentChapter={3} onGoToChapter={vi.fn()} />)
+    expect(trigger().textContent).toBe('Seleccionar libro')
+    view.rerender(<HomePassagePicker compact currentBookId={43} currentChapter={3} onGoToChapter={vi.fn()} />)
+    expect(trigger().textContent).toBe('Juan · 3')
+    expect(trigger().getAttribute('aria-label')).toBe('Cambiar libro o capítulo: Juan 3')
+    fireEvent.click(trigger())
+    fireEvent.click(book('Mateo'))
+    fireEvent.keyDown(trigger(), { key: 'Escape' })
+    expect(trigger().textContent).toBe('Juan · 3')
+    view.rerender(<HomePassagePicker compact currentBookId={52} currentChapter={5} onGoToChapter={vi.fn()} />)
+    expect(trigger().textContent).toBe('1 Tesalonicenses · 5')
+    expect(trigger().getAttribute('aria-label')).toBe('Cambiar libro o capítulo: 1 Tesalonicenses 5')
   })
 
   it('opens chapters inside the list and closes them with either the book name or its X', () => {

@@ -5,9 +5,14 @@ function passagePicker(page) {
   return { form, book: form.locator('[data-picker-trigger="book"]') }
 }
 
-async function expectNeutralPassagePicker(page) {
+async function expectCurrentPassagePicker(page) {
   const picker = passagePicker(page)
-  await expect(picker.book).toHaveText(/^(Seleccionar libro|Select a book|Selecionar livro)$/)
+  await expect.poll(async () => {
+    const bookName = await page.locator('.reader-chapter-heading h1').innerText()
+    const chapter = (await page.locator('.reader-chapter-number').innerText()).match(/\d+/)[0]
+    return (await picker.book.innerText()).replace(/\s+/g, ' ').trim() === `${bookName} · ${chapter}`
+  }, { message: 'The passage picker follows the loaded chapter heading' }).toBe(true)
+  await expect(picker.book).toHaveAccessibleName(/^(Cambiar libro o capítulo|Change book or chapter|Mudar livro ou capítulo):/)
   await expect(picker.book).toHaveAttribute('aria-expanded', 'false')
   await expect(picker.form.getByRole('button')).toHaveCount(1)
 }
@@ -174,14 +179,14 @@ test('a reader can highlight a verse and choose another passage from the inline 
   await expect(verse).not.toHaveClass(/is-selected/)
 
   const picker = passagePicker(page)
-  await expectNeutralPassagePicker(page)
+  await expectCurrentPassagePicker(page)
   await picker.book.click()
   await picker.form.getByRole('button', { name: /^(Antiguo Testamento|Old Testament|Antigo Testamento)$/ }).click()
   await picker.form.locator('[data-book-id="1"]').click()
   await picker.form.locator('[data-chapter="1"]').click()
   await expect(page).toHaveURL(/\/biblia\/genesis\/1$/)
   await expect(page.getByRole('heading', { name: /^(Génesis|Genesis|Gênesis)$/, exact: true })).toBeVisible()
-  await expectNeutralPassagePicker(page)
+  await expectCurrentPassagePicker(page)
 
   await page.goto('/saved')
   await page.getByRole('tab', { name: /Resaltados|Highlights|Destaques/ }).click()
@@ -192,7 +197,7 @@ test('a reader can highlight a verse and choose another passage from the inline 
 test('the inline reader picker is bounded, keyboard accessible and separate from reading options', async ({ page }) => {
   await page.goto('/biblia/juan/3/16')
   const picker = passagePicker(page)
-  await expectNeutralPassagePicker(page)
+  await expectCurrentPassagePicker(page)
   await picker.book.click()
   await expectContainedReaderList(page)
   await expect(page.locator('.reader-dialog-backdrop')).toHaveCount(0)
@@ -212,7 +217,7 @@ test('the inline reader picker is bounded, keyboard accessible and separate from
   await expectContainedReaderList(page)
   await page.keyboard.press('Enter')
   await expect(page).toHaveURL(/\/biblia\/apocalipsis\/22$/)
-  await expectNeutralPassagePicker(page)
+  await expectCurrentPassagePicker(page)
   await picker.book.click()
   await page.getByRole('button', { name: /Abrir menú de lectura|Open reading menu|Abrir menu de leitura/ }).click()
   await expect(picker.form.getByRole('dialog')).toHaveCount(0)
@@ -491,7 +496,7 @@ test('the compact reader switches testaments and reveals the collapsed current b
   await page.setViewportSize({ width: 320, height: 568 })
   await page.goto('/biblia/juan/3')
   const picker = passagePicker(page)
-  await expectNeutralPassagePicker(page)
+  await expectCurrentPassagePicker(page)
   await picker.book.click()
   await expectContainedReaderList(page)
   const list = picker.form.getByRole('dialog')

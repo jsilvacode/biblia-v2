@@ -351,7 +351,7 @@ body,
 @media (max-width: 767px) {
   /* The brand scrolls away naturally as the reading controls reach the top. */
   .reader-header { position: relative; }
-  .reader-header__passage-band { position: sticky; z-index: 20; top: 0; padding-top: calc(16px + env(safe-area-inset-top)); }
+  .reader-header__passage-band { position: sticky; z-index: 20; top: 0; padding: calc(8px + env(safe-area-inset-top)) 0 8px; border-bottom: 1px solid color-mix(in srgb, var(--border) 65%, transparent); }
   .reader-content .verse, .reader-chapter-heading { scroll-margin-top: calc(6rem + env(safe-area-inset-top)); }
   .reader-header__passage { --reader-side-width: 44px; --reader-tools-gap: 8px; --reader-search-padding: 8px; display: grid; grid-template-columns: var(--reader-side-width) minmax(0, 1fr) var(--reader-side-width); align-items: center; gap: var(--reader-tools-gap); }
   .reader-header__reading-tools { display: contents; }

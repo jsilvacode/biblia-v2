@@ -55,7 +55,9 @@
 .chapterGrid > button[aria-current='page'] { border-color: var(--accent-deep); background: var(--accent-soft); color: var(--accent-deep); font-weight: 600; }
 .compact { max-width: none; }
 .compact .bookTrigger { min-height: calc(var(--control-height-compact) - 2px); padding: 10px 12px; font-size: .9375rem; }
-.compact .value { white-space: normal; overflow-wrap: anywhere; }
+.compact .value { display: flex; align-items: baseline; white-space: nowrap; }
+.currentBook { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.currentChapter { flex: none; white-space: pre; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
 @media (max-width: 767px) { .compact .bookTrigger { gap: 8px; padding-inline: 10px; font-size: clamp(.8125rem, 3.75vw, 1rem); } }
 @media (hover: hover) {
   .bookToggle:hover { background: var(--accent-soft); }

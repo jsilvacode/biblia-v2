@@ -94,7 +94,7 @@ test('Home and Bible share header typography and the book-open and settings-2 gl
   }
 })
 
-test('the reader aligns Back, its neutral selector and quick search below the glass bar', async ({ page }) => {
+test('the reader aligns Back, its current passage and quick search below the glass bar', async ({ page }) => {
   for (const [width, fontSize] of [[1440, '16px'], [1024, '16px'], [768, '16px'], [390, '16px'], [320, '16px'], [320, '32px']]) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/biblia/juan/3')
@@ -106,7 +106,7 @@ test('the reader aligns Back, its neutral selector and quick search below the gl
     const back = row.getByRole('button', { name: /^(Volver|Back|Voltar)$/ })
     const book = picker.locator('[data-picker-trigger="book"]')
     await expect(bar.getByRole('button', { name: /^(Volver|Back|Voltar)$/ })).toHaveCount(0)
-    await expect(book).toHaveText(/Seleccionar libro|Select a book|Selecionar livro/)
+    await expect(book).toHaveText(/^(Juan|John|João) · 3$/)
     await expect(picker.getByRole('button')).toHaveCount(1)
     const search = width < 768
       ? row.getByRole('button', { name: 'Búsqueda rápida', exact: true })

@@ -44,8 +44,8 @@
 .headerIconButton[aria-expanded='true'] { background: color-mix(in srgb, var(--accent-soft) 50%, transparent); color: var(--accent-deep); }
 .siteHeader, .readerHeader { position: relative; inset: auto; width: min(calc(100% - var(--layout-gutter) * 2), var(--content-max-width)); margin-inline: auto; }
 .heroHeader { position: absolute; isolation: isolate; }
-:global(:root[data-theme='dark']) .heroHeader { text-shadow: 0 1px 4px rgb(0 0 0 / 75%), 0 0 14px rgb(0 0 0 / 45%); }
-:global(:root[data-theme='dark']) .heroHeader svg { filter: drop-shadow(0 1px 3px rgb(0 0 0 / 80%)); }
+:global(:root[data-theme='dark']) .heroHeader { text-shadow: 0 1px 3px rgb(0 0 0 / 36%); }
+:global(:root[data-theme='dark']) .heroHeader svg { filter: drop-shadow(0 1px 2px rgb(0 0 0 / 28%)); }
 
 @media (min-width: 1024px) {
   .homeHeader:is(.heroHeader, .siteHeader, .readerHeader) { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }

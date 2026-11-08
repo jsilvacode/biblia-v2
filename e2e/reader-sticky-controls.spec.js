@@ -7,6 +7,7 @@ test('mobile reading controls settle at the top while the brand scrolls away and
   const header = page.locator('.reader-header')
   const band = page.locator('.reader-header__passage-band')
   const row = page.getByTestId('reader-passage-row')
+  await expect(row.locator('[data-picker-trigger="book"]')).toHaveText('Juan · 3')
   const initialHeader = await header.boundingBox()
   const initialBand = await band.boundingBox()
   expect(initialBand.y).toBeGreaterThanOrEqual(initialHeader.y + initialHeader.height - 1)
@@ -14,6 +15,7 @@ test('mobile reading controls settle at the top while the brand scrolls away and
   await page.evaluate(() => window.scrollTo({ top: 500, behavior: 'instant' }))
   await expect.poll(async () => (await band.boundingBox()).y).toBeCloseTo(0, 0)
   expect((await header.boundingBox()).y + initialHeader.height).toBeLessThanOrEqual(0)
+  await expect(row.getByRole('button', { name: 'Cambiar libro o capítulo: Juan 3', exact: true })).toBeInViewport()
   const covered = await band.evaluate((element) => {
     const rect = element.getBoundingClientRect()
     return document.elementFromPoint(rect.left + rect.width / 2, rect.bottom - 3)?.closest('.reader-header__passage-band') === element

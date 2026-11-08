@@ -39,6 +39,10 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
   const id = useId()
   const currentBook = bibleBooks.find((book) => book.id === Number(currentBookId))
   const chapter = Number(currentChapter)
+  const currentBookName = currentBook ? getLocalizedBookName(currentBook, locale) : ''
+  const hasCurrentChapter = currentBook && Number.isInteger(chapter) && chapter >= 1 && chapter <= currentBook.chapters
+  const showsCurrentReading = compact && Boolean(currentBook)
+  const currentReference = `${currentBookName}${hasCurrentChapter ? ` ${chapter}` : ''}`
   const [isOpen, setIsOpen] = useState(false)
   const [expandedBook, setExpandedBook] = useState(null)
   const [activeTestament, setActiveTestament] = useState(() => currentBook?.testament ?? 'OT')
@@ -249,6 +253,7 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
       <div className={`${styles.control} ${styles.bookControl}`} data-picker-field="book" ref={anchorRef}>
         <button
           aria-controls={`${id}-books`} aria-expanded={isOpen} aria-haspopup="dialog"
+          aria-label={showsCurrentReading ? `${t('reader.changeBookOrChapter')}: ${currentReference}` : undefined}
           className={`${styles.trigger} ${styles.bookTrigger}`} data-picker-trigger="book"
           onClick={(event) => isOpen ? close() : open(null, event.detail === 0)}
           onKeyDown={(event) => handleBookNavigation(event)}
@@ -257,7 +262,9 @@ export function HomePassagePicker({ onGoToChapter, compact = false, bookTriggerR
           type="button"
         >
           <Icon name="bookOpen" size={18} />
-          <span className={styles.value}>{t('home.selectBook')}</span>
+          <span className={styles.value}>
+            {showsCurrentReading ? <><span className={styles.currentBook}>{currentBookName}</span>{hasCurrentChapter && <span className={styles.currentChapter}> · {chapter}</span>}</> : t('home.selectBook')}
+          </span>
           <Icon name="chevronDown" size={17} />
         </button>
         {isOpen && (
