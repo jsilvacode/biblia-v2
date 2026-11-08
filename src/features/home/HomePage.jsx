@@ -189,6 +189,8 @@ export default function HomePage() {
                       <p>{t('home.chooseBookChapter')}</p>
                     </div>
                     <div className={styles.readingTools}>
+                      <HomePassagePicker onGoToChapter={goToReading} />
+                      <HomeQuickSearch currentBookId={hasReadingHistory ? lastRead.book : null} currentChapter={hasReadingHistory ? lastRead.chapter : null} onGoToChapter={goToReading} />
                       {recentReadings.length > 0 && (
                         <section aria-labelledby="home-recent-heading" className={styles.recentReadings}>
                           <h3 id="home-recent-heading"><Icon name="history" size={14} /><span className={styles.recentDesktopLabel}>{t('home.recentReadings')}</span><span className={styles.recentMobileLabel}>{t('home.lastReading')}</span></h3>
@@ -210,8 +212,6 @@ export default function HomePage() {
                           </ol>
                         </section>
                       )}
-                      <HomePassagePicker onGoToChapter={goToReading} />
-                      <HomeQuickSearch currentBookId={hasReadingHistory ? lastRead.book : null} currentChapter={hasReadingHistory ? lastRead.chapter : null} onGoToChapter={goToReading} />
                     </div>
                   </div>
                 </article>

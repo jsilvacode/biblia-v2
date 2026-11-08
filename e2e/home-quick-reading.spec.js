@@ -73,8 +73,9 @@ test('Home preserves recent readings across reload and shows only the latest on 
   if (isMobile) await expect(continueLabel).toBeVisible()
   else await expect(continueLabel).toBeHidden()
   await expect(history.getByText('Continuar', { exact: true })).toHaveCount(1)
-  const [historyBox, pickerBox] = await Promise.all([history.boundingBox(), panel(page).getByTestId('home-reading-actions').boundingBox()])
-  expect(historyBox.y + historyBox.height).toBeLessThanOrEqual(pickerBox.y)
+  const [historyBox, pickerBox, searchBox] = await Promise.all([history.boundingBox(), panel(page).getByTestId('home-reading-actions').boundingBox(), panel(page).getByRole('search').boundingBox()])
+  expect(pickerBox.y + pickerBox.height).toBeLessThanOrEqual(searchBox.y)
+  expect(searchBox.y + searchBox.height).toBeLessThanOrEqual(historyBox.y)
   const links = await history.getByRole('link').all()
   const boxes = await Promise.all(links.map(link => link.boundingBox()))
   if (page.viewportSize().width >= 768) {
