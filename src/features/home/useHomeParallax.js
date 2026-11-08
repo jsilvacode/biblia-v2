@@ -58,9 +58,9 @@ export function useHomeParallax(pageRef) {
         if (!layer.visible) continue
         let offset
         if (layer.kind === 'landscape') {
-          // The image drifts more slowly than the opening; its top remains
-          // above the viewport, so the original crop needs no extra zoom.
-          offset = clamp(scrollTop - layer.top, 0, layer.height) * (gentle ? 0.07 : 0.14)
+          // A bounded drift keeps the single overscanned photograph covering
+          // the viewport as it reappears behind the editorial section.
+          offset = clamp((scrollTop - layer.top) * (gentle ? 0.025 : 0.04), 0, gentle ? 22 : 40)
         } else if (layer.kind === 'editorial') {
           const distance = viewportHeight / 2 - (layer.top - scrollTop + layer.height / 2)
           const limit = gentle ? 6 : 12

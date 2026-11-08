@@ -63,7 +63,7 @@ async function expectPopupWithinScreen(page) {
   await expect(popup).toBeVisible()
   const box = await popup.boundingBox()
   const viewport = page.viewportSize()
-  expect(box.height).toBeLessThanOrEqual(325)
+  expect(box.height).toBeLessThanOrEqual(401)
   expect(box.x).toBeGreaterThanOrEqual(0)
   expect(box.x + box.width).toBeLessThanOrEqual(viewport.width)
   expect(box.y).toBeGreaterThanOrEqual(0)
@@ -219,6 +219,18 @@ test('the centered Home picker remains readable without horizontal overflow in b
       await expect(panel.getByRole('link', { name: continueLabel })).toBeVisible()
     }
   }
+})
+
+test('the book list makes use of available vertical space on a large screen', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 })
+  await clearAppStorage(page)
+  await waitForHomeLayout(page)
+  const picker = homePicker(page)
+  await picker.book.evaluate((element) => window.scrollTo(0, window.scrollY + element.getBoundingClientRect().top - 100))
+  await picker.book.click()
+  const bounds = await expectPopupWithinScreen(page)
+  expect(bounds.height).toBeGreaterThan(375)
+  await expect(picker.form.locator('[data-book-id="1"]')).toBeVisible()
 })
 
 test('the book accordion opens toward available space and contains even all 150 Psalms', async ({ page }) => {

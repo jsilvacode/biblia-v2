@@ -1,0 +1,52 @@
+import { expect, test } from '@playwright/test'
+
+test('mobile reading controls settle at the top while the brand scrolls away and return on scroll up', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/biblia/juan/3')
+  await expect(page.locator('#verse-16')).toBeVisible()
+  const header = page.locator('.reader-header')
+  const band = page.locator('.reader-header__passage-band')
+  const row = page.getByTestId('reader-passage-row')
+  const initialHeader = await header.boundingBox()
+  const initialBand = await band.boundingBox()
+  expect(initialBand.y).toBeGreaterThanOrEqual(initialHeader.y + initialHeader.height - 1)
+
+  await page.evaluate(() => window.scrollTo({ top: 500, behavior: 'instant' }))
+  await expect.poll(async () => (await band.boundingBox()).y).toBeCloseTo(0, 0)
+  expect((await header.boundingBox()).y + initialHeader.height).toBeLessThanOrEqual(0)
+  const covered = await band.evaluate((element) => {
+    const rect = element.getBoundingClientRect()
+    return document.elementFromPoint(rect.left + rect.width / 2, rect.bottom - 3)?.closest('.reader-header__passage-band') === element
+  })
+  expect(covered).toBe(true)
+
+  const picker = page.getByTestId('reader-passage-picker')
+  await picker.locator('[data-picker-trigger="book"]').click()
+  const books = picker.getByRole('dialog')
+  await expect(books).toBeVisible()
+  await page.evaluate(() => window.scrollBy({ top: 160, behavior: 'instant' }))
+  await expect(books).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(books).toBeHidden()
+  await row.getByRole('button', { name: 'Búsqueda rápida', exact: true }).click()
+  const search = row.getByRole('searchbox')
+  await search.fill('Juan')
+  await expect(row.getByRole('region', { name: 'Resultados de búsqueda', exact: true })).toBeVisible()
+  await page.evaluate(() => window.scrollBy({ top: 120, behavior: 'instant' }))
+  await expect(row.getByRole('region', { name: 'Resultados de búsqueda', exact: true })).toBeVisible()
+  await page.keyboard.press('Escape')
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
+  await expect.poll(async () => (await header.boundingBox()).y).toBeCloseTo(initialHeader.y, 0)
+  expect((await band.boundingBox()).y).toBeGreaterThanOrEqual(initialHeader.y + initialHeader.height - 1)
+})
+
+test('mobile verse anchors stay below the fixed reading controls', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 })
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/biblia/juan/3')
+  const verse = page.locator('#verse-25')
+  await expect(verse).toBeVisible()
+  await verse.evaluate(element => element.scrollIntoView({ block: 'start', behavior: 'instant' }))
+  const [verseBox, bandBox] = await Promise.all([verse.boundingBox(), page.locator('.reader-header__passage-band').boundingBox()])
+  expect(verseBox.y).toBeGreaterThanOrEqual(bandBox.y + bandBox.height)
+})

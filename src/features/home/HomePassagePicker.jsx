@@ -8,7 +8,7 @@ import { useSettings } from '../settings/SettingsProvider'
 import { createPickerPositionScheduler, positionPickerMenu, revealPickerAnchor } from './pickerPosition'
 import styles from './HomePassagePicker.module.css'
 
-const MENU_HEIGHT = 324
+const MENU_HEIGHT = 400
 const TYPEAHEAD_TIMEOUT = 700
 const BOOK_REVEAL_MARGIN = 8
 

@@ -30,7 +30,7 @@
 .bookTrigger > svg:first-child { flex: none; color: var(--accent-deep); }
 .bookTrigger > svg:last-child { flex: none; color: var(--accent-deep); transition: transform 160ms ease; }
 .bookTrigger[aria-expanded='true'] > svg:last-child { transform: rotate(180deg); }
-.bookMenu { max-height: 324px; padding: 6px 8px 8px; }
+.bookMenu { max-height: 400px; padding: 6px 8px 8px; }
 .bookMenu .menuHeader { display: block; margin: -6px -8px 0; padding: 0 8px 8px; background: var(--surface-raised); }
 .menuHeading { display: flex; align-items: center; justify-content: space-between; min-height: var(--control-hit-size); gap: 8px; padding-left: 10px; }
 .menuHeading > span { min-width: 0; overflow-wrap: anywhere; }

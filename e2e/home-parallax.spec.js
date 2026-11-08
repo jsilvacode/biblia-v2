@@ -45,6 +45,16 @@ test('Home gives decorative layers depth while its reading text follows the norm
   expect(flow.transform).toBe('none')
   expect(Math.abs(flow.top + flow.scroll - initialTextTop)).toBeLessThanOrEqual(1)
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+
+  // The same image remains in the viewport behind the later editorial grid.
+  await home.getByRole('region', { name: 'También en Santa Biblia' }).scrollIntoViewIfNeeded()
+  const scene = await landscape.evaluate((picture) => {
+    const windowBounds = picture.parentElement.getBoundingClientRect()
+    const sectionBounds = document.getElementById('home-editorial-heading').parentElement.getBoundingClientRect()
+    return { windowTop: windowBounds.top, windowBottom: windowBounds.bottom, sectionTop: sectionBounds.top, sectionBottom: sectionBounds.bottom }
+  })
+  expect(scene.windowTop).toBeLessThan(scene.sectionBottom)
+  expect(scene.windowBottom).toBeGreaterThan(scene.sectionTop)
 })
 
 test('Home keeps all parallax layers still when reduced motion is requested', async ({ page }) => {

@@ -154,12 +154,12 @@ export default function HomePage() {
 
   return (
     <div className={`home-page ${styles.homePage}`} ref={homeRef}>
+      <HomeLandscape />
       <div aria-hidden="true" className={styles.homeAtmosphere} data-home-parallax-region="">
         <span className={styles.atmosphereFar} data-home-parallax="ambient-far" />
         <span className={styles.atmosphereNear} data-home-parallax="ambient-near" />
       </div>
       <div className={styles.opening} data-testid="home-opening">
-        <HomeLandscape />
         <div className={styles.openingInner}>
           <HomeHeader />
           <div className={styles.openingGrid}>
@@ -222,8 +222,10 @@ export default function HomePage() {
       </div>
 
       <div className={styles.homeFeed}>
+        <div className={styles.videoSurface}>
         <HomeDailyVideo />
         {hasReadingHistory && <InstallInvitation />}
+        </div>
 
         <section aria-labelledby="home-editorial-heading" className={styles.editorialSection}>
           <h2 className={styles.sectionTitle} id="home-editorial-heading">{t('home.alsoIn')}</h2>

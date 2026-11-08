@@ -152,8 +152,8 @@ test('the reader aligns Back, its neutral selector and quick search below the gl
   }
 })
 
-test('reader dropdowns and search results scroll behind the sticky header', async ({ page }) => {
-  for (const width of [390, 1440]) {
+test('desktop reader dropdowns and search results scroll behind the sticky header', async ({ page }) => {
+  for (const width of [1440]) {
     await page.setViewportSize({ width, height: 900 })
     for (const kind of ['picker', 'search']) {
       await page.goto('/biblia/juan/3')
@@ -303,7 +303,7 @@ test('the matte opal Home panel keeps its shape, soft light and texture in eithe
   }
 })
 
-test('Home loads one responsive photograph and cuts it at the opening base in both themes', async ({ page }) => {
+test('Home uses one responsive landscape behind its opening and editorial section in both themes', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('santa_biblia_v2_settings', JSON.stringify({ theme: 'light', locale: 'es', bibleVersion: 'nbla' })))
   for (const width of [320, 768, 1440]) {
     // Resize away from Home so its previous picture cannot request a new
@@ -327,7 +327,7 @@ test('Home loads one responsive photograph and cuts it at the opening base in bo
       const geometry = await image.evaluate(img => {
         const photograph = img.closest('[data-home-parallax-region]').getBoundingClientRect()
         const panel = document.querySelector('[data-testid="home-reading-panel"]').getBoundingClientRect()
-        const openingElement = img.closest('[data-testid="home-opening"]')
+        const openingElement = document.querySelector('[data-testid="home-opening"]')
         const opening = openingElement.getBoundingClientRect()
         const overlay = getComputedStyle(openingElement, '::after')
         const picture = getComputedStyle(img.parentElement)
@@ -347,13 +347,12 @@ test('Home loads one responsive photograph and cuts it at the opening base in bo
         }
       })
       expect(geometry.top).toBe(geometry.openingTop)
-      expect(Math.abs(geometry.bottom - geometry.openingBottom)).toBeLessThanOrEqual(1)
       expect(Math.abs(geometry.overlayBottom - geometry.openingBottom)).toBeLessThanOrEqual(1)
       expect(geometry.bottom).toBeGreaterThanOrEqual(geometry.panelBottom - 1)
       expect(geometry.pictureMask).toBe('none')
       expect(geometry.pictureWebkitMask).toBe('none')
       expect(geometry.overlayMask).toBe('none')
-      expect(geometry.bottom).toBeLessThan(geometry.editorialTop)
+      expect(geometry.bottom).toBeGreaterThan(geometry.editorialTop)
       expect(geometry.background).toBe(geometry.readerBackground)
       expect(geometry.background).not.toBe('rgba(0, 0, 0, 0)')
       expect(geometry.bodyBackground).not.toBe('rgba(0, 0, 0, 0)')
