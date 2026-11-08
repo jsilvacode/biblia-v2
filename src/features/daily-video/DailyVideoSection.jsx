@@ -127,11 +127,7 @@ export function DailyVideoSection({ date, featured = false }) {
   return (
     <section aria-labelledby={headingId} className={`${styles.section}${featured ? ` ${styles.featured}` : ''}`}>
       <header className={styles.sectionHeader}>
-        <div>
-          <p className={styles.eyebrow}>{t('dailyVideo.eyebrow')}</p>
-          <Heading id={headingId}>{t('dailyVideo.title')}</Heading>
-        </div>
-        <p className={styles.intro}>{t('dailyVideo.intro')}</p>
+        <Heading id={headingId}>{t('dailyVideo.title')}</Heading>
       </header>
 
       {!online && activeEpisode && <p className={styles.offlineNotice} role="status"><Icon name="info" size={16} /> {t('dailyVideo.offline')}</p>}
@@ -139,57 +135,57 @@ export function DailyVideoSection({ date, featured = false }) {
       {(newerDate || currentSelection) && <button className={styles.todayButton} onClick={viewToday} type="button">{t(currentSelection && date ? 'dailyVideo.backToFeatured' : 'dailyVideo.viewToday')} <Icon name="arrowRight" size={16} /></button>}
 
       <div aria-busy={displayedStatus === 'loading'} className={styles.body}>
-        <div className={styles.copy}>
-          {validDate && <time aria-label={dateLabel} className={styles.date} dateTime={validDate} title={dateLabel}><Icon name="calendar" size={15} /> {formatVideoDate(validDate, locale, { compact: true })}</time>}
-
+        <div className={styles.mediaColumn}>
           {activeEpisode ? (
-            <EpisodeHeading className={styles.episodeTitle} lang={activeEpisode.language}>{activeEpisode.title}</EpisodeHeading>
+            <DailyVideoPlayer autoPlay={Boolean(currentSelection)} episode={activeEpisode} key={episodeKey} onActivate={() => setHomePlayerActivated(true)} playRequest={currentSelection?.playRequest} t={t} />
           ) : (
-            <div aria-hidden="true" className={`${styles.copyPlaceholder}${displayedStatus === 'loading' ? ` ${styles.loadingPlaceholder}` : ''}`}>
-              <div className={styles.titlePlaceholder} />
+            <div className={styles.empty} role="status">
+              <Icon name={displayedStatus === 'loading' ? 'play' : 'info'} size={30} />
+              <p>{t(`dailyVideo.${messageKey}`)}</p>
+              {displayedStatus !== 'invalid_date' && displayedStatus !== 'loading' && (
+                <button className={styles.retryButton} onClick={retry} type="button"><Icon name="forward" size={15} /> {t('dailyVideo.retry')}</button>
+              )}
             </div>
           )}
+        </div>
 
-          {locale !== 'es' && <p className={styles.language}><Icon name="language" size={14} /> {t('dailyVideo.contentLanguage')}</p>}
+        <div className={styles.copy}>
+          <div className={styles.episodeInfo}>
+            {activeEpisode ? (
+              <EpisodeHeading className={styles.episodeTitle} lang={activeEpisode.language}>{activeEpisode.title}</EpisodeHeading>
+            ) : (
+              <div aria-hidden="true" className={`${styles.copyPlaceholder}${displayedStatus === 'loading' ? ` ${styles.loadingPlaceholder}` : ''}`}>
+                <div className={styles.titlePlaceholder} />
+              </div>
+            )}
 
-          <div className={styles.attribution}>
-            <p className={styles.credit}>
-              <span>{t('dailyVideo.credit')}</span>{' '}
-              <a href={activeEpisode?.sourcePageUrl ?? OFFICIAL_SITE} rel="noopener noreferrer" target="_blank">{activeEpisode?.creator || t('dailyVideo.title')}</a>
-              {activeEpisode?.presenter && activeEpisode.presenter !== activeEpisode.creator && <span> · {activeEpisode.presenter}</span>}
-            </p>
-            <div className={styles.sourceLinks}>
-              <a href={activeEpisode?.sourcePageUrl ?? OFFICIAL_SITE} rel="noopener noreferrer" target="_blank">{t('dailyVideo.officialSite')} <Icon name="externalLink" size={13} /></a>
-              <a href={activeEpisode?.channelUrl ?? OFFICIAL_CHANNEL} rel="noopener noreferrer" target="_blank">{t('dailyVideo.officialChannel')} <Icon name="externalLink" size={13} /></a>
-              {activeEpisode && <a href={`https://www.youtube.com/watch?v=${activeEpisode.videoId}`} rel="noopener noreferrer" target="_blank">{t('dailyVideo.watchOnYoutube')} <Icon name="externalLink" size={13} /></a>}
-            </div>
+            {validDate && <time aria-label={dateLabel} className={styles.date} dateTime={validDate} title={dateLabel}><Icon name="calendar" size={15} /> {formatVideoDate(validDate, locale, { compact: true })}</time>}
+            {locale !== 'es' && <p className={styles.language}><Icon name="language" size={14} /> {t('dailyVideo.contentLanguage')}</p>}
           </div>
 
           <div aria-hidden={!activeEpisode || undefined} className={styles.actions}>
             {activeEpisode ? (
-              <button className={styles.shareButton} disabled={shareRequestKey === episodeKey} onClick={handleShare} type="button">
-                <Icon name="share" size={17} /> {t('dailyVideo.share')}
+              <button aria-label={t('dailyVideo.share')} className={styles.shareButton} disabled={shareRequestKey === episodeKey} onClick={handleShare} type="button">
+                <Icon name="share" size={17} /> <span className={styles.shareLabel}>{t('dailyVideo.share')}</span>
               </button>
             ) : <span className={styles.actionPlaceholder} />}
           </div>
           {activeEpisode && <p aria-live="polite" className={styles.feedback} role="status">{feedbackKey ? t(`dailyVideo.${feedbackKey}`) : ''}</p>}
         </div>
-
-        <div className={styles.mediaColumn}>
-          {activeEpisode ? (
-          <DailyVideoPlayer autoPlay={Boolean(currentSelection)} episode={activeEpisode} key={episodeKey} onActivate={() => setHomePlayerActivated(true)} playRequest={currentSelection?.playRequest} t={t} />
-          ) : (
-          <div className={styles.empty} role="status">
-            <Icon name={displayedStatus === 'loading' ? 'play' : 'info'} size={30} />
-            <p>{t(`dailyVideo.${messageKey}`)}</p>
-            {displayedStatus !== 'invalid_date' && displayedStatus !== 'loading' && (
-              <button className={styles.retryButton} onClick={retry} type="button"><Icon name="forward" size={15} /> {t('dailyVideo.retry')}</button>
-            )}
-          </div>
-          )}
-        </div>
       </div>
       {anchorDate && <DailyVideoGallery date={anchorDate} featured={featured} historyStatus={historyStatus} key={anchorDate} loadPrevious={loadPrevious} onSelect={selectEpisode} previous={previous} selectedDate={resolvedDate} />}
+      <footer className={styles.attribution}>
+        <p className={styles.credit}>
+          <span>{t('dailyVideo.credit')}</span>{' '}
+          <a href={activeEpisode?.sourcePageUrl ?? OFFICIAL_SITE} rel="noopener noreferrer" target="_blank">{activeEpisode?.creator || t('dailyVideo.title')}</a>
+          {activeEpisode?.presenter && activeEpisode.presenter !== activeEpisode.creator && <span> · {activeEpisode.presenter}</span>}
+        </p>
+        <div className={styles.sourceLinks}>
+          <a href={activeEpisode?.sourcePageUrl ?? OFFICIAL_SITE} rel="noopener noreferrer" target="_blank">{t('dailyVideo.officialSite')} <Icon name="externalLink" size={13} /></a>
+          <a href={activeEpisode?.channelUrl ?? OFFICIAL_CHANNEL} rel="noopener noreferrer" target="_blank">{t('dailyVideo.officialChannel')} <Icon name="externalLink" size={13} /></a>
+          {activeEpisode && <a href={`https://www.youtube.com/watch?v=${activeEpisode.videoId}`} rel="noopener noreferrer" target="_blank">{t('dailyVideo.watchOnYoutube')} <Icon name="externalLink" size={13} /></a>}
+        </div>
+      </footer>
     </section>
   )
 }
