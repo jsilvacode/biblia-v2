@@ -127,8 +127,8 @@
 .recentList > li + li .recentLink:hover, .recentList > li + li .recentLink:focus-visible { color: var(--accent-deep); }
 .recentLink:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .eyebrow { margin: 0; color: var(--accent-deep); font: 600 .875rem/1.5 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; }
-.editorialSection { position: relative; isolation: isolate; margin-top: 0; padding-top: var(--space-7); }
-.editorialSection::after { position: absolute; z-index: -1; inset: -1px calc(50% - 50vw); background: linear-gradient(180deg, var(--bg-reader) 4%, color-mix(in srgb, var(--bg-reader) 92%, transparent) 22%, color-mix(in srgb, var(--bg-reader) 80%, transparent) 48%, color-mix(in srgb, var(--bg-reader) 90%, transparent) 76%, var(--bg-reader) 96%); content: ''; pointer-events: none; }
+.editorialSection { position: relative; isolation: isolate; display: grid; align-content: center; margin-top: 0; padding-block: var(--space-7); }
+.editorialSection::after { position: absolute; z-index: -1; inset: -1px calc(50% - 50vw); background: linear-gradient(180deg, var(--bg-reader), color-mix(in srgb, var(--bg-reader) 65%, transparent) 6%, color-mix(in srgb, var(--bg-reader) 44%, transparent) 14%, color-mix(in srgb, var(--bg-reader) 44%, transparent) 86%, color-mix(in srgb, var(--bg-reader) 65%, transparent) 94%, var(--bg-reader)); content: ''; pointer-events: none; }
 .sectionTitle { margin: 0 0 20px; color: var(--ink); font: 400 var(--font-size-section)/1.25 var(--font-display); letter-spacing: -.03em; text-align: center; text-wrap: balance; }
 .editorialList { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
 .editorialEntry { display: grid; grid-template-rows: auto 1fr; min-width: 0; border: 1px solid var(--border); border-radius: 14px; background: color-mix(in srgb, var(--surface-1) 92%, transparent); }
@@ -155,8 +155,7 @@
 .interestCard > svg { color: var(--ink-muted); }
 .promiseFeedback { position: fixed; z-index: 102; right: 1rem; bottom: 5.5rem; left: 1rem; max-width: 26rem; margin-inline: auto; padding: .75rem 1rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-raised); color: var(--ink); box-shadow: var(--shadow-sm); text-align: center; font-size: .875rem; }
 @media (min-width: 768px) {
-  .editorialSection { margin-top: 0; padding-top: var(--space-6); }
-  .editorialSection::before { position: absolute; inset: 0 0 auto; height: 1px; background: var(--home-section-divider); content: ''; pointer-events: none; }
+  .editorialSection { min-height: 50rem; padding-block: var(--space-8); }
   .editorialList { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .entryTitle { min-height: 0; }
   .recentList { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
